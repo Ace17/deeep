@@ -1,0 +1,19 @@
+#!/bin/bash
+# This script is here to help updating an embedded copy of CommonMak
+set -eu
+
+readonly tmpDir="/tmp/new-$$"
+trap "rm -rf $tmpDir" EXIT
+
+readonly url="http://code.alaiwan.org/bzr/CommonMak"
+readonly scriptDir=$(dirname $0)
+readonly rev=$(bzr revno "$url")
+
+echo "Updating CommonMak from $url to revision $rev"
+
+bzr export $tmpDir -r "$rev" "$url"
+echo "$url $rev" > $scriptDir/rev.txt
+bzr add $scriptDir
+mv $tmpDir/* .
+
+

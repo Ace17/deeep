@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -euo pipefail
+
+MAKE="make -j`nproc`"
+
+scripts/reformat.sh src
+
+echo "----------------------------------------------------------------"
+echo "Building asmjs version"
+
+PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master/system/bin:$PATH \
+  BIN=bin/asmjs \
+  CXX=emcc \
+  LDFLAGS="--preload-file res" \
+  $MAKE
+
+echo "----------------------------------------------------------------"
+echo "Building native version"
+
+BIN=bin/native \
+  CXX=g++ \
+  $MAKE
+

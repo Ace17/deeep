@@ -1,0 +1,18 @@
+#!/bin/bash
+
+readonly toInclude=$1
+readonly name=$(dirname "$toInclude")
+
+function replaceTargetNames
+{
+  sed "s/^[a-zA-Z]*:/$name.&/g"
+}
+
+function replaceVarNames
+{
+  sed "s/\$(THIS)/$name/g"
+}
+
+cat $toInclude | replaceVarNames | replaceTargetNames
+
+

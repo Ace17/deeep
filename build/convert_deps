@@ -1,0 +1,61 @@
+#!/bin/bash
+# Creates a GNU make dependency file from a dmd dependency file
+set -eu
+
+
+readonly srcDepFile=$1
+readonly dstDepFile=$2
+readonly target=$3
+readonly currPath=$(echo "$PWD" | sed 's:/*$:/:')
+
+function generateGnuMakeDeps
+{
+  echo "$target:\\"
+  getDependencies $srcDepFile | sed 's@.*@  &\\@'
+  echo ""
+
+  # avoid errors when some header gets deleted
+  getDependencies $srcDepFile | while read f; do
+    echo "$f:"
+    echo ""
+  done
+}
+
+function getDependencies
+{
+  cat $1 | removeSystemModules | gawk '{ print $2 }' | toRelativePath | sort -u | sed "s/(\(.*\))/\\1/" | removeAbsolutePaths
+}
+
+function removeAbsolutePaths
+{
+  grep -v "^/"
+}
+
+function removeSystemModules
+{
+  while read line; do
+    if ! isSystemModule "$line" ; then
+      echo $line
+    fi
+  done
+}
+
+function isSystemModule
+{
+  case $1 in
+    std\.*|core\.*|gcc\.*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+function toRelativePath
+{
+  sed "s:$currPath::g"
+}
+
+generateGnuMakeDeps > $dstDepFile
+
