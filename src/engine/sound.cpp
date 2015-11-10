@@ -21,16 +21,6 @@ using namespace std;
 
 static vector<Mix_Chunk*> sounds;
 
-Mix_Chunk* loadSound(string path)
-{
-  auto snd = Mix_LoadWAV(path.c_str());
-
-  if(!snd)
-    throw runtime_error("Can't load sound: '" + path + "' : " + SDL_GetError());
-
-  return snd;
-}
-
 void Audio_init()
 {
   auto ret = Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
@@ -46,8 +36,14 @@ void Audio_init()
 
 void Audio_loadSound(int id, string path)
 {
+  auto snd = Mix_LoadWAV(path.c_str());
+
+  if(!snd)
+    throw runtime_error("Can't load sound: '" + path + "' : " + SDL_GetError());
+
   sounds.resize(max(id + 1, (int)sounds.size()));
-  sounds[id] = loadSound(path);
+
+  sounds[id] = snd;
 }
 
 void Audio_destroy()
