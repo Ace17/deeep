@@ -1,8 +1,8 @@
 #pragma once
 
-#include "raii.h"
-#include "scene.h"
-#include "entity.h"
+#include "engine/raii.h"
+#include "engine/scene.h"
+#include "game/entity.h"
 
 auto const SHIP_SPEED = 0.10;
 auto const BULLET_SPEED = 0.20;

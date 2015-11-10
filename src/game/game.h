@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "geom.h"
-#include "scene.h"
+#include "engine/geom.h"
+#include "engine/scene.h"
 
 class Entity;
 

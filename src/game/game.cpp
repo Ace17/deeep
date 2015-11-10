@@ -14,9 +14,9 @@
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
-#include "scene.h"
+#include "engine/scene.h"
+#include "engine/raii.h"
 #include "entities/player.h"
-#include "raii.h"
 #include "game.h"
 
 using namespace std;

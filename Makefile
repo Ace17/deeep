@@ -20,11 +20,11 @@ LDFLAGS+=$(SDL_LDFLAGS) -lSDL_image -lSDL_mixer
 LDFLAGS+=-lGL -lGLU
 
 SRCS:=\
-	src/app.cpp\
-	src/main.cpp\
-	src/game.cpp\
-	src/display.cpp\
-	src/sound.cpp\
+	src/game/game.cpp\
+	src/engine/app.cpp\
+	src/engine/main.cpp\
+	src/engine/display.cpp\
+	src/engine/sound.cpp\
 	$(BIN)/vertex.glsl.cpp\
 	$(BIN)/fragment.glsl.cpp\
 
@@ -36,11 +36,11 @@ $(BIN)/deeep.$(EXT): $(OBJS)
 
 TARGETS+=$(BIN)/deeep.$(EXT)
 
-$(BIN)/vertex.glsl.cpp: src/vertex.glsl
+$(BIN)/vertex.glsl.cpp: src/engine/vertex.glsl
 	@mkdir -p $(dir $@)
 	scripts/embed.sh "$<" "$@" "VertexShaderCode"
 
-$(BIN)/fragment.glsl.cpp: src/fragment.glsl
+$(BIN)/fragment.glsl.cpp: src/engine/fragment.glsl
 	@mkdir -p $(dir $@)
 	scripts/embed.sh "$<" "$@" "FragmentShaderCode"
 
