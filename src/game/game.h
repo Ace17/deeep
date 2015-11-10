@@ -19,12 +19,9 @@
 
 class Entity;
 
-Vector2f randomPos();
-float randomFloat(float min, float max);
-
 struct IGame
 {
-  virtual void playSound(SOUND_TYPE id) = 0;
+  virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
 };
 

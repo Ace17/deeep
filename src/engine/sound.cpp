@@ -12,6 +12,7 @@
  */
 
 #include <stdexcept>
+#include <algorithm>
 #include <string>
 #include <SDL_mixer.h>
 #include "scene.h"
@@ -41,9 +42,12 @@ void Audio_init()
 
   if(ret == -1)
     throw runtime_error("Can't allocate channels");
+}
 
-  sounds.resize(NUM_SOUNDS);
-  sounds[SOUND_BASE] = loadSound("res/base.wav");
+void Audio_loadSound(int id, string path)
+{
+  sounds.resize(max(id + 1, (int)sounds.size()));
+  sounds[id] = loadSound(path);
 }
 
 void Audio_destroy()

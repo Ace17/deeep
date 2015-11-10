@@ -131,7 +131,7 @@ int loadTexture(string path, Rect2i rect)
   auto surface = IMG_Load((char*)path.c_str());
 
   if(!surface)
-    throw runtime_error(string("Can't load texture") + SDL_GetError());
+    throw runtime_error(string("Can't load texture: ") + SDL_GetError());
 
   if(rect.width == 0 && rect.height == 0)
     rect = Rect2i(0, 0, surface->w, surface->h);
@@ -236,6 +236,14 @@ Model loadAnimation(string path, float w, float h)
   return m;
 }
 
+void Display_loadModel(int id, const char* path)
+{
+  if((int)g_Models.size() <= id)
+    g_Models.resize(id + 1);
+
+  g_Models[id] = loadSimpleModel(path);
+}
+
 void printOpenGlVersion()
 {
   auto sVersion = (char const*)glGetString(GL_VERSION);
@@ -258,9 +266,6 @@ void Display_init(int width, int height)
   SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
   SAFE_GL(glBindVertexArray(VertexArrayID));
 
-  g_Models.resize(NUM_MODELS);
-  g_Models[MODEL_BASE] = loadSimpleModel("res/base.png");
-
   g_ProgramId = loadShaders();
 
   glEnable(GL_BLEND);
@@ -269,7 +274,7 @@ void Display_init(int width, int height)
 
 void drawActor(Rect2f where, int modelId, bool blinking, int frame)
 {
-  auto& model = g_Models[modelId];
+  auto& model = g_Models.at(modelId);
 
   auto const colorId = glGetUniformLocation(g_ProgramId, "v_color");
 

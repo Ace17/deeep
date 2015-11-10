@@ -18,17 +18,11 @@
 
 using namespace std;
 
-enum MODEL_TYPE
-{
-  MODEL_BASE,
-  NUM_MODELS,
-};
+struct SOUND_ID_S;
+struct MODEL_ID_S;
 
-enum SOUND_TYPE
-{
-  SOUND_BASE,
-  NUM_SOUNDS,
-};
+typedef int SOUND;
+typedef int MODEL;
 
 enum EFFECT_TYPE
 {
@@ -38,7 +32,7 @@ enum EFFECT_TYPE
 
 struct Actor
 {
-  Actor(Vector2f pos_ = Vector2f(0, 0), MODEL_TYPE model_ = MODEL_BASE) : pos(pos_), model(model_)
+  Actor(Vector2f pos_ = Vector2f(0, 0), MODEL model_ = 0) : pos(pos_), model(model_)
   {
     scale = Vector2f(1, 1);
     effect = EFFECT_NORMAL;
@@ -46,7 +40,7 @@ struct Actor
   }
 
   Vector2f pos;
-  MODEL_TYPE model;
+  MODEL model;
   int frame;
   Vector2f scale;
   EFFECT_TYPE effect;
@@ -58,12 +52,21 @@ struct Control
   bool fire;
 };
 
+struct Resource
+{
+  int id;
+  char const* path;
+};
+
 // game, seen by the outside world
 
 struct Scene
 {
+  virtual const Resource* getSounds() const = 0;
+  virtual const Resource* getModels() const = 0;
+
   virtual void tick(Control const& c) = 0;
   virtual vector<Actor> getActors() const = 0;
-  virtual vector<SOUND_TYPE> readSounds() = 0;
+  virtual vector<SOUND> readSounds() = 0;
 };
 

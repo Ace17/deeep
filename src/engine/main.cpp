@@ -25,7 +25,10 @@ App* App_create(Scene*);
 bool App_tick(App*);
 
 void Display_init(int width, int height);
+void Display_loadModel(int id, const char* imagePath);
+
 void Audio_init();
+void Audio_loadSound(int id, string path);
 
 #ifdef __EMSCRIPTEN__
 extern "C"
@@ -70,6 +73,16 @@ int main()
 
     Display_init(1024, 768);
     Audio_init();
+
+    auto const sounds = game->getSounds();
+
+    for(int i = 0; sounds[i].path; ++i)
+      Audio_loadSound(sounds[i].id, sounds[i].path);
+
+    auto const models = game->getModels();
+
+    for(int i = 0; models[i].path; ++i)
+      Display_loadModel(models[i].id, models[i].path);
 
     runMainLoop(app);
     return 0;

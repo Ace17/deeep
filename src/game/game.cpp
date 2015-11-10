@@ -18,8 +18,12 @@
 #include "engine/raii.h"
 #include "entities/player.h"
 #include "game.h"
+#include "sounds.h"
+#include "models.h"
 
 using namespace std;
+
+MODEL g_beepModel;
 
 class Game : public Scene, public IGame
 {
@@ -35,6 +39,29 @@ public:
   {
     m_player->think(c);
     removeDeadThings();
+  }
+
+  virtual const Resource* getSounds() const override
+  {
+    static const Resource sounds[] =
+    {
+      { SND_CHIRP, "res/base.wav" },
+      { SND_BEEP, "res/beep.wav" },
+      { 0, nullptr },
+    };
+
+    return sounds;
+  }
+
+  virtual const Resource* getModels() const override
+  {
+    static const Resource models[] =
+    {
+      { MDL_BASE, "res/base.png" },
+      { 0, nullptr },
+    };
+
+    return models;
   }
 
 private:
@@ -70,7 +97,7 @@ private:
     return r;
   }
 
-  vector<SOUND_TYPE> readSounds() override
+  vector<SOUND> readSounds() override
   {
     return std::move(m_sounds);
   }
@@ -87,7 +114,7 @@ private:
 
   // IGame: game, as seen by the entities
 
-  void playSound(SOUND_TYPE sound) override
+  void playSound(SOUND sound) override
   {
     m_sounds.push_back(sound);
   }
@@ -102,7 +129,7 @@ private:
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
 
-  vector<SOUND_TYPE> m_sounds;
+  vector<SOUND> m_sounds;
 
   // static stuff
 

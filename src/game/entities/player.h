@@ -3,6 +3,8 @@
 #include "engine/raii.h"
 #include "engine/scene.h"
 #include "game/entity.h"
+#include "game/models.h"
+#include "game/sounds.h"
 
 auto const SHIP_SPEED = 0.10;
 auto const BULLET_SPEED = 0.20;
@@ -12,7 +14,7 @@ class Player : public Entity
 public:
   virtual Actor getActor() const override
   {
-    return Actor(pos, MODEL_BASE);
+    return Actor(pos, MDL_BASE);
   }
 
   void think(Control const& c)
@@ -44,8 +46,8 @@ public:
          b->pos = pos + Vector2f(0, 9);
          b->vel = Vector2f(0.0, BULLET_SPEED);
          game->spawn(b.release());
-         game->playSound(SOUND_FIRE);
        */
+      game->playSound(SND_BEEP);
     }
   }
 
