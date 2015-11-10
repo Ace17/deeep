@@ -71,7 +71,7 @@ int main()
     auto game = unique(createGame());
     auto app = App_create(game.get());
 
-    Display_init(1024, 768);
+    Display_init(512, 512);
     Audio_init();
 
     auto const sounds = game->getSounds();
