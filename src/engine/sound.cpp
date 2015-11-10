@@ -26,7 +26,7 @@ Mix_Chunk* loadSound(string path)
   auto snd = Mix_LoadWAV(path.c_str());
 
   if(!snd)
-    throw runtime_error("Can't load sound: '" + path + "'");
+    throw runtime_error("Can't load sound: '" + path + "' : " + SDL_GetError());
 
   return snd;
 }
