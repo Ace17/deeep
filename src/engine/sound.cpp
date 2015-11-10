@@ -33,7 +33,7 @@ Mix_Chunk* loadSound(string path)
 
 void Audio_init()
 {
-  auto ret = Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 512);
+  auto ret = Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
 
   if(ret == -1)
     throw runtime_error("Can't open audio");
