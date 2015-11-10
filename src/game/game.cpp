@@ -28,11 +28,18 @@ MODEL g_beepModel;
 class Game : public Scene, public IGame
 {
 public:
-  Game()
+  Game() : m_tiles(32, 32)
   {
     m_player = new Player;
     m_player->game = this;
     m_entities.push_back(unique(m_player));
+
+    auto fillCell = [] (int x, int y, int& tile)
+                    {
+                      tile = (x + y * y) % 32;
+                    };
+
+    m_tiles.scan(fillCell);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -72,13 +79,14 @@ public:
   {
     vector<Actor> r;
 
-    for(int row=0;row < 4;row++)
-      for(int col=0;col < 4;col++)
-      {
-        auto a = Actor(Vector2f(col*8, row*8), MDL_TILES);
-        a.frame = row + col * 4;
-        r.push_back(a);
-      }
+    auto onCell = [&] (int x, int y, int tile)
+                  {
+                    auto a = Actor(Vector2f(x * 2 - 30, y * 2 - 30), MDL_TILES);
+                    a.frame = tile;
+                    r.push_back(a);
+                  };
+
+    m_tiles.scan(onCell);
 
     for(auto& enemy : m_entities)
       r.push_back(enemy->getActor());
@@ -142,6 +150,7 @@ private:
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
 
+  Matrix<int> m_tiles;
   vector<SOUND> m_sounds;
 
   // static stuff

@@ -223,6 +223,7 @@ Model loadAnimation(string path)
   if(endsWith(path, ".mdl"))
   {
     path = setExtension(path, "png");
+
     for(int i = 0; i < 64; ++i)
     {
       auto col = i % 8;
@@ -344,7 +345,7 @@ void beginDraw()
 {
   SAFE_GL(glUseProgram(g_ProgramId));
 
-  SAFE_GL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
+  SAFE_GL(glClearColor(0, 0, 0, 1));
   SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
 
   {
