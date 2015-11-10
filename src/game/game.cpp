@@ -45,8 +45,8 @@ public:
   {
     static const Resource sounds[] =
     {
-      { SND_CHIRP, "res/base.wav" },
-      { SND_BEEP, "res/beep.wav" },
+      { SND_CHIRP, "res/base.ogg" },
+      { SND_BEEP, "res/beep.ogg" },
       { 0, nullptr },
     };
 

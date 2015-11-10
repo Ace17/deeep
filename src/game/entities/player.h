@@ -40,8 +40,8 @@ public:
 
     if(c.fire && cooldown == 0)
     {
+      cooldown = 100;
       /*
-         cooldown = 100;
          auto b = unique(new Bullet);
          b->pos = pos + Vector2f(0, 9);
          b->vel = Vector2f(0.0, BULLET_SPEED);
