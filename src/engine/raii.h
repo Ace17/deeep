@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 using namespace std;
 
@@ -31,5 +32,19 @@ template<typename T>
 uptr<T> unique(T* p)
 {
   return uptr<T>(p);
+}
+
+inline bool endsWith(string const& value, string const& ending)
+{
+  if(ending.size() > value.size())
+    return false;
+
+  return equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
+inline string setExtension(string name, string ext)
+{
+  auto e = name.rfind('.');
+  return name.substr(0, e) + "." + ext;
 }
 

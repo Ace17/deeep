@@ -35,6 +35,9 @@ public:
     m_entities.push_back(unique(m_player));
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Scene: Game, seen by the engine
+
   void tick(Control const& c) override
   {
     m_player->think(c);
@@ -58,10 +61,34 @@ public:
     static const Resource models[] =
     {
       { MDL_BASE, "res/base.png" },
+      { MDL_TILES, "res/tiles.mdl" },
       { 0, nullptr },
     };
 
     return models;
+  }
+
+  vector<Actor> getActors() const override
+  {
+    vector<Actor> r;
+
+    for(int row=0;row < 4;row++)
+      for(int col=0;col < 4;col++)
+      {
+        auto a = Actor(Vector2f(col*8, row*8), MDL_TILES);
+        a.frame = row + col * 4;
+        r.push_back(a);
+      }
+
+    for(auto& enemy : m_entities)
+      r.push_back(enemy->getActor());
+
+    return r;
+  }
+
+  vector<SOUND> readSounds() override
+  {
+    return std::move(m_sounds);
   }
 
 private:
@@ -87,21 +114,6 @@ private:
     }
   }
 
-  vector<Actor> getActors() const override
-  {
-    vector<Actor> r;
-
-    for(auto& enemy : m_entities)
-      r.push_back(enemy->getActor());
-
-    return r;
-  }
-
-  vector<SOUND> readSounds() override
-  {
-    return std::move(m_sounds);
-  }
-
   void removeDeadThings()
   {
     removeDeadEntities(m_entities);
@@ -112,6 +124,7 @@ private:
     m_spawned.clear();
   }
 
+  ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
 
   void playSound(SOUND sound) override

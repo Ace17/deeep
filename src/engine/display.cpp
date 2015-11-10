@@ -25,6 +25,7 @@ using namespace std;
 #include "SDL_video.h"
 #include "SDL_image.h"
 
+#include "raii.h"
 #include "scene.h"
 #include "geom.h"
 
@@ -215,22 +216,23 @@ Model rectangularModel(float w, float h)
   return model;
 }
 
-Model loadSimpleModel(string imagePath)
+Model loadAnimation(string path)
 {
   auto m = rectangularModel(1, 1);
-  m.addTexture(imagePath);
-  return m;
-}
 
-Model loadAnimation(string path, float w, float h)
-{
-  auto m = rectangularModel(w, h);
-
-  for(int i = 0; i < 16; ++i)
+  if(endsWith(path, ".mdl"))
   {
-    auto col = i % 4;
-    auto row = i / 4;
-    m.addTexture(path, Rect2i(col * 64, row * 64, 64, 64));
+    path = setExtension(path, "png");
+    for(int i = 0; i < 64; ++i)
+    {
+      auto col = i % 8;
+      auto row = i / 8;
+      m.addTexture(path, Rect2i(col * 16, row * 16, 16, 16));
+    }
+  }
+  else
+  {
+    m.addTexture(path, Rect2i());
   }
 
   return m;
@@ -241,7 +243,7 @@ void Display_loadModel(int id, const char* path)
   if((int)g_Models.size() <= id)
     g_Models.resize(id + 1);
 
-  g_Models[id] = loadSimpleModel(path);
+  g_Models[id] = loadAnimation(path);
 }
 
 void printOpenGlVersion()
