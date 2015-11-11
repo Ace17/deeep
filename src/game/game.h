@@ -19,10 +19,17 @@
 
 class Entity;
 
+struct ITriggerable
+{
+  virtual void trigger() = 0;
+};
+
 struct IGame
 {
   virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
   virtual bool isSolid(Vector2f pos) = 0;
+  virtual void trigger(int triggerIdx) = 0;
+  virtual void listen(int triggerIdx, ITriggerable*) = 0;
 };
 

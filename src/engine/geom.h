@@ -93,10 +93,36 @@ struct GenericVector
     return *this;
   }
 
+  MyType operator -= (MyType const& other)
+  {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
+
+  template<typename F>
+  friend MyType operator * (MyType const& a, F val)
+  {
+    return MyType(a.x * val, a.y * val);
+  }
+
+  template<typename F>
+  friend MyType operator * (F val, MyType const& a)
+  {
+    return MyType(a.x * val, a.y * val);
+  }
+
   friend MyType operator + (MyType const& a, MyType const& b)
   {
     MyType r = a;
     r += b;
+    return r;
+  }
+
+  friend MyType operator - (MyType const& a, MyType const& b)
+  {
+    MyType r = a;
+    r -= b;
     return r;
   }
 

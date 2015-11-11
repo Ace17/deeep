@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <array>
+#include <map>
 #include "engine/scene.h"
 #include "engine/raii.h"
 #include "entities/player.h"
@@ -25,7 +26,7 @@
 using namespace std;
 
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
-void loadLevel1(Matrix<int>& tiles, Vector2i& start);
+void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game);
 
 class Game : public Scene, public IGame
 {
@@ -34,8 +35,7 @@ public:
   {
     m_player = new Player;
     m_player->pos = Vector2f(8, m_tiles.getHeight() - 2);
-    m_player->game = this;
-    m_entities.push_back(unique(m_player));
+    spawn(m_player);
 
     auto onCell = [&] (int, int, int& tile)
                   {
@@ -64,20 +64,9 @@ public:
                   };
 
     Vector2i start;
-    loadLevel1(m_tiles, start);
+    loadLevel1(m_tiles, start, this);
     m_player->pos = Vector2f(start.x, start.y);
 
-// rect(Vector2i(1, 1), Vector2i(4, 1), 2);
-
-// rect(Vector2i(7, 1), Vector2i(4, 1), 2);
-
-// rect(Vector2i(12, 1), Vector2i(4, 3), 2);
-
-// rect(Vector2i(20, 4), Vector2i(40, 1), 1);
-
-    // rect(Vector2i(0, 14), Vector2i(16, 2), 3);
-
-    // for(int x = 0; x + 2 < m_tiles.getWidth(); x += 6)
     for(int i = 0; i < 100; ++i)
     {
       auto const maxX = m_tiles.getWidth() - 4;
@@ -96,6 +85,11 @@ public:
   void tick(Control const& c) override
   {
     m_player->think(c);
+
+    for(auto& e : m_entities)
+      e->tick();
+
+    checkCollisions();
     removeDeadThings();
   }
 
@@ -106,6 +100,7 @@ public:
       { SND_CHIRP, "res/base.ogg" },
       { SND_BEEP, "res/beep.ogg" },
       { SND_LAND, "res/land.ogg" },
+      { SND_SWITCH, "res/switch.ogg" },
       { 0, nullptr },
     };
 
@@ -117,6 +112,7 @@ public:
     static const Resource models[] =
     {
       { MDL_BASE, "res/base.png" },
+      { MDL_SWITCH, "res/switch.mdl" },
       { MDL_TILES, "res/tiles.mdl" },
       { 0, nullptr },
     };
@@ -179,13 +175,13 @@ public:
 private:
   void checkCollisions()
   {
-    for(auto& pMe : m_entities)
+    for(size_t i = 0; i < m_entities.size(); ++i)
     {
-      auto& me = *pMe;
+      auto& me = *m_entities[i];
 
-      for(auto& pOther : m_entities)
+      for(size_t j = i + 1; j < m_entities.size(); ++j)
       {
-        auto& other = *pOther;
+        auto& other = *m_entities[j];
 
         auto bulletRect = me.getRect();
         auto enemyRect = other.getRect();
@@ -234,9 +230,24 @@ private:
     return m_tiles.get(x, y) != 0;
   }
 
+  void trigger(int triggerIdx) override
+  {
+    if(m_triggers.find(triggerIdx) == m_triggers.end())
+      return;
+
+    m_triggers[triggerIdx]->trigger();
+  }
+
+  void listen(int triggerIdx, ITriggerable* triggerable) override
+  {
+    m_triggers[triggerIdx] = triggerable;
+  }
+
   Player* m_player;
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
+
+  map<int, ITriggerable*> m_triggers;
 
   Matrix<int> m_tiles;
   vector<SOUND> m_sounds;

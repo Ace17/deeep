@@ -1,8 +1,10 @@
 #include <cassert>
 #include "engine/geom.h"
 #include "engine/raii.h"
+#include "game/game.h"
+#include "game/entities/switch.h"
 
-void loadLevel1(Matrix<int>& tiles, Vector2i& start)
+void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game)
 {
   const auto W = 32 * 2;
   const auto H = 32 * 2;
@@ -12,9 +14,9 @@ void loadLevel1(Matrix<int>& tiles, Vector2i& start)
     "................................................................",
     "...       .........................       ......................",
     "...                                                           ..",
-    "... !              .......... .....       .......  .......... ..",
-    "............       .......... ...................  .......... ..",
-    "............       .........  ..............       .X.......  ..",
+    "...    !           ..........  ....       .......  .......... ..",
+    "............       .........   ..................  .......... ..",
+    "............       .........  ..............   A   .X.......  ..",
     ".       ....   ... .........   ..       ....   ... .........   .",
     ".              ...     ......  ..              ... ..........  .",
     ".           ..............     ..           ..............     .",
@@ -25,35 +27,35 @@ void loadLevel1(Matrix<int>& tiles, Vector2i& start)
     ".             ......          ... ..          ......          ..",
     "..           ................      .         ...................",
     ".. ......................................... ...................",
-    ".. .........................................              ......",
+    ".. .........................................            a ......",
     "..        ...................             .........XXXXXXXXXXXXX",
     "XXX                           XXXXX                           XX",
     "XXX                XXXXXXXXXX XXXXX                XXXXXXXXXX XX",
-    "XXXXXXXXXXXXXXXXXX XXXXXXXXXX XXXXXXXXXXXXXX       XXXXXXXXXX XX",
+    "XXXXXXXXXXXXXXXXXXBXXXXXXXXXX XXXXXXXXXXXXXX       XXXXXXXXXX XX",
     "XXXXXXXXXXXX       XZXXXXXXX  XXXXXXXXXXXXXX       XXXXXXXXX  XX",
     "X       XXXX   XXX XXXXXXXXX   XXXXXXXXXXXXX   XXX XXXXXXXXX   X",
     "X              XXX XXXXXXXXXX  XXXXXXXXX       XXX XXXXXXXXXX  X",
     "X           XXXXXXXXXXXXXX     XXXXXXXXX    XXXXXXXXXXX        X",
     "X       XXXXXXXXXXXXXXXXXX    XXXXXXXXXXXXXXXXXXXXXXXXX XX    XX",
     "X  XXXXXXXXXX        XXXXXXXXXXXXXXXXXXXXXXXX        XX XXXXX XX",
-    "X  XXXXXXXXXX XXXXXX XXXXXXXX            XXXX XXXXXX XX        X",
+    "X  XXXXXXXXXX XXXXXX XXXXXXXX            XXXX XXXXXX XX       bX",
     "X XXXXXXXXXXX XXXXXX XXXXXXXX            XXXX XXXXXX XXXXXXXXXXX",
     "X             XXXXXX          XXXXXXXXXX      XZXXXX           X",
     "XXX          XXXXXXXXXXXXXXXXXXXXXXXXXXX     XXXXXXXXXXXXXXX  XX",
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXX   XX",
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          XXXXXXXXXXXXXXXXX   XXX",
-    "XX     XXXXXXXXX                XXXXXXXXXXXXXXXXXXXXXXXXX   XXXX",
+    "XX    cXXXXXXXXX                XXXXXXXXXXXXXXXXXXXXXXXXX   XXXX",
     "XX  XXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXX      XXXXX   XXXXX",
     "ZZ  ZZZ          ZZZZZZZZZZZZZZZZZZZZZZXXXXXXXXXX  XXXX    XXXXX",
-    "ZZ ZZZZ ZZZZZZZZZZZZZZZ       ZZZZZZZZZ             !   ZZZZZZZZ",
-    "ZZ      ZZZZZZZZZZZZZZZ                                 ZZZZZZZZ",
+    "ZZ ZZZZ ZZZZZZZZZZZZZZZ       ZZZZZZZZZ         C       ZZZZZZZZ",
+    "ZZ      ZZZZZZZZZZZZZZZ                         C       ZZZZZZZZ",
     "ZZZZZZZZZZZZZZZZZ                        ZZZZZZZZZZZZZZZZZZZZZZZ",
     "ZZZZZZZZZZ                    ZZZZZZZZZ  ZZZ       Z      Z    Z",
     "ZZZZ             ZZZZZZZZZZZZZZZZZZZZZZ                        Z",
     "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ                        Z",
-    "ZZZZZZZZZZ       ZZZZZZZZZZZZZZZZZZZZZZXXZZZ       Z      Z    Z",
-    "ZZZZZZZZZZ               Z      ZZZZZZZ  ZZZZZZZZZZZZZ  ZZZZZZZZ",
-    "ZZZZZZZZZZ       ZZ             ZZZZZZZ  ZZZZZZZZZZZ      ZZZZZZ",
+    "ZZZZZZZZZZ       ZZZZZZZZZZZZZZZZZZZZZZZZZZZ       Z      Z    Z",
+    "ZZZZZZZZZZ               Z      ZZZZZZZZZZZZZZZZZZZZZZ  ZZZZZZZZ",
+    "ZZZZZZZZZZ       ZZ             ZZZZZZZZZZZZZZZZZZZZ      ZZZZZZ",
     "ZZZZZZ       ZZ  ZZ      Z           ZZ                   ZZZZZZ",
     "ZZZZZZ       ZZ  ZZ      Z      XXX  ZZ  ZZZZZZZZZZZ      ZZZZZZ",
     "ZZZZZZ           ZZZZ  ZZZZZZZZZXXXZ ZZ  ZZZZZZZZZZZZZZZZZZZZZZZ",
@@ -62,12 +64,12 @@ void loadLevel1(Matrix<int>& tiles, Vector2i& start)
     "ZZZZZZ  ZZZZZZZZZZZZZ       ZZ ZZZZZZZZZZZZZZZZZZ ZZZZZZ   ZZZZZ",
     "ZZ               ZZZZ       ZZ ZZZZZZZZZZZ        ZZZZZZ  ZZZZZZ",
     "ZZ ZZZZZZZZZZZZZZZZZZ          ZZZZZZZZ        ZZZZZ       ZZZZZ",
-    "ZZ ZZZZZZZZZZZ              ZZZZZZZZZZZ    ZZZZZZZZ    ZZZ    ZZ",
+    "ZZ ZZZZZZZZZZZ     D        ZZZZZZZZZZZ    ZZZZZZZZ    ZZZ    ZZ",
     "ZZ       ZZZZZ  ZZZZZ       ZZZZZZZZZZZ  Z ZZZZZ       ZZZ    ZZ",
-    "ZZZ      ZZZZZ  ZZZZZZZZZZZZZZZZZZZZ       ZZZZZ       ZZZ    ZZ",
-    "ZZZZZZZZZZZZ      ZZZ     ZZZZ       ZZZZZZZZ      ZZZZZZZ ZZZZZ",
-    "ZZZZZZZZZZZZ          ZZZ       ZZZZZZZZZZZZZ ZZZZZZZZZZZZ ZZZZZ",
-    "ZZZZ              ZZZZZZZZZZZZZZZZZZZZZZZZ            ZZZZZZZZZZ",
+    "ZZZ    d ZZZZZ  ZZZZZZZZZZZZZZZZZZZZ       ZZZZZ       ZZZ    ZZ",
+    "ZZZZZZZXZZZZ      ZZZ     ZZZZ       ZZZZZZZZ      ZZZZZZZ ZZZZZ",
+    "ZZZZZZZZZZZZ  ZZ      ZZZ       ZZZZZZZZZZZZZ ZZZZZZZZZZZZ ZZZZZ",
+    "ZZZZ          ZZ  ZZZZZZZZZZZZZZZZZZZZZZZZ            ZZZZZZZZZZ",
     "ZZ    ZZZZZZ      ZZZZZZZZZZZZZZZZ         ZZZZZZZZ   ZZZXXXXXXX",
     "ZZ  ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZX     X",
     "ZZ                                                             X",
@@ -79,7 +81,8 @@ void loadLevel1(Matrix<int>& tiles, Vector2i& start)
     for(int x = 0; x < W; ++x)
     {
       int tile = 0;
-      switch(data[H - 1 - y][x])
+      auto val = data[H - 1 - y][x];
+      switch(val)
       {
       case ' ':
         tile = 0;
@@ -96,6 +99,26 @@ void loadLevel1(Matrix<int>& tiles, Vector2i& start)
         break;
       case 'Z': tile = 4;
         break;
+      case 'a':
+      case 'b':
+      case 'c':
+      case 'd':
+        {
+          auto sw = new Switch(val - 'a');
+          sw->pos = Vector2f(x, y);
+          game->spawn(sw);
+          break;
+        }
+      case 'A':
+      case 'B':
+      case 'C':
+      case 'D':
+        {
+          auto sw = new Door(val - 'A', game);
+          sw->pos = Vector2f(x, y);
+          game->spawn(sw);
+          break;
+        }
       }
 
       tiles.set(x, y, tile);
