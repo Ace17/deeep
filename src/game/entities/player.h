@@ -8,7 +8,7 @@
 #include "game/models.h"
 #include "game/sounds.h"
 
-auto const SHIP_SPEED = 0.02;
+auto const SHIP_SPEED = 0.01;
 auto const BULLET_SPEED = 0.20;
 
 class Player : public Entity
@@ -21,7 +21,7 @@ public:
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_BASE); 
+    auto r = Actor(pos, MDL_BASE);
     r.scale = Vector2f(0.5, 0.5);
     return r;
   }
@@ -46,6 +46,9 @@ public:
     if(c.up && ground)
       vel.y = 0.02;
 
+    if(vel.y > 0 && !c.up)
+      vel.y = 0;
+
     vel.x = min(vel.x, 0.02f);
     vel.x = max(vel.x, -0.02f);
 
@@ -57,6 +60,7 @@ public:
 
     // vertical move
     ground = false;
+
     if(!move(Vector2f(0, vel.y)))
     {
       ground = true;
