@@ -6,7 +6,7 @@
 #include "game/models.h"
 #include "game/sounds.h"
 
-auto const SHIP_SPEED = 0.10;
+auto const SHIP_SPEED = 0.02;
 auto const BULLET_SPEED = 0.20;
 
 class Player : public Entity
@@ -31,10 +31,10 @@ public:
     if(c.up)
       pos.y += SHIP_SPEED;
 
-    pos.x = max(pos.x, -45.0f);
-    pos.x = min(pos.x, +45.0f);
-    pos.y = max(pos.y, -45.0f);
-    pos.y = min(pos.y, +45.0f);
+    pos.x = max(pos.x, -20.0f);
+    pos.x = min(pos.x, +20.0f);
+    pos.y = max(pos.y, -20.0f);
+    pos.y = min(pos.y, +20.0f);
 
     cooldown = max(cooldown - 1, 0);
 

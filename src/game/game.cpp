@@ -24,8 +24,6 @@
 
 using namespace std;
 
-MODEL g_beepModel;
-
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 
 class Game : public Scene, public IGame
