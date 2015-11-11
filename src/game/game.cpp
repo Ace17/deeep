@@ -32,23 +32,24 @@ public:
   Game() : m_tiles(16, 16)
   {
     m_player = new Player;
+    m_player->pos = Vector2f(8, 8);
     m_player->game = this;
     m_entities.push_back(unique(m_player));
 
-    auto fillCell = [] (int x, int y, int& tile)
-                    {
-                      tile = ((x / 2) * 31 + (y * y / 3) * 37) % 4;
-                    };
+    auto rect = [&] (Vector2i pos, Vector2i size, int tile)
+                {
+                  for(int dy = 0; dy < size.y; ++dy)
+                    for(int dx = 0; dx < size.x; ++dx)
+                      m_tiles.set(dx + pos.x, dy + pos.y, tile);
+                };
 
-    m_tiles.scan(fillCell);
+    rect(Vector2i(1, 1), Vector2i(4, 1), 2);
 
-    for(int y = 0; y < 4; ++y)
-      for(int x = 0; x < 4; ++x)
-        m_tiles.set(x, y, 1);
+    rect(Vector2i(7, 1), Vector2i(4, 1), 2);
 
-    for(int y = 0; y < 4; ++y)
-      for(int x = 0; x < 4; ++x)
-        m_tiles.set(12 + x, 12 + y, 2);
+    rect(Vector2i(12, 1), Vector2i(4, 1), 2);
+
+    rect(Vector2i(0, 14), Vector2i(16, 2), 3);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -98,8 +99,8 @@ public:
                     for(int subTile = 0; subTile < 4; ++subTile)
                     {
                       auto const ts = 1.0;
-                      auto const posX = (x * 2 + subTile % 2) * ts - 16;
-                      auto const posY = (y * 2 + subTile / 2) * ts - 16;
+                      auto const posX = (x * 2 + subTile % 2) * ts;
+                      auto const posY = (y * 2 + subTile / 2) * ts;
                       auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
                       actor.frame = (tile - 1) * 16 + composition[subTile];
                       actor.scale = Vector2f(0.5, 0.5);
@@ -111,6 +112,12 @@ public:
 
     for(auto& enemy : m_entities)
       r.push_back(enemy->getActor());
+
+    for(auto& actor : r)
+    {
+      actor.pos.x -= 16;
+      actor.pos.y -= 16;
+    }
 
     return r;
   }
