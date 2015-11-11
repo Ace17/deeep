@@ -14,6 +14,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
+#include <array>
 #include "engine/scene.h"
 #include "engine/raii.h"
 #include "entities/player.h"
@@ -25,10 +26,12 @@ using namespace std;
 
 MODEL g_beepModel;
 
+array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
+
 class Game : public Scene, public IGame
 {
 public:
-  Game() : m_tiles(32, 32)
+  Game() : m_tiles(16, 16)
   {
     m_player = new Player;
     m_player->game = this;
@@ -36,10 +39,18 @@ public:
 
     auto fillCell = [] (int x, int y, int& tile)
                     {
-                      tile = (x + y * y) % 32;
+                      tile = ((x / 2) * 31 + (y * y / 3) * 37) % 4;
                     };
 
     m_tiles.scan(fillCell);
+
+    for(int y = 0; y < 4; ++y)
+      for(int x = 0; x < 4; ++x)
+        m_tiles.set(x, y, 1);
+
+    for(int y = 0; y < 4; ++y)
+      for(int x = 0; x < 4; ++x)
+        m_tiles.set(12 + x, 12 + y, 2);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -81,9 +92,21 @@ public:
 
     auto onCell = [&] (int x, int y, int tile)
                   {
-                    auto a = Actor(Vector2f(x * 2 - 30, y * 2 - 30), MDL_TILES);
-                    a.frame = tile;
-                    r.push_back(a);
+                    if(!tile)
+                      return;
+
+                    auto composition = computeTileFor(m_tiles, x, y);
+
+                    for(int subTile = 0; subTile < 4; ++subTile)
+                    {
+                      auto const ts = 1.0;
+                      auto const posX = (x * 2 + subTile % 2) * ts - 16;
+                      auto const posY = (y * 2 + subTile / 2) * ts - 16;
+                      auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
+                      actor.frame = (tile - 1) * 16 + composition[subTile];
+                      actor.scale = Vector2f(0.5, 0.5);
+                      r.push_back(actor);
+                    }
                   };
 
     m_tiles.scan(onCell);

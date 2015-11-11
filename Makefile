@@ -21,6 +21,7 @@ LDFLAGS+=-lGL -lGLU
 
 SRCS:=\
 	src/game/game.cpp\
+	src/game/smarttiles.cpp\
 	src/engine/app.cpp\
 	src/engine/main.cpp\
 	src/engine/display.cpp\
