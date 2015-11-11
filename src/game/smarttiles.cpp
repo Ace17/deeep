@@ -39,7 +39,7 @@ bool hasNeighboor(TileMap const& occupancy, Vector2i myPos, Vector2i dir)
   auto const otherPos = myPos + dir;
 
   if(!occupancy.isInside(otherPos.x, otherPos.y))
-    return false;
+    return true;
 
   auto const myTile = occupancy.get(myPos.x, myPos.y);
   auto const otherTile = occupancy.get(otherPos.x, otherPos.y);
