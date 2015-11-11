@@ -44,7 +44,10 @@ public:
     vel.y -= 0.00005;
 
     if(c.up && ground)
+    {
+      game->playSound(SND_CHIRP);
       vel.y = 0.02;
+    }
 
     if(vel.y > 0 && !c.up)
       vel.y = 0;
