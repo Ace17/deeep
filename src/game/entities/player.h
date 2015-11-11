@@ -62,12 +62,18 @@ public:
     move(Vector2f(vel.x, 0));
 
     // vertical move
-    ground = false;
 
-    if(!move(Vector2f(0, vel.y)))
+    if(move(Vector2f(0, vel.y)))
     {
-      if(vel.y < 0)
+      ground = false;
+    }
+    else
+    {
+      if(vel.y < 0 && !ground)
+      {
+        game->playSound(SND_LAND);
         ground = true;
+      }
 
       vel.y = 0;
     }

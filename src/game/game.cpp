@@ -83,6 +83,7 @@ public:
     {
       { SND_CHIRP, "res/base.ogg" },
       { SND_BEEP, "res/beep.ogg" },
+      { SND_LAND, "res/land.ogg" },
       { 0, nullptr },
     };
 
