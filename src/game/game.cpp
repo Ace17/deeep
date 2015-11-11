@@ -128,15 +128,19 @@ public:
   {
     vector<Actor> r;
 
+    Vector2f pov;
+    pov.x = clamp(m_player->pos.x, 5.0f, m_tiles.getWidth() - 5.0f);
+    pov.y = clamp(m_player->pos.y, 5.0f, m_tiles.getHeight() - 5.0f);
+
     auto onCell = [&] (int x, int y, int tile)
                   {
                     if(!tile)
                       return;
 
-                    if(abs(x - m_player->pos.x) > 8)
+                    if(abs(x - pov.x) > 8)
                       return;
 
-                    if(abs(y - m_player->pos.y) > 8)
+                    if(abs(y - pov.y) > 8)
                       return;
 
                     auto composition = computeTileFor(m_tiles, x, y);
@@ -160,8 +164,8 @@ public:
 
     for(auto& actor : r)
     {
-      actor.pos.x -= m_player->pos.x;
-      actor.pos.y -= m_player->pos.y;
+      actor.pos.x -= pov.x;
+      actor.pos.y -= pov.y;
     }
 
     return r;

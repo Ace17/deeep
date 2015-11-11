@@ -124,3 +124,9 @@ private:
   const int height;
 };
 
+template<typename T>
+T clamp(T val, T min, T max)
+{
+  return val < min ? min : (val > max ? max : val);
+}
+
