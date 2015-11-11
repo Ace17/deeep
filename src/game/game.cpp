@@ -25,14 +25,15 @@
 using namespace std;
 
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
+void loadLevel1(Matrix<int>& tiles, Vector2i& start);
 
 class Game : public Scene, public IGame
 {
 public:
-  Game() : m_tiles(16 * 8, 10)
+  Game() : m_tiles(32 * 2, 32 * 2)
   {
     m_player = new Player;
-    m_player->pos = Vector2f(8, 8);
+    m_player->pos = Vector2f(8, m_tiles.getHeight() - 2);
     m_player->game = this;
     m_entities.push_back(unique(m_player));
 
@@ -52,19 +53,40 @@ public:
 
     rect(Vector2i(2, 2), Vector2i(m_tiles.getWidth() - 4, m_tiles.getHeight() - 4), 0);
 
-    rect(Vector2i(1, 1), Vector2i(4, 1), 2);
+    auto isFull = [&] (Vector2i pos, Vector2i size) -> bool
+                  {
+                    for(int dy = 0; dy < size.y; ++dy)
+                      for(int dx = 0; dx < size.x; ++dx)
+                        if(m_tiles.get(dx + pos.x, dy + pos.y) == 0)
+                          return false;
 
-    rect(Vector2i(7, 1), Vector2i(4, 1), 2);
+                    return true;
+                  };
 
-    rect(Vector2i(12, 1), Vector2i(4, 3), 2);
+    Vector2i start;
+    loadLevel1(m_tiles, start);
+    m_player->pos = Vector2f(start.x, start.y);
 
-    rect(Vector2i(20, 4), Vector2i(40, 1), 1);
+// rect(Vector2i(1, 1), Vector2i(4, 1), 2);
+
+// rect(Vector2i(7, 1), Vector2i(4, 1), 2);
+
+// rect(Vector2i(12, 1), Vector2i(4, 3), 2);
+
+// rect(Vector2i(20, 4), Vector2i(40, 1), 1);
 
     // rect(Vector2i(0, 14), Vector2i(16, 2), 3);
 
-    for(int x = 0; x + 2 < m_tiles.getWidth(); x += 6)
+    // for(int x = 0; x + 2 < m_tiles.getWidth(); x += 6)
+    for(int i = 0; i < 100; ++i)
     {
-      rect(Vector2i(x, 2), Vector2i(2, 2), 3);
+      auto const maxX = m_tiles.getWidth() - 4;
+      auto const maxY = m_tiles.getHeight() - 4;
+      auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
+      auto size = Vector2i(2, 2);
+
+      if(isFull(pos + Vector2i(-1, -1), size + Vector2i(2, 2)))
+        rect(pos, size, 3);
     }
   }
 
@@ -109,6 +131,12 @@ public:
     auto onCell = [&] (int x, int y, int tile)
                   {
                     if(!tile)
+                      return;
+
+                    if(abs(x - m_player->pos.x) > 8)
+                      return;
+
+                    if(abs(y - m_player->pos.y) > 8)
                       return;
 
                     auto composition = computeTileFor(m_tiles, x, y);
