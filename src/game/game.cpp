@@ -29,12 +29,19 @@ array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 class Game : public Scene, public IGame
 {
 public:
-  Game() : m_tiles(16, 16)
+  Game() : m_tiles(16 * 8, 10)
   {
     m_player = new Player;
     m_player->pos = Vector2f(8, 8);
     m_player->game = this;
     m_entities.push_back(unique(m_player));
+
+    auto onCell = [&] (int, int, int& tile)
+                  {
+                    tile = 1;
+                  };
+
+    m_tiles.scan(onCell);
 
     auto rect = [&] (Vector2i pos, Vector2i size, int tile)
                 {
@@ -43,13 +50,22 @@ public:
                       m_tiles.set(dx + pos.x, dy + pos.y, tile);
                 };
 
+    rect(Vector2i(2, 2), Vector2i(m_tiles.getWidth() - 4, m_tiles.getHeight() - 4), 0);
+
     rect(Vector2i(1, 1), Vector2i(4, 1), 2);
 
     rect(Vector2i(7, 1), Vector2i(4, 1), 2);
 
-    rect(Vector2i(12, 1), Vector2i(4, 1), 2);
+    rect(Vector2i(12, 1), Vector2i(4, 3), 2);
 
-    rect(Vector2i(0, 14), Vector2i(16, 2), 3);
+    rect(Vector2i(20, 4), Vector2i(40, 1), 1);
+
+    // rect(Vector2i(0, 14), Vector2i(16, 2), 3);
+
+    for(int x = 0; x + 2 < m_tiles.getWidth(); x += 6)
+    {
+      rect(Vector2i(x, 2), Vector2i(2, 2), 3);
+    }
   }
 
   ////////////////////////////////////////////////////////////////

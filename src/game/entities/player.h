@@ -63,7 +63,9 @@ public:
 
     if(!move(Vector2f(0, vel.y)))
     {
-      ground = true;
+      if(vel.y < 0)
+        ground = true;
+
       vel.y = 0;
     }
 
@@ -87,6 +89,9 @@ public:
     auto nextPos = pos + delta;
 
     if(game->isSolid(nextPos))
+      return false;
+
+    if(game->isSolid(nextPos + Vector2f(0.5, 0)))
       return false;
 
     pos = nextPos;
