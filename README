@@ -1,0 +1,39 @@
+Deeep
+-----
+
+Author: Sebastien Alaiwan
+
+Description
+-----------
+
+This is a demo of a platform independent C++11 game project.
+It uses SDL, SDL_mixer, OpenGL core profile.
+It's meant as an example of a real-time game which can be compiled to native,
+or to Javascript (using Emscripten), and maybe one day to WebAssembly.
+
+The code doesn't contain any reference to Emscripten, except in the main file.
+
+This code also shows how to isolate your game logic code (entities, bullets)
+from your I/O code (display, audio).
+
+Directory structure
+-------------------
+
+bin:        output directory for binaries.
+./check:    main check script. Call this to build native and asmjs versions.
+src/engine: I/O code (game-agnostic)
+src/game:   game logic
+res:        game resources (sounds, pictures)
+
+
+Build
+-----
+
+It can be compiled to native code using gcc:
+
+$ make
+
+If you want to compile it to Javascript with Emscripten:
+
+$ CXX=emcc make
+

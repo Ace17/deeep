@@ -40,7 +40,7 @@ public:
 
     if(c.fire && cooldown == 0)
     {
-      cooldown = 100;
+      cooldown = 150;
       /*
          auto b = unique(new Bullet);
          b->pos = pos + Vector2f(0, 9);
