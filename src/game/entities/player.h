@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "engine/raii.h"
 #include "engine/scene.h"
 #include "game/entity.h"
@@ -12,29 +14,54 @@ auto const BULLET_SPEED = 0.20;
 class Player : public Entity
 {
 public:
+  Player()
+  {
+    ground = false;
+  }
+
   virtual Actor getActor() const override
   {
-    return Actor(pos, MDL_BASE);
+    auto r = Actor(pos, MDL_BASE); 
+    r.scale = Vector2f(0.5, 0.5);
+    return r;
   }
 
   void think(Control const& c)
   {
-    if(c.left)
-      pos.x -= SHIP_SPEED;
+    {
+      float dx = 0;
 
-    if(c.right)
-      pos.x += SHIP_SPEED;
+      if(c.left)
+        dx -= SHIP_SPEED;
 
-    if(c.down)
-      pos.y -= SHIP_SPEED;
+      if(c.right)
+        dx += SHIP_SPEED;
 
-    if(c.up)
-      pos.y += SHIP_SPEED;
+      vel.x = dx;
+    }
 
-    pos.x = max(pos.x, -20.0f);
-    pos.x = min(pos.x, +20.0f);
-    pos.y = max(pos.y, -20.0f);
-    pos.y = min(pos.y, +20.0f);
+    // gravity
+    vel.y -= 0.00005;
+
+    if(c.up && ground)
+      vel.y = 0.02;
+
+    vel.x = min(vel.x, 0.02f);
+    vel.x = max(vel.x, -0.02f);
+
+    // limit falling speed
+    vel.y = max(vel.y, -0.02f);
+
+    // horizontal move
+    move(Vector2f(vel.x, 0));
+
+    // vertical move
+    ground = false;
+    if(!move(Vector2f(0, vel.y)))
+    {
+      ground = true;
+      vel.y = 0;
+    }
 
     cooldown = max(cooldown - 1, 0);
 
@@ -51,6 +78,17 @@ public:
     }
   }
 
+  bool move(Vector2f delta)
+  {
+    auto nextPos = pos + delta;
+
+    if(game->isSolid(nextPos))
+      return false;
+
+    pos = nextPos;
+    return true;
+  }
+
   virtual void tick() override
   {
     lifetime = 0;
@@ -63,5 +101,7 @@ public:
   }
 
   Int cooldown;
+  Vector2f vel;
+  bool ground;
 };
 

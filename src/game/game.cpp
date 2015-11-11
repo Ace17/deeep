@@ -99,11 +99,11 @@ public:
                     for(int subTile = 0; subTile < 4; ++subTile)
                     {
                       auto const ts = 1.0;
-                      auto const posX = (x * 2 + subTile % 2) * ts;
-                      auto const posY = (y * 2 + subTile / 2) * ts;
+                      auto const posX = (x + (subTile % 2) * 0.5) * ts;
+                      auto const posY = (y + (subTile / 2) * 0.5) * ts;
                       auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
                       actor.frame = (tile - 1) * 16 + composition[subTile];
-                      actor.scale = Vector2f(0.5, 0.5);
+                      actor.scale = Vector2f(0.25, 0.25);
                       r.push_back(actor);
                     }
                   };
@@ -115,8 +115,8 @@ public:
 
     for(auto& actor : r)
     {
-      actor.pos.x -= 16;
-      actor.pos.y -= 16;
+      actor.pos.x -= m_player->pos.x;
+      actor.pos.y -= m_player->pos.y;
     }
 
     return r;
@@ -172,6 +172,17 @@ private:
   {
     e->game = this;
     m_spawned.push_back(unique(e));
+  }
+
+  bool isSolid(Vector2f pos) override
+  {
+    auto const x = (int)pos.x;
+    auto const y = (int)pos.y;
+
+    if(!m_tiles.isInside(x, y))
+      return false;
+
+    return m_tiles.get(x, y) != 0;
   }
 
   Player* m_player;
