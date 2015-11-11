@@ -129,8 +129,8 @@ public:
     vector<Actor> r;
 
     Vector2f pov;
-    pov.x = clamp(m_player->pos.x, 5.0f, m_tiles.getWidth() - 5.0f);
-    pov.y = clamp(m_player->pos.y, 5.0f, m_tiles.getHeight() - 5.0f);
+    pov.x = clamp(m_player->pos.x, 3.0f, m_tiles.getWidth() - 3.0f - 1);
+    pov.y = clamp(m_player->pos.y, 3.0f, m_tiles.getHeight() - 3.0f - 1);
 
     auto onCell = [&] (int x, int y, int tile)
                   {
