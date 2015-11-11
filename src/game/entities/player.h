@@ -71,7 +71,12 @@ public:
     {
       if(vel.y < 0 && !ground)
       {
-        game->playSound(SND_LAND);
+        if(landingCooldown == 0)
+        {
+          game->playSound(SND_LAND);
+          landingCooldown = 150;
+        }
+
         ground = true;
       }
 
@@ -79,6 +84,7 @@ public:
     }
 
     cooldown = max(cooldown - 1, 0);
+    landingCooldown = max(landingCooldown - 1, 0);
 
     if(c.fire && cooldown == 0)
     {
@@ -119,6 +125,7 @@ public:
   }
 
   Int cooldown;
+  Int landingCooldown;
   Vector2f vel;
   bool ground;
 };
