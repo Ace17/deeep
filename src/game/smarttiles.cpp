@@ -14,7 +14,7 @@
  */
 #include <cassert>
 #include <array>
-#include "engine/raii.h"
+#include "engine/util.h"
 #include "engine/geom.h"
 
 using namespace std;

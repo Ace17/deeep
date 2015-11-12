@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include "engine/geom.h"
-#include "engine/raii.h"
+#include "engine/util.h"
 #include "game/game.h"
 #include "game/entities/switch.h"
 

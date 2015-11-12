@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "engine/raii.h"
+#include "engine/util.h"
 #include "engine/scene.h"
 #include "game/entity.h"
 #include "game/models.h"

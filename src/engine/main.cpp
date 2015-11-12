@@ -15,7 +15,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "SDL.h"
-#include "raii.h"
+#include "util.h"
 #include "scene.h"
 
 using namespace std;

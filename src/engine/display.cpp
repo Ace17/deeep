@@ -25,7 +25,7 @@ using namespace std;
 #include "SDL_video.h"
 #include "SDL_image.h"
 
-#include "raii.h"
+#include "util.h"
 #include "scene.h"
 #include "geom.h"
 

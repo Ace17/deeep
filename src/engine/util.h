@@ -1,6 +1,5 @@
 /**
- * @file raii.h
- * @brief layer for completing the C++ standard library
+ * @brief low-level utilities, completing the C++ standard library
  * @author Sebastien Alaiwan
  * @date 2015-11-10
  */
@@ -135,5 +134,4 @@ bool exists(Container const& c, Element const& e)
 {
   return c.find(e) != c.end();
 }
-
 

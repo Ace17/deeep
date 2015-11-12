@@ -17,7 +17,7 @@
 #include <array>
 #include <map>
 #include "engine/scene.h"
-#include "engine/raii.h"
+#include "engine/util.h"
 #include "entities/player.h"
 #include "game.h"
 #include "sounds.h"
