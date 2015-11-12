@@ -186,9 +186,9 @@ Model rectangularModel(float w, float h)
 {
   const GLfloat myTriangle[] =
   {
-    -w, h, 0, 0, 0,
-    -w, -h, 0, 0, 1,
-    w, -h, 0, 1, 1,
+    0, h, 0, 0, 0,
+    0, 0, 0, 0, 1,
+    w, 0, 0, 1, 1,
     w, h, 0, 1, 0,
   };
 

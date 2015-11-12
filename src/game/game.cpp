@@ -148,7 +148,7 @@ public:
                       auto const posY = (y + (subTile / 2) * 0.5) * ts;
                       auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
                       actor.frame = (tile - 1) * 16 + composition[subTile];
-                      actor.scale = Vector2f(0.25, 0.25);
+                      actor.scale = Vector2f(0.5, 0.5);
                       r.push_back(actor);
                     }
                   };

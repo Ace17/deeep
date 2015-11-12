@@ -17,12 +17,13 @@ public:
   Player()
   {
     ground = false;
+    size = Dimension2f(0.5, 0.5);
   }
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_BASE);
-    r.scale = Vector2f(0.5, 0.5);
+    auto r = Actor(pos + Vector2f(0, -0.1), MDL_BASE);
+    r.scale = Vector2f(0.75, 0.75);
     return r;
   }
 
@@ -103,10 +104,13 @@ public:
   {
     auto nextPos = pos + delta;
 
-    if(game->isSolid(nextPos))
+    if(game->isSolid(nextPos + Vector2f(0.10, 0)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.5, 0)))
+    if(game->isSolid(nextPos + Vector2f(0.60, 0)))
+      return false;
+
+    if(game->isSolid(nextPos + Vector2f(0.35, 0.30)))
       return false;
 
     pos = nextPos;

@@ -59,13 +59,12 @@ public:
   {
     game = g;
     game->listen(id, this);
-    size = Dimension2f(1.2, 1.2);
+    size = Dimension2f(1, 1);
   }
 
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
-    r.scale = Vector2f(0.6, 0.6);
     r.frame = 2 + (state ? 1 : 0);
     return r;
   }
