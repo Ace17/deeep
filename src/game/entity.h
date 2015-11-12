@@ -44,7 +44,6 @@ public:
   Vector2f pos;
   Vector2f vel;
   Dimension2f size;
-  Int lifetime;
   Int blinking;
   IGame* game;
 

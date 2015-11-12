@@ -119,7 +119,6 @@ public:
 
   virtual void tick() override
   {
-    lifetime = 0;
     dead = false;
   }
 
