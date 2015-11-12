@@ -12,7 +12,8 @@ echo "Building asmjs version"
 PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master/system/bin:$PATH \
   BIN=bin/asmjs \
   CXX=emcc \
-  LDFLAGS="--preload-file res" \
+  CXXFLAGS="-g0 -DNDEBUG" \
+  LDFLAGS="-Xlinker,-s -g0 --preload-file res" \
   $MAKE
 
 echo "----------------------------------------------------------------"
