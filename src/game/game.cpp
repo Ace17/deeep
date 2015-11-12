@@ -233,7 +233,7 @@ private:
 
   void trigger(int triggerIdx) override
   {
-    if(m_listeners.find(triggerIdx) == m_listeners.end())
+    if(!exists(m_listeners, triggerIdx))
       return;
 
     for(auto& listener : m_listeners[triggerIdx])
