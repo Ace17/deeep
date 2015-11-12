@@ -232,22 +232,23 @@ private:
 
   void trigger(int triggerIdx) override
   {
-    if(m_triggers.find(triggerIdx) == m_triggers.end())
+    if(m_listeners.find(triggerIdx) == m_listeners.end())
       return;
 
-    m_triggers[triggerIdx]->trigger();
+    for(auto& listener : m_listeners[triggerIdx])
+      listener->trigger();
   }
 
   void listen(int triggerIdx, ITriggerable* triggerable) override
   {
-    m_triggers[triggerIdx] = triggerable;
+    m_listeners[triggerIdx].push_back(triggerable);
   }
 
   Player* m_player;
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
 
-  map<int, ITriggerable*> m_triggers;
+  map<int, vector<ITriggerable*>> m_listeners;
 
   Matrix<int> m_tiles;
   vector<SOUND> m_sounds;
