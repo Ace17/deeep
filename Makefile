@@ -19,6 +19,8 @@ CXXFLAGS+=$(SDL_CFLAGS)
 LDFLAGS+=$(SDL_LDFLAGS) -lSDL_image -lSDL_mixer
 LDFLAGS+=-lGL -lGLU
 
+CXXFLAGS+=-O3
+
 SRCS:=\
 	src/game/game.cpp\
 	src/game/smarttiles.cpp\
