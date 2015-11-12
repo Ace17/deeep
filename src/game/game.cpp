@@ -44,14 +44,19 @@ public:
 
     m_tiles.scan(onCell);
 
+    Vector2i start;
+    loadLevel1(m_tiles, start, this);
+    m_player->pos = Vector2f(start.x, start.y);
+  }
+
+  void addRandomWidgets()
+  {
     auto rect = [&] (Vector2i pos, Vector2i size, int tile)
                 {
                   for(int dy = 0; dy < size.y; ++dy)
                     for(int dx = 0; dx < size.x; ++dx)
                       m_tiles.set(dx + pos.x, dy + pos.y, tile);
                 };
-
-    rect(Vector2i(2, 2), Vector2i(m_tiles.getWidth() - 4, m_tiles.getHeight() - 4), 0);
 
     auto isFull = [&] (Vector2i pos, Vector2i size) -> bool
                   {
@@ -62,10 +67,6 @@ public:
 
                     return true;
                   };
-
-    Vector2i start;
-    loadLevel1(m_tiles, start, this);
-    m_player->pos = Vector2f(start.x, start.y);
 
     for(int i = 0; i < 100; ++i)
     {
