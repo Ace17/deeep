@@ -26,7 +26,7 @@
 using namespace std;
 
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
-void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game);
+void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int number);
 
 class Game : public Scene, public IGame
 {
@@ -45,8 +45,10 @@ public:
     m_tiles.scan(onCell);
 
     Vector2i start;
-    loadLevel1(m_tiles, start, this);
+    loadLevel(m_tiles, start, this, 1);
     m_player->pos = Vector2f(start.x, start.y);
+
+    addRandomWidgets();
   }
 
   void addRandomWidgets()
@@ -68,7 +70,7 @@ public:
                     return true;
                   };
 
-    for(int i = 0; i < 100; ++i)
+    for(int i = 0; i < 1000; ++i)
     {
       auto const maxX = m_tiles.getWidth() - 4;
       auto const maxY = m_tiles.getHeight() - 4;
@@ -125,9 +127,10 @@ public:
   {
     vector<Actor> r;
 
+    auto const limit = 3.5f;
     Vector2f pov;
-    pov.x = clamp(m_player->pos.x, 3.0f, m_tiles.getWidth() - 3.0f - 1);
-    pov.y = clamp(m_player->pos.y, 3.0f, m_tiles.getHeight() - 3.0f - 1);
+    pov.x = clamp(m_player->pos.x, limit, m_tiles.getWidth() - limit - 1);
+    pov.y = clamp(m_player->pos.y, limit, m_tiles.getHeight() - limit - 1);
 
     auto onCell = [&] (int x, int y, int tile)
                   {

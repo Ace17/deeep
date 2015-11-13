@@ -7,8 +7,9 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
+#include "game/toggle.h"
 
-auto const SHIP_SPEED = 0.01;
+auto const SHIP_SPEED = 0.0075;
 auto const BULLET_SPEED = 0.20;
 
 class Player : public Entity
@@ -44,10 +45,10 @@ public:
     // gravity
     vel.y -= 0.00005;
 
-    if(c.up && ground)
+    if(jumpbutton.toggle(c.up) && ground)
     {
       game->playSound(SND_CHIRP);
-      vel.y = 0.02;
+      vel.y = 0.015;
     }
 
     if(vel.y > 0 && !c.up)
@@ -87,7 +88,7 @@ public:
     cooldown = max(cooldown - 1, 0);
     landingCooldown = max(landingCooldown - 1, 0);
 
-    if(c.fire && cooldown == 0)
+    if(firebutton.toggle(c.fire) && cooldown == 0)
     {
       cooldown = 150;
       /*
@@ -131,5 +132,6 @@ public:
   Int landingCooldown;
   Vector2f vel;
   bool ground;
+  Toggle jumpbutton, firebutton;
 };
 
