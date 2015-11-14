@@ -23,3 +23,6 @@ BIN=bin/native \
   CXX=g++ \
   $MAKE
 
+./bin/native/tests.exe
+
+echo Success!
