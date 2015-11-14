@@ -128,19 +128,20 @@ public:
     vector<Actor> r;
 
     auto const limit = 3.5f;
-    Vector2f pov;
-    pov.x = clamp(m_player->pos.x, limit, m_tiles.getWidth() - limit - 1);
-    pov.y = clamp(m_player->pos.y, limit, m_tiles.getHeight() - limit - 1);
+    auto cameraPos = m_player->pos;
+    cameraPos.y += 1.5;
+    cameraPos.x = clamp(cameraPos.x, limit, m_tiles.getWidth() - limit - 1);
+    cameraPos.y = clamp(cameraPos.y, limit, m_tiles.getHeight() - limit - 1);
 
     auto onCell = [&] (int x, int y, int tile)
                   {
                     if(!tile)
                       return;
 
-                    if(abs(x - pov.x) > 8)
+                    if(abs(x - cameraPos.x) > 8)
                       return;
 
-                    if(abs(y - pov.y) > 8)
+                    if(abs(y - cameraPos.y) > 8)
                       return;
 
                     auto composition = computeTileFor(m_tiles, x, y);
@@ -164,8 +165,7 @@ public:
 
     for(auto& actor : r)
     {
-      actor.pos.x -= pov.x;
-      actor.pos.y -= pov.y;
+      actor.pos -= cameraPos;
     }
 
     return r;
