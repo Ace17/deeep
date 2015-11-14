@@ -48,9 +48,11 @@ TARGETS+=$(BIN)/deeep.$(EXT)
 #------------------------------------------------------------------------------
 
 SRCS_TESTS:=\
+	src/engine/json.cpp\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
 	tests/tokenizer.cpp\
+	tests/json.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 $(BIN)/tests.$(EXT): $(OBJS_TESTS)
