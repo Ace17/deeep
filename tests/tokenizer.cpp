@@ -18,11 +18,29 @@ vector<Token::Type> tokenize(string s)
   return r;
 }
 
+template<typename T>
+vector<T> V(initializer_list<T> elements)
+{
+  return vector<T>(elements);
+}
+
 unittest("Tokenizer: simple")
 {
   assertEquals(
-      vector<Token::Type>({ Token::STRING, Token::COMMA, Token::STRING, Token::COLON }),
+      V({ Token::STRING, Token::COMMA, Token::STRING, Token::COLON }),
       tokenize("\"Hello\", \"world\":")
       );
+
+  assertEquals(
+      V({ Token::LBRACE, Token::RBRACE, Token::LBRACKET, Token::RBRACKET, Token::COMMA, Token::COLON }),
+      tokenize("{}[],:")
+      );
+
+  {
+    Tokenizer t("\"Hello\"");
+    assert(!t.empty());
+    assertEquals("Hello", t.front().lexem);
+  }
+
 }
 

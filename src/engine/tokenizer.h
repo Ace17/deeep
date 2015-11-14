@@ -91,6 +91,7 @@ private:
       accept();
 
       curr.type = Token::STRING;
+      curr.lexem = curr.lexem.substr(1, curr.lexem.size() - 2);
       break;
     default:
       {
