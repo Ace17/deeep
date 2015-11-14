@@ -38,5 +38,22 @@ unittest("Json parser: arrays")
   assert(jsonOk("{ \"A\": [ { }, { } ] }"));
 
   assert(!jsonOk("{ \"A\": [ }"));
+  assert(!jsonOk("{ \"A\": ] }"));
+}
+
+unittest("Json parser: returned value")
+{
+  {
+    auto o = json::parseObject("{}");
+    assert(o);
+    assertEquals(0u, o->members.size());
+  }
+  {
+    auto o = json::parseObject("{ \"N\" : \"hello\"}");
+    assertEquals(1u, o->members.size());
+    auto s = dynamic_cast<json::String*>(o->members["N"].get());
+    assert(s);
+    assert(s->value == "hello");
+  }
 }
 

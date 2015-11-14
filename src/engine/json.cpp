@@ -37,9 +37,8 @@ unique_ptr<Object> json::load(string path)
 }
 
 static unique_ptr<Object> parseObject(Tokenizer& tk);
-static unique_ptr<Object> parseMember(Tokenizer& tk);
-static unique_ptr<Object> parseValue(Tokenizer& tk);
-static unique_ptr<Object> parseArray(Tokenizer& tk);
+static unique_ptr<Value> parseValue(Tokenizer& tk);
+static unique_ptr<Value> parseArray(Tokenizer& tk);
 
 static
 string expect(Tokenizer& tk, Token::Type type)
@@ -68,6 +67,7 @@ unique_ptr<Object> json::parseObject(const char* text)
 
 unique_ptr<Object> parseObject(Tokenizer& tk)
 {
+  auto r = make_unique<Object>();
   expect(tk, Token::LBRACE);
   int idx = 0;
 
@@ -76,24 +76,17 @@ unique_ptr<Object> parseObject(Tokenizer& tk)
     if(idx > 0)
       expect(tk, Token::COMMA);
 
-    parseMember(tk);
+    auto const name = expect(tk, Token::STRING);
+    expect(tk, Token::COLON);
+    r->members[name] = parseValue(tk);
     ++idx;
   }
 
   expect(tk, Token::RBRACE);
-  return nullptr;
+  return r;
 }
 
-unique_ptr<Object> parseMember(Tokenizer& tk)
-{
-  expect(tk, Token::STRING);
-  expect(tk, Token::COLON);
-
-  parseValue(tk);
-  return nullptr;
-}
-
-unique_ptr<Object> parseValue(Tokenizer& tk)
+unique_ptr<Value> parseValue(Tokenizer& tk)
 {
   if(tk.front().type == Token::LBRACKET)
   {
@@ -101,24 +94,28 @@ unique_ptr<Object> parseValue(Tokenizer& tk)
   }
   else
   {
-    expect(tk, Token::STRING);
+    auto r = make_unique<String>();
+    r->value = expect(tk, Token::STRING);
+    return unique_ptr<Value>(r.release());
   }
-  return nullptr;
 }
 
-unique_ptr<Object> parseArray(Tokenizer& tk)
+unique_ptr<Value> parseArray(Tokenizer& tk)
 {
+  auto r = make_unique<Array>();
   expect(tk, Token::LBRACKET);
-  int idx=0;
+  int idx = 0;
+
   while(tk.front().type != Token::RBRACKET)
   {
     if(idx > 0)
       expect(tk, Token::COMMA);
 
-    parseObject(tk);
+    r->elements.push_back(parseObject(tk));
     ++idx;
   }
+
   expect(tk, Token::RBRACKET);
-  return nullptr;
+  return unique_ptr<Value>(r.release());
 }
 

@@ -8,24 +8,24 @@ using namespace std;
 
 namespace json
 {
-struct Base
+struct Value
 {
-  virtual ~Base()
+  virtual ~Value()
   {
   }
 };
 
-struct Object : Base
+struct Object : Value
 {
-  map<string, unique_ptr<Base>> members;
+  map<string, unique_ptr<Value>> members;
 };
 
-struct Array : Base
+struct Array : Value
 {
-  vector<unique_ptr<Base>> elements;
+  vector<unique_ptr<Value>> elements;
 };
 
-struct String : Base
+struct String : Value
 {
   string value;
 };

@@ -15,7 +15,7 @@ SDL_LDFLAGS:=$(shell sdl-config --libs)
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
 CXXFLAGS+=-I.
-CXXFLAGS+=-std=c++11
+CXXFLAGS+=-std=c++14
 CXXFLAGS+=$(SDL_CFLAGS)
 LDFLAGS+=$(SDL_LDFLAGS) -lSDL_image -lSDL_mixer
 LDFLAGS+=-lGL -lGLU
