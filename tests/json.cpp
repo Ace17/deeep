@@ -20,11 +20,23 @@ bool jsonOk(string text)
 unittest("Json parser: empty")
 {
   assert(jsonOk("{}"));
+
+  assert(!jsonOk("{"));
 }
 
 unittest("Json parser: members")
 {
   assert(jsonOk("{ \"hello\": \"world\" }"));
   assert(jsonOk("{ \"N1\": \"V1\", \"N2\": \"V2\" }"));
+
+  assert(!jsonOk("{ \"N1\" : : \"V2\" }"));
+}
+
+unittest("Json parser: arrays")
+{
+  assert(jsonOk("{ \"A\": [] }"));
+  assert(jsonOk("{ \"A\": [ { }, { } ] }"));
+
+  assert(!jsonOk("{ \"A\": [ }"));
 }
 

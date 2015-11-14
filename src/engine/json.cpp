@@ -36,11 +36,10 @@ unique_ptr<Object> json::load(string path)
   return json::parseObject(text.c_str());
 }
 
-static
-unique_ptr<Object> parseObject(Tokenizer& tk);
-
-static
-unique_ptr<Object> parseMember(Tokenizer& tk);
+static unique_ptr<Object> parseObject(Tokenizer& tk);
+static unique_ptr<Object> parseMember(Tokenizer& tk);
+static unique_ptr<Object> parseValue(Tokenizer& tk);
+static unique_ptr<Object> parseArray(Tokenizer& tk);
 
 static
 string expect(Tokenizer& tk, Token::Type type)
@@ -89,7 +88,37 @@ unique_ptr<Object> parseMember(Tokenizer& tk)
 {
   expect(tk, Token::STRING);
   expect(tk, Token::COLON);
-  expect(tk, Token::STRING);
+
+  parseValue(tk);
+  return nullptr;
+}
+
+unique_ptr<Object> parseValue(Tokenizer& tk)
+{
+  if(tk.front().type == Token::LBRACKET)
+  {
+    return parseArray(tk);
+  }
+  else
+  {
+    expect(tk, Token::STRING);
+  }
+  return nullptr;
+}
+
+unique_ptr<Object> parseArray(Tokenizer& tk)
+{
+  expect(tk, Token::LBRACKET);
+  int idx=0;
+  while(tk.front().type != Token::RBRACKET)
+  {
+    if(idx > 0)
+      expect(tk, Token::COMMA);
+
+    parseObject(tk);
+    ++idx;
+  }
+  expect(tk, Token::RBRACKET);
   return nullptr;
 }
 
