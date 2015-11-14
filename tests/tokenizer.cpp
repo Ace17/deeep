@@ -24,6 +24,12 @@ vector<T> V(initializer_list<T> elements)
   return vector<T>(elements);
 }
 
+unittest("Tokenizer: empty")
+{
+  Tokenizer t("");
+  assert(t.empty());
+}
+
 unittest("Tokenizer: simple")
 {
   assertEquals(
@@ -40,6 +46,8 @@ unittest("Tokenizer: simple")
     Tokenizer t("\"Hello\"");
     assert(!t.empty());
     assertEquals("Hello", t.front().lexem);
+    t.popFront();
+    assert(t.empty());
   }
 
 }

@@ -47,10 +47,8 @@ void RunTests()
   {
     try
     {
-      std::cout << "--------------------------------------------------------------------------------" << std::endl;
-      std::cout << "Test: " << tests[i].sName << std::endl;
+      std::cout << "[" << i << "] " << tests[i].sName << std::endl;
       tests[i].run();
-      std::cout << std::endl;
     }
     catch(std::exception const& e)
     {
