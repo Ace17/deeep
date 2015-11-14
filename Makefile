@@ -14,6 +14,7 @@ SDL_LDFLAGS:=$(shell sdl-config --libs)
 
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
+CXXFLAGS+=-I.
 CXXFLAGS+=-std=c++11
 CXXFLAGS+=$(SDL_CFLAGS)
 LDFLAGS+=$(SDL_LDFLAGS) -lSDL_image -lSDL_mixer
@@ -21,12 +22,16 @@ LDFLAGS+=-lGL -lGLU
 
 CXXFLAGS+=-O3
 
+#------------------------------------------------------------------------------
+
 SRCS:=\
 	src/game/game.cpp\
 	src/game/smarttiles.cpp\
 	src/game/level1.cpp\
 	src/engine/app.cpp\
+	src/engine/json.cpp\
 	src/engine/main.cpp\
+	src/engine/model.cpp\
 	src/engine/display.cpp\
 	src/engine/sound.cpp\
 	$(BIN)/vertex.glsl.cpp\
@@ -39,6 +44,20 @@ $(BIN)/deeep.$(EXT): $(OBJS)
 	$(CXX) -std=c++11 $^ -o '$@' $(CXXFLAGS) $(LDFLAGS)
 
 TARGETS+=$(BIN)/deeep.$(EXT)
+
+#------------------------------------------------------------------------------
+
+SRCS_TESTS:=\
+	tests/tests.cpp\
+	tests/tests_main.cpp\
+	tests/tokenizer.cpp\
+
+OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
+$(BIN)/tests.$(EXT): $(OBJS_TESTS)
+	@mkdir -p $(dir $@)
+	$(CXX) -std=c++11 $^ -o '$@' $(CXXFLAGS) $(LDFLAGS)
+
+TARGETS+=$(BIN)/tests.$(EXT)
 
 $(BIN)/vertex.glsl.cpp: src/engine/vertex.glsl
 	@mkdir -p $(dir $@)

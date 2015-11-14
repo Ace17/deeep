@@ -28,23 +28,7 @@ using namespace std;
 #include "util.h"
 #include "scene.h"
 #include "geom.h"
-
-int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
-
-struct Model
-{
-  GLuint buffer = 0;
-  GLuint indices = 0;
-  int numIndices = 0;
-  int size = 0;
-  vector<int> textures;
-  float scale = 1;
-
-  void addTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0))
-  {
-    textures.push_back(loadTexture(path, rect));
-  }
-};
+#include "model.h"
 
 vector<Model> g_Models;
 GLuint g_ProgramId;
@@ -220,7 +204,18 @@ Model loadAnimation(string path)
 {
   auto m = rectangularModel(1, 1);
 
-  if(endsWith(path, ".mdl"))
+  if(endsWith(path, ".json"))
+  {
+    path = setExtension(path, "png");
+
+    for(int i = 0; i < 64; ++i)
+    {
+      auto col = i % 8;
+      auto row = i / 8;
+      m.addTexture(path, Rect2i(col * 16, row * 16, 16, 16));
+    }
+  }
+  else if(endsWith(path, ".mdl"))
   {
     path = setExtension(path, "png");
 
