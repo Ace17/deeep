@@ -8,6 +8,7 @@ struct Token
 {
   enum Type
   {
+    EOF_ = 0,
     LBRACE,
     RBRACE,
     LBRACKET,
@@ -35,6 +36,11 @@ public:
     return curr;
   }
 
+  bool empty() const
+  {
+    return curr.type == Token::EOF_;
+  }
+
   void popFront()
   {
     decodeToken();
@@ -49,6 +55,9 @@ private:
     curr.lexem = "";
     switch(*text)
     {
+    case '\0':
+      curr.type = Token::EOF_;
+      break;
     case '[':
       accept();
       curr.type = Token::LBRACKET;

@@ -14,6 +14,9 @@
 #pragma once
 
 #include <cassert>
+#include <stdexcept>
+#include <sstream>
+#include <vector>
 
 int RegisterTest(void (*f)(), const char* testName);
 void RunTests();
@@ -36,4 +39,41 @@ struct Registrator
   static void prefix##line(); \
   static Registrator g_Registrator##line(&prefix##line, name); \
   static void prefix##line()
+
+#define assertEquals(u, v) \
+  assertEqualsFunc(u, v, __FILE__, __LINE__)
+
+template<typename T>
+std::ostream& operator<<(std::ostream& o, const std::vector<T>& v)
+{
+  int idx=0;
+  o << "[";
+  for(auto& element : v)
+  {
+    if(idx > 0)
+      o << ", ";
+    o << element;
+    ++idx;
+  }
+  o << "]";
+  return o;
+}
+
+template<typename U, typename V>
+void assertEqualsFunc(
+    U const& expected,
+    V const& actual,
+    const char* file,
+    int line)
+{
+  if(expected != actual)
+  {
+    using namespace std;
+    stringstream ss;
+    ss << "Assertion failure" << endl;
+    ss << file << "(" << line << ")" << endl;
+    ss << "Expected " << expected << ", got " << actual << endl;
+    throw logic_error(ss.str());
+  }
+}
 
