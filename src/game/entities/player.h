@@ -12,6 +12,29 @@
 auto const SHIP_SPEED = 0.0075;
 auto const BULLET_SPEED = 0.20;
 
+enum ACTION
+{
+  ACTION_VICTORY,
+  ACTION_STAND,
+  ACTION_STAND_SHOOT,
+  ACTION_ENTRANCE,
+  ACTION_WALK,
+  ACTION_WALK_SHOOT,
+  ACTION_DASH,
+  ACTION_DASH_AIM,
+  ACTION_JUMP,
+  ACTION_FALL,
+  ACTION_LADDER,
+  ACTION_LADDER_END,
+  ACTION_LADDER_SHOOT,
+  ACTION_HADOKEN,
+  ACTION_SLIDE,
+  ACTION_SLIDE_SHOOT,
+  ACTION_CLIMB,
+  ACTION_HURT,
+  ACTION_FULL,
+};
+
 class Player : public Entity
 {
 public:
@@ -25,19 +48,24 @@ public:
   {
     auto r = Actor(pos + Vector2f(0, -0.1), MDL_ROCKMAN);
 
-    if(vel.x != 0)
+    if(!ground)
     {
-      if(vel.x < 0)
-        r.scale.x *= -1;
-
+      r.action = ACTION_FALL;
+      r.ratio = vel.y > 0 ? 0 : 1;
+    }
+    else if(vel.x != 0)
+    {
       r.ratio = (time % 500) / 500.0f;
-      r.action = 4;
+      r.action = ACTION_WALK;
     }
     else
     {
       r.ratio = (time % 1000) / 1000.0f;
-      r.action = 1;
+      r.action = ACTION_STAND;
     }
+
+    if(!orientedRight)
+      r.scale.x *= -1;
 
     return r;
   }
@@ -55,6 +83,12 @@ public:
         dx += SHIP_SPEED;
 
       vel.x = dx;
+
+      if(vel.x > 0)
+        orientedRight = true;
+
+      if(vel.x < 0)
+        orientedRight = false;
     }
 
     // gravity
@@ -126,7 +160,10 @@ public:
     if(game->isSolid(nextPos + Vector2f(0.60, 0)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.35, 0.30)))
+    if(game->isSolid(nextPos + Vector2f(0.10, 0.80)))
+      return false;
+
+    if(game->isSolid(nextPos + Vector2f(0.60, 0.80)))
       return false;
 
     pos = nextPos;
@@ -146,7 +183,8 @@ public:
   Int cooldown;
   Int landingCooldown;
   Vector2f vel;
-  bool ground;
+  Bool orientedRight;
+  Bool ground;
   Toggle jumpbutton, firebutton;
   int time;
 };
