@@ -19,6 +19,7 @@
 #include "engine/scene.h"
 #include "engine/util.h"
 #include "entities/player.h"
+#include "entities/wheel.h"
 #include "game.h"
 #include "sounds.h"
 #include "models.h"
@@ -47,6 +48,12 @@ public:
     Vector2i start;
     loadLevel(m_tiles, start, this, 1);
     m_player->pos = Vector2f(start.x, start.y);
+
+    {
+      auto w = new Wheel;
+      w->pos = Vector2f(17, m_tiles.getHeight() - 4);
+      spawn(w);
+    }
 
     addRandomWidgets();
   }
@@ -119,6 +126,7 @@ public:
       { MDL_SWITCH, "res/switch.mdl" },
       { MDL_TILES, "res/tiles.mdl" },
       { MDL_ROCKMAN, "res/sprites/x/sprite.json" },
+      { MDL_WHEEL, "res/sprites/wheel/sprite.json" },
       { 0, nullptr },
     };
 

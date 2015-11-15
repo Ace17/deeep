@@ -1,0 +1,21 @@
+{
+  "type" : "sheet",
+  "sheet" : "wheel.png",
+  "width" : "48",
+  "height" : "48",
+  "actions": [
+    {
+      "name": "roll",
+      "frames": [ "0", "1", "2" ]
+    },
+    {
+      "name": "fall",
+      "frames": [ "3", "4" ]
+    },
+    {
+      "name": "lie",
+      "frames": [ "5" ]
+    }
+  ]
+}
+

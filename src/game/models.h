@@ -6,5 +6,6 @@ enum
   MDL_SWITCH,
   MDL_TILES,
   MDL_ROCKMAN,
+  MDL_WHEEL,
 };
 

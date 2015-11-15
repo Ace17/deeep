@@ -1,4 +1,5 @@
 {
+  "type" : "split",
   "actions": [
     {
       "name": "victory",
