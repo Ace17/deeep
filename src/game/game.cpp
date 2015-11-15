@@ -101,6 +101,7 @@ public:
     static const Resource sounds[] =
     {
       { SND_CHIRP, "res/base.ogg" },
+      { SND_JUMP, "res/jump.ogg" },
       { SND_BEEP, "res/beep.ogg" },
       { SND_LAND, "res/land.ogg" },
       { SND_SWITCH, "res/switch.ogg" },

@@ -24,7 +24,6 @@ public:
   virtual Actor getActor() const override
   {
     auto r = Actor(pos + Vector2f(0, -0.1), MDL_ROCKMAN);
-    r.scale = Vector2f(0.75, 0.75);
 
     if(vel.x != 0)
     {
@@ -63,7 +62,7 @@ public:
 
     if(jumpbutton.toggle(c.up) && ground)
     {
-      game->playSound(SND_CHIRP);
+      game->playSound(SND_JUMP);
       vel.y = 0.015;
     }
 
