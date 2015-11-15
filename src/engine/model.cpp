@@ -63,8 +63,8 @@ Action loadSheetAction(json::Value* val, string sheetPath, Dimension2i cell)
   {
     auto const idx = asInt(frame.get());
 
-    auto const col = idx % 8;
-    auto const row = idx / 8;
+    auto const col = idx % 16;
+    auto const row = idx / 16;
     r.addTexture(sheetPath, Rect2i(col * cell.width, row * cell.height, cell.width, cell.height));
   }
 

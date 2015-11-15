@@ -42,7 +42,9 @@ class Player : public Entity
 public:
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos + Vector2f(0, -0.1), MDL_ROCKMAN);
+    auto actorPos = pos + Vector2f(size.width / 2 - 0.75, -0.1);
+    auto r = Actor(actorPos, MDL_ROCKMAN);
+    r.scale = Vector2f(1.25, 1.25);
 
     if(!ground)
     {
