@@ -57,7 +57,6 @@ int compileShader(string code, int type)
   auto shaderId = glCreateShader(type);
 
   cout << "Compiling " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader ... ";
-  cout.flush();
   auto srcPtr = code.c_str();
   SAFE_GL(glShaderSource(shaderId, 1, &srcPtr, nullptr));
   SAFE_GL(glCompileShader(shaderId));
@@ -73,7 +72,6 @@ int compileShader(string code, int type)
     vector<char> msg(logLength);
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
     cerr << msg.data();
-    cerr.flush();
 
     cerr << code << endl;
 
@@ -89,7 +87,6 @@ int linkShaders(vector<int> ids)
 {
   // Link the program
   cout << "Linking shaders ... ";
-  cout.flush();
   auto ProgramID = glCreateProgram();
 
   for(auto id : ids)
