@@ -9,8 +9,10 @@
 #include "game/sounds.h"
 #include "game/toggle.h"
 
-auto const SHIP_SPEED = 0.0075;
-auto const BULLET_SPEED = 0.20;
+auto const WALK_SPEED = 0.0075f;
+auto const BULLET_SPEED = 0.20f;
+auto const MAX_HORZ_SPEED = 0.02f;
+auto const MAX_FALL_SPEED = 0.02f;
 
 enum ACTION
 {
@@ -38,12 +40,6 @@ enum ACTION
 class Player : public Entity
 {
 public:
-  Player()
-  {
-    ground = false;
-    size = Dimension2f(0.5, 0.5);
-  }
-
   virtual Actor getActor() const override
   {
     auto r = Actor(pos + Vector2f(0, -0.1), MDL_ROCKMAN);
@@ -73,41 +69,7 @@ public:
   void think(Control const& c)
   {
     ++time;
-    {
-      float dx = 0;
-
-      if(c.left)
-        dx -= SHIP_SPEED;
-
-      if(c.right)
-        dx += SHIP_SPEED;
-
-      vel.x = dx;
-
-      if(vel.x > 0)
-        orientedRight = true;
-
-      if(vel.x < 0)
-        orientedRight = false;
-    }
-
-    // gravity
-    vel.y -= 0.00005;
-
-    if(jumpbutton.toggle(c.up) && ground)
-    {
-      game->playSound(SND_JUMP);
-      vel.y = 0.015;
-    }
-
-    if(vel.y > 0 && !c.up)
-      vel.y = 0;
-
-    vel.x = min(vel.x, 0.02f);
-    vel.x = max(vel.x, -0.02f);
-
-    // limit falling speed
-    vel.y = max(vel.y, -0.02f);
+    computeVelocity(c);
 
     // horizontal move
     move(Vector2f(vel.x, 0));
@@ -148,6 +110,42 @@ public:
        */
       game->playSound(SND_BEEP);
     }
+  }
+
+  void computeVelocity(Control const& c)
+  {
+    {
+      float wantedSpeed = 0;
+
+      if(c.left)
+        wantedSpeed -= WALK_SPEED;
+
+      if(c.right)
+        wantedSpeed += WALK_SPEED;
+
+      vel.x = wantedSpeed;
+
+      if(vel.x > 0)
+        orientedRight = true;
+
+      if(vel.x < 0)
+        orientedRight = false;
+    }
+
+    // gravity
+    vel.y -= 0.00005;
+
+    if(jumpbutton.toggle(c.up) && ground)
+    {
+      game->playSound(SND_JUMP);
+      vel.y = 0.015;
+    }
+
+    if(vel.y > 0 && !c.up)
+      vel.y = 0;
+
+    vel.x = clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
+    vel.y = max(vel.y, -MAX_FALL_SPEED);
   }
 
   bool move(Vector2f delta)
