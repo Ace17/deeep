@@ -30,7 +30,7 @@ auto const TIMESTEP = 1;
 
 void beginDraw();
 void endDraw();
-void drawActor(Rect2f where, int modelId, bool blinking, int frame = 0);
+void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
 
 void Audio_playSound(int id);
 
@@ -127,7 +127,7 @@ private:
     for(auto& actor : m_scene->getActors())
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.x, actor.scale.y);
-      drawActor(where, (int)actor.model, actor.effect == EFFECT_BLINKING, actor.frame);
+      drawActor(where, (int)actor.model, actor.effect == EFFECT_BLINKING, actor.action, actor.ratio);
     }
 
     endDraw();

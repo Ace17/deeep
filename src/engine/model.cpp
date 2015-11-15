@@ -4,7 +4,7 @@
 #include "util.h"
 
 static
-void loadFrame(Model& r, json::Value* val, string dir)
+void loadFrame(Action& r, json::Value* val, string dir)
 {
   auto frame = json::cast<json::Object>(val);
   auto idx = frame->getMember<json::String>("idx");
@@ -13,14 +13,18 @@ void loadFrame(Model& r, json::Value* val, string dir)
 }
 
 static
-void loadAction(Model& r, json::Value* val, string dir)
+Action loadAction(json::Value* val, string dir)
 {
+  Action r;
+
   auto action = json::cast<json::Object>(val);
   auto name = action->getMember<json::String>("name");
   auto frames = action->getMember<json::Array>("frames");
 
   for(auto& frame : frames->elements)
     loadFrame(r, frame.get(), dir);
+
+  return r;
 }
 
 Model loadModel(string jsonPath)
@@ -32,14 +36,14 @@ Model loadModel(string jsonPath)
   auto actions = obj->getMember<json::Array>("actions");
 
   for(auto& action : actions->elements)
-    loadAction(r, action.get(), dir);
+    r.actions.push_back(loadAction(action.get(), dir));
 
   return r;
 }
 
 int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 
-void Model::addTexture(string path, Rect2i rect)
+void Action::addTexture(string path, Rect2i rect)
 {
   textures.push_back(loadTexture(path, rect));
 }

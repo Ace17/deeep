@@ -41,7 +41,7 @@ public:
     if(blinking)
       r.effect = EFFECT_BLINKING;
 
-    r.frame = state ? 1 : 0;
+    r.action = state ? 1 : 0;
     return r;
   }
 
@@ -78,7 +78,7 @@ public:
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
-    r.frame = 2 + (state ? 1 : 0);
+    r.action = 2 + (state ? 1 : 0);
     return r;
   }
 

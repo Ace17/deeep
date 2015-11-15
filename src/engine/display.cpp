@@ -214,7 +214,7 @@ Model loadAnimation(string path)
   if(endsWith(path, ".json"))
   {
     auto m2 = loadModel(path);
-    m.textures = move(m2.textures);
+    m.actions = move(m2.actions);
     return m;
   }
   else if(endsWith(path, ".mdl"))
@@ -225,12 +225,16 @@ Model loadAnimation(string path)
     {
       auto col = i % 8;
       auto row = i / 8;
-      m.addTexture(path, Rect2i(col * 16, row * 16, 16, 16));
+      Action action;
+      action.addTexture(path, Rect2i(col * 16, row * 16, 16, 16));
+      m.actions.push_back(action);
     }
   }
   else
   {
-    m.addTexture(path, Rect2i());
+    Action action;
+    action.addTexture(path, Rect2i());
+    m.actions.push_back(action);
   }
 
   return m;
@@ -272,7 +276,7 @@ void Display_init(int width, int height)
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void drawActor(Rect2f where, int modelId, bool blinking, int frame)
+void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)
 {
   auto& model = g_Models.at(modelId);
 
@@ -295,13 +299,24 @@ void drawActor(Rect2f where, int modelId, bool blinking, int frame)
   if(matrixId < 0)
     throw runtime_error("glGetUniformLocation failed");
 
-  if(model.textures.empty())
-    throw runtime_error("model has no textures");
+  if(model.actions.empty())
+    throw runtime_error("model has no actions");
 
-  frame %= model.textures.size();
-  glBindTexture(GL_TEXTURE_2D, model.textures[frame]);
+  auto const& action = model.actions[actionIdx];
+
+  if(action.textures.empty())
+    throw runtime_error("action has no textures");
+
+  int idx = clamp<int>(ratio * action.textures.size(), 0, action.textures.size() - 1);
+  glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  if(where.width < 0)
+    where.x -= where.width;
+
+  if(where.height < 0)
+    where.y -= where.height;
 
   auto const dx = where.x;
   auto const dy = where.y;

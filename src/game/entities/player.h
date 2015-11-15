@@ -25,11 +25,27 @@ public:
   {
     auto r = Actor(pos + Vector2f(0, -0.1), MDL_ROCKMAN);
     r.scale = Vector2f(0.75, 0.75);
+
+    if(vel.x != 0)
+    {
+      if(vel.x < 0)
+        r.scale.x *= -1;
+
+      r.ratio = (time % 500) / 500.0f;
+      r.action = 4;
+    }
+    else
+    {
+      r.ratio = (time % 1000) / 1000.0f;
+      r.action = 1;
+    }
+
     return r;
   }
 
   void think(Control const& c)
   {
+    ++time;
     {
       float dx = 0;
 
@@ -133,5 +149,6 @@ public:
   Vector2f vel;
   bool ground;
   Toggle jumpbutton, firebutton;
+  int time;
 };
 
