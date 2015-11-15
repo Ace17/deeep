@@ -36,6 +36,7 @@ unittest("Json parser: arrays")
 {
   assert(jsonOk("{ \"A\": [] }"));
   assert(jsonOk("{ \"A\": [ { }, { } ] }"));
+  assert(jsonOk("{ \"A\": [ \"hello\", \"world\" ] }"));
 
   assert(!jsonOk("{ \"A\": [ }"));
   assert(!jsonOk("{ \"A\": ] }"));

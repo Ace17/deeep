@@ -98,6 +98,10 @@ unique_ptr<Value> parseValue(Tokenizer& tk)
   {
     return parseArray(tk);
   }
+  else if(tk.front().type == Token::LBRACE)
+  {
+    return parseObject(tk);
+  }
   else
   {
     auto r = make_unique<String>();
@@ -117,7 +121,7 @@ unique_ptr<Value> parseArray(Tokenizer& tk)
     if(idx > 0)
       expect(tk, Token::COMMA);
 
-    r->elements.push_back(parseObject(tk));
+    r->elements.push_back(parseValue(tk));
     ++idx;
   }
 
