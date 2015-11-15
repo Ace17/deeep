@@ -24,7 +24,7 @@ string read(string path)
   string r;
   string line;
 
-  while(getline(fp, r))
+  while(getline(fp, line))
     r += line;
 
   return r;
@@ -48,8 +48,14 @@ string expect(Tokenizer& tk, Token::Type type)
   if(front.type != type)
   {
     stringstream msg;
-    msg << "Unexpected token type: '" + front.lexem + "'";
+
+    if(front.type == Token::EOF_)
+      msg << "Unexpected end of file found";
+    else
+      msg << "Unexpected token type: '" + front.lexem + "'";
+
     msg << " (" << front.type << ")";
+    msg << " expected " << type;
     throw runtime_error(msg.str());
   }
 

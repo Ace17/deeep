@@ -1,0 +1,10 @@
+{
+  "actions": [
+    {
+      "name": "stand",
+      "frames": [
+        { "idx": "010", "pos": "15;18" }
+      ]
+    }
+  ]
+}

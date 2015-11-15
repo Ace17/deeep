@@ -117,6 +117,7 @@ public:
       { MDL_BASE, "res/base.png" },
       { MDL_SWITCH, "res/switch.mdl" },
       { MDL_TILES, "res/tiles.mdl" },
+      { MDL_ROCKMAN, "res/sprites/x/simple.json" },
       { 0, nullptr },
     };
 

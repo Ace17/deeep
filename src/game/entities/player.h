@@ -23,7 +23,7 @@ public:
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos + Vector2f(0, -0.1), MDL_BASE);
+    auto r = Actor(pos + Vector2f(0, -0.1), MDL_ROCKMAN);
     r.scale = Vector2f(0.75, 0.75);
     return r;
   }

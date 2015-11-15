@@ -108,12 +108,22 @@ int linkShaders(vector<int> ids)
   return ProgramID;
 }
 
-int loadTexture(string path, Rect2i rect)
+SDL_Surface* loadPicture(string path)
 {
   auto surface = IMG_Load((char*)path.c_str());
 
   if(!surface)
     throw runtime_error(string("Can't load texture: ") + SDL_GetError());
+
+  if(surface->format->BitsPerPixel != 32)
+    throw runtime_error("only 32 bit pictures are supported");
+
+  return surface;
+}
+
+int loadTexture(string path, Rect2i rect)
+{
+  auto surface = loadPicture(path);
 
   if(rect.width == 0 && rect.height == 0)
     rect = Rect2i(0, 0, surface->w, surface->h);
@@ -203,14 +213,9 @@ Model loadAnimation(string path)
 
   if(endsWith(path, ".json"))
   {
-    path = setExtension(path, "png");
-
-    for(int i = 0; i < 64; ++i)
-    {
-      auto col = i % 8;
-      auto row = i / 8;
-      m.addTexture(path, Rect2i(col * 16, row * 16, 16, 16));
-    }
+    auto m2 = loadModel(path);
+    m.textures = move(m2.textures);
+    return m;
   }
   else if(endsWith(path, ".mdl"))
   {
@@ -289,6 +294,9 @@ void drawActor(Rect2f where, int modelId, bool blinking, int frame)
 
   if(matrixId < 0)
     throw runtime_error("glGetUniformLocation failed");
+
+  if(model.textures.empty())
+    throw runtime_error("model has no textures");
 
   frame %= model.textures.size();
   glBindTexture(GL_TEXTURE_2D, model.textures[frame]);

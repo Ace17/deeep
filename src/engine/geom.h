@@ -69,6 +69,20 @@ struct GenericDimension
 typedef GenericDimension<int> Dimension2i;
 typedef GenericDimension<float> Dimension2f;
 
+inline
+Dimension2i lowestPowerOfTwoDimension(Dimension2i dim)
+{
+  auto r = Dimension2i(1, 1);
+
+  while(r.width < dim.width || r.height < dim.height)
+  {
+    r.width *= 2;
+    r.height *= 2;
+  }
+
+  return r;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Vector
 ///////////////////////////////////////////////////////////////////////////////

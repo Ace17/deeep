@@ -54,6 +54,16 @@ inline string setExtension(string name, string ext)
   return name.substr(0, e) + "." + ext;
 }
 
+inline string dirName(string path)
+{
+  auto n = path.rfind('/');
+
+  if(n == path.npos)
+    return ".";
+
+  return path.substr(0, n);
+}
+
 template<typename T>
 struct Matrix
 {
