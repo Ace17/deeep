@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+using namespace std;
+
 struct Toggle
 {
   bool toggle(bool newState)
@@ -10,5 +13,24 @@ struct Toggle
   }
 
   Bool state;
+};
+
+struct Debouncer
+{
+  bool tryActivate(int newDelay)
+  {
+    if(cooldown > 0)
+      return false;
+
+    cooldown = newDelay;
+    return true;
+  }
+
+  void cool()
+  {
+    cooldown = max(cooldown - 1, 0);
+  }
+
+  Int cooldown;
 };
 

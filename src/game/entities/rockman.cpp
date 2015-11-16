@@ -98,11 +98,8 @@ public:
     {
       if(vel.y < 0 && !ground)
       {
-        if(landingCooldown == 0)
-        {
+        if(debounceLanding.tryActivate(150))
           game->playSound(SND_LAND);
-          landingCooldown = 150;
-        }
 
         ground = true;
       }
@@ -110,12 +107,11 @@ public:
       vel.y = 0;
     }
 
-    cooldown = max(cooldown - 1, 0);
-    landingCooldown = max(landingCooldown - 1, 0);
+    debounceFire.cool();
+    debounceLanding.cool();
 
-    if(firebutton.toggle(c.fire) && cooldown == 0)
+    if(firebutton.toggle(c.fire) && debounceFire.tryActivate(150))
     {
-      cooldown = 150;
       /*
          auto b = unique(new Bullet);
          b->pos = pos + Vector2f(0, 9);
@@ -192,8 +188,8 @@ public:
     blinking = 100;
   }
 
-  Int cooldown;
-  Int landingCooldown;
+  Debouncer debounceFire;
+  Debouncer debounceLanding;
   Vector2f vel;
   Bool orientedRight;
   Bool ground;
