@@ -118,6 +118,7 @@ private:
     m_control.up = keys[SDLK_UP];
     m_control.down = keys[SDLK_DOWN];
     m_control.fire = keys[SDLK_SPACE];
+    m_control.jump = keys[SDLK_x];
   }
 
   void draw()

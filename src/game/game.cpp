@@ -34,7 +34,7 @@ class Game : public Scene, public IGame
 public:
   Game() : m_tiles(32 * 2, 32 * 2)
   {
-    m_player = new Player;
+    m_player = createRockman();
     m_player->pos = Vector2f(8, m_tiles.getHeight() - 2);
     spawn(m_player);
 
