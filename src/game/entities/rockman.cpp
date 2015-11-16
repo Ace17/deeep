@@ -49,9 +49,19 @@ enum ACTION
   ACTION_FULL,
 };
 
+enum ORIENTATION
+{
+  LEFT,
+  RIGHT,
+};
+
 class Rockman : public Player
 {
 public:
+  Rockman() : dir(RIGHT)
+  {
+  }
+
   virtual Actor getActor() const override
   {
     auto actorPos = pos + Vector2f(size.width / 2 - 0.75, -0.1);
@@ -74,7 +84,7 @@ public:
       r.action = ACTION_STAND;
     }
 
-    if(!orientedRight)
+    if(dir == LEFT)
       r.scale.x *= -1;
 
     return r;
@@ -82,7 +92,7 @@ public:
 
   void think(Control const& c) override
   {
-    ++time;
+    time++;
     computeVelocity(c);
 
     // horizontal move
@@ -133,22 +143,33 @@ public:
       if(c.right)
         wantedSpeed += WALK_SPEED;
 
-      vel.x = wantedSpeed;
+      vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
+
+      if(abs(vel.x) < 0.00001)
+        vel.x = 0;
 
       if(vel.x > 0)
-        orientedRight = true;
+        dir = RIGHT;
 
       if(vel.x < 0)
-        orientedRight = false;
+        dir = LEFT;
     }
 
     // gravity
     vel.y -= 0.00005;
 
-    if(jumpbutton.toggle(c.jump) && ground)
+    if(jumpbutton.toggle(c.jump))
     {
-      game->playSound(SND_JUMP);
-      vel.y = 0.015;
+      if(ground)
+      {
+        game->playSound(SND_JUMP);
+        vel.y = 0.015;
+      }
+      else if(facingWall())
+      {
+        vel.x = dir == RIGHT ? -0.1 : 0.1;
+        vel.y = 0.015;
+      }
     }
 
     if(vel.y > 0 && !c.jump)
@@ -188,13 +209,20 @@ public:
     blinking = 100;
   }
 
+  bool facingWall() const
+  {
+    if(dir == RIGHT)
+      return game->isSolid(pos + Vector2f(0.60 + 0.1, 0.4));
+    else
+      return game->isSolid(pos + Vector2f(0.10 - 0.1, 0.4));
+  }
+
   Debouncer debounceFire;
   Debouncer debounceLanding;
-  Vector2f vel;
-  Bool orientedRight;
+  ORIENTATION dir;
   Bool ground;
   Toggle jumpbutton, firebutton;
-  int time;
+  Int time;
 };
 
 Player* createRockman()

@@ -25,7 +25,12 @@ struct Initialized
     val = T(0);
   }
 
-  operator T () const
+  operator T const & () const
+  {
+    return val;
+  }
+
+  operator T & ()
   {
     return val;
   }

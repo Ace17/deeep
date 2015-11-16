@@ -139,6 +139,12 @@ T clamp(T val, T min, T max)
   return val < min ? min : (val > max ? max : val);
 }
 
+template<typename T>
+T abs(T val)
+{
+  return val < 0 ? -val : val;
+}
+
 template<typename Container, typename Element>
 bool exists(Container const& c, Element const& e)
 {
