@@ -7,11 +7,12 @@ Description
 -----------
 
 This is a demo of a platform independent C++11 game project.
-It uses SDL, SDL_mixer, OpenGL core profile.
-It's meant as an example of a real-time game which can be compiled to native,
-or to Javascript (using Emscripten), and maybe one day to WebAssembly.
+It uses SDL, SDL_mixer, and the OpenGL core profile.
+It's meant as an example of a real-time game which can be compiled to native
+code, or, using Emscripten, to Javascript, and maybe one day to WebAssembly.
 
-The code doesn't contain any reference to Emscripten, except in the main file.
+The code doesn't contain any reference/dependency to Emscripten, except in the
+main file, where the main loop function gets passed to Emscripten.
 
 This code also shows how to isolate your game logic code (entities, bullets)
 from your I/O code (display, audio).
@@ -29,11 +30,18 @@ res:        game resources (sounds, pictures)
 Build
 -----
 
-It can be compiled to native code using gcc:
+Requirements:
+* libsdl1.2-dev
+* libsdl-mixer1.2-dev
+* libsdl-image1.2-dev
+
+It can be compiled to native code using your native compiler (gcc or clang):
 
 $ make
 
-If you want to compile it to Javascript with Emscripten:
+It can also be compiled to Javascript, using Emscripten.
 
 $ CXX=emcc make
+
+See how the ./check script does for more information.
 
