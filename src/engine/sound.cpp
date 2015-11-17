@@ -11,11 +11,11 @@
  * License, or (at your option) any later version.
  */
 
+#include <vector>
 #include <stdexcept>
 #include <algorithm>
 #include <string>
 #include <SDL_mixer.h>
-#include "scene.h"
 
 using namespace std;
 

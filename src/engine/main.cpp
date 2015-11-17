@@ -14,7 +14,6 @@
 
 #include <iostream>
 #include <stdexcept>
-#include "SDL.h"
 #include "util.h"
 #include "scene.h"
 
@@ -54,10 +53,15 @@ void runMainLoop(App* app)
 
 #else
 
+#include <chrono>
+#include <thread>
+
 void runMainLoop(App* app)
 {
   while(App_tick(app))
-    SDL_Delay(1);
+  {
+    this_thread::sleep_for(chrono::milliseconds(1));
+  }
 }
 
 #endif

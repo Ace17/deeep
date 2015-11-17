@@ -18,9 +18,6 @@
 
 using namespace std;
 
-struct SOUND_ID_S;
-struct MODEL_ID_S;
-
 typedef int SOUND;
 typedef int MODEL;
 

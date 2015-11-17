@@ -87,6 +87,9 @@ public:
     if(dir == LEFT)
       r.scale.x *= -1;
 
+    if(blinking)
+      r.effect = EFFECT_BLINKING;
+
     return r;
   }
 
@@ -202,11 +205,11 @@ public:
   virtual void tick() override
   {
     dead = false;
+    blinking = max(0, blinking - 1);
   }
 
   virtual void onCollide(Entity*) override
   {
-    blinking = 100;
   }
 
   bool facingWall() const
