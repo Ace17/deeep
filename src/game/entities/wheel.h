@@ -75,8 +75,7 @@ public:
     blinking = 100;
   }
 
-  int time;
+  Int time;
   float dir;
-  Vector2f vel;
 };
 
