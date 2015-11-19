@@ -134,6 +134,7 @@ public:
     }
 
     debounceFire.cool();
+    debounceHurt.cool();
     debounceLanding.cool();
     climbDelay = max(0, climbDelay - 1);
 
@@ -227,8 +228,13 @@ public:
     blinking = max(0, blinking - 1);
   }
 
-  virtual void onCollide(Entity*) override
+  virtual void onDamage(int /*amount*/) override
   {
+    if(debounceHurt.tryActivate(1000))
+    {
+      blinking = 1000;
+      game->playSound(SND_HURT);
+    }
   }
 
   bool facingWall() const
@@ -241,6 +247,7 @@ public:
 
   Debouncer debounceFire;
   Debouncer debounceLanding;
+  Debouncer debounceHurt;
   ORIENTATION dir;
   Bool ground;
   Toggle jumpbutton, firebutton;

@@ -39,6 +39,10 @@ public:
   {
   }
 
+  virtual void onDamage(int /*amount*/)
+  {
+  }
+
   Bool dead;
   Bool solid;
   Vector2f pos;

@@ -7,6 +7,7 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
+#include "game/entities/player.h"
 
 class Wheel : public Entity
 {
@@ -70,7 +71,13 @@ public:
     blinking = max(0, blinking - 1);
   }
 
-  virtual void onCollide(Entity*) override
+  virtual void onCollide(Entity* other) override
+  {
+    if(dynamic_cast<Player*>(other))
+      other->onDamage(1);
+  }
+
+  virtual void onDamage(int) override
   {
     blinking = 100;
   }

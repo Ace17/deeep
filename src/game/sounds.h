@@ -7,5 +7,6 @@ enum
   SND_JUMP,
   SND_LAND,
   SND_SWITCH,
+  SND_HURT,
 };
 

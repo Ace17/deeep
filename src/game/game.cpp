@@ -112,6 +112,7 @@ public:
       { SND_BEEP, "res/beep.ogg" },
       { SND_LAND, "res/land.ogg" },
       { SND_SWITCH, "res/switch.ogg" },
+      { SND_HURT, "res/hurt.ogg" },
       { 0, nullptr },
     };
 
