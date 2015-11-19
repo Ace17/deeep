@@ -15,6 +15,7 @@ public:
   Wheel()
   {
     dir = -1.0f;
+    size = Dimension2f(1.5, 1.5);
   }
 
   virtual Actor getActor() const override
@@ -25,6 +26,7 @@ public:
       r.effect = EFFECT_BLINKING;
 
     r.action = 0;
+    r.scale = Vector2f(1.5, 1.5);
     r.ratio = (time % 200) / 200.0f;
 
     if(dir > 0)

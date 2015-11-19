@@ -138,12 +138,33 @@ public:
   {
     vector<Actor> r;
 
-    auto const limit = 3.5f;
+    auto const limit = 5.0f;
     auto cameraPos = m_player->pos;
     cameraPos.y += 1.5;
     cameraPos.x = clamp(cameraPos.x, limit, m_tiles.getWidth() - limit - 1);
     cameraPos.y = clamp(cameraPos.y, limit, m_tiles.getHeight() - limit - 1);
 
+    addActorsForTileMap(r, cameraPos);
+
+    for(auto& entity : retro(m_entities))
+      r.push_back(entity->getActor());
+
+    for(auto& actor : r)
+    {
+      actor.pos -= cameraPos;
+    }
+
+    return r;
+  }
+
+  vector<SOUND> readSounds() override
+  {
+    return std::move(m_sounds);
+  }
+
+private:
+  void addActorsForTileMap(vector<Actor>& r, Vector2f cameraPos) const
+  {
     auto onCell = [&] (int x, int y, int tile)
                   {
                     if(!tile)
@@ -170,24 +191,8 @@ public:
                   };
 
     m_tiles.scan(onCell);
-
-    for(auto& entity : m_entities)
-      r.push_back(entity->getActor());
-
-    for(auto& actor : retro(r))
-    {
-      actor.pos -= cameraPos;
-    }
-
-    return r;
   }
 
-  vector<SOUND> readSounds() override
-  {
-    return std::move(m_sounds);
-  }
-
-private:
   void checkCollisions()
   {
     for(size_t i = 0; i < m_entities.size(); ++i)

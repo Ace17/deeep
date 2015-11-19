@@ -152,9 +152,8 @@ bool exists(Container const& c, Element const& e)
 }
 
 template<typename T>
-class reverse_adapter
+struct reverse_adapter
 {
-public:
   reverse_adapter(T& c) : c(c)
   {
   }
@@ -169,7 +168,6 @@ public:
     return c.rend();
   }
 
-private:
   T& c;
 };
 
@@ -177,5 +175,31 @@ template<typename T>
 reverse_adapter<T> retro(T& c)
 {
   return reverse_adapter<T>(c);
+}
+
+template<typename T>
+struct reverse_const_adapter
+{
+  reverse_const_adapter(T const& c) : c(c)
+  {
+  }
+
+  typename T::const_reverse_iterator begin()
+  {
+    return c.rbegin();
+  }
+
+  typename T::const_reverse_iterator end()
+  {
+    return c.rend();
+  }
+
+  T const& c;
+};
+
+template<typename T>
+reverse_const_adapter<T> retro(T const& c)
+{
+  return reverse_const_adapter<T>(c);
 }
 

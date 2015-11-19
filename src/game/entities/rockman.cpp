@@ -61,13 +61,14 @@ class Rockman : public Player
 public:
   Rockman() : dir(RIGHT)
   {
+    size = Dimension2f(1, 2);
   }
 
   virtual Actor getActor() const override
   {
-    auto actorPos = pos + Vector2f(size.width / 2 - 0.75, -0.1);
+    auto actorPos = pos + Vector2f(-size.width / 2, -0.1);
     auto r = Actor(actorPos, MDL_ROCKMAN);
-    r.scale = Vector2f(1.25, 1.25);
+    r.scale = Vector2f(2, 2);
 
     if(!ground)
     {
@@ -212,10 +213,16 @@ public:
     if(game->isSolid(nextPos + Vector2f(0.60, 0)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.10, 0.80)))
+    if(game->isSolid(nextPos + Vector2f(0.10, 0.90)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.60, 0.80)))
+    if(game->isSolid(nextPos + Vector2f(0.60, 0.90)))
+      return false;
+
+    if(game->isSolid(nextPos + Vector2f(0.10, 1.50)))
+      return false;
+
+    if(game->isSolid(nextPos + Vector2f(0.60, 1.50)))
       return false;
 
     pos = nextPos;
@@ -240,9 +247,9 @@ public:
   bool facingWall() const
   {
     if(dir == RIGHT)
-      return game->isSolid(pos + Vector2f(0.60 + 0.1, 0.4));
+      return game->isSolid(pos + Vector2f(0.60 + 0.1, 0.3));
     else
-      return game->isSolid(pos + Vector2f(0.10 - 0.1, 0.4));
+      return game->isSolid(pos + Vector2f(0.10 - 0.1, 0.3));
   }
 
   Debouncer debounceFire;
