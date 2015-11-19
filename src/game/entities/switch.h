@@ -36,7 +36,7 @@ public:
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
-    r.scale = Vector2f(0.35, 0.35);
+    r.scale = Vector2f(0.5, 0.5);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
@@ -73,37 +73,21 @@ public:
     game = g;
     game->listen(id, this);
     size = Dimension2f(1, 1);
+    solid = true;
   }
 
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
+    r.pos -= Vector2f(0.5, 0.5);
     r.action = 2 + (state ? 1 : 0);
     return r;
-  }
-
-  virtual void tick() override
-  {
-  }
-
-  virtual void onCollide(Entity* other) override
-  {
-    if(state)
-      return;
-
-    auto delta = other->pos - pos;
-
-    if(abs(delta.x) < abs(delta.y))
-      delta.x = 0;
-    else
-      delta.y = 0;
-
-    other->pos += delta * 0.1;
   }
 
   virtual void trigger() override
   {
     state = !state;
+    solid = state;
   }
 
   Bool state;

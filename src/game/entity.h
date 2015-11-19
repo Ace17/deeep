@@ -22,7 +22,6 @@ class Entity
 public:
   Entity()
   {
-    dead = false;
     size = Dimension2f(1, 1);
     game = nullptr;
   }
@@ -40,14 +39,15 @@ public:
   {
   }
 
-  bool dead;
+  Bool dead;
+  Bool solid;
   Vector2f pos;
   Vector2f vel;
   Dimension2f size;
   Int blinking;
   IGame* game;
 
-  Rect2f getRect()
+  Rect2f getRect() const
   {
     Rect2f r;
     r.x = pos.x - size.width / 2;

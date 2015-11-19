@@ -199,7 +199,7 @@ void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int number)
       case 'D':
         {
           auto sw = new Door(val - 'A', game);
-          sw->pos = Vector2f(x, y);
+          sw->pos = Vector2f(x + 0.5, y + 0.5);
           game->spawn(sw);
           break;
         }

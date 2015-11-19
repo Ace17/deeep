@@ -235,13 +235,35 @@ private:
 
   bool isSolid(Vector2f pos) override
   {
-    auto const x = (int)pos.x;
-    auto const y = (int)pos.y;
+    // entities
+    {
+      auto myRect = Rect2f(pos.x, pos.y, 0, 0);
 
-    if(!m_tiles.isInside(x, y))
-      return false;
+      for(auto& entity : m_entities)
+      {
+        if(!entity->solid)
+          continue;
 
-    return m_tiles.get(x, y) != 0;
+        auto rect = entity->getRect();
+
+        if(overlaps(rect, myRect))
+          return true;
+      }
+    }
+
+    // tiles
+    {
+      auto const x = (int)pos.x;
+      auto const y = (int)pos.y;
+
+      if(m_tiles.isInside(x, y))
+      {
+        if(m_tiles.get(x, y) != 0)
+          return true;
+      }
+    }
+
+    return false;
   }
 
   void trigger(int triggerIdx) override
