@@ -25,6 +25,7 @@
 auto const WALK_SPEED = 0.0075f;
 auto const MAX_HORZ_SPEED = 0.02f;
 auto const MAX_FALL_SPEED = 0.02f;
+auto const CLIMB_DELAY = 100;
 
 enum ACTION
 {
@@ -70,18 +71,30 @@ public:
 
     if(!ground)
     {
-      r.action = ACTION_FALL;
-      r.ratio = vel.y > 0 ? 0 : 1;
-    }
-    else if(vel.x != 0)
-    {
-      r.ratio = (time % 500) / 500.0f;
-      r.action = ACTION_WALK;
+      if(climbDelay)
+      {
+        r.action = ACTION_CLIMB;
+        r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
+        r.scale.x *= -1;
+      }
+      else
+      {
+        r.action = ACTION_FALL;
+        r.ratio = vel.y > 0 ? 0 : 1;
+      }
     }
     else
     {
-      r.ratio = (time % 1000) / 1000.0f;
-      r.action = ACTION_STAND;
+      if(vel.x != 0)
+      {
+        r.ratio = (time % 500) / 500.0f;
+        r.action = ACTION_WALK;
+      }
+      else
+      {
+        r.ratio = (time % 1000) / 1000.0f;
+        r.action = ACTION_STAND;
+      }
     }
 
     if(dir == LEFT)
@@ -122,6 +135,7 @@ public:
 
     debounceFire.cool();
     debounceLanding.cool();
+    climbDelay = max(0, climbDelay - 1);
 
     if(firebutton.toggle(c.fire) && debounceFire.tryActivate(150))
     {
@@ -140,11 +154,14 @@ public:
     {
       float wantedSpeed = 0;
 
-      if(c.left)
-        wantedSpeed -= WALK_SPEED;
+      if(!climbDelay)
+      {
+        if(c.left)
+          wantedSpeed -= WALK_SPEED;
 
-      if(c.right)
-        wantedSpeed += WALK_SPEED;
+        if(c.right)
+          wantedSpeed += WALK_SPEED;
+      }
 
       vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
 
@@ -170,8 +187,10 @@ public:
       }
       else if(facingWall())
       {
-        vel.x = dir == RIGHT ? -0.1 : 0.1;
-        vel.y = 0.015;
+        // wall climbing
+        vel.x = dir == RIGHT ? -0.05 : 0.05;
+        vel.y = 0.01;
+        climbDelay = CLIMB_DELAY;
       }
     }
 
@@ -226,6 +245,7 @@ public:
   Bool ground;
   Toggle jumpbutton, firebutton;
   Int time;
+  Int climbDelay;
 };
 
 Player* createRockman()

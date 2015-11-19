@@ -70,7 +70,7 @@
     },
     {
       "name": "climb",
-      "frames": [ "4" ]
+      "frames": [ "68", "69", "70" ]
     },
     {
       "name": "hurt",

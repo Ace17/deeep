@@ -14,6 +14,9 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <chrono>
+#include <thread>
+
 #include "util.h"
 #include "scene.h"
 
@@ -53,9 +56,6 @@ void runMainLoop(App* app)
 
 #else
 
-#include <chrono>
-#include <thread>
-
 void runMainLoop(App* app)
 {
   while(App_tick(app))
@@ -75,7 +75,7 @@ int main()
     auto game = unique(createGame());
     auto app = App_create(game.get());
 
-    Display_init(512, 512);
+    Display_init(1024, 1024);
     Audio_init();
 
     auto const sounds = game->getSounds();
