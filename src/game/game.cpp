@@ -170,10 +170,10 @@ public:
 
     m_tiles.scan(onCell);
 
-    for(auto& enemy : m_entities)
-      r.push_back(enemy->getActor());
+    for(auto& entity : m_entities)
+      r.push_back(entity->getActor());
 
-    for(auto& actor : r)
+    for(auto& actor : retro(r))
     {
       actor.pos -= cameraPos;
     }

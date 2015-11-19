@@ -151,3 +151,31 @@ bool exists(Container const& c, Element const& e)
   return c.find(e) != c.end();
 }
 
+template<typename T>
+class reverse_adapter
+{
+public:
+  reverse_adapter(T& c) : c(c)
+  {
+  }
+
+  typename T::reverse_iterator begin()
+  {
+    return c.rbegin();
+  }
+
+  typename T::reverse_iterator end()
+  {
+    return c.rend();
+  }
+
+private:
+  T& c;
+};
+
+template<typename T>
+reverse_adapter<T> retro(T& c)
+{
+  return reverse_adapter<T>(c);
+}
+

@@ -189,7 +189,7 @@ public:
       {
         // wall climbing
         vel.x = dir == RIGHT ? -0.05 : 0.05;
-        vel.y = 0.01;
+        vel.y = 0.015;
         climbDelay = CLIMB_DELAY;
       }
     }

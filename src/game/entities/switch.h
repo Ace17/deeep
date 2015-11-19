@@ -30,7 +30,7 @@ class Switch : public Entity
 public:
   Switch(int id_) : id(id_)
   {
-    size = Dimension2f(0.25, 0.25);
+    size = Dimension2f(0.2, 0.2);
   }
 
   virtual Actor getActor() const override
@@ -87,7 +87,7 @@ public:
   virtual void trigger() override
   {
     state = !state;
-    solid = state;
+    solid = !solid;
   }
 
   Bool state;
