@@ -246,10 +246,15 @@ public:
 
   bool facingWall() const
   {
-    if(dir == RIGHT)
-      return game->isSolid(pos + Vector2f(0.60 + 0.1, 0.3));
-    else
-      return game->isSolid(pos + Vector2f(0.10 - 0.1, 0.3));
+    auto const front = dir == RIGHT ? 1.0 : 0;
+
+    if(game->isSolid(pos + Vector2f(front, 0.3)))
+      return true;
+
+    if(game->isSolid(pos + Vector2f(front, 1.2)))
+      return true;
+
+    return false;
   }
 
   Debouncer debounceFire;
