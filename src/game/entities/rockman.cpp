@@ -26,6 +26,7 @@ auto const WALK_SPEED = 0.0075f;
 auto const MAX_HORZ_SPEED = 0.02f;
 auto const MAX_FALL_SPEED = 0.02f;
 auto const CLIMB_DELAY = 100;
+auto const HURT_DELAY = 500;
 
 enum ACTION
 {
@@ -70,31 +71,39 @@ public:
     auto r = Actor(actorPos, MDL_ROCKMAN);
     r.scale = Vector2f(2, 2);
 
-    if(!ground)
+    if(hurtDelay)
     {
-      if(climbDelay)
-      {
-        r.action = ACTION_CLIMB;
-        r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
-        r.scale.x *= -1;
-      }
-      else
-      {
-        r.action = ACTION_FALL;
-        r.ratio = vel.y > 0 ? 0 : 1;
-      }
+      r.action = ACTION_HURT;
+      r.ratio = 1.0f - hurtDelay / float(HURT_DELAY);
     }
     else
     {
-      if(vel.x != 0)
+      if(!ground)
       {
-        r.ratio = (time % 500) / 500.0f;
-        r.action = ACTION_WALK;
+        if(climbDelay)
+        {
+          r.action = ACTION_CLIMB;
+          r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
+          r.scale.x *= -1;
+        }
+        else
+        {
+          r.action = ACTION_FALL;
+          r.ratio = vel.y > 0 ? 0 : 1;
+        }
       }
       else
       {
-        r.ratio = (time % 1000) / 1000.0f;
-        r.action = ACTION_STAND;
+        if(vel.x != 0)
+        {
+          r.ratio = (time % 500) / 500.0f;
+          r.action = ACTION_WALK;
+        }
+        else
+        {
+          r.ratio = (time % 1000) / 1000.0f;
+          r.action = ACTION_STAND;
+        }
       }
     }
 
@@ -135,7 +144,6 @@ public:
     }
 
     debounceFire.cool();
-    debounceHurt.cool();
     debounceLanding.cool();
     climbDelay = max(0, climbDelay - 1);
 
@@ -151,8 +159,13 @@ public:
     }
   }
 
-  void computeVelocity(Control const& c)
+  void computeVelocity(Control c)
   {
+    if(hurtDelay)
+    {
+      c = Control();
+    }
+
     {
       float wantedSpeed = 0;
 
@@ -189,6 +202,7 @@ public:
       }
       else if(facingWall())
       {
+        game->playSound(SND_JUMP);
         // wall climbing
         vel.x = dir == RIGHT ? -0.05 : 0.05;
         vel.y = 0.015;
@@ -233,13 +247,15 @@ public:
   {
     dead = false;
     blinking = max(0, blinking - 1);
+    hurtDelay = max(0, hurtDelay - 1);
   }
 
   virtual void onDamage(int /*amount*/) override
   {
-    if(debounceHurt.tryActivate(1000))
+    if(!blinking)
     {
-      blinking = 1000;
+      hurtDelay = HURT_DELAY;
+      blinking = 2000;
       game->playSound(SND_HURT);
     }
   }
@@ -259,12 +275,12 @@ public:
 
   Debouncer debounceFire;
   Debouncer debounceLanding;
-  Debouncer debounceHurt;
   ORIENTATION dir;
   Bool ground;
   Toggle jumpbutton, firebutton;
   Int time;
   Int climbDelay;
+  Int hurtDelay;
 };
 
 Player* createRockman()
