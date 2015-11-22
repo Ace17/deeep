@@ -221,7 +221,7 @@ Model loadAnimation(string path)
   {
     path = setExtension(path, "png");
 
-    for(int i = 0; i < 64; ++i)
+    for(int i = 0; i < 64 * 2; ++i)
     {
       auto col = i % 8;
       auto row = i / 8;

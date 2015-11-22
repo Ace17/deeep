@@ -109,7 +109,7 @@ void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int /*number*/)
         break;
       case '.': tile = 1;
         break;
-      case 'X': tile = 2;
+      case 'X': tile = 5;
         break;
       case 'O': tile = 3;
         break;

@@ -1,0 +1,16 @@
+{
+  "type" : "sheet",
+  "sheet" : "switch.png",
+  "width" : "16",
+  "height" : "16",
+  "actions": [
+    { "name": "", "frames": [ "0" ] },
+    { "name": "", "frames": [ "1" ] },
+    { "name": "", "frames": [ "2" ] },
+    { "name": "", "frames": [ "3" ] },
+    { "name": "", "frames": [ "4" ] },
+    { "name": "", "frames": [ "5" ] },
+    { "name": "", "frames": [ "6" ] },
+    { "name": "", "frames": [ "7" ] }
+  ]
+}

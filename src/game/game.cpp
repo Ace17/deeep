@@ -124,7 +124,7 @@ public:
     static const Resource models[] =
     {
       { MDL_BASE, "res/base.png" },
-      { MDL_SWITCH, "res/switch.mdl" },
+      { MDL_SWITCH, "res/switch.json" },
       { MDL_TILES, "res/tiles.mdl" },
       { MDL_ROCKMAN, "res/sprites/x/sprite.json" },
       { MDL_WHEEL, "res/sprites/wheel/sprite.json" },
