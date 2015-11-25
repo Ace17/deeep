@@ -128,6 +128,7 @@ public:
       { MDL_TILES, "res/tiles.mdl" },
       { MDL_ROCKMAN, "res/sprites/x/sprite.json" },
       { MDL_WHEEL, "res/sprites/wheel/sprite.json" },
+      { MDL_LIFEBAR, "res/sprites/lifebar/sprite.json" },
       { 0, nullptr },
     };
 
@@ -152,6 +153,14 @@ public:
     for(auto& actor : r)
     {
       actor.pos -= cameraPos;
+    }
+
+    {
+      Actor lifebar(Vector2f(-4.5, 1), MDL_LIFEBAR);
+      lifebar.action = 1;
+      lifebar.ratio = 0;
+      lifebar.scale = Vector2f(0.7, 3);
+      r.push_back(lifebar);
     }
 
     return r;

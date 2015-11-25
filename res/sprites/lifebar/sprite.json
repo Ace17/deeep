@@ -1,0 +1,17 @@
+{
+  "type" : "sheet",
+  "sheet" : "sheet.png",
+  "width" : "16",
+  "height" : "80",
+  "actions": [
+    {
+      "name": "player",
+      "frames": [ "0" ]
+    },
+    {
+      "name": "enemy",
+      "frames": [ "1" ]
+    }
+  ]
+}
+

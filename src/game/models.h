@@ -7,5 +7,6 @@ enum
   MDL_TILES,
   MDL_ROCKMAN,
   MDL_WHEEL,
+  MDL_LIFEBAR,
 };
 
