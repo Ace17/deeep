@@ -13,6 +13,7 @@
 
 #include <cassert>
 #include <random>
+#include <chrono>
 #include "engine/geom.h"
 #include "engine/util.h"
 #include "game/game.h"
@@ -101,7 +102,9 @@ Matrix<Cell> createConnectionMatrix(int numCols, int numRows, default_random_eng
 void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
 {
   default_random_engine gen;
-  gen.seed(rand());
+
+  auto seedVal = chrono::system_clock::now().time_since_epoch().count();
+  gen.seed(seedVal);
 
   auto const numCols = ceilDiv(W, BLOCK_W);
   auto const numRows = ceilDiv(H, BLOCK_H);
