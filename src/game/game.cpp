@@ -28,6 +28,7 @@ using namespace std;
 
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int number);
+void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
 
 class Game : public Scene, public IGame
 {
@@ -46,7 +47,8 @@ public:
     m_tiles.scan(onCell);
 
     Vector2i start;
-    loadLevel(m_tiles, start, this, 1);
+    // loadLevel(m_tiles, start, this, 1);
+    loadLevel2(m_tiles, start, this);
     m_player->pos = Vector2f(start.x, start.y);
 
     {

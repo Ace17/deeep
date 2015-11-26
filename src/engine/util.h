@@ -17,6 +17,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <random>
 
 using namespace std;
 
@@ -145,6 +146,12 @@ T abs(T val)
   return val < 0 ? -val : val;
 }
 
+template<typename T>
+T ceilDiv(T number, T divisor)
+{
+  return (number + divisor - 1) / divisor;
+}
+
 template<typename Container, typename Element>
 bool exists(Container const& c, Element const& e)
 {
@@ -201,5 +208,48 @@ template<typename T>
 reverse_const_adapter<T> retro(T const& c)
 {
   return reverse_const_adapter<T>(c);
+}
+
+template<typename T, typename Gen>
+auto shuffle_inplace(vector<T> &v, Gen & gen)
+{
+  auto dist = uniform_int_distribution<int>(0, v.size() - 1);
+
+  for(size_t i = 0; i < v.size(); ++i)
+  {
+    auto a = dist(gen);
+    auto b = dist(gen);
+    swap(v[a], v[b]);
+  }
+}
+
+template<typename T, typename Gen>
+auto shuffle(vector<T> const & input, Gen & gen)
+{
+  vector<T> r = input;
+  shuffle_inplace(r, gen);
+  return r;
+}
+
+inline
+vector<int> seq(int start, int end)
+{
+  vector<int> r;
+
+  for(int i = start; i <= end; ++i)
+    r.push_back(i);
+
+  return r;
+}
+
+template<typename T>
+vector<T> extract(vector<T> const& input, vector<int> indices)
+{
+  vector<T> r;
+
+  for(auto i : indices)
+    r.push_back(input[i]);
+
+  return r;
 }
 
