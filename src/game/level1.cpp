@@ -89,6 +89,51 @@ static const char data_level1[H][W + 1] =
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 };
 
+int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
+{
+  switch(val)
+  {
+  default:
+  case ' ':
+    return 0;
+  case '!':
+    start = pos;
+    return 0;
+  case '.':
+    return 1;
+  case 'X': return 5;
+  case 'O': return 3;
+  case 'Z': return 4;
+  case 'a':
+  case 'b':
+  case 'c':
+  case 'd':
+    {
+      auto sw = new Switch(val - 'a');
+      sw->pos = Vector2f(pos.x + 0.3, pos.y + 0.15);
+      game->spawn(sw);
+      return 0;
+    }
+  case 'A':
+  case 'B':
+  case 'C':
+  case 'D':
+    {
+      auto sw = new Door(val - 'A', game);
+      sw->pos = Vector2f(pos.x + 0.5, pos.y + 0.5);
+      game->spawn(sw);
+      return 0;
+    }
+  case '*':
+    {
+      auto wh = new Wheel;
+      wh->pos = Vector2f(pos.x, pos.y);
+      game->spawn(wh);
+      return 0;
+    }
+  }
+}
+
 void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int /*number*/)
 {
   auto data = data_level1;
@@ -96,53 +141,10 @@ void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int /*number*/)
   for(int y = 0; y < H; ++y)
     for(int x = 0; x < W; ++x)
     {
-      int tile = 0;
       auto val = data[H - 1 - y][x];
-      switch(val)
-      {
-      case ' ':
-        tile = 0;
-        break;
-      case '!':
-        tile = 0;
-        start = Vector2i(x, y);
-        break;
-      case '.': tile = 1;
-        break;
-      case 'X': tile = 5;
-        break;
-      case 'O': tile = 3;
-        break;
-      case 'Z': tile = 4;
-        break;
-      case 'a':
-      case 'b':
-      case 'c':
-      case 'd':
-        {
-          auto sw = new Switch(val - 'a');
-          sw->pos = Vector2f(x + 0.3, y + 0.15);
-          game->spawn(sw);
-          break;
-        }
-      case 'A':
-      case 'B':
-      case 'C':
-      case 'D':
-        {
-          auto sw = new Door(val - 'A', game);
-          sw->pos = Vector2f(x + 0.5, y + 0.5);
-          game->spawn(sw);
-          break;
-        }
-      case '*':
-        {
-          auto wh = new Wheel;
-          wh->pos = Vector2f(x, y);
-          game->spawn(wh);
-          break;
-        }
-      }
+
+      auto pos = Vector2i(x, y);
+      auto tile = interpretTile(pos, start, game, val);
 
       tiles.set(x, y, tile);
     }
