@@ -33,8 +33,12 @@ using namespace std;
 vector<Model> g_Models;
 GLuint g_ProgramId;
 
+#ifdef NDEBUG
+#define SAFE_GL(a) a
+#else
 #define SAFE_GL(a) \
   do { a; ensureGl(# a, __LINE__); } while(0)
+#endif
 
 void ensureGl(char const* expr, int line)
 {
