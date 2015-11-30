@@ -20,7 +20,6 @@ struct Model
   int numIndices = 0;
   int size = 0;
   vector<Action> actions;
-  float scale = 1;
 };
 
 Model loadModel(string jsonPath);

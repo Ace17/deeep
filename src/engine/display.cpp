@@ -321,8 +321,8 @@ void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ra
   auto const dx = where.x;
   auto const dy = where.y;
 
-  auto const sx = where.width * model.scale;
-  auto const sy = where.height * model.scale;
+  auto const sx = where.width;
+  auto const sy = where.height;
 
   float mat[16] =
   {
