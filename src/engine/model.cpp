@@ -21,33 +21,6 @@ int asInt(json::Value* pVal)
 }
 
 // -----------------------------------------------------------------------------
-// Multiple-files
-
-static
-void loadFrame(Action& r, json::Value* val, string dir)
-{
-  auto frame = json::cast<json::Object>(val);
-  auto idx = frame->getMember<json::String>("idx");
-  auto path = dir + "/" + idx->value + ".png";
-  r.addTexture(path);
-}
-
-static
-Action loadAction(json::Value* val, string dir)
-{
-  Action r;
-
-  auto action = json::cast<json::Object>(val);
-  action->getMember<json::String>("name");
-  auto frames = action->getMember<json::Array>("frames");
-
-  for(auto& frame : frames->elements)
-    loadFrame(r, frame.get(), dir);
-
-  return r;
-}
-
-// -----------------------------------------------------------------------------
 // Single-sheet
 
 static
@@ -82,12 +55,7 @@ Model loadModel(string jsonPath)
   auto type = obj->getMember<json::String>("type")->value;
   auto actions = obj->getMember<json::Array>("actions");
 
-  if(type == "split")
-  {
-    for(auto& action : actions->elements)
-      r.actions.push_back(loadAction(action.get(), dir));
-  }
-  else if(type == "sheet")
+  if(type == "sheet")
   {
     auto sheet = obj->getMember<json::String>("sheet")->value;
     auto width = asInt(obj->getMember<json::String>("width"));
