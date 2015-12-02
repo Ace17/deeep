@@ -33,7 +33,7 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
 class Game : public Scene, public IGame
 {
 public:
-  Game() : m_tiles(32 * 2, 32 * 2)
+  Game() : m_tiles(128, 128)
   {
     m_player = createRockman();
     m_player->pos = Vector2f(8, m_tiles.getHeight() - 2);
@@ -47,8 +47,8 @@ public:
     m_tiles.scan(onCell);
 
     Vector2i start;
-    // loadLevel(m_tiles, start, this, 1);
-    loadLevel2(m_tiles, start, this);
+    loadLevel(m_tiles, start, this, 1);
+    // loadLevel2(m_tiles, start, this);
     m_player->pos = Vector2f(start.x, start.y);
 
     {
