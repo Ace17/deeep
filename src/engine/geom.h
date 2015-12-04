@@ -13,6 +13,9 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cassert>
+
 ///////////////////////////////////////////////////////////////////////////////
 // Initialized
 ///////////////////////////////////////////////////////////////////////////////
@@ -171,9 +174,6 @@ struct GenericRect : GenericVector<T>, GenericSize<T>
 
 typedef GenericRect<int> Rect2i;
 typedef GenericRect<float> Rect2f;
-
-#include <algorithm>
-#include <cassert>
 
 template<typename T>
 bool segmentsOverlap(T s1x1, T s1x2, T s2x1, T s2x2)
