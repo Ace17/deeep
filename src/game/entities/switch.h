@@ -30,7 +30,7 @@ class Switch : public Entity
 public:
   Switch(int id_) : id(id_)
   {
-    size = Dimension2f(0.2, 0.2);
+    size = Size2f(0.2, 0.2);
   }
 
   virtual Actor getActor() const override
@@ -72,7 +72,7 @@ public:
   {
     game = g;
     game->listen(id, this);
-    size = Dimension2f(1, 1);
+    size = Size2f(1, 1);
     solid = true;
   }
 

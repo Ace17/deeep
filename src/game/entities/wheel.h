@@ -15,7 +15,7 @@ public:
   Wheel()
   {
     dir = -1.0f;
-    size = Dimension2f(1.5, 1.5);
+    size = Size2f(1.5, 1.5);
   }
 
   virtual Actor getActor() const override

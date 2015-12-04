@@ -22,7 +22,7 @@ class Entity
 public:
   Entity()
   {
-    size = Dimension2f(1, 1);
+    size = Size2f(1, 1);
     game = nullptr;
   }
 
@@ -47,7 +47,7 @@ public:
   Bool solid;
   Vector2f pos;
   Vector2f vel;
-  Dimension2f size;
+  Size2f size;
   Int blinking;
   IGame* game;
 

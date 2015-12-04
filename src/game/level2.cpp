@@ -82,7 +82,7 @@ Matrix<Cell> createConnectionMatrix(int numCols, int numRows, default_random_eng
 {
   auto const tree = createRandomSpanningTree(gen, numCols, numRows);
 
-  auto cells = Matrix<Cell>(numCols, numRows);
+  auto cells = Matrix<Cell>(Size2i(numCols, numRows));
 
   auto nodePos = [ = ] (int id) -> Vector2i
                  {
@@ -116,7 +116,7 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
     tiles.scan(emptyCell);
   }
 
-  auto rect = [&] (Vector2i pos, Dimension2i size, int val)
+  auto rect = [&] (Vector2i pos, Size2i size, int val)
               {
                 for(int y = 0; y < size.height; ++y)
                   for(int x = 0; x < size.width; ++x)
@@ -133,16 +133,16 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
       auto bCol = col * BLOCK_W;
 
       if(!cell.openDown)
-        rect(Vector2i(bCol, bRow), Dimension2i(BLOCK_W, 3), 'X');
+        rect(Vector2i(bCol, bRow), Size2i(BLOCK_W, 3), 'X');
 
       if(!cell.openUp)
-        rect(Vector2i(bCol, bRow + BLOCK_H - 2), Dimension2i(BLOCK_W, 2), 'X');
+        rect(Vector2i(bCol, bRow + BLOCK_H - 2), Size2i(BLOCK_W, 2), 'X');
 
       if(!cell.openLeft)
-        rect(Vector2i(bCol, bRow), Dimension2i(2, BLOCK_H), 'X');
+        rect(Vector2i(bCol, bRow), Size2i(2, BLOCK_H), 'X');
 
       if(!cell.openRight)
-        rect(Vector2i(bCol + BLOCK_W - 2, bRow), Dimension2i(2, BLOCK_H), 'X');
+        rect(Vector2i(bCol + BLOCK_W - 2, bRow), Size2i(2, BLOCK_H), 'X');
     }
   }
 

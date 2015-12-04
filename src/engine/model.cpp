@@ -24,7 +24,7 @@ int asInt(json::Value* pVal)
 // Single-sheet
 
 static
-Action loadSheetAction(json::Value* val, string sheetPath, Dimension2i cell)
+Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 {
   Action r;
 
@@ -61,7 +61,7 @@ Model loadModel(string jsonPath)
     auto width = asInt(obj->getMember<json::String>("width"));
     auto height = asInt(obj->getMember<json::String>("height"));
 
-    auto cell = Dimension2i(width, height);
+    auto cell = Size2i(width, height);
 
     for(auto& action : actions->elements)
       r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, cell));

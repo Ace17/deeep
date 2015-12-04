@@ -58,26 +58,26 @@ typedef Initialized<bool> Bool;
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-struct GenericDimension
+struct GenericSize
 {
-  GenericDimension() : width(0), height(0)
+  GenericSize() : width(0), height(0)
   {
   }
 
-  GenericDimension(T w, T h) : width(w), height(h)
+  GenericSize(T w, T h) : width(w), height(h)
   {
   }
 
   T width, height;
 };
 
-typedef GenericDimension<int> Dimension2i;
-typedef GenericDimension<float> Dimension2f;
+typedef GenericSize<int> Size2i;
+typedef GenericSize<float> Size2f;
 
 inline
-Dimension2i lowestPowerOfTwoDimension(Dimension2i dim)
+Size2i lowestPowerOfTwoDimension(Size2i dim)
 {
-  auto r = Dimension2i(1, 1);
+  auto r = Size2i(1, 1);
 
   while(r.width < dim.width || r.height < dim.height)
   {
@@ -156,7 +156,7 @@ typedef GenericVector<float> Vector2f;
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-struct GenericRect : GenericVector<T>, GenericDimension<T>
+struct GenericRect : GenericVector<T>, GenericSize<T>
 {
   GenericRect()
   {
@@ -164,7 +164,7 @@ struct GenericRect : GenericVector<T>, GenericDimension<T>
 
   GenericRect(T x, T y, T w, T h) :
     GenericVector<T>(x, y),
-    GenericDimension<T>(w, h)
+    GenericSize<T>(w, h)
   {
   }
 };
@@ -203,4 +203,75 @@ bool overlaps(GenericRect<T> const& a, GenericRect<T> const& b)
 
   return true;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Matrix
+///////////////////////////////////////////////////////////////////////////////
+
+template<typename T>
+struct Matrix
+{
+  Matrix(Size2i size_) : size(size_)
+  {
+    data = new T[size.width * size.height];
+
+    for(int i = 0; i < size.width * size.height; ++i)
+      data[i] = T();
+  }
+
+  ~Matrix()
+  {
+    delete[] data;
+  }
+
+  const Size2i size;
+
+  T& get(int x, int y)
+  {
+    assert(isInside(x, y));
+    return data[x + y * size.width];
+  }
+
+  const T& get(int x, int y) const
+  {
+    assert(isInside(x, y));
+    return data[x + y * size.width];
+  }
+
+  void set(int x, int y, T const& val)
+  {
+    assert(isInside(x, y));
+    get(x, y) = val;
+  }
+
+  template<typename Lambda>
+  void scan(Lambda f)
+  {
+    for(int y = 0; y < size.height; y++)
+      for(int x = 0; x < size.width; x++)
+        f(x, y, get(x, y));
+  }
+
+  template<typename Lambda>
+  void scan(Lambda f) const
+  {
+    for(int y = 0; y < size.height; y++)
+      for(int x = 0; x < size.width; x++)
+        f(x, y, get(x, y));
+  }
+
+  bool isInside(int x, int y) const
+  {
+    if(x < 0 || y < 0)
+      return false;
+
+    if(x >= size.width || y >= size.height)
+      return false;
+
+    return true;
+  }
+
+private:
+  T* data;
+};
 

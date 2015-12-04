@@ -62,7 +62,7 @@ class Rockman : public Player
 public:
   Rockman() : dir(RIGHT)
   {
-    size = Dimension2f(1, 2);
+    size = Size2f(1, 2);
   }
 
   virtual Actor getActor() const override

@@ -33,10 +33,10 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
 class Game : public Scene, public IGame
 {
 public:
-  Game() : m_tiles(128, 128)
+  Game() : m_tiles(Size2i(128, 128))
   {
     m_player = createRockman();
-    m_player->pos = Vector2f(8, m_tiles.getHeight() - 2);
+    m_player->pos = Vector2f(8, m_tiles.size.height - 2);
     spawn(m_player);
 
     auto onCell = [&] (int, int, int& tile)
@@ -53,7 +53,7 @@ public:
 
     {
       auto w = new Wheel;
-      w->pos = Vector2f(17, m_tiles.getHeight() - 4);
+      w->pos = Vector2f(17, m_tiles.size.height - 4);
       spawn(w);
     }
 
@@ -62,17 +62,17 @@ public:
 
   void addRandomWidgets()
   {
-    auto rect = [&] (Vector2i pos, Vector2i size, int tile)
+    auto rect = [&] (Vector2i pos, Size2i size, int tile)
                 {
-                  for(int dy = 0; dy < size.y; ++dy)
-                    for(int dx = 0; dx < size.x; ++dx)
+                  for(int dy = 0; dy < size.height; ++dy)
+                    for(int dx = 0; dx < size.width; ++dx)
                       m_tiles.set(dx + pos.x, dy + pos.y, tile);
                 };
 
-    auto isFull = [&] (Vector2i pos, Vector2i size) -> bool
+    auto isFull = [&] (Vector2i pos, Size2i size) -> bool
                   {
-                    for(int dy = 0; dy < size.y; ++dy)
-                      for(int dx = 0; dx < size.x; ++dx)
+                    for(int dy = 0; dy < size.height; ++dy)
+                      for(int dx = 0; dx < size.width; ++dx)
                         if(m_tiles.get(dx + pos.x, dy + pos.y) == 0)
                           return false;
 
@@ -81,12 +81,12 @@ public:
 
     for(int i = 0; i < 1000; ++i)
     {
-      auto const maxX = m_tiles.getWidth() - 4;
-      auto const maxY = m_tiles.getHeight() - 4;
+      auto const maxX = m_tiles.size.width - 4;
+      auto const maxY = m_tiles.size.height - 4;
       auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
-      auto size = Vector2i(2, 2);
+      auto size = Size2i(2, 2);
 
-      if(isFull(pos + Vector2i(-1, -1), size + Vector2i(2, 2)))
+      if(isFull(pos + Vector2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
         rect(pos, size, 3);
     }
   }
@@ -144,8 +144,8 @@ public:
     auto const limit = 5.0f;
     auto cameraPos = m_player->pos;
     cameraPos.y += 1.5;
-    cameraPos.x = clamp(cameraPos.x, limit, m_tiles.getWidth() - limit - 1);
-    cameraPos.y = clamp(cameraPos.y, limit, m_tiles.getHeight() - limit - 1);
+    cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit - 1);
+    cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit - 1);
 
     addActorsForTileMap(r, cameraPos);
 
