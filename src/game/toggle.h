@@ -15,24 +15,15 @@ struct Toggle
   Bool state;
 };
 
-struct Debouncer
+template<typename T, typename U>
+bool tryActivate(T& val, U delay)
 {
-  bool tryActivate(int newDelay)
-  {
-    if(cooldown > 0)
-      return false;
+  if(val > 0)
+    return false;
 
-    cooldown = newDelay;
-    return true;
-  }
-
-  void cool()
-  {
-    cooldown = max(cooldown - 1, 0);
-  }
-
-  Int cooldown;
-};
+  val = delay;
+  return true;
+}
 
 template<typename T>
 void decrement(T& val)

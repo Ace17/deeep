@@ -134,7 +134,7 @@ public:
     {
       if(vel.y < 0 && !ground)
       {
-        if(debounceLanding.tryActivate(150))
+        if(tryActivate(debounceLanding, 150))
           game->playSound(SND_LAND);
 
         ground = true;
@@ -143,11 +143,11 @@ public:
       vel.y = 0;
     }
 
-    debounceFire.cool();
-    debounceLanding.cool();
+    decrement(debounceFire);
+    decrement(debounceLanding);
     decrement(climbDelay);
 
-    if(firebutton.toggle(c.fire) && debounceFire.tryActivate(150))
+    if(firebutton.toggle(c.fire) && tryActivate(debounceFire, 150))
     {
       /*
          auto b = unique(new Bullet);
@@ -268,8 +268,8 @@ public:
     return false;
   }
 
-  Debouncer debounceFire;
-  Debouncer debounceLanding;
+  Int debounceFire;
+  Int debounceLanding;
   ORIENTATION dir;
   Bool ground;
   Toggle jumpbutton, firebutton;
