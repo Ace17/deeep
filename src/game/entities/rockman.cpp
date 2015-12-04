@@ -162,33 +162,15 @@ public:
   void computeVelocity(Control c)
   {
     if(hurtDelay)
-    {
       c = Control();
-    }
 
-    {
-      float wantedSpeed = 0;
+    airMove(c);
 
-      if(!climbDelay)
-      {
-        if(c.left)
-          wantedSpeed -= WALK_SPEED;
+    if(vel.x > 0)
+      dir = RIGHT;
 
-        if(c.right)
-          wantedSpeed += WALK_SPEED;
-      }
-
-      vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
-
-      if(abs(vel.x) < 0.00001)
-        vel.x = 0;
-
-      if(vel.x > 0)
-        dir = RIGHT;
-
-      if(vel.x < 0)
-        dir = LEFT;
-    }
+    if(vel.x < 0)
+      dir = LEFT;
 
     // gravity
     vel.y -= 0.00005;
@@ -210,11 +192,31 @@ public:
       }
     }
 
+    // stop jump if the player release the button early
     if(vel.y > 0 && !c.jump)
       vel.y = 0;
 
     vel.x = clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
     vel.y = max(vel.y, -MAX_FALL_SPEED);
+  }
+
+  void airMove(Control c)
+  {
+    float wantedSpeed = 0;
+
+    if(!climbDelay)
+    {
+      if(c.left)
+        wantedSpeed -= WALK_SPEED;
+
+      if(c.right)
+        wantedSpeed += WALK_SPEED;
+    }
+
+    vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
+
+    if(abs(vel.x) < 0.00001)
+      vel.x = 0;
   }
 
   bool move(Vector2f delta)
