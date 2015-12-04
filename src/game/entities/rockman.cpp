@@ -221,23 +221,19 @@ public:
   {
     auto nextPos = pos + delta;
 
-    if(game->isSolid(nextPos + Vector2f(0.10, 0)))
-      return false;
+    static const Vector2f vertices[] =
+    {
+      Vector2f(0.10, 0),
+      Vector2f(0.60, 0),
+      Vector2f(0.10, 0.90),
+      Vector2f(0.60, 0.90),
+      Vector2f(0.10, 1.50),
+      Vector2f(0.60, 1.50),
+    };
 
-    if(game->isSolid(nextPos + Vector2f(0.60, 0)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(0.10, 0.90)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(0.60, 0.90)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(0.10, 1.50)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(0.60, 1.50)))
-      return false;
+    for(auto& v : vertices)
+      if(game->isSolid(nextPos + v))
+          return false;
 
     pos = nextPos;
     return true;
