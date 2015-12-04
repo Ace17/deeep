@@ -34,3 +34,10 @@ struct Debouncer
   Int cooldown;
 };
 
+template<typename T>
+void decrement(T& val)
+{
+  if(val > 0)
+    val--;
+}
+

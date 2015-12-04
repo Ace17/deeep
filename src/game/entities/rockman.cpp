@@ -145,7 +145,7 @@ public:
 
     debounceFire.cool();
     debounceLanding.cool();
-    climbDelay = max(0, climbDelay - 1);
+    decrement(climbDelay);
 
     if(firebutton.toggle(c.fire) && debounceFire.tryActivate(150))
     {
@@ -233,7 +233,7 @@ public:
 
     for(auto& v : vertices)
       if(game->isSolid(nextPos + v))
-          return false;
+        return false;
 
     pos = nextPos;
     return true;
@@ -241,9 +241,8 @@ public:
 
   virtual void tick() override
   {
-    dead = false;
-    blinking = max(0, blinking - 1);
-    hurtDelay = max(0, hurtDelay - 1);
+    decrement(blinking);
+    decrement(hurtDelay);
   }
 
   virtual void onDamage(int /*amount*/) override
