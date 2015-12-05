@@ -109,12 +109,12 @@ public:
   {
     static const Resource sounds[] =
     {
-      { SND_CHIRP, "res/base.ogg" },
-      { SND_JUMP, "res/jump.ogg" },
-      { SND_BEEP, "res/beep.ogg" },
-      { SND_LAND, "res/land.ogg" },
-      { SND_SWITCH, "res/switch.ogg" },
-      { SND_HURT, "res/hurt.ogg" },
+      { SND_CHIRP, "res/sounds/base.ogg" },
+      { SND_JUMP, "res/sounds/jump.ogg" },
+      { SND_BEEP, "res/sounds/beep.ogg" },
+      { SND_LAND, "res/sounds/land.ogg" },
+      { SND_SWITCH, "res/sounds/switch.ogg" },
+      { SND_HURT, "res/sounds/hurt.ogg" },
       { 0, nullptr },
     };
 
