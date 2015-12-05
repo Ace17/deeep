@@ -158,8 +158,8 @@ public:
 
     {
       Actor lifebar(Vector2f(-4.5, 1), MDL_LIFEBAR);
-      lifebar.action = 1;
-      lifebar.ratio = 0;
+      lifebar.action = 0;
+      lifebar.ratio = m_player->health();
       lifebar.scale = Vector2f(0.7, 3);
       r.push_back(lifebar);
     }

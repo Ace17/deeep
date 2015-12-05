@@ -63,6 +63,7 @@ public:
   Rockman() : dir(RIGHT)
   {
     size = Size2f(1, 2);
+    life = 31;
   }
 
   virtual Actor getActor() const override
@@ -159,6 +160,11 @@ public:
     }
   }
 
+  float health() override
+  {
+    return clamp(life / 32.0f, 0.0f, 1.0f);
+  }
+
   void computeVelocity(Control c)
   {
     if(hurtDelay)
@@ -247,10 +253,11 @@ public:
     decrement(hurtDelay);
   }
 
-  virtual void onDamage(int /*amount*/) override
+  virtual void onDamage(int amount) override
   {
     if(!blinking)
     {
+      life -= amount;
       hurtDelay = HURT_DELAY;
       blinking = 2000;
       game->playSound(SND_HURT);
@@ -278,6 +285,7 @@ public:
   Int time;
   Int climbDelay;
   Int hurtDelay;
+  Int life;
 };
 
 Player* createRockman()

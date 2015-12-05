@@ -76,7 +76,7 @@ public:
   virtual void onCollide(Entity* other) override
   {
     if(dynamic_cast<Player*>(other))
-      other->onDamage(1);
+      other->onDamage(3);
   }
 
   virtual void onDamage(int) override
