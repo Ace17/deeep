@@ -115,6 +115,7 @@ public:
       { SND_LAND, "res/sounds/land.ogg" },
       { SND_SWITCH, "res/sounds/switch.ogg" },
       { SND_HURT, "res/sounds/hurt.ogg" },
+      { SND_DIE, "res/sounds/die.ogg" },
       { 0, nullptr },
     };
 

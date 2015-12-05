@@ -8,5 +8,6 @@ enum
   SND_LAND,
   SND_SWITCH,
   SND_HURT,
+  SND_DIE,
 };
 

@@ -72,7 +72,7 @@ public:
     auto r = Actor(actorPos, MDL_ROCKMAN);
     r.scale = Vector2f(2, 2);
 
-    if(hurtDelay)
+    if(hurtDelay || life < 0)
     {
       r.action = ACTION_HURT;
       r.ratio = 1.0f - hurtDelay / float(HURT_DELAY);
@@ -162,12 +162,12 @@ public:
 
   float health() override
   {
-    return clamp(life / 32.0f, 0.0f, 1.0f);
+    return clamp(life / 31.0f, 0.0f, 1.0f);
   }
 
   void computeVelocity(Control c)
   {
-    if(hurtDelay)
+    if(hurtDelay || life <= 0)
       c = Control();
 
     airMove(c);
@@ -255,9 +255,18 @@ public:
 
   virtual void onDamage(int amount) override
   {
+    if(life <= 0)
+      return;
+
     if(!blinking)
     {
       life -= amount;
+      if(life < 0)
+      {
+        die();
+        return;
+      }
+
       hurtDelay = HURT_DELAY;
       blinking = 2000;
       game->playSound(SND_HURT);
@@ -275,6 +284,11 @@ public:
       return true;
 
     return false;
+  }
+
+  void die()
+  {
+    game->playSound(SND_DIE);
   }
 
   Int debounceFire;
