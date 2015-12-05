@@ -1,6 +1,6 @@
 {
   "type" : "sheet",
-  "sheet" : "sheet.png",
+  "sheet" : "lifebar.png",
   "width" : "16",
   "height" : "80",
   "actions": [
