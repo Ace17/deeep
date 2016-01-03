@@ -261,6 +261,7 @@ public:
     if(!blinking)
     {
       life -= amount;
+
       if(life < 0)
       {
         die();
