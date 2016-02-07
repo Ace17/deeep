@@ -1,5 +1,10 @@
 include build/common_head.mak
 
+CROSS_COMPILE?=
+ifneq (,$(CROSS_COMPILE))
+CXX:=$(CROSS_COMPILE)g++
+endif
+
 ARCH:=$(shell $(CXX) -dumpmachine)
 
 EXT:=exe
@@ -9,8 +14,8 @@ endif
 
 all: true_all
 
-SDL_CFLAGS:=$(shell sdl-config --cflags)
-SDL_LDFLAGS:=$(shell sdl-config --libs)
+SDL_CFLAGS:=$(shell pkg-config sdl --cflags)
+SDL_LDFLAGS:=$(shell pkg-config sdl --libs)
 
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
