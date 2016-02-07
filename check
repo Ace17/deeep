@@ -9,7 +9,8 @@ scripts/reformat.sh src
 echo "----------------------------------------------------------------"
 echo "Building asmjs version"
 
-PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master/system/bin:$PATH \
+PKG_CONFIG_LIBDIR=/home/ace/source/emscripten/emsdk_portable/emscripten/master/system/lib/pkgconfig \
+PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master:$PATH \
   BIN=bin/asmjs \
   CXX=emcc \
   CXXFLAGS="-g0 -DNDEBUG" \
