@@ -15,14 +15,14 @@ endif
 all: true_all
 
 SDL_CFLAGS:=$(shell pkg-config sdl --cflags)
-SDL_LDFLAGS:=$(shell pkg-config sdl --libs)
+SDL_LDFLAGS:=$(shell pkg-config sdl SDL_image SDL_mixer --libs --static)
 
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
 CXXFLAGS+=-I.
 CXXFLAGS+=-std=c++14
 CXXFLAGS+=$(SDL_CFLAGS)
-LDFLAGS+=$(SDL_LDFLAGS) -lSDL_image -lSDL_mixer
+LDFLAGS+=$(SDL_LDFLAGS)
 LDFLAGS+=-lGL -lGLU
 
 CXXFLAGS+=-O3
