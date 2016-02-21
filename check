@@ -15,7 +15,7 @@ PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master:$PATH \
   CXX=emcc \
   CXXFLAGS="-g0 -DNDEBUG" \
   LDFLAGS="-Xlinker,-s -g0 --preload-file res" \
-  $MAKE
+  $MAKE bin/asmjs/deeep.html
 
 echo "----------------------------------------------------------------"
 echo "Building native version"
