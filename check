@@ -4,6 +4,8 @@ set -euo pipefail
 
 MAKE="make -j`nproc`"
 
+echo "----------------------------------------------------------------"
+echo "Reformatting ..."
 scripts/reformat.sh src
 
 echo "----------------------------------------------------------------"
