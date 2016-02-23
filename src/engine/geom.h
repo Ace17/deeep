@@ -77,20 +77,6 @@ struct GenericSize
 typedef GenericSize<int> Size2i;
 typedef GenericSize<float> Size2f;
 
-inline
-Size2i lowestPowerOfTwoDimension(Size2i dim)
-{
-  auto r = Size2i(1, 1);
-
-  while(r.width < dim.width || r.height < dim.height)
-  {
-    r.width *= 2;
-    r.height *= 2;
-  }
-
-  return r;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // Vector
 ///////////////////////////////////////////////////////////////////////////////
