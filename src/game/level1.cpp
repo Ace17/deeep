@@ -199,7 +199,7 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
   }
 }
 
-void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int /*number*/)
+void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game)
 {
   auto data = data_level1;
 

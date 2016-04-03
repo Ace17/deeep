@@ -26,9 +26,8 @@
 
 using namespace std;
 
+// from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
-void loadLevel(Matrix<int>& tiles, Vector2i& start, IGame* game, int number);
-void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
 
 class Game : public Scene, public IGame
 {
@@ -39,17 +38,7 @@ public:
     m_player->pos = Vector2f(8, m_tiles.size.height - 2);
     spawn(m_player);
 
-    auto onCell = [&] (int, int, int& tile)
-                  {
-                    tile = 1;
-                  };
-
-    m_tiles.scan(onCell);
-
-    Vector2i start;
-    loadLevel(m_tiles, start, this, 1);
-    // loadLevel2(m_tiles, start, this);
-    m_player->pos = Vector2f(start.x, start.y);
+    loadLevel();
 
     {
       auto w = new Wheel;
@@ -232,6 +221,24 @@ private:
       m_entities.push_back(move(spawned));
 
     m_spawned.clear();
+  }
+
+  void loadLevel()
+  {
+    extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame * game);
+    extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame * game);
+
+    auto onCell = [&] (int, int, int& tile)
+                  {
+                    tile = 1;
+                  };
+
+    m_tiles.scan(onCell);
+
+    Vector2i start;
+    loadLevel1(m_tiles, start, this);
+
+    m_player->pos = Vector2f(start.x, start.y);
   }
 
   ////////////////////////////////////////////////////////////////
