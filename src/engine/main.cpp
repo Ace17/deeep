@@ -79,15 +79,11 @@ int main()
     Display_init(512, 512);
     Audio_init();
 
-    auto const sounds = game->getSounds();
+    for(auto sound : game->getSounds())
+      Audio_loadSound(sound.id, sound.path);
 
-    for(int i = 0; sounds[i].path; ++i)
-      Audio_loadSound(sounds[i].id, sounds[i].path);
-
-    auto const models = game->getModels();
-
-    for(int i = 0; models[i].path; ++i)
-      Display_loadModel(models[i].id, models[i].path);
+    for(auto model : game->getModels())
+      Display_loadModel(model.id, model.path);
 
     runMainLoop(app);
     return 0;

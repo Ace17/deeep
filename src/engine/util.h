@@ -184,3 +184,29 @@ vector<T> extract(vector<T> const& input, vector<int> indices)
   return r;
 }
 
+template<typename T>
+struct ArrayView
+{
+  T* data;
+  int len;
+
+  T* begin() const
+  {
+    return data;
+  }
+
+  T* end() const
+  {
+    return data + len;
+  }
+};
+
+template<typename T, size_t N>
+ArrayView<T> makeView(T(&tab)[N])
+{
+  ArrayView<T> r;
+  r.data = tab;
+  r.len = N;
+  return r;
+}
+

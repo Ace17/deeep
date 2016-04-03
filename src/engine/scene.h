@@ -14,6 +14,7 @@
 #pragma once
 #include <vector>
 
+#include "util.h"
 #include "geom.h"
 
 using namespace std;
@@ -61,8 +62,8 @@ struct Resource
 
 struct Scene
 {
-  virtual const Resource* getSounds() const = 0;
-  virtual const Resource* getModels() const = 0;
+  virtual ArrayView<const Resource> getSounds() const = 0;
+  virtual ArrayView<const Resource> getModels() const = 0;
 
   virtual void tick(Control const& c) = 0;
   virtual vector<Actor> getActors() const = 0;

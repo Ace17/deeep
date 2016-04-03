@@ -105,7 +105,7 @@ public:
     removeDeadThings();
   }
 
-  virtual const Resource* getSounds() const override
+  virtual ArrayView<const Resource> getSounds() const override
   {
     static const Resource sounds[] =
     {
@@ -116,13 +116,12 @@ public:
       { SND_SWITCH, "res/sounds/switch.ogg" },
       { SND_HURT, "res/sounds/hurt.ogg" },
       { SND_DIE, "res/sounds/die.ogg" },
-      { 0, nullptr },
     };
 
-    return sounds;
+    return makeView(sounds);
   }
 
-  virtual const Resource* getModels() const override
+  virtual ArrayView<const Resource> getModels() const override
   {
     static const Resource models[] =
     {
@@ -131,10 +130,9 @@ public:
       { MDL_ROCKMAN, "res/sprites/rockman.json" },
       { MDL_WHEEL, "res/sprites/wheel.json" },
       { MDL_LIFEBAR, "res/sprites/lifebar.json" },
-      { 0, nullptr },
     };
 
-    return models;
+    return makeView(models);
   }
 
   vector<Actor> getActors() const override
