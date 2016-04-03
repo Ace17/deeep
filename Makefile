@@ -15,7 +15,11 @@ endif
 all: true_all
 
 SDL_CFLAGS:=$(shell pkg-config sdl --cflags)
-SDL_LDFLAGS:=$(shell pkg-config sdl SDL_image SDL_mixer --libs --static)
+SDL_LDFLAGS:=$(shell pkg-config sdl SDL_image SDL_mixer --libs --static || echo "ERROR")
+
+ifeq (ERROR,$(SDL_LDFLAGS))
+  $(error At least one library was not found in the build environment)
+endif
 
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
