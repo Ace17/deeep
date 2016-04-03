@@ -12,6 +12,8 @@
 #include "util.h"
 #include <sstream>
 
+extern int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
+
 static
 string asString(json::Value* pVal)
 {
@@ -27,9 +29,6 @@ int asInt(json::Value* pVal)
   ss >> i;
   return i;
 }
-
-// -----------------------------------------------------------------------------
-// Single-sheet
 
 static
 Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
@@ -51,8 +50,6 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 
   return r;
 }
-
-// -----------------------------------------------------------------------------
 
 Model loadModel(string jsonPath)
 {
@@ -79,8 +76,6 @@ Model loadModel(string jsonPath)
 
   return r;
 }
-
-int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 
 void Action::addTexture(string path, Rect2i rect)
 {
