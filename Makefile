@@ -46,6 +46,7 @@ SRCS:=\
 	src/engine/model.cpp\
 	src/engine/display.cpp\
 	src/engine/sound.cpp\
+	src/engine/base64.cpp\
 	$(BIN)/vertex.glsl.cpp\
 	$(BIN)/fragment.glsl.cpp\
 
@@ -60,10 +61,12 @@ TARGETS+=$(BIN)/deeep.$(EXT)
 #------------------------------------------------------------------------------
 
 SRCS_TESTS:=\
+	src/engine/base64.cpp\
 	src/engine/json.cpp\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
 	tests/tokenizer.cpp\
+	tests/base64.cpp\
 	tests/json.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
