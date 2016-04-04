@@ -125,10 +125,13 @@ private:
     case '9':
       {
         curr.type = Token::NUMBER;
+
         if(*text == '-')
           accept();
+
         while(isdigit(*text))
           accept();
+
         break;
       }
     default:
@@ -145,6 +148,7 @@ private:
   {
     if(*text != c)
       throw runtime_error("Unexpected character");
+
     accept();
   }
 
