@@ -15,6 +15,7 @@ struct Token
     RBRACKET,
     STRING,
     NUMBER,
+    BOOLEAN,
     COLON,
     COMMA,
   };
@@ -94,6 +95,23 @@ private:
       curr.type = Token::STRING;
       curr.lexem = curr.lexem.substr(1, curr.lexem.size() - 2);
       break;
+    case 't':
+      curr.type = Token::BOOLEAN;
+      expect('t');
+      expect('r');
+      expect('u');
+      expect('e');
+      break;
+
+    case 'f':
+      curr.type = Token::BOOLEAN;
+      expect('f');
+      expect('a');
+      expect('l');
+      expect('s');
+      expect('e');
+      break;
+
     case '-':
     case '0':
     case '1':
@@ -121,6 +139,13 @@ private:
         throw runtime_error(msg);
       }
     }
+  }
+
+  void expect(char c)
+  {
+    if(*text != c)
+      throw runtime_error("Unexpected character");
+    accept();
   }
 
   void accept()

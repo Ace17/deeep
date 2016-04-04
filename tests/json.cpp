@@ -34,6 +34,25 @@ unittest("Json parser: members")
   assert(!jsonOk("{ \"N1\" : : \"V2\" }"));
 }
 
+unittest("Json parser: booleans")
+{
+  json::parseObject("{ \"var\": true }");
+  assert(jsonOk("{ \"var\": true }"));
+  assert(jsonOk("{ \"var\": false }"));
+
+  {
+    auto o = json::parseObject("{ \"isCool\" : true }");
+    auto s = o->getMember<json::Boolean>("isCool");
+    assertEquals(true, s->value);
+  }
+
+  {
+    auto o = json::parseObject("{ \"isSlow\" : false }");
+    auto s = o->getMember<json::Boolean>("isSlow");
+    assertEquals(false, s->value);
+  }
+}
+
 unittest("Json parser: arrays")
 {
   assert(jsonOk("{ \"A\": [] }"));

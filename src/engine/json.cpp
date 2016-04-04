@@ -110,6 +110,12 @@ unique_ptr<Value> parseValue(Tokenizer& tk)
   {
     return parseObject(tk);
   }
+  else if(tk.front().type == Token::BOOLEAN)
+  {
+    auto r = make_unique<Boolean>();
+    r->value = expect(tk, Token::BOOLEAN) == "true";
+    return unique_ptr<Value>(r.release());
+  }
   else if(tk.front().type == Token::NUMBER)
   {
     auto r = make_unique<Number>();
