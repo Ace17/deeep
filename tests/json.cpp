@@ -26,6 +26,8 @@ unittest("Json parser: empty")
 
 unittest("Json parser: members")
 {
+  assert(jsonOk("{ \"var\": 0 }"));
+  assert(jsonOk("{ \"var\": -10 }"));
   assert(jsonOk("{ \"hello\": \"world\" }"));
   assert(jsonOk("{ \"N1\": \"V1\", \"N2\": \"V2\" }"));
 
@@ -55,6 +57,13 @@ unittest("Json parser: returned value")
     auto s = dynamic_cast<json::String*>(o->members["N"].get());
     assert(s);
     assert(s->value == "hello");
+  }
+  {
+    auto o = json::parseObject("{ \"N\" : -1234 }");
+    assertEquals(1u, o->members.size());
+    auto s = dynamic_cast<json::Number*>(o->members["N"].get());
+    assert(s);
+    assertEquals(-1234, s->value);
   }
 }
 

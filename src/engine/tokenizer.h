@@ -14,6 +14,7 @@ struct Token
     LBRACKET,
     RBRACKET,
     STRING,
+    NUMBER,
     COLON,
     COMMA,
   };
@@ -93,6 +94,25 @@ private:
       curr.type = Token::STRING;
       curr.lexem = curr.lexem.substr(1, curr.lexem.size() - 2);
       break;
+    case '-':
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      {
+        curr.type = Token::NUMBER;
+        if(*text == '-')
+          accept();
+        while(isdigit(*text))
+          accept();
+        break;
+      }
     default:
       {
         string msg = "Unknown char '";

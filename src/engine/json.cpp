@@ -60,10 +60,10 @@ string expect(Tokenizer& tk, Token::Type type)
     if(front.type == Token::EOF_)
       msg << "Unexpected end of file found";
     else
-      msg << "Unexpected token type: '" + front.lexem + "'";
+      msg << "Unexpected token '" + front.lexem + "'";
 
-    msg << " (" << front.type << ")";
-    msg << " expected " << type;
+    msg << " of type " << front.type;
+    msg << " instead of " << type;
     throw runtime_error(msg.str());
   }
 
@@ -109,6 +109,12 @@ unique_ptr<Value> parseValue(Tokenizer& tk)
   else if(tk.front().type == Token::LBRACE)
   {
     return parseObject(tk);
+  }
+  else if(tk.front().type == Token::NUMBER)
+  {
+    auto r = make_unique<Number>();
+    r->value = atoi(expect(tk, Token::NUMBER).c_str());
+    return unique_ptr<Value>(r.release());
   }
   else
   {

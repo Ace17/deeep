@@ -62,6 +62,11 @@ struct String : Value
   string value;
 };
 
+struct Number : Value
+{
+  int value;
+};
+
 unique_ptr<Object> load(string path);
 unique_ptr<Object> parseObject(const char* text);
 }
