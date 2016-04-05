@@ -185,7 +185,7 @@ vector<T> extract(vector<T> const& input, vector<int> indices)
 }
 
 template<typename T>
-struct ArrayView
+struct Slice
 {
   T* data;
   int len;
@@ -202,9 +202,9 @@ struct ArrayView
 };
 
 template<typename T, size_t N>
-ArrayView<T> makeView(T(&tab)[N])
+Slice<T> makeView(T(&tab)[N])
 {
-  ArrayView<T> r;
+  Slice<T> r;
   r.data = tab;
   r.len = N;
   return r;

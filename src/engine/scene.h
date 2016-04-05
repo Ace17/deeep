@@ -62,8 +62,8 @@ struct Resource
 
 struct Scene
 {
-  virtual ArrayView<const Resource> getSounds() const = 0;
-  virtual ArrayView<const Resource> getModels() const = 0;
+  virtual Slice<const Resource> getSounds() const = 0;
+  virtual Slice<const Resource> getModels() const = 0;
 
   virtual void tick(Control const& c) = 0;
   virtual vector<Actor> getActors() const = 0;

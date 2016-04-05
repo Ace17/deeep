@@ -94,7 +94,7 @@ public:
     removeDeadThings();
   }
 
-  virtual ArrayView<const Resource> getSounds() const override
+  virtual Slice<const Resource> getSounds() const override
   {
     static const Resource sounds[] =
     {
@@ -110,7 +110,7 @@ public:
     return makeView(sounds);
   }
 
-  virtual ArrayView<const Resource> getModels() const override
+  virtual Slice<const Resource> getModels() const override
   {
     static const Resource models[] =
     {
