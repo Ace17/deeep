@@ -62,13 +62,13 @@ class Rockman : public Player
 public:
   Rockman() : dir(RIGHT)
   {
-    size = Size2f(1, 2);
+    size = Size2f(0.6, 1.5);
     life = 31;
   }
 
   virtual Actor getActor() const override
   {
-    auto actorPos = pos + Vector2f(-size.width / 2, -0.1);
+    auto actorPos = pos + Vector2f(-(2-size.width) * 0.5, -0.1);
     auto r = Actor(actorPos, MDL_ROCKMAN);
     r.scale = Vector2f(2, 2);
 
@@ -192,7 +192,7 @@ public:
       {
         game->playSound(SND_JUMP);
         // wall climbing
-        vel.x = dir == RIGHT ? -0.05 : 0.05;
+        vel.x = dir == RIGHT ? -0.04 : 0.04;
         vel.y = 0.015;
         climbDelay = CLIMB_DELAY;
       }
@@ -229,14 +229,14 @@ public:
   {
     auto nextPos = pos + delta;
 
-    static const Vector2f vertices[] =
+    const Vector2f vertices[] =
     {
-      Vector2f(0.10, 0),
-      Vector2f(0.60, 0),
-      Vector2f(0.10, 0.90),
-      Vector2f(0.60, 0.90),
-      Vector2f(0.10, 1.50),
-      Vector2f(0.60, 1.50),
+      Vector2f(0, 0),
+      Vector2f(size.width, 0),
+      Vector2f(0, size.height / 2.0),
+      Vector2f(size.width, size.height / 2.0),
+      Vector2f(0, size.height),
+      Vector2f(size.width, size.height),
     };
 
     for(auto& v : vertices)
@@ -276,12 +276,12 @@ public:
 
   bool facingWall() const
   {
-    auto const front = dir == RIGHT ? 1.0 : 0;
+    auto const front = dir == RIGHT ? 0.7 : -0.7;
 
-    if(game->isSolid(pos + Vector2f(front, 0.3)))
+    if(game->isSolid(pos + Vector2f(size.width / 2 + front, 0.3)))
       return true;
 
-    if(game->isSolid(pos + Vector2f(front, 1.2)))
+    if(game->isSolid(pos + Vector2f(size.width / 2 + front, 1.2)))
       return true;
 
     return false;
