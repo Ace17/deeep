@@ -21,7 +21,7 @@ static const string base64_map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 vector<uint8_t> decodeBase64(string const& input)
 {
   if(input.length() % 4 != 0)
-    throw new runtime_error("invalid base64 input");
+    throw runtime_error("invalid base64 input");
 
   vector<uint8_t> decoded;
 
