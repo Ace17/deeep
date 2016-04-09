@@ -88,7 +88,18 @@ private:
       accept();
 
       while(*text != '"' && *text != '\0')
+      {
+        if(*text == '\\')
+        {
+          accept();
+          curr.lexem.pop_back();
+
+          // escape sequence
+          accept();
+        }
+
         accept();
+      }
 
       accept();
 

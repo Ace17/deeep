@@ -3,25 +3,27 @@
 #include <vector>
 using namespace std;
 
-static
-vector<Token::Type> tokenize(string s)
+namespace
 {
-  Tokenizer tokenizer(s.c_str());
-  vector<Token::Type> r;
-
-  while(!tokenizer.empty())
+  vector<Token::Type> tokenize(string s)
   {
-    r.push_back(tokenizer.front().type);
-    tokenizer.popFront();
+    Tokenizer tokenizer(s.c_str());
+    vector<Token::Type> r;
+
+    while(!tokenizer.empty())
+    {
+      r.push_back(tokenizer.front().type);
+      tokenizer.popFront();
+    }
+
+    return r;
   }
 
-  return r;
-}
-
-template<typename T>
-vector<T> V(initializer_list<T> elements)
-{
-  return vector<T>(elements);
+  template<typename T>
+    vector<T> V(initializer_list<T> elements)
+    {
+      return vector<T>(elements);
+    }
 }
 
 unittest("Tokenizer: empty")
@@ -50,5 +52,18 @@ unittest("Tokenizer: simple")
     assert(t.empty());
   }
 
+}
+
+unittest("Tokenizer: escaping")
+{
+  {
+    auto tk = Tokenizer("\"hello/world\"");
+    assertEquals("hello/world", tk.front().lexem);
+  }
+
+  {
+    auto tk = Tokenizer("\"hello\\/world\"");
+    assertEquals("hello/world", tk.front().lexem);
+  }
 }
 
