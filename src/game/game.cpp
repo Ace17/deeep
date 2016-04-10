@@ -128,7 +128,7 @@ public:
   {
     vector<Actor> r;
 
-    auto const limit = 5.0f;
+    auto const limit = 7.0f;
     auto cameraPos = m_player->pos;
     cameraPos.y += 1.5;
     cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit - 1);

@@ -62,14 +62,14 @@ class Rockman : public Player
 public:
   Rockman() : dir(RIGHT)
   {
-    size = Size2f(0.6, 1.5);
+    size = Size2f(0.9, 1.9);
     life = 31;
   }
 
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_ROCKMAN);
-    r.scale = Vector2f(2, 2);
+    r.scale = Vector2f(3, 3);
 
     // re-center
     r.pos += Vector2f(-(r.scale.x - size.width) * 0.5, -0.1);
