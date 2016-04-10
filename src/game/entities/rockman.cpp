@@ -72,7 +72,7 @@ public:
     r.scale = Vector2f(2, 2);
 
     // re-center
-    r.pos += Vector2f(-(r.scale.x-size.width) * 0.5, -0.1);
+    r.pos += Vector2f(-(r.scale.x - size.width) * 0.5, -0.1);
 
     if(hurtDelay || life < 0)
     {

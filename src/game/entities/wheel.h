@@ -23,7 +23,7 @@ public:
     auto r = Actor(pos, MDL_WHEEL);
 
     r.scale = Vector2f(2, 2);
-    r.pos += Vector2f(-(r.scale.x-size.width) * 0.5, -0.1);
+    r.pos += Vector2f(-(r.scale.x - size.width) * 0.5, -0.1);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
