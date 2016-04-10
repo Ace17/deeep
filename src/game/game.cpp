@@ -227,6 +227,7 @@ private:
   {
     extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame * game);
     extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame * game);
+    extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame * game);
 
     auto onCell = [&] (int, int, int& tile)
                   {
@@ -236,7 +237,7 @@ private:
     m_tiles.scan(onCell);
 
     Vector2i start;
-    loadLevel1(m_tiles, start, this);
+    loadLevel3(m_tiles, start, this);
 
     m_player->pos = Vector2f(start.x, start.y);
   }
