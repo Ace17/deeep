@@ -68,9 +68,11 @@ public:
 
   virtual Actor getActor() const override
   {
-    auto actorPos = pos + Vector2f(-(2-size.width) * 0.5, -0.1);
-    auto r = Actor(actorPos, MDL_ROCKMAN);
+    auto r = Actor(pos, MDL_ROCKMAN);
     r.scale = Vector2f(2, 2);
+
+    // re-center
+    r.pos += Vector2f(-(r.scale.x-size.width) * 0.5, -0.1);
 
     if(hurtDelay || life < 0)
     {

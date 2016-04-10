@@ -15,18 +15,20 @@ public:
   Wheel()
   {
     dir = -1.0f;
-    size = Size2f(1.5, 1.5);
+    size = Size2f(1.0, 1.0);
   }
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos + Vector2f(0, -0.1), MDL_WHEEL);
+    auto r = Actor(pos, MDL_WHEEL);
+
+    r.scale = Vector2f(2, 2);
+    r.pos += Vector2f(-(r.scale.x-size.width) * 0.5, -0.1);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
 
     r.action = 0;
-    r.scale = Vector2f(1.5, 1.5);
     r.ratio = (time % 200) / 200.0f;
 
     if(dir > 0)
@@ -39,16 +41,16 @@ public:
   {
     auto nextPos = pos + delta;
 
-    if(game->isSolid(nextPos + Vector2f(0.10, 0)))
+    if(game->isSolid(nextPos + Vector2f(0, 0)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.60, 0)))
+    if(game->isSolid(nextPos + Vector2f(size.width, 0)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.10, 0.80)))
+    if(game->isSolid(nextPos + Vector2f(0, size.height)))
       return false;
 
-    if(game->isSolid(nextPos + Vector2f(0.60, 0.80)))
+    if(game->isSolid(nextPos + Vector2f(size.width, size.height)))
       return false;
 
     pos = nextPos;
