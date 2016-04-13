@@ -119,6 +119,7 @@ public:
       { MDL_ROCKMAN, "res/sprites/rockman.json" },
       { MDL_WHEEL, "res/sprites/wheel.json" },
       { MDL_LIFEBAR, "res/sprites/lifebar.json" },
+      { MDL_TELEPORTER, "res/sprites/teleporter.json" },
     };
 
     return makeView(models);
