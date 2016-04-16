@@ -55,7 +55,7 @@ public:
 
     state = true;
     game->playSound(SND_SWITCH);
-    //game->trigger(TRG_ENDLEVEL);
+    // game->trigger(TRG_ENDLEVEL);
   }
 
   bool state;

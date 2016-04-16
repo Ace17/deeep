@@ -1,84 +1,84 @@
 {
   "type" : "sheet",
   "sheet" : "rockman.png",
-  "width" : "48",
-  "height" : "48",
+  "width" : 48,
+  "height" : 48,
   "actions": [
     {
       "name": "victory",
-      "frames": [ "0", "1", "2" ]
+      "frames": [ 0, 1, 2 ]
     },
     {
       "name": "stand",
-      "frames": [ "0", "1", "2" ]
+      "frames": [ 0, 1, 2 ]
     },
     {
       "name": "standShoot",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "entrance",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "walk",
-      "frames": [ "32", "33", "34", "35", "36", "37", "38", "39", "40", "41" ]
+      "frames": [ 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 ]
     },
     {
       "name": "walkShoot",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "dash",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "dashAim",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "jump",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "fall",
-      "frames": [ "83", "84" ]
+      "frames": [ 83, 84 ]
     },
     {
       "name": "ladder",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "ladderEnd",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "ladderShoot",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "hadoken",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "slide",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "slideShoot",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     },
     {
       "name": "climb",
-      "frames": [ "68", "69", "70" ]
+      "frames": [ 68, 69, 70 ]
     },
     {
       "name": "hurt",
-      "frames": [ "96", "97", "98", "99", "100", "101", "102", "103", "104", "105" ]
+      "frames": [ 96, 97, 98, 99, 100, 101, 102, 103, 104, 105 ]
     },
     {
       "name": "full",
-      "frames": [ "4" ]
+      "frames": [ 4 ]
     }
   ]
 }

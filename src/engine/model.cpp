@@ -15,22 +15,6 @@
 extern int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 
 static
-string asString(json::Value* pVal)
-{
-  return json::cast<json::String>(pVal)->value;
-}
-
-static
-int asInt(json::Value* pVal)
-{
-  auto const s = asString(pVal);
-  int i;
-  stringstream ss(s);
-  ss >> i;
-  return i;
-}
-
-static
 Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 {
   Action r;
@@ -41,7 +25,7 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 
   for(auto& frame : frames->elements)
   {
-    auto const idx = asInt(frame.get());
+    auto const idx = (json::cast<json::Number>(frame.get()))->value;
 
     auto const col = idx % 16;
     auto const row = idx / 16;
@@ -63,8 +47,8 @@ Model loadModel(string jsonPath)
   if(type == "sheet")
   {
     auto sheet = obj->getMember<json::String>("sheet")->value;
-    auto width = asInt(obj->getMember<json::String>("width"));
-    auto height = asInt(obj->getMember<json::String>("height"));
+    auto width = obj->getMember<json::Number>("width")->value;
+    auto height = obj->getMember<json::Number>("height")->value;
 
     auto cell = Size2i(width, height);
 

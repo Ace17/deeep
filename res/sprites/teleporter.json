@@ -1,9 +1,9 @@
 {
   "type" : "sheet",
   "sheet" : "teleporter.png",
-  "width" : "32",
-  "height" : "32",
+  "width" : 32,
+  "height" : 32,
   "actions": [
-    { "name": "", "frames": [ "0", "1" ] }
+    { "name": "", "frames": [ 0, 1 ] }
   ]
 }
