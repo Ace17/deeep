@@ -19,7 +19,7 @@ vector<uint8_t> decompress(Slice<const uint8_t> buffer)
   ret = inflateInit(&s);
 
   if(ret < 0)
-    throw runtime_error("inflateInit failed");
+    throw runtime_error(string("inflateInit failed: ") + mz_error(ret));
 
   for(;;)
   {
@@ -29,7 +29,7 @@ vector<uint8_t> decompress(Slice<const uint8_t> buffer)
     ret = inflate(&s, MZ_SYNC_FLUSH);
 
     if(ret < 0)
-      throw runtime_error("inflate failed");
+      throw runtime_error(string("inflate failed: ") + mz_error(ret));
 
     const auto bytes = int((sizeof out) - s.avail_out);
 
