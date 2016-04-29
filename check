@@ -15,8 +15,8 @@ PKG_CONFIG_LIBDIR=/home/ace/source/emscripten/emsdk_portable/emscripten/master/s
 PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master:$PATH \
   BIN=bin/asmjs \
   CXX=emcc \
-  CXXFLAGS="-g0 -DNDEBUG" \
-  LDFLAGS="-Xlinker,-s -g0 --preload-file res" \
+  CXXFLAGS="-O3 -g0 -DNDEBUG" \
+  LDFLAGS="-O3 -Xlinker,-s -g0 --preload-file res" \
   $MAKE bin/asmjs/deeep.html
 
 echo "----------------------------------------------------------------"
