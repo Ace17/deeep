@@ -72,7 +72,7 @@ void assertEqualsFunc(
     stringstream ss;
     ss << "Assertion failure" << endl;
     ss << file << "(" << line << ")" << endl;
-    ss << "Expected " << expected << ", got " << actual << endl;
+    ss << "Expected '" << expected << "', got '" << actual << "'" << endl;
     throw logic_error(ss.str());
   }
 }
