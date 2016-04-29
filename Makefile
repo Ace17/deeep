@@ -55,7 +55,7 @@ OBJS:=$(SRCS:%.cpp=$(BIN)/%_cpp.o)
 
 $(BIN)/deeep.$(EXT): $(OBJS)
 	@mkdir -p $(dir $@)
-	$(CXX) -std=c++11 $^ -o '$@' $(CXXFLAGS) $(LDFLAGS)
+	$(CXX) $^ -o '$@' $(LDFLAGS)
 
 TARGETS+=$(BIN)/deeep.$(EXT)
 
@@ -66,14 +66,14 @@ SRCS_TESTS:=\
 	src/engine/json.cpp\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
-	tests/tokenizer.cpp\
 	tests/base64.cpp\
 	tests/json.cpp\
+	tests/tokenizer.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 $(BIN)/tests.$(EXT): $(OBJS_TESTS)
 	@mkdir -p $(dir $@)
-	$(CXX) -std=c++11 $^ -o '$@' $(CXXFLAGS) $(LDFLAGS)
+	$(CXX) $^ -o '$@' $(LDFLAGS)
 
 TARGETS+=$(BIN)/tests.$(EXT)
 
