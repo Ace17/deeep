@@ -97,8 +97,10 @@ private:
           // escape sequence
           accept();
         }
-
-        accept();
+        else
+        {
+          accept();
+        }
       }
 
       accept();

@@ -65,5 +65,10 @@ unittest("Tokenizer: escaping")
     auto tk = Tokenizer("\"hello\\/world\"");
     assertEquals("hello/world", tk.front().lexem);
   }
+
+  {
+    auto tk = Tokenizer("\"hello\\/\\/world\"");
+    assertEquals("hello//world", tk.front().lexem);
+  }
 }
 
