@@ -48,6 +48,8 @@ SRCS:=\
 	src/engine/display.cpp\
 	src/engine/sound.cpp\
 	src/engine/base64.cpp\
+	src/engine/decompress.cpp\
+	extra/miniz.c\
 	$(BIN)/vertex.glsl.cpp\
 	$(BIN)/fragment.glsl.cpp\
 
@@ -63,10 +65,13 @@ TARGETS+=$(BIN)/deeep.$(EXT)
 
 SRCS_TESTS:=\
 	src/engine/base64.cpp\
+	src/engine/decompress.cpp\
 	src/engine/json.cpp\
+	extra/miniz.c\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
 	tests/base64.cpp\
+	tests/decompress.cpp\
 	tests/json.cpp\
 	tests/tokenizer.cpp\
 
