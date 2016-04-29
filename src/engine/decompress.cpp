@@ -11,18 +11,26 @@ vector<uint8_t> decompress(Slice<const uint8_t> buffer)
 {
   vector<uint8_t> r;
 
+  int ret;
   z_stream s;
   memset(&s, 0, sizeof s);
   s.next_in = buffer.data;
   s.avail_in = buffer.len;
-  inflateInit(&s);
+  ret = inflateInit(&s);
+
+  if(ret < 0)
+    throw runtime_error("inflateInit failed");
 
   for(;;)
   {
     uint8_t out[32];
     s.avail_out = sizeof out;
     s.next_out = out;
-    inflate(&s, MZ_SYNC_FLUSH);
+    ret = inflate(&s, MZ_SYNC_FLUSH);
+
+    if(ret < 0)
+      throw runtime_error("inflate failed");
+
     const auto bytes = int((sizeof out) - s.avail_out);
 
     if(!bytes)
@@ -32,7 +40,14 @@ vector<uint8_t> decompress(Slice<const uint8_t> buffer)
       r.push_back(out[i]);
   }
 
-  inflateEnd(&s);
+  if(s.avail_in != 0)
+    throw runtime_error("incompletely read input");
+
+  ret = inflateEnd(&s);
+
+  if(ret < 0)
+    throw runtime_error("inflateEnd failed");
+
   return r;
 }
 
