@@ -11,7 +11,7 @@ bool jsonOk(string text)
     json::parseObject(text.c_str());
     return true;
   }
-  catch(exception const&)
+  catch(exception const &)
   {
     return false;
   }

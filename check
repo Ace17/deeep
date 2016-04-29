@@ -7,6 +7,7 @@ MAKE="make -j`nproc`"
 echo "----------------------------------------------------------------"
 echo "Reformatting ..."
 scripts/reformat.sh src
+scripts/reformat.sh tests
 
 echo "----------------------------------------------------------------"
 echo "Building asmjs version"

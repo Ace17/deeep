@@ -18,19 +18,19 @@
 
 namespace
 {
-  struct Test
-  {
-    void (*run)();
-    const char* sName;
-  };
+struct Test
+{
+  void (* run)();
+  const char* sName;
+};
 
-  int const MAX_TESTS = 512;
+int const MAX_TESTS = 512;
 
-  Test tests[MAX_TESTS];
-  int numTests;
+Test tests[MAX_TESTS];
+int numTests;
 }
 
-int RegisterTest(void (*proc)(), const char* testName)
+int RegisterTest(void (* proc)(), const char* testName)
 {
   assert(numTests < MAX_TESTS);
   tests[numTests].run = proc;
@@ -43,7 +43,8 @@ void RunTests()
 {
   std::cout << "Running " << numTests << " tests." << std::endl;
   bool success = true;
-  for(int i=0;i < numTests;++i)
+
+  for(int i = 0; i < numTests; ++i)
   {
     try
     {

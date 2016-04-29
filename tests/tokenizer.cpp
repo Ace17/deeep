@@ -5,25 +5,25 @@ using namespace std;
 
 namespace
 {
-  vector<Token::Type> tokenize(string s)
+vector<Token::Type> tokenize(string s)
+{
+  Tokenizer tokenizer(s.c_str());
+  vector<Token::Type> r;
+
+  while(!tokenizer.empty())
   {
-    Tokenizer tokenizer(s.c_str());
-    vector<Token::Type> r;
-
-    while(!tokenizer.empty())
-    {
-      r.push_back(tokenizer.front().type);
-      tokenizer.popFront();
-    }
-
-    return r;
+    r.push_back(tokenizer.front().type);
+    tokenizer.popFront();
   }
 
-  template<typename T>
-    vector<T> V(initializer_list<T> elements)
-    {
-      return vector<T>(elements);
-    }
+  return r;
+}
+
+template<typename T>
+vector<T> V(initializer_list<T> elements)
+{
+  return vector<T>(elements);
+}
 }
 
 unittest("Tokenizer: empty")
@@ -35,14 +35,14 @@ unittest("Tokenizer: empty")
 unittest("Tokenizer: simple")
 {
   assertEquals(
-      V({ Token::STRING, Token::COMMA, Token::STRING, Token::COLON }),
-      tokenize("\"Hello\", \"world\":")
-      );
+    V({ Token::STRING, Token::COMMA, Token::STRING, Token::COLON }),
+    tokenize("\"Hello\", \"world\":")
+    );
 
   assertEquals(
-      V({ Token::LBRACE, Token::RBRACE, Token::LBRACKET, Token::RBRACKET, Token::COMMA, Token::COLON }),
-      tokenize("{}[],:")
-      );
+    V({ Token::LBRACE, Token::RBRACE, Token::LBRACKET, Token::RBRACKET, Token::COMMA, Token::COLON }),
+    tokenize("{}[],:")
+    );
 
   {
     Tokenizer t("\"Hello\"");
@@ -51,7 +51,6 @@ unittest("Tokenizer: simple")
     t.popFront();
     assert(t.empty());
   }
-
 }
 
 unittest("Tokenizer: escaping")
