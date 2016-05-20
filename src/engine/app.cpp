@@ -43,9 +43,7 @@ public:
     m_scene(scene),
     m_slowMotion(false)
   {
-    if(SDL_Init(SDL_INIT_VIDEO))
-      throw runtime_error("Can't init SDL");
-
+    SDL_Init(0);
     memset(keys, 0, sizeof keys);
 
     m_lastTime = SDL_GetTicks();

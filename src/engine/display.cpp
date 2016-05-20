@@ -263,6 +263,9 @@ void printOpenGlVersion()
 
 void Display_init(int width, int height)
 {
+  if(SDL_InitSubSystem(SDL_INIT_VIDEO))
+    throw runtime_error("Can't init SDL");
+
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
   if(!SDL_SetVideoMode(width, height, 0, SDL_OPENGL))
