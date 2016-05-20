@@ -173,6 +173,9 @@ private:
     if(evt->key.keysym.sym == SDLK_ESCAPE)
       onQuit();
 
+    if(evt->key.keysym.sym == SDLK_F2)
+      m_scene.reset(createGame());
+
     if(evt->key.keysym.sym == SDLK_TAB)
       m_slowMotion = !m_slowMotion;
 
@@ -194,7 +197,7 @@ private:
   int m_lastFps;
   RateCounter m_fps;
   Control m_control;
-  Scene* const m_scene;
+  unique_ptr<Scene> m_scene;
   bool m_slowMotion;
   Bool m_paused;
 };
