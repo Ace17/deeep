@@ -32,21 +32,37 @@ void beginDraw();
 void endDraw();
 void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
 
+void Display_init(int width, int height);
+void Display_loadModel(int id, const char* imagePath);
+
+void Audio_init();
+void Audio_loadSound(int id, string path);
 void Audio_playSound(int id);
+
+Scene* createGame();
 
 class App
 {
 public:
-  App(Scene* scene)
+  App()
     : m_running(1),
     m_lastFps(0),
-    m_scene(scene),
+    m_scene(createGame()),
     m_slowMotion(false)
   {
     SDL_Init(0);
     memset(keys, 0, sizeof keys);
 
     m_lastTime = SDL_GetTicks();
+
+    Display_init(512, 512);
+    Audio_init();
+
+    for(auto sound : m_scene->getSounds())
+      Audio_loadSound(sound.id, sound.path);
+
+    for(auto model : m_scene->getModels())
+      Display_loadModel(model.id, model.path);
   }
 
   ~App()
@@ -185,9 +201,9 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-App* App_create(Scene* s)
+App* App_create()
 {
-  return new App(s);
+  return new App();
 }
 
 bool App_tick(App* app)

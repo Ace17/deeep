@@ -18,20 +18,12 @@
 #include <thread>
 
 #include "SDL.h"
-#include "base/util.h"
-#include "base/scene.h"
 
 using namespace std;
 
 class App;
-App* App_create(Scene*);
+App* App_create();
 bool App_tick(App*);
-
-void Display_init(int width, int height);
-void Display_loadModel(int id, const char* imagePath);
-
-void Audio_init();
-void Audio_loadSound(int id, string path);
 
 #ifdef __EMSCRIPTEN__
 extern "C"
@@ -67,23 +59,11 @@ void runMainLoop(App* app)
 
 #endif
 
-Scene* createGame();
-
 int main()
 {
   try
   {
-    auto game = unique(createGame());
-    auto app = App_create(game.get());
-
-    Display_init(512, 512);
-    Audio_init();
-
-    for(auto sound : game->getSounds())
-      Audio_loadSound(sound.id, sound.path);
-
-    for(auto model : game->getModels())
-      Display_loadModel(model.id, model.path);
+    auto app = App_create();
 
     runMainLoop(app);
     return 0;
