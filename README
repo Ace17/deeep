@@ -24,6 +24,7 @@ bin:        output directory for binaries.
 ./check:    main check script. Call this to build native and asmjs versions.
 src/engine: I/O code (game-agnostic)
 src/game:   game logic
+src/base:   utilities shared between game logic and I/O code ; scene declaration
 res:        game resources (sounds, pictures)
 
 
