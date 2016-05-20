@@ -18,8 +18,8 @@
 #include <thread>
 
 #include "SDL.h"
-#include "util.h"
-#include "scene.h"
+#include "base/util.h"
+#include "base/scene.h"
 
 using namespace std;
 

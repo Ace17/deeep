@@ -13,8 +13,8 @@
 
 #include <algorithm>
 
-#include "engine/scene.h"
-#include "engine/util.h"
+#include "base/scene.h"
+#include "base/util.h"
 
 #include "game/entities/player.h"
 #include "game/entity.h"

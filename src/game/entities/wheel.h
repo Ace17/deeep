@@ -2,8 +2,8 @@
 
 #include <algorithm>
 
-#include "engine/util.h"
-#include "engine/scene.h"
+#include "base/util.h"
+#include "base/scene.h"
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"

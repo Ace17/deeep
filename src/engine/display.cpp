@@ -25,9 +25,9 @@ using namespace std;
 #include "SDL_video.h"
 #include "SDL_image.h"
 
-#include "util.h"
-#include "scene.h"
-#include "geom.h"
+#include "base/util.h"
+#include "base/scene.h"
+#include "base/geom.h"
 #include "model.h"
 
 vector<Model> g_Models;

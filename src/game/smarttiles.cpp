@@ -14,8 +14,8 @@
  */
 #include <cassert>
 #include <array>
-#include "engine/util.h"
-#include "engine/geom.h"
+#include "base/util.h"
+#include "base/geom.h"
 
 using namespace std;
 

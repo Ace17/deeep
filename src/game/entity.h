@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include "engine/scene.h"
-#include "engine/geom.h"
+#include "base/scene.h"
+#include "base/geom.h"
 #include "game.h"
 
 class Entity

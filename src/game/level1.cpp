@@ -12,8 +12,8 @@
  */
 
 #include <cassert>
-#include "engine/geom.h"
-#include "engine/util.h"
+#include "base/geom.h"
+#include "base/util.h"
 #include "game/game.h"
 #include "game/entities/switch.h"
 #include "game/entities/wheel.h"

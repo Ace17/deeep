@@ -7,9 +7,9 @@
  */
 
 #include "model.h"
-#include "geom.h"
+#include "base/geom.h"
+#include "base/util.h"
 #include "json.h"
-#include "util.h"
 #include <sstream>
 
 extern int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));

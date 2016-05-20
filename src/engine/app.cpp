@@ -20,9 +20,9 @@
 #include <string>
 #include <memory>
 #include "SDL.h"
+#include "base/geom.h"
+#include "base/scene.h"
 #include "ratecounter.h"
-#include "geom.h"
-#include "scene.h"
 
 using namespace std;
 

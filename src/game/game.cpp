@@ -16,8 +16,8 @@
 #include <algorithm>
 #include <array>
 #include <map>
-#include "engine/scene.h"
-#include "engine/util.h"
+#include "base/scene.h"
+#include "base/util.h"
 #include "entities/player.h"
 #include "entities/wheel.h"
 #include "game.h"

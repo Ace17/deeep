@@ -13,7 +13,7 @@
 #include <string>
 using namespace std;
 
-#include "geom.h"
+#include "base/geom.h"
 
 struct Action
 {
