@@ -162,12 +162,16 @@ int loadTexture(string path, Rect2i rect)
 }
 
 extern char VertexShaderCode[];
+extern size_t VertexShaderCode_size;
 extern char FragmentShaderCode[];
+extern size_t FragmentShaderCode_size;
 
 GLuint loadShaders()
 {
-  auto const vertexId = compileShader(VertexShaderCode, GL_VERTEX_SHADER);
-  auto const fragmentId = compileShader(FragmentShaderCode, GL_FRAGMENT_SHADER);
+  auto const vsCode = string(VertexShaderCode, VertexShaderCode + VertexShaderCode_size);
+  auto const fsCode = string(FragmentShaderCode, FragmentShaderCode + FragmentShaderCode_size);
+  auto const vertexId = compileShader(vsCode, GL_VERTEX_SHADER);
+  auto const fragmentId = compileShader(fsCode, GL_FRAGMENT_SHADER);
 
   auto const progId = linkShaders(vector<int>({ vertexId, fragmentId }));
 
