@@ -12,12 +12,13 @@ scripts/reformat.sh tests
 echo "----------------------------------------------------------------"
 echo "Building asmjs version"
 
-PKG_CONFIG_LIBDIR=/home/ace/source/emscripten/emsdk_portable/emscripten/master/system/lib/pkgconfig \
-PATH=/home/ace/source/emscripten/emsdk_portable/emscripten/master:$PATH \
+EMCC_ROOT=/tmp/toolchains/emscripten
+PKG_CONFIG_LIBDIR=$EMCC_ROOT/system/lib/pkgconfig \
+PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH \
   BIN=bin/asmjs \
   CXX=emcc \
   CXXFLAGS="-O3 -g0 -DNDEBUG" \
-  LDFLAGS="-O3 -Xlinker,-s -g0 --preload-file res" \
+  LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res" \
   $MAKE bin/asmjs/deeep.html
 
 echo "----------------------------------------------------------------"
