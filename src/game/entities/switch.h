@@ -22,9 +22,6 @@
 #include "game/models.h"
 #include "game/sounds.h"
 
-auto const SHIP_SPEED = 0.01;
-auto const BULLET_SPEED = 0.20;
-
 class Switch : public Entity
 {
 public:
