@@ -50,6 +50,7 @@ struct Control
   bool left, right, up, down;
   bool fire;
   bool jump;
+  bool dash;
 };
 
 struct Resource

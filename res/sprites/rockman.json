@@ -30,7 +30,7 @@
     },
     {
       "name": "dash",
-      "frames": [ 4 ]
+      "frames": [ 64, 65 ]
     },
     {
       "name": "dashAim",

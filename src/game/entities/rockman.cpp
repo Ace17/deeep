@@ -98,8 +98,16 @@ struct Rockman : Player
       {
         if(vel.x != 0)
         {
-          r.ratio = (time % 500) / 500.0f;
-          r.action = ACTION_WALK;
+          if(dashDelay)
+          {
+            r.ratio = min(400 - dashDelay, 400) / 100.0f;
+            r.action = ACTION_DASH;
+          }
+          else
+          {
+            r.ratio = (time % 500) / 500.0f;
+            r.action = ACTION_WALK;
+          }
         }
         else
         {
@@ -140,6 +148,7 @@ struct Rockman : Player
           game->playSound(SND_LAND);
 
         ground = true;
+        dashDelay = 0;
       }
 
       vel.y = 0;
@@ -220,6 +229,15 @@ struct Rockman : Player
         wantedSpeed += WALK_SPEED;
     }
 
+    if(dashbutton.toggle(c.dash) && ground && dashDelay == 0)
+      dashDelay = 400;
+
+    if(dashDelay > 0)
+    {
+      wantedSpeed *= 4;
+      vel.x = wantedSpeed;
+    }
+
     vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
 
     if(abs(vel.x) < 0.00001)
@@ -252,6 +270,7 @@ struct Rockman : Player
   {
     decrement(blinking);
     decrement(hurtDelay);
+    decrement(dashDelay);
   }
 
   virtual void onDamage(int amount) override
@@ -297,10 +316,11 @@ struct Rockman : Player
   Int debounceLanding;
   ORIENTATION dir;
   Bool ground;
-  Toggle jumpbutton, firebutton;
+  Toggle jumpbutton, firebutton, dashbutton;
   Int time;
   Int climbDelay;
   Int hurtDelay;
+  Int dashDelay;
   Int life;
 };
 
