@@ -17,7 +17,7 @@
 #include "base/geom.h"
 #include "base/scene.h"
 
-class Entity;
+struct Entity;
 
 struct ITriggerable
 {

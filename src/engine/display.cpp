@@ -136,7 +136,7 @@ int loadTexture(string path, Rect2i rect)
 
   auto const bpp = surface->format->BytesPerPixel;
 
-  vector<uint8_t> img(rect.width * rect.height * bpp);
+  vector<uint8_t> img(rect.width* rect.height* bpp);
 
   auto src = (Uint8*)surface->pixels + rect.x * bpp + rect.y * surface->pitch;
   auto dst = (Uint8*)img.data();

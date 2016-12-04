@@ -226,9 +226,9 @@ private:
 
   void loadLevel()
   {
-    extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame * game);
-    extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame * game);
-    extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame * game);
+    extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame* game);
+    extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame* game);
+    extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
 
     auto onCell = [&] (int, int, int& tile)
                   {

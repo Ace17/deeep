@@ -142,7 +142,7 @@ reverse_const_adapter<T> retro(T const& c)
 }
 
 template<typename T, typename Gen>
-auto shuffle_inplace(vector<T> &v, Gen & gen)
+auto shuffle_inplace(vector<T>& v, Gen& gen)
 {
   auto dist = uniform_int_distribution<int>(0, v.size() - 1);
 
@@ -155,7 +155,7 @@ auto shuffle_inplace(vector<T> &v, Gen & gen)
 }
 
 template<typename T, typename Gen>
-auto shuffle(vector<T> const & input, Gen & gen)
+auto shuffle(vector<T> const& input, Gen& gen)
 {
   vector<T> r = input;
   shuffle_inplace(r, gen);

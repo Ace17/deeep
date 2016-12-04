@@ -57,9 +57,8 @@ enum ORIENTATION
   RIGHT,
 };
 
-class Rockman : public Player
+struct Rockman : Player
 {
-public:
   Rockman() : dir(RIGHT)
   {
     size = Size2f(0.9, 1.9);

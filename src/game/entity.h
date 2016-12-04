@@ -17,9 +17,8 @@
 #include "base/geom.h"
 #include "game.h"
 
-class Entity
+struct Entity
 {
-public:
   Entity()
   {
     size = Size2f(1, 1);
