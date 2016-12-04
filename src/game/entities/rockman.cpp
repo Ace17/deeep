@@ -230,7 +230,10 @@ struct Rockman : Player
     }
 
     if(dashbutton.toggle(c.dash) && ground && dashDelay == 0)
+    {
+      game->playSound(SND_JUMP);
       dashDelay = 400;
+    }
 
     if(dashDelay > 0)
     {

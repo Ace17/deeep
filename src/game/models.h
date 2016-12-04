@@ -8,5 +8,6 @@ enum
   MDL_WHEEL,
   MDL_LIFEBAR,
   MDL_TELEPORTER,
+  MDL_BONUS,
 };
 

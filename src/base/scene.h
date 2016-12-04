@@ -39,10 +39,10 @@ struct Actor
 
   Vector2f pos;
   MODEL model;
-  int action;
-  float ratio; // in [0 .. 1]
+  int action = 0;
+  float ratio = 1; // in [0 .. 1]
   Vector2f scale;
-  EFFECT_TYPE effect;
+  EFFECT_TYPE effect = EFFECT_NORMAL;
 };
 
 struct Control

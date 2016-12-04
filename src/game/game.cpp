@@ -34,10 +34,6 @@ class Game : public Scene, public IGame
 public:
   Game() : m_tiles(Size2i(128, 128))
   {
-    m_player = createRockman();
-    m_player->pos = Vector2f(8, m_tiles.size.height - 2);
-    spawn(m_player);
-
     loadLevel();
 
     {
@@ -105,6 +101,7 @@ public:
       { SND_SWITCH, "res/sounds/switch.ogg" },
       { SND_HURT, "res/sounds/hurt.ogg" },
       { SND_DIE, "res/sounds/die.ogg" },
+      { SND_BONUS, "res/sounds/bonus.ogg" },
     };
 
     return makeView(sounds);
@@ -120,6 +117,7 @@ public:
       { MDL_WHEEL, "res/sprites/wheel.json" },
       { MDL_LIFEBAR, "res/sprites/lifebar.json" },
       { MDL_TELEPORTER, "res/sprites/teleporter.json" },
+      { MDL_BONUS, "res/sprites/bonus.json" },
     };
 
     return makeView(models);
@@ -226,9 +224,22 @@ private:
 
   void loadLevel()
   {
+    m_entities.clear();
+    m_spawned.clear();
+    m_listeners.clear();
+
     extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
+    extern void loadLevel4(Matrix<int> &tiles, Vector2i & start, IGame* game);
+
+    auto levels = vector<decltype(loadLevel1)*>(
+    {
+      &loadLevel4,
+      &loadLevel3,
+      &loadLevel2,
+      &loadLevel1,
+    });
 
     auto onCell = [&] (int, int, int& tile)
                   {
@@ -238,10 +249,28 @@ private:
     m_tiles.scan(onCell);
 
     Vector2i start;
-    loadLevel3(m_tiles, start, this);
+    levels[m_level] (m_tiles, start, this);
 
+    m_player = createRockman();
     m_player->pos = Vector2f(start.x, start.y);
+    spawn(m_player);
+
+    m_ender.game = this;
+    listen(-1, &m_ender);
   }
+
+  struct LevelEnder : ITriggerable
+  {
+    Game* game;
+    void trigger()
+    {
+      game->m_level++;
+      game->loadLevel();
+    }
+  };
+
+  int m_level = 0;
+  LevelEnder m_ender;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities

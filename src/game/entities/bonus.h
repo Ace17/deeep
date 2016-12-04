@@ -1,5 +1,5 @@
 /**
- * @brief Exit portal.
+ * @brief Switch and door.
  * @author Sebastien Alaiwan
  */
 
@@ -14,7 +14,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cmath>
 
 #include "base/util.h"
 #include "base/scene.h"
@@ -22,42 +21,38 @@
 #include "game/models.h"
 #include "game/sounds.h"
 
-class Teleporter : public Entity
+struct Bonus : Entity
 {
-public:
-  Teleporter()
+  Bonus()
   {
-    size = Size2f(2, 1);
-    solid = true;
-    state = false;
+    size = Size2f(0.5, 0.5);
   }
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_TELEPORTER);
-    r.scale = Vector2f(2, 2);
-    r.pos -= Vector2f(1, 0);
-    r.ratio = state ? 1 : 0;
+    auto s = sin(time * 0.01);
+    auto r = Actor(pos, MDL_BONUS);
+    r.scale = Vector2f(1, 1);
+    r.ratio = max(s, 0.0);
+    r.action = 0;
+
     return r;
   }
 
   virtual void tick() override
   {
+    ++time;
   }
 
-  virtual void onCollide(Entity* other) override
+  virtual void onCollide(Entity*) override
   {
-    if(state)
+    if(dead)
       return;
 
-    if(abs(other->vel.x) >= 0.001)
-      return;
-
-    state = true;
-    game->playSound(SND_SWITCH);
-    game->trigger(-1);
+    game->playSound(SND_BONUS);
+    dead = true;
   }
 
-  bool state;
+  int time;
 };
 

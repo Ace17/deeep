@@ -313,6 +313,9 @@ void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ra
   if(model.actions.empty())
     throw runtime_error("model has no actions");
 
+  if(actionIdx >= (int)model.actions.size())
+    throw runtime_error("invalid action index");
+
   auto const& action = model.actions[actionIdx];
 
   if(action.textures.empty())

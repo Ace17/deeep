@@ -9,5 +9,6 @@ enum
   SND_SWITCH,
   SND_HURT,
   SND_DIE,
+  SND_BONUS,
 };
 
