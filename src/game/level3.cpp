@@ -213,6 +213,8 @@ void loadLevel3(Matrix<int>& tiles, Vector2i& start, IGame* game)
 {
   auto data = levelData;
 
+  tiles.resize(Size2i(W, H));
+
   for(int y = 0; y < H; ++y)
     for(int x = 0; x < W; ++x)
     {

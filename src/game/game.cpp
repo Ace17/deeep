@@ -64,10 +64,11 @@ public:
                     return true;
                   };
 
-    for(int i = 0; i < 1000; ++i)
+    auto const maxX = m_tiles.size.width - 4;
+    auto const maxY = m_tiles.size.height - 4;
+
+    for(int i = 0; i < (maxX * maxY) / 100; ++i)
     {
-      auto const maxX = m_tiles.size.width - 4;
-      auto const maxY = m_tiles.size.height - 4;
       auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
       auto size = Size2i(2, 2);
 
@@ -241,12 +242,9 @@ private:
       &loadLevel1,
     });
 
-    auto onCell = [&] (int, int, int& tile)
-                  {
-                    tile = 1;
-                  };
+    auto setToOne = [&] (int, int, int& tile) { tile = 1; };
 
-    m_tiles.scan(onCell);
+    m_tiles.scan(setToOne);
 
     Vector2i start;
     levels[m_level] (m_tiles, start, this);

@@ -199,10 +199,8 @@ struct Matrix
 {
   Matrix(Size2i size_) : size(size_)
   {
-    data = new T[size.width * size.height];
-
-    for(int i = 0; i < size.width * size.height; ++i)
-      data[i] = T();
+    data = nullptr;
+    resize(size_);
   }
 
   ~Matrix()
@@ -210,7 +208,18 @@ struct Matrix
     delete[] data;
   }
 
-  const Size2i size;
+  void resize(Size2i size_)
+  {
+    delete[] data;
+
+    size = size_;
+    data = new T[size.width * size.height];
+
+    for(int i = 0; i < size.width * size.height; ++i)
+      data[i] = T();
+  }
+
+  Size2i size;
 
   T& get(int x, int y)
   {
