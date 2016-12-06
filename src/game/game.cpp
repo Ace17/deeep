@@ -91,7 +91,7 @@ public:
     removeDeadThings();
   }
 
-  virtual Slice<const Resource> getSounds() const override
+  virtual Span<const Resource> getSounds() const override
   {
     static const Resource sounds[] =
     {
@@ -108,7 +108,7 @@ public:
     return makeView(sounds);
   }
 
-  virtual Slice<const Resource> getModels() const override
+  virtual Span<const Resource> getModels() const override
   {
     static const Resource models[] =
     {

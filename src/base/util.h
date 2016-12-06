@@ -185,7 +185,7 @@ vector<T> extract(vector<T> const& input, vector<int> indices)
 }
 
 template<typename T>
-struct Slice
+struct Span
 {
   T* data;
   int len;
@@ -202,9 +202,9 @@ struct Slice
 };
 
 template<typename T, size_t N>
-Slice<T> makeView(T(&tab)[N])
+Span<T> makeView(T(&tab)[N])
 {
-  Slice<T> r;
+  Span<T> r;
   r.data = tab;
   r.len = N;
   return r;

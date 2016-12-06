@@ -7,7 +7,7 @@
 #include <vector>
 
 using namespace std;
-vector<uint8_t> decompress(Slice<const uint8_t> buffer)
+vector<uint8_t> decompress(Span<const uint8_t> buffer)
 {
   vector<uint8_t> r;
 
