@@ -10,7 +10,6 @@
 #include "base/geom.h"
 #include "base/util.h"
 #include "json.h"
-#include <sstream>
 
 extern int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 
@@ -44,19 +43,17 @@ Model loadModel(string jsonPath)
   auto type = obj->getMember<json::String>("type")->value;
   auto actions = obj->getMember<json::Array>("actions");
 
-  if(type == "sheet")
-  {
-    auto sheet = obj->getMember<json::String>("sheet")->value;
-    auto width = obj->getMember<json::Number>("width")->value;
-    auto height = obj->getMember<json::Number>("height")->value;
-
-    auto cell = Size2i(width, height);
-
-    for(auto& action : actions->elements)
-      r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, cell));
-  }
-  else
+  if(type != "sheet")
     throw runtime_error("Unknown model type: '" + type + "'");
+
+  auto sheet = obj->getMember<json::String>("sheet")->value;
+  auto width = obj->getMember<json::Number>("width")->value;
+  auto height = obj->getMember<json::Number>("height")->value;
+
+  auto cell = Size2i(width, height);
+
+  for(auto& action : actions->elements)
+    r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, cell));
 
   return r;
 }

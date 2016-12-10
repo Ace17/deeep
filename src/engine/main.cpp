@@ -35,7 +35,7 @@ char const* gluErrorString(int)
 }
 }
 
-App* g_pApp;
+static App* g_pApp;
 static void voidTick()
 {
   App_tick(g_pApp);
@@ -52,9 +52,7 @@ void runMainLoop(App* app)
 void runMainLoop(App* app)
 {
   while(App_tick(app))
-  {
     SDL_Delay(1);
-  }
 }
 
 #endif
