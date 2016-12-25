@@ -103,9 +103,13 @@ int linkShaders(vector<int> ids)
   int InfoLogLength;
   glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
   glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-  vector<char> msgBuf(InfoLogLength);
-  glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, msgBuf.data());
-  cout << msgBuf.data();
+
+  if(0)
+  {
+    vector<char> msgBuf(InfoLogLength);
+    glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, msgBuf.data());
+    cout << msgBuf.data();
+  }
 
   cout << "OK" << endl;
 
@@ -265,6 +269,9 @@ void printOpenGlVersion()
   cout << "OpenGL shading version: " << sLangVersion << endl;
 }
 
+SDL_Window* mainWindow;
+SDL_GLContext mainContext;
+
 void Display_init(int width, int height)
 {
   if(SDL_InitSubSystem(SDL_INIT_VIDEO))
@@ -272,8 +279,23 @@ void Display_init(int width, int height)
 
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-  if(!SDL_SetVideoMode(width, height, 0, SDL_OPENGL))
+  mainWindow = SDL_CreateWindow(
+    "My Game",
+    SDL_WINDOWPOS_CENTERED,
+    SDL_WINDOWPOS_CENTERED,
+    width,
+    height,
+    SDL_WINDOW_OPENGL
+    );
+
+  if(!mainWindow)
     throw runtime_error("Can't set video mode");
+
+  // Create our opengl context and attach it to our window
+  mainContext = SDL_GL_CreateContext(mainWindow);
+
+  // This makes our buffer swap syncronized with the monitor's vertical refresh
+  SDL_GL_SetSwapInterval(1);
 
   printOpenGlVersion();
 
@@ -393,6 +415,6 @@ void beginDraw()
 
 void endDraw()
 {
-  SDL_GL_SwapBuffers();
+  SDL_GL_SwapWindow(mainWindow);
 }
 

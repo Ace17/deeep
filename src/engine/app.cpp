@@ -127,13 +127,13 @@ private:
       }
     }
 
-    m_control.left = keys[SDLK_LEFT];
-    m_control.right = keys[SDLK_RIGHT];
-    m_control.up = keys[SDLK_UP];
-    m_control.down = keys[SDLK_DOWN];
-    m_control.fire = keys[SDLK_SPACE];
-    m_control.jump = keys[SDLK_x];
-    m_control.dash = keys[SDLK_c];
+    m_control.left = keys[SDL_SCANCODE_LEFT];
+    m_control.right = keys[SDL_SCANCODE_RIGHT];
+    m_control.up = keys[SDL_SCANCODE_UP];
+    m_control.down = keys[SDL_SCANCODE_DOWN];
+    m_control.fire = keys[SDL_SCANCODE_SPACE];
+    m_control.jump = keys[SDL_SCANCODE_X];
+    m_control.dash = keys[SDL_SCANCODE_C];
   }
 
   void draw()
@@ -161,7 +161,7 @@ private:
   {
     char szFps[128];
     sprintf(szFps, "Basic game: %d FPS", fps);
-    SDL_WM_SetCaption(szFps, nullptr);
+    // SDL_WM_SetCaption(szFps, nullptr);
   }
 
   void onQuit()
@@ -183,15 +183,15 @@ private:
     if(evt->key.keysym.sym == SDLK_PAUSE || evt->key.keysym.sym == SDLK_RETURN)
       m_paused = !m_paused;
 
-    keys[evt->key.keysym.sym] = 1;
+    keys[evt->key.keysym.scancode] = 1;
   }
 
   void onKeyUp(SDL_Event* evt)
   {
-    keys[evt->key.keysym.sym] = 0;
+    keys[evt->key.keysym.scancode] = 0;
   }
 
-  int keys[SDLK_LAST];
+  int keys[SDL_NUM_SCANCODES];
   int m_running;
 
   int m_lastTime;

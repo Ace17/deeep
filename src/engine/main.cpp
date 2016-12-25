@@ -33,14 +33,6 @@ char const* gluErrorString(int)
 {
   return "unknown";
 }
-
-// emscripten doesn't have this one
-#include "SDL_mixer.h"
-int Mix_FadeInMusic(Mix_Music* m, int a, int delay)
-{
-  (void)delay;
-  return Mix_PlayMusic(m, a);
-}
 }
 
 static App* g_pApp;
