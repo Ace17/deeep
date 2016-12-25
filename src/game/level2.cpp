@@ -21,13 +21,13 @@
 #include "game/entities/wheel.h"
 #include "game/graph_tools.h"
 
+int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val);
+
 const auto W = 32 * 2;
 const auto H = 32 * 2;
 
 const auto BLOCK_W = 8;
 const auto BLOCK_H = 8;
-
-int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val);
 
 template<typename Gen>
 vector<Edge> createRandomSpanningTree(Gen& gen, int cols, int rows)
