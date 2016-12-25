@@ -182,7 +182,8 @@ private:
                       auto const posX = (x + (subTile % 2) * 0.5) * ts;
                       auto const posY = (y + (subTile / 2) * 0.5) * ts;
                       auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
-                      actor.action = (tile - 1) * 16 + composition[subTile];
+                      // actor.action = 0 * (tile - 1) * 16 + composition[subTile];
+                      actor.action = (m_level % 2) * 16 + composition[subTile];
                       actor.scale = Vector2f(0.5, 0.5);
                       r.push_back(actor);
                     }
