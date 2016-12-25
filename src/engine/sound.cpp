@@ -23,7 +23,7 @@ static vector<Mix_Chunk*> sounds;
 
 void Audio_init()
 {
-  auto ret = Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
+  auto ret = Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 1024);
 
   if(ret == -1)
     throw runtime_error("Can't open audio");
@@ -32,6 +32,13 @@ void Audio_init()
 
   if(ret == -1)
     throw runtime_error("Can't allocate channels");
+
+  auto m = Mix_LoadMUS("res/music/default.ogg");
+
+  if(!m)
+    throw runtime_error("Can't load music");
+
+  Mix_FadeInMusic(m, -1, 2000);
 }
 
 void Audio_loadSound(int id, string path)
