@@ -265,8 +265,16 @@ void printOpenGlVersion()
   auto sVersion = (char const*)glGetString(GL_VERSION);
   auto sLangVersion = (char const*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-  cout << "OpenGL version: " << sVersion << endl;
-  cout << "OpenGL shading version: " << sLangVersion << endl;
+  auto notNull = [](char const* s) -> string
+  {
+    if(s)
+      return s;
+    else
+      return "<null>";
+  };
+
+  cout << "OpenGL version: " << notNull(sVersion) << endl;
+  cout << "OpenGL shading version: " << notNull(sLangVersion) << endl;
 }
 
 SDL_Window* mainWindow;
