@@ -42,6 +42,7 @@ SRCS:=\
 	src/game/game.cpp\
 	src/game/smarttiles.cpp\
 	src/game/graph_tools.cpp\
+	src/game/level_common.cpp\
 	src/game/level1.cpp\
 	src/game/level2.cpp\
 	src/game/level3.cpp\
