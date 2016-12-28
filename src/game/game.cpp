@@ -105,7 +105,7 @@ public:
       { SND_BONUS, "res/sounds/bonus.ogg" },
     };
 
-    return makeView(sounds);
+    return makeSpan(sounds);
   }
 
   virtual Span<const Resource> getModels() const override
@@ -121,7 +121,7 @@ public:
       { MDL_BONUS, "res/sprites/bonus.json" },
     };
 
-    return makeView(models);
+    return makeSpan(models);
   }
 
   vector<Actor> getActors() const override

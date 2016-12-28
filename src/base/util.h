@@ -202,7 +202,7 @@ struct Span
 };
 
 template<typename T, size_t N>
-Span<T> makeView(T(&tab)[N])
+Span<T> makeSpan(T(&tab)[N])
 {
   Span<T> r;
   r.data = tab;
