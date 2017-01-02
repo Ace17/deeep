@@ -265,20 +265,20 @@ void printOpenGlVersion()
   auto sVersion = (char const*)glGetString(GL_VERSION);
   auto sLangVersion = (char const*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-  auto notNull = [](char const* s) -> string
-  {
-    if(s)
-      return s;
-    else
-      return "<null>";
-  };
+  auto notNull = [] (char const* s) -> string
+                 {
+                   if(s)
+                     return s;
+                   else
+                     return "<null>";
+                 };
 
   cout << "OpenGL version: " << notNull(sVersion) << endl;
   cout << "OpenGL shading version: " << notNull(sLangVersion) << endl;
 }
 
-SDL_Window* mainWindow;
-SDL_GLContext mainContext;
+static SDL_Window* mainWindow;
+static SDL_GLContext mainContext;
 
 void Display_init(int width, int height)
 {
@@ -315,6 +315,11 @@ void Display_init(int width, int height)
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void Display_setCaption(const char* caption)
+{
+  SDL_SetWindowTitle(mainWindow, caption);
 }
 
 void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)

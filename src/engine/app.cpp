@@ -33,6 +33,7 @@ void endDraw();
 void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
 
 void Display_init(int width, int height);
+void Display_setCaption(const char* caption);
 void Display_loadModel(int id, const char* imagePath);
 
 void Audio_init();
@@ -161,7 +162,7 @@ private:
   {
     char szFps[128];
     sprintf(szFps, "Basic game: %d FPS", fps);
-    // SDL_WM_SetCaption(szFps, nullptr);
+    Display_setCaption(szFps);
   }
 
   void onQuit()
