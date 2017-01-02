@@ -1,0 +1,12 @@
+{
+  "type" : "sheet",
+  "sheet" : "bullet.png",
+  "width" : 32,
+  "height" : 32,
+  "actions": [
+    {
+      "name": "default",
+      "frames": [ 0, 1, 2, 3 ]
+    }
+  ]
+}

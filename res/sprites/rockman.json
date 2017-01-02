@@ -14,7 +14,7 @@
     },
     {
       "name": "standShoot",
-      "frames": [ 4 ]
+      "frames": [ 8, 9 ]
     },
     {
       "name": "entrance",
@@ -26,7 +26,7 @@
     },
     {
       "name": "walkShoot",
-      "frames": [ 4 ]
+      "frames": [ 49, 50, 51, 52, 53, 54, 55, 56, 57 ]
     },
     {
       "name": "dash",

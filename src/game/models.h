@@ -9,5 +9,6 @@ enum
   MDL_LIFEBAR,
   MDL_TELEPORTER,
   MDL_BONUS,
+  MDL_BULLET,
 };
 

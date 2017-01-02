@@ -57,6 +57,29 @@ enum ORIENTATION
   RIGHT,
 };
 
+struct Bullet : Entity
+{
+  virtual Actor getActor() const override
+  {
+    auto r = Actor(pos, MDL_BULLET);
+    r.scale = Vector2f(0.4, 0.3);
+    r.action = 0;
+    r.ratio = 0;
+    return r;
+  }
+
+  void tick() override
+  {
+    pos += vel;
+    decrement(life);
+
+    if(life == 0)
+      dead = true;
+  }
+
+  int life = 1000;
+};
+
 struct Rockman : Player
 {
   Rockman() : dir(RIGHT)
@@ -106,13 +129,25 @@ struct Rockman : Player
           else
           {
             r.ratio = (time % 500) / 500.0f;
-            r.action = ACTION_WALK;
+
+            if(shootDelay == 0)
+              r.action = ACTION_WALK;
+            else
+              r.action = ACTION_WALK_SHOOT;
           }
         }
         else
         {
-          r.ratio = (time % 1000) / 1000.0f;
-          r.action = ACTION_STAND;
+          if(shootDelay == 0)
+          {
+            r.ratio = (time % 1000) / 1000.0f;
+            r.action = ACTION_STAND;
+          }
+          else
+          {
+            r.ratio = 0;
+            r.action = ACTION_STAND_SHOOT;
+          }
         }
       }
     }
@@ -157,16 +192,17 @@ struct Rockman : Player
     decrement(debounceFire);
     decrement(debounceLanding);
     decrement(climbDelay);
+    decrement(shootDelay);
 
     if(firebutton.toggle(c.fire) && tryActivate(debounceFire, 150))
     {
-      /*
-         auto b = unique(new Bullet);
-         b->pos = pos + Vector2f(0, 9);
-         b->vel = Vector2f(0.0, BULLET_SPEED);
-         game->spawn(b.release());
-       */
-      game->playSound(SND_BEEP);
+      auto b = make_unique<Bullet>();
+      auto vec = Vector2f(dir == LEFT ? -1 : 1, 0);
+      b->pos = pos + Vector2f(0, 0.9) + vec * 0.2;
+      b->vel = vec * 0.03;
+      game->spawn(b.release());
+      game->playSound(SND_FIRE);
+      shootDelay = 300;
     }
   }
 
@@ -324,6 +360,7 @@ struct Rockman : Player
   Int climbDelay;
   Int hurtDelay;
   Int dashDelay;
+  Int shootDelay;
   Int life;
 };
 

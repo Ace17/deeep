@@ -96,6 +96,7 @@ public:
     static const Resource sounds[] =
     {
       { SND_CHIRP, "res/sounds/base.ogg" },
+      { SND_FIRE, "res/sounds/fire.ogg" },
       { SND_JUMP, "res/sounds/jump.ogg" },
       { SND_BEEP, "res/sounds/beep.ogg" },
       { SND_LAND, "res/sounds/land.ogg" },
@@ -119,6 +120,7 @@ public:
       { MDL_LIFEBAR, "res/sprites/lifebar.json" },
       { MDL_TELEPORTER, "res/sprites/teleporter.json" },
       { MDL_BONUS, "res/sprites/bonus.json" },
+      { MDL_BULLET, "res/sprites/bullet.json" },
     };
 
     return makeSpan(models);
