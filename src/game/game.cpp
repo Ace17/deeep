@@ -89,6 +89,8 @@ public:
     checkCollisions();
     removeDeadThings();
 
+    m_upgrades = m_player->getUpgrades();
+
     m_debug = c.debug;
   }
 
@@ -256,6 +258,7 @@ private:
     m_entities.clear();
     m_spawned.clear();
     m_listeners.clear();
+    m_player = nullptr;
 
     extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame* game);
@@ -278,6 +281,7 @@ private:
     levels[m_level] (m_tiles, start, this);
 
     m_player = createRockman();
+    m_player->addUpgrade(m_upgrades);
     m_player->pos = Vector2f(start.x, start.y);
     spawn(m_player);
 
@@ -296,6 +300,7 @@ private:
     }
   };
 
+  Int m_upgrades;
   Int m_level;
   Bool m_levelFinished;
   LevelEnder m_ender;

@@ -236,6 +236,12 @@ struct Rockman : Player
   virtual void addUpgrade(Int upgrade) override
   {
     upgrades |= upgrade;
+    blinking = 2000;
+  }
+
+  virtual int getUpgrades() override
+  {
+    return upgrades;
   }
 
   void computeVelocity(Control c)
