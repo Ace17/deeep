@@ -63,5 +63,10 @@ struct Entity
     r.width = size.width;
     return r;
   }
+
+  Vector2f getCenter() const
+  {
+    return Vector2f(pos.x + size.width / 2, pos.y + size.height / 2);
+  }
 };
 

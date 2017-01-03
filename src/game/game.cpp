@@ -115,6 +115,7 @@ public:
       { SND_BONUS, "res/sounds/bonus.ogg" },
       { SND_DAMAGE, "res/sounds/damage.ogg" },
       { SND_TELEPORT, "res/sounds/teleport.ogg" },
+      { SND_EXPLODE, "res/sounds/explode.ogg" },
     };
 
     return makeSpan(sounds);
@@ -133,6 +134,7 @@ public:
       { MDL_TELEPORTER, "res/sprites/teleporter.json" },
       { MDL_BONUS, "res/sprites/bonus.json" },
       { MDL_BULLET, "res/sprites/bullet.json" },
+      { MDL_EXPLOSION, "res/sprites/explosion.json" },
     };
 
     return makeSpan(models);
@@ -289,7 +291,7 @@ private:
     }
   };
 
-  int m_level = 0;
+  Int m_level;
   Bool m_levelFinished;
   LevelEnder m_ender;
 

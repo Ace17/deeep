@@ -8,6 +8,7 @@
 #include "game/models.h"
 #include "game/sounds.h"
 #include "game/entities/player.h"
+#include "game/entities/explosion.h"
 
 class Wheel : public Entity
 {
@@ -82,12 +83,25 @@ public:
       other->onDamage(3);
   }
 
-  virtual void onDamage(int) override
+  virtual void onDamage(int amount) override
   {
     blinking = 100;
-    game->playSound(SND_DAMAGE);
+    life -= amount;
+
+    if(life < 0)
+    {
+      game->playSound(SND_EXPLODE);
+      dead = true;
+
+      auto explosion = make_unique<Explosion>();
+      explosion->pos = getCenter();
+      game->spawn(explosion.release());
+    }
+    else
+      game->playSound(SND_DAMAGE);
   }
 
+  Int life = 30;
   Int time;
   float dir;
 };
