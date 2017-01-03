@@ -12,5 +12,6 @@ enum
   SND_DIE,
   SND_BONUS,
   SND_DAMAGE,
+  SND_TELEPORT,
 };
 

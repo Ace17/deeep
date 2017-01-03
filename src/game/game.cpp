@@ -82,6 +82,13 @@ public:
 
   void tick(Control const& c) override
   {
+    if(m_levelFinished)
+    {
+      m_level++;
+      loadLevel();
+      m_levelFinished = false;
+    }
+
     m_player->think(c);
 
     for(auto& e : m_entities)
@@ -107,6 +114,7 @@ public:
       { SND_DIE, "res/sounds/die.ogg" },
       { SND_BONUS, "res/sounds/bonus.ogg" },
       { SND_DAMAGE, "res/sounds/damage.ogg" },
+      { SND_TELEPORT, "res/sounds/teleport.ogg" },
     };
 
     return makeSpan(sounds);
@@ -277,12 +285,12 @@ private:
     Game* game;
     void trigger()
     {
-      game->m_level++;
-      game->loadLevel();
+      game->m_levelFinished = true;
     }
   };
 
   int m_level = 0;
+  Bool m_levelFinished;
   LevelEnder m_ender;
 
   ////////////////////////////////////////////////////////////////

@@ -51,6 +51,23 @@ public:
   virtual void tick() override
   {
     decrement(blink);
+
+    if(target)
+    {
+      blink = 100;
+      target->pos.x = pos.x + 0.5;
+      target->vel.x = 0;
+      target->vel.y = 0;
+
+      decrement(delay);
+
+      if(delay == 0)
+      {
+        game->trigger(-1);
+        target = nullptr;
+        dead = true;
+      }
+    }
   }
 
   virtual void onCollide(Entity* other) override
@@ -60,15 +77,18 @@ public:
 
     blink = 100;
 
-    if(abs(other->vel.x) >= 0.001)
+    if(abs(other->pos.x - pos.x - 0.5) >= 0.01)
       return;
 
     state = true;
-    game->playSound(SND_SWITCH);
-    game->trigger(-1);
+    target = other;
+    game->playSound(SND_TELEPORT);
+    delay = 1000;
   }
 
   bool state;
   Int blink;
+  Int delay;
+  Entity* target = nullptr;
 };
 
