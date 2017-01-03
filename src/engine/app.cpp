@@ -184,7 +184,10 @@ private:
       m_slowMotion = !m_slowMotion;
 
     if(evt->key.keysym.sym == SDLK_PAUSE || evt->key.keysym.sym == SDLK_RETURN)
+    {
+      Audio_playSound(0);
       m_paused = !m_paused;
+    }
 
     keys[evt->key.keysym.scancode] = 1;
   }

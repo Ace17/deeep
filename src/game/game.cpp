@@ -96,6 +96,7 @@ public:
   {
     static const Resource sounds[] =
     {
+      { SND_PAUSE, "res/sounds/pause.ogg" },
       { SND_CHIRP, "res/sounds/base.ogg" },
       { SND_FIRE, "res/sounds/fire.ogg" },
       { SND_JUMP, "res/sounds/jump.ogg" },
@@ -265,7 +266,7 @@ private:
       &loadLevel4,
       &loadLevel3,
       &loadLevel1,
-      //&loadLevel2,
+      // &loadLevel2,
     });
 
     auto setToOne = [&] (int, int, int& tile) { tile = 1; };
