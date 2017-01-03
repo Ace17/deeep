@@ -51,6 +51,8 @@ struct Control
   bool fire;
   bool jump;
   bool dash;
+
+  bool debug;
 };
 
 struct Resource

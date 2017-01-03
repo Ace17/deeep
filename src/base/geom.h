@@ -28,6 +28,11 @@ struct Initialized
     val = T(0);
   }
 
+  Initialized(T val_)
+  {
+    val = val_;
+  }
+
   operator T const & () const
   {
     return val;

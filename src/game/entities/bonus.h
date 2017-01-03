@@ -25,7 +25,7 @@ struct Bonus : Entity
 {
   Bonus()
   {
-    size = Size2f(0.5, 0.5);
+    size = Size2f(1, 1);
   }
 
   virtual Actor getActor() const override

@@ -11,5 +11,6 @@ enum
   SND_HURT,
   SND_DIE,
   SND_BONUS,
+  SND_DAMAGE,
 };
 

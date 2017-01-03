@@ -27,7 +27,7 @@ class Switch : public Entity
 public:
   Switch(int id_) : id(id_)
   {
-    size = Size2f(0.2, 0.2);
+    size = Size2f(0.5, 0.5);
   }
 
   virtual Actor getActor() const override
@@ -76,7 +76,6 @@ public:
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
-    r.pos -= Vector2f(0.5, 0.5);
     r.action = 2 + (state ? 1 : 0);
     return r;
   }

@@ -34,7 +34,8 @@ struct Entity
   {
   }
 
-  virtual void onCollide(Entity*)
+  // only called if (this->collidesWith & other->collisionGroup)
+  virtual void onCollide(Entity* /*other*/)
   {
   }
 
@@ -50,11 +51,14 @@ struct Entity
   Int blinking;
   IGame* game;
 
+  Int collisionGroup = 1;
+  Int collidesWith = 0xFFFF;
+
   Rect2f getRect() const
   {
     Rect2f r;
-    r.x = pos.x - size.width / 2;
-    r.y = pos.y - size.height / 2;
+    r.x = pos.x;
+    r.y = pos.y;
     r.height = size.height;
     r.width = size.width;
     return r;

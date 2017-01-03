@@ -59,10 +59,17 @@ enum ORIENTATION
 
 struct Bullet : Entity
 {
+  Bullet()
+  {
+    size = Size2f(0.4, 0.3);
+    collisionGroup = 0;
+    collidesWith = (1 << 1);
+  }
+
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_BULLET);
-    r.scale = Vector2f(0.4, 0.3);
+    r.scale = Vector2f(size.width, size.height);
     r.action = 0;
     r.ratio = 0;
 
@@ -79,6 +86,12 @@ struct Bullet : Entity
 
     if(life == 0)
       dead = true;
+  }
+
+  void onCollide(Entity* other) override
+  {
+    other->onDamage(10);
+    dead = true;
   }
 
   int life = 1000;
@@ -291,23 +304,26 @@ struct Rockman : Player
 
   bool move(Vector2f delta)
   {
-    auto nextPos = pos + delta;
+    auto rect = getRect();
+    rect.x += delta.x;
+    rect.y += delta.y;
 
     const Vector2f vertices[] =
     {
-      Vector2f(0, 0),
-      Vector2f(size.width, 0),
-      Vector2f(0, size.height / 2.0),
-      Vector2f(size.width, size.height / 2.0),
-      Vector2f(0, size.height),
-      Vector2f(size.width, size.height),
+      Vector2f(rect.x, rect.y),
+      Vector2f(rect.x + rect.width, rect.y),
+      Vector2f(rect.x + rect.width, rect.y + rect.height),
+      Vector2f(rect.x, rect.y + rect.height),
+
+      Vector2f(rect.x, rect.y + rect.height / 2.0),
+      Vector2f(rect.x + rect.width, rect.y + rect.height / 2.0),
     };
 
     for(auto& v : vertices)
-      if(game->isSolid(nextPos + v))
+      if(game->isSolid(v))
         return false;
 
-    pos = nextPos;
+    pos += delta;
     return true;
   }
 

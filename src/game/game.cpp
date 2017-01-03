@@ -89,6 +89,8 @@ public:
 
     checkCollisions();
     removeDeadThings();
+
+    m_debug = c.debug;
   }
 
   virtual Span<const Resource> getSounds() const override
@@ -104,6 +106,7 @@ public:
       { SND_HURT, "res/sounds/hurt.ogg" },
       { SND_DIE, "res/sounds/die.ogg" },
       { SND_BONUS, "res/sounds/bonus.ogg" },
+      { SND_DAMAGE, "res/sounds/damage.ogg" },
     };
 
     return makeSpan(sounds);
@@ -114,6 +117,7 @@ public:
     static const Resource models[] =
     {
       { MDL_TILES, "res/tiles.mdl" },
+      { MDL_RECT, "res/sprites/rect.json" },
       { MDL_SWITCH, "res/sprites/switch.json" },
       { MDL_ROCKMAN, "res/sprites/rockman.json" },
       { MDL_WHEEL, "res/sprites/wheel.json" },
@@ -139,7 +143,12 @@ public:
     addActorsForTileMap(r, cameraPos);
 
     for(auto& entity : retro(m_entities))
+    {
       r.push_back(entity->getActor());
+
+      if(m_debug)
+        r.push_back(getDebugActor(entity.get()));
+    }
 
     for(auto& actor : r)
     {
@@ -209,8 +218,11 @@ private:
 
         if(overlaps(bulletRect, enemyRect))
         {
-          other.onCollide(&me);
-          me.onCollide(&other);
+          if(other.collidesWith & me.collisionGroup)
+            other.onCollide(&me);
+
+          if(me.collidesWith & other.collisionGroup)
+            me.onCollide(&other);
         }
       }
     }
@@ -342,6 +354,7 @@ private:
 
   Matrix<int> m_tiles;
   vector<SOUND> m_sounds;
+  bool m_debug;
 
   // static stuff
 
@@ -354,6 +367,15 @@ private:
       if(!entity->dead)
         entities.push_back(move(entity));
     }
+  }
+
+  static Actor getDebugActor(Entity* entity)
+  {
+    auto rect = entity->getRect();
+    auto r = Actor(Vector2f(rect.x, rect.y), MDL_RECT);
+    r.scale.x = rect.width;
+    r.scale.y = rect.height;
+    return r;
   }
 };
 

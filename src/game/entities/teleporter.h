@@ -21,34 +21,44 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
+#include "game/toggle.h"
 
 class Teleporter : public Entity
 {
 public:
   Teleporter()
   {
-    size = Size2f(2, 1);
-    solid = true;
+    size = Size2f(2, 0.5);
+    solid = false;
     state = false;
+    collisionGroup = -1;
+    collidesWith = -1;
   }
 
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_TELEPORTER);
-    r.scale = Vector2f(2, 2);
-    r.pos -= Vector2f(1, 0);
+    r.pos.y -= size.height * 0.9;
+    r.scale = Vector2f(size.width, size.height * 4);
     r.ratio = state ? 1 : 0;
+
+    if(blink)
+      r.effect = EFFECT_BLINKING;
+
     return r;
   }
 
   virtual void tick() override
   {
+    decrement(blink);
   }
 
   virtual void onCollide(Entity* other) override
   {
     if(state)
       return;
+
+    blink = 100;
 
     if(abs(other->vel.x) >= 0.001)
       return;
@@ -59,5 +69,6 @@ public:
   }
 
   bool state;
+  Int blink;
 };
 

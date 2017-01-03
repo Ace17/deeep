@@ -2,6 +2,7 @@
 
 enum
 {
+  MDL_RECT,
   MDL_SWITCH,
   MDL_TILES,
   MDL_ROCKMAN,

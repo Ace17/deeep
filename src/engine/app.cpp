@@ -135,6 +135,8 @@ private:
     m_control.fire = keys[SDL_SCANCODE_Z];
     m_control.jump = keys[SDL_SCANCODE_X];
     m_control.dash = keys[SDL_SCANCODE_C];
+
+    m_control.debug = keys[SDL_SCANCODE_G];
   }
 
   void draw()

@@ -15,7 +15,8 @@ public:
   Wheel()
   {
     dir = -1.0f;
-    size = Size2f(1.0, 1.0);
+    size = Size2f(1.5, 1.5);
+    collisionGroup = (1 << 1);
   }
 
   virtual Actor getActor() const override
@@ -84,6 +85,7 @@ public:
   virtual void onDamage(int) override
   {
     blinking = 100;
+    game->playSound(SND_DAMAGE);
   }
 
   Int time;

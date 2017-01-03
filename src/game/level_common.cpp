@@ -50,7 +50,7 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
   case 'D':
     {
       auto sw = new Door(val - 'A', game);
-      sw->pos = Vector2f(pos.x + 0.5, pos.y + 0.5);
+      sw->pos = Vector2f(pos.x, pos.y);
       game->spawn(sw);
       return 0;
     }
