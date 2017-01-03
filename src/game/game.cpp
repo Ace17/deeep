@@ -144,11 +144,15 @@ public:
   {
     vector<Actor> r;
 
-    auto const limit = 7.0f;
     auto cameraPos = m_player->pos;
     cameraPos.y += 1.5;
-    cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit - 1);
-    cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit - 1);
+
+    {
+      // prevent camera from going outside the level
+      auto const limit = 7.0f;
+      cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit - 1);
+      cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit - 1);
+    }
 
     addActorsForTileMap(r, cameraPos);
 
