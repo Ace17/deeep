@@ -270,10 +270,6 @@ public:
       // &loadLevel2,
     });
 
-    auto setToOne = [&] (int, int, int& tile) { tile = 1; };
-
-    m_tiles.scan(setToOne);
-
     Vector2i start;
     auto const levelIdx = clamp<int>(m_level, 0, levels.size() - 1);
     levels[levelIdx] (m_tiles, start, this);
