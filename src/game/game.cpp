@@ -19,7 +19,6 @@
 #include "base/scene.h"
 #include "base/util.h"
 #include "entities/player.h"
-#include "entities/wheel.h"
 #include "game.h"
 #include "sounds.h"
 #include "models.h"
@@ -34,15 +33,8 @@ class Game : public Scene, public IGame
 public:
   Game() : m_tiles(Size2i(128, 128))
   {
-    loadLevel();
-
-    {
-      auto w = new Wheel;
-      w->pos = Vector2f(17, m_tiles.size.height - 4);
-      spawn(w);
-    }
-
-    addRandomWidgets();
+    m_level = -1;
+    m_levelFinished = true;
   }
 
   void addRandomWidgets()
@@ -289,6 +281,8 @@ private:
 
     m_ender.game = this;
     listen(-1, &m_ender);
+
+    addRandomWidgets();
   }
 
   struct LevelEnder : ITriggerable
