@@ -22,7 +22,28 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
     return 0;
   case '@':
     {
-      auto bonus = new Bonus;
+      auto bonus = new Bonus(0, 0);
+      bonus->pos = Vector2f(pos.x, pos.y);
+      game->spawn(bonus);
+      return 0;
+    }
+  case '$':
+    {
+      auto bonus = new Bonus(3, UPGRADE_SHOOT);
+      bonus->pos = Vector2f(pos.x, pos.y);
+      game->spawn(bonus);
+      return 0;
+    }
+  case '%':
+    {
+      auto bonus = new Bonus(4, UPGRADE_CLIMB);
+      bonus->pos = Vector2f(pos.x, pos.y);
+      game->spawn(bonus);
+      return 0;
+    }
+  case '^':
+    {
+      auto bonus = new Bonus(5, UPGRADE_DASH);
       bonus->pos = Vector2f(pos.x, pos.y);
       game->spawn(bonus);
       return 0;

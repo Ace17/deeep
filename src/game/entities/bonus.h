@@ -20,11 +20,14 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
+#include "game/entities/player.h"
 
 struct Bonus : Entity
 {
-  Bonus()
+  Bonus(int modelAction_, int type_)
   {
+    modelAction = modelAction_;
+    type = type_;
     size = Size2f(1, 1);
   }
 
@@ -34,7 +37,7 @@ struct Bonus : Entity
     auto r = Actor(pos, MDL_BONUS);
     r.scale = Vector2f(1, 1);
     r.ratio = max(s, 0.0);
-    r.action = 0;
+    r.action = modelAction;
 
     return r;
   }
@@ -44,15 +47,21 @@ struct Bonus : Entity
     ++time;
   }
 
-  virtual void onCollide(Entity*) override
+  virtual void onCollide(Entity* other) override
   {
     if(dead)
       return;
 
-    game->playSound(SND_BONUS);
-    dead = true;
+    if(auto player = dynamic_cast<Player*>(other))
+    {
+      player->addUpgrade(type);
+      game->playSound(SND_BONUS);
+      dead = true;
+    }
   }
 
   int time;
+  int modelAction;
+  int type;
 };
 

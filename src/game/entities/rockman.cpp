@@ -211,23 +211,31 @@ struct Rockman : Player
     decrement(climbDelay);
     decrement(shootDelay);
 
-    if(firebutton.toggle(c.fire) && tryActivate(debounceFire, 150))
+    if(upgrades & UPGRADE_SHOOT)
     {
-      auto b = make_unique<Bullet>();
-      auto sign = (dir == LEFT ? -1 : 1);
-      auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
-      auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
-      b->pos = pos + offsetV + offsetH * sign;
-      b->vel = Vector2f(0.025, 0) * sign;
-      game->spawn(b.release());
-      game->playSound(SND_FIRE);
-      shootDelay = 300;
+      if(firebutton.toggle(c.fire) && tryActivate(debounceFire, 150))
+      {
+        auto b = make_unique<Bullet>();
+        auto sign = (dir == LEFT ? -1 : 1);
+        auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
+        auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
+        b->pos = pos + offsetV + offsetH * sign;
+        b->vel = Vector2f(0.025, 0) * sign;
+        game->spawn(b.release());
+        game->playSound(SND_FIRE);
+        shootDelay = 300;
+      }
     }
   }
 
   float health() override
   {
     return clamp(life / 31.0f, 0.0f, 1.0f);
+  }
+
+  virtual void addUpgrade(Int upgrade) override
+  {
+    upgrades |= upgrade;
   }
 
   void computeVelocity(Control c)
@@ -253,7 +261,7 @@ struct Rockman : Player
         game->playSound(SND_JUMP);
         vel.y = 0.015;
       }
-      else if(facingWall())
+      else if(facingWall() && (upgrades & UPGRADE_CLIMB))
       {
         game->playSound(SND_JUMP);
         // wall climbing
@@ -284,10 +292,13 @@ struct Rockman : Player
         wantedSpeed += WALK_SPEED;
     }
 
-    if(dashbutton.toggle(c.dash) && ground && dashDelay == 0)
+    if(upgrades & UPGRADE_DASH)
     {
-      game->playSound(SND_JUMP);
-      dashDelay = 400;
+      if(dashbutton.toggle(c.dash) && ground && dashDelay == 0)
+      {
+        game->playSound(SND_JUMP);
+        dashDelay = 400;
+      }
     }
 
     if(dashDelay > 0)
@@ -384,6 +395,8 @@ struct Rockman : Player
   Int dashDelay;
   Int shootDelay;
   Int life;
+
+  Int upgrades;
 };
 
 Player* createRockman()
