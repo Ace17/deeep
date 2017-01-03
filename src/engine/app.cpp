@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
+#include <vector>
 #include <string>
 #include <memory>
 #include "SDL.h"
@@ -40,15 +41,16 @@ void Audio_init();
 void Audio_loadSound(int id, string path);
 void Audio_playSound(int id);
 
-Scene* createGame();
+Scene* createGame(vector<string> argv);
 
 class App
 {
 public:
-  App()
+  App(vector<string> argv)
     : m_running(1),
     m_lastFps(0),
-    m_scene(createGame()),
+    m_args(argv),
+    m_scene(createGame(m_args)),
     m_slowMotion(false)
   {
     SDL_Init(0);
@@ -178,7 +180,7 @@ private:
       onQuit();
 
     if(evt->key.keysym.sym == SDLK_F2)
-      m_scene.reset(createGame());
+      m_scene.reset(createGame(m_args));
 
     if(evt->key.keysym.sym == SDLK_TAB)
       m_slowMotion = !m_slowMotion;
@@ -204,6 +206,7 @@ private:
   int m_lastFps;
   RateCounter m_fps;
   Control m_control;
+  vector<string> m_args;
   unique_ptr<Scene> m_scene;
   bool m_slowMotion;
   Bool m_paused;
@@ -211,9 +214,9 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-App* App_create()
+App* App_create(vector<string> argv)
 {
-  return new App();
+  return new App(argv);
 }
 
 bool App_tick(App* app)

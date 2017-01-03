@@ -33,7 +33,6 @@ class Game : public Scene, public IGame
 public:
   Game() : m_tiles(Size2i(1, 1))
   {
-    m_level = -1;
     m_levelFinished = true;
   }
 
@@ -76,7 +75,6 @@ public:
   {
     if(m_levelFinished)
     {
-      m_level++;
       loadLevel();
       m_levelFinished = false;
     }
@@ -186,7 +184,6 @@ public:
     return std::move(m_sounds);
   }
 
-private:
   void addActorsForTileMap(vector<Actor>& r, Vector2f cameraPos) const
   {
     auto onCell = [&] (int x, int y, int tile)
@@ -263,11 +260,11 @@ private:
     extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
-    extern void loadLevel4(Matrix<int> &tiles, Vector2i & start, IGame* game);
+    extern void loadTrainingLevel(Matrix<int> &tiles, Vector2i & start, IGame* game);
 
     auto levels = vector<decltype(loadLevel1)*>(
     {
-      &loadLevel4,
+      &loadTrainingLevel,
       &loadLevel3,
       &loadLevel1,
       // &loadLevel2,
@@ -278,7 +275,8 @@ private:
     m_tiles.scan(setToOne);
 
     Vector2i start;
-    levels[m_level] (m_tiles, start, this);
+    auto const levelIdx = clamp<int>(m_level, 0, levels.size() - 1);
+    levels[levelIdx] (m_tiles, start, this);
 
     m_player = createRockman();
     m_player->addUpgrade(m_upgrades);
@@ -297,6 +295,7 @@ private:
     void trigger()
     {
       game->m_levelFinished = true;
+      game->m_level++;
     }
   };
 
@@ -399,8 +398,13 @@ private:
   }
 };
 
-Scene* createGame()
+Scene* createGame(vector<string> args)
 {
-  return new Game;
+  auto r = make_unique<Game>();
+
+  if(args.size() == 1)
+    r->m_level = atoi(args[0].c_str());
+
+  return r.release();
 }
 

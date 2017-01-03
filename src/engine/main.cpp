@@ -16,13 +16,15 @@
 #include <stdexcept>
 #include <chrono>
 #include <thread>
+#include <string>
+#include <vector>
 
 #include "SDL.h"
 
 using namespace std;
 
 class App;
-App* App_create();
+App* App_create(vector<string> args);
 bool App_tick(App*);
 
 #ifdef __EMSCRIPTEN__
@@ -57,11 +59,16 @@ void runMainLoop(App* app)
 
 #endif
 
-int main()
+int main(int argc, char* argv[])
 {
   try
   {
-    auto app = App_create();
+    vector<string> args;
+
+    for(int i = 1; i < argc; ++i)
+      args.push_back(argv[i]);
+
+    auto app = App_create(args);
 
     runMainLoop(app);
     return 0;
