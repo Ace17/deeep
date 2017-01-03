@@ -158,6 +158,11 @@ public:
 
     for(auto& entity : retro(m_entities))
     {
+      auto delta = entity->pos - cameraPos;
+
+      if(abs(delta.x) > 8 || abs(delta.y) > 8)
+        continue;
+
       r.push_back(entity->getActor());
 
       if(m_debug)
