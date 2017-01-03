@@ -18,7 +18,7 @@ PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH \
   BIN=bin/asmjs \
   CXX=emcc \
   CXXFLAGS="-O3 -g0 -DNDEBUG" \
-  LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1" \
+  LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=32000000"  \
   $MAKE bin/asmjs/deeep.html
 
 echo "----------------------------------------------------------------"
