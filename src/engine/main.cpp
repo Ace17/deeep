@@ -44,7 +44,7 @@ static void voidTick()
 void runMainLoop(App* app)
 {
   g_pApp = app;
-  emscripten_set_main_loop(&voidTick, 0, 1);
+  emscripten_set_main_loop(&voidTick, 0, 10);
 }
 
 #else
@@ -52,7 +52,7 @@ void runMainLoop(App* app)
 void runMainLoop(App* app)
 {
   while(App_tick(app))
-    SDL_Delay(1);
+    SDL_Delay(10);
 }
 
 #endif
