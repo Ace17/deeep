@@ -31,7 +31,7 @@ array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 class Game : public Scene, public IGame
 {
 public:
-  Game() : m_tiles(Size2i(128, 128))
+  Game() : m_tiles(Size2i(1, 1))
   {
     m_level = -1;
     m_levelFinished = true;
@@ -264,8 +264,8 @@ private:
     {
       &loadLevel4,
       &loadLevel3,
-      &loadLevel2,
       &loadLevel1,
+      //&loadLevel2,
     });
 
     auto setToOne = [&] (int, int, int& tile) { tile = 1; };
