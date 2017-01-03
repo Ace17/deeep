@@ -7,7 +7,6 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
-#include "game/entities/player.h"
 #include "game/entities/explosion.h"
 
 class Wheel : public Entity
@@ -18,6 +17,7 @@ public:
     dir = -1.0f;
     size = Size2f(1.5, 1.5);
     collisionGroup = (1 << 1);
+    collidesWith = 1; // only the player
   }
 
   virtual Actor getActor() const override
@@ -79,8 +79,7 @@ public:
 
   virtual void onCollide(Entity* other) override
   {
-    if(dynamic_cast<Player*>(other))
-      other->onDamage(3);
+    other->onDamage(3);
   }
 
   virtual void onDamage(int amount) override
