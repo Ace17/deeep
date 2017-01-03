@@ -3,6 +3,7 @@
 enum
 {
   MDL_RECT,
+  MDL_DOOR,
   MDL_SWITCH,
   MDL_TILES,
   MDL_ROCKMAN,

@@ -119,6 +119,7 @@ public:
     static const Resource models[] =
     {
       { MDL_TILES, "res/tiles.mdl" },
+      { MDL_DOOR, "res/sprites/door.json" },
       { MDL_RECT, "res/sprites/rect.json" },
       { MDL_SWITCH, "res/sprites/switch.json" },
       { MDL_ROCKMAN, "res/sprites/rockman.json" },

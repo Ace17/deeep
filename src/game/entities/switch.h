@@ -21,6 +21,8 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
+#include "game/toggle.h"
+#include "game/entities/explosion.h"
 
 class Switch : public Entity
 {
@@ -88,5 +90,51 @@ public:
 
   Bool state;
   const int id;
+};
+
+struct BreakableDoor : public Entity
+{
+  BreakableDoor()
+  {
+    size = Size2f(1, 3);
+    solid = true;
+    collisionGroup = (1 << 1);
+  }
+
+  virtual Actor getActor() const override
+  {
+    auto r = Actor(pos, MDL_DOOR);
+    r.scale = Vector2f(size.width, size.height);
+
+    if(blinking)
+      r.effect = EFFECT_BLINKING;
+
+    return r;
+  }
+
+  virtual void tick() override
+  {
+    decrement(blinking);
+  }
+
+  virtual void onDamage(int amount) override
+  {
+    blinking = 200;
+    life -= amount;
+
+    if(life < 0)
+    {
+      game->playSound(SND_EXPLODE);
+      dead = true;
+
+      auto explosion = make_unique<Explosion>();
+      explosion->pos = getCenter();
+      game->spawn(explosion.release());
+    }
+    else
+      game->playSound(SND_DAMAGE);
+  }
+
+  Int life = 130;
 };
 

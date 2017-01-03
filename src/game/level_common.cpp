@@ -54,6 +54,13 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
       game->spawn(sw);
       return 0;
     }
+  case '#':
+    {
+      auto ent = new BreakableDoor;
+      ent->pos = Vector2f(pos.x, pos.y);
+      game->spawn(ent);
+      return 0;
+    }
   case '*':
     {
       auto wh = new Wheel;

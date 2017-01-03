@@ -1,0 +1,12 @@
+{
+  "type" : "sheet",
+  "sheet" : "door.png",
+  "width" : 16,
+  "height" : 48,
+  "actions": [
+    {
+      "name": "default",
+      "frames": [ 0 ]
+    }
+  ]
+}
