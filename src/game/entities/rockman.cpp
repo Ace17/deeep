@@ -61,7 +61,7 @@ struct Bullet : Entity
 {
   Bullet()
   {
-    size = Size2f(0.4, 0.3);
+    size = Size2f(0.5, 0.4);
     collisionGroup = 0;
     collidesWith = (1 << 1);
   }

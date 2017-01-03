@@ -7,6 +7,14 @@
     {
       "name": "default",
       "frames": [ 0, 1, 2, 3 ]
+    },
+    {
+      "name": "hp",
+      "frames": [ 16, 17, 18, 19 ]
+    },
+    {
+      "name": "sub",
+      "frames": [ 32, 33, 34, 35 ]
     }
   ]
 }
