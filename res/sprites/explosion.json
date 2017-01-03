@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "explosion.png",
-  "width" : 64,
-  "height" : 64,
+  "width" : 32,
+  "height" : 32,
   "actions": [
     {
       "name": "default",
