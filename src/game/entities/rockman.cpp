@@ -65,6 +65,10 @@ struct Bullet : Entity
     r.scale = Vector2f(0.4, 0.3);
     r.action = 0;
     r.ratio = 0;
+
+    // re-center
+    r.pos += Vector2f(r.scale.x * 0.5, 0);
+
     return r;
   }
 
@@ -197,9 +201,11 @@ struct Rockman : Player
     if(firebutton.toggle(c.fire) && tryActivate(debounceFire, 150))
     {
       auto b = make_unique<Bullet>();
-      auto vec = Vector2f(dir == LEFT ? -1 : 1, 0);
-      b->pos = pos + Vector2f(0, 0.9) + vec * 0.2;
-      b->vel = vec * 0.03;
+      auto sign = (dir == LEFT ? -1 : 1);
+      auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
+      auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
+      b->pos = pos + offsetV + offsetH * sign;
+      b->vel = Vector2f(0.025, 0) * sign;
       game->spawn(b.release());
       game->playSound(SND_FIRE);
       shootDelay = 300;
