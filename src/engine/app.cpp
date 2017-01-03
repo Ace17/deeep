@@ -54,8 +54,6 @@ public:
     SDL_Init(0);
     memset(keys, 0, sizeof keys);
 
-    m_lastTime = SDL_GetTicks();
-
     Display_init(512, 512);
     Audio_init();
 
@@ -64,6 +62,8 @@ public:
 
     for(auto model : m_scene->getModels())
       Display_loadModel(model.id, model.path);
+
+    m_lastTime = SDL_GetTicks();
   }
 
   ~App()
