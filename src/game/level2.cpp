@@ -17,8 +17,6 @@
 #include "base/geom.h"
 #include "base/util.h"
 #include "game/game.h"
-#include "game/entities/switch.h"
-#include "game/entities/wheel.h"
 #include "game/graph_tools.h"
 
 int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val);
