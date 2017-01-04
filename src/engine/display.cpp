@@ -40,6 +40,7 @@ GLuint g_ProgramId;
   do { a; ensureGl(# a, __LINE__); } while(0)
 #endif
 
+inline
 void ensureGl(char const* expr, int line)
 {
   auto const errorCode = glGetError();
@@ -56,6 +57,7 @@ void ensureGl(char const* expr, int line)
   throw runtime_error(ss.str());
 }
 
+static
 int compileShader(string code, int type)
 {
   auto shaderId = glCreateShader(type);
@@ -87,6 +89,7 @@ int compileShader(string code, int type)
   return shaderId;
 }
 
+static
 int linkShaders(vector<int> ids)
 {
   // Link the program
@@ -116,6 +119,7 @@ int linkShaders(vector<int> ids)
   return ProgramID;
 }
 
+static
 SDL_Surface* loadPicture(string path)
 {
   auto surface = IMG_Load((char*)path.c_str());
@@ -170,6 +174,7 @@ extern size_t VertexShaderCode_size;
 extern char FragmentShaderCode[];
 extern size_t FragmentShaderCode_size;
 
+static
 GLuint loadShaders()
 {
   auto const vsCode = string(VertexShaderCode, VertexShaderCode + VertexShaderCode_size);
@@ -185,6 +190,7 @@ GLuint loadShaders()
   return progId;
 }
 
+static
 Model rectangularModel(float w, float h)
 {
   const GLfloat myTriangle[] =
@@ -219,6 +225,7 @@ Model rectangularModel(float w, float h)
   return model;
 }
 
+static
 Model loadAnimation(string path)
 {
   auto m = rectangularModel(1, 1);
@@ -260,6 +267,7 @@ void Display_loadModel(int id, const char* path)
   g_Models[id] = loadAnimation(path);
 }
 
+static
 void printOpenGlVersion()
 {
   auto sVersion = (char const*)glGetString(GL_VERSION);
