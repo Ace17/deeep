@@ -15,13 +15,9 @@
 #include "base/geom.h"
 #include "base/util.h"
 #include "game/game.h"
+#include "game/level_common.h"
 
-int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val);
-
-const auto W = 128;
-const auto H = 128;
-
-static const char data_level1[H][W + 1] =
+static const char data_level1[128][128 + 1] =
 {
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "XXXXXXXXX      XXYYYYYYYXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXEEEEEEEEXXXXXXXXXYYYYYYYEEEEEEEEXXXXXXXXEEEEEEEEXXXXXXXX",
@@ -155,19 +151,7 @@ static const char data_level1[H][W + 1] =
 
 void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game)
 {
-  auto data = data_level1;
-
-  tiles.resize(Size2i(W, H));
-
-  for(int y = 0; y < H; ++y)
-    for(int x = 0; x < W; ++x)
-    {
-      auto val = data[H - 1 - y][x];
-
-      auto pos = Vector2i(x, y);
-      auto tile = interpretTile(pos, start, game, val);
-
-      tiles.set(x, y, tile);
-    }
+  auto data = toMatrix(data_level1);
+  loadLevel(data, tiles, start, game);
 }
 

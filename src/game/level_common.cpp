@@ -92,3 +92,18 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
   }
 }
 
+void loadLevel(Matrix<char> const& input, Matrix<int>& tiles, Vector2i& start, IGame* game)
+{
+  tiles.resize(input.size);
+
+  for(int y = 0; y < input.size.height; ++y)
+    for(int x = 0; x < input.size.width; ++x)
+    {
+      auto val = input.get(x, y);
+      auto pos = Vector2i(x, y);
+      auto tile = interpretTile(pos, start, game, val);
+
+      tiles.set(x, y, tile);
+    }
+}
+
