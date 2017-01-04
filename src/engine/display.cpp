@@ -322,7 +322,7 @@ void Display_setCaption(const char* caption)
   SDL_SetWindowTitle(mainWindow, caption);
 }
 
-void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)
+void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)
 {
   auto& model = g_Models.at(modelId);
 
@@ -405,7 +405,7 @@ void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ra
   SAFE_GL(glDisableVertexAttribArray(positionLoc));
 }
 
-void beginDraw()
+void Display_beginDraw()
 {
   SAFE_GL(glUseProgram(g_ProgramId));
 
@@ -426,7 +426,7 @@ void beginDraw()
   }
 }
 
-void endDraw()
+void Display_endDraw()
 {
   SDL_GL_SwapWindow(mainWindow);
 }

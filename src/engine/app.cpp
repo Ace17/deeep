@@ -29,13 +29,12 @@ using namespace std;
 
 auto const TIMESTEP = 1;
 
-void beginDraw();
-void endDraw();
-void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
-
 void Display_init(int width, int height);
 void Display_setCaption(const char* caption);
 void Display_loadModel(int id, const char* imagePath);
+void Display_beginDraw();
+void Display_endDraw();
+void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
 
 void Audio_init();
 void Audio_loadSound(int id, string path);
@@ -143,15 +142,15 @@ private:
 
   void draw()
   {
-    beginDraw();
+    Display_beginDraw();
 
     for(auto& actor : m_scene->getActors())
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.x, actor.scale.y);
-      drawActor(where, (int)actor.model, actor.effect == EFFECT_BLINKING, actor.action, actor.ratio);
+      Display_drawActor(where, (int)actor.model, actor.effect == EFFECT_BLINKING, actor.action, actor.ratio);
     }
 
-    endDraw();
+    Display_endDraw();
   }
 
   void playSounds()
