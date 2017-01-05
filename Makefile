@@ -39,26 +39,26 @@ CXXFLAGS+=-O3
 #------------------------------------------------------------------------------
 
 SRCS:=\
+	extra/miniz.c\
+	src/engine/app.cpp\
+	src/engine/base64.cpp\
+	src/engine/decompress.cpp\
+	src/engine/display.cpp\
+	src/engine/json.cpp\
+	src/engine/main.cpp\
+	src/engine/model.cpp\
+	src/engine/sound.cpp\
+	src/game/entities/bonus.cpp\
+	src/game/entities/explosion.cpp\
+	src/game/entities/rockman.cpp\
 	src/game/game.cpp\
-	src/game/smarttiles.cpp\
 	src/game/graph_tools.cpp\
-	src/game/level_common.cpp\
 	src/game/level1.cpp\
 	src/game/level2.cpp\
 	src/game/level3.cpp\
 	src/game/level4.cpp\
-	src/game/entities/rockman.cpp\
-	src/game/entities/explosion.cpp\
-	src/game/entities/bonus.cpp\
-	src/engine/app.cpp\
-	src/engine/json.cpp\
-	src/engine/main.cpp\
-	src/engine/model.cpp\
-	src/engine/display.cpp\
-	src/engine/sound.cpp\
-	src/engine/base64.cpp\
-	src/engine/decompress.cpp\
-	extra/miniz.c\
+	src/game/level_common.cpp\
+	src/game/smarttiles.cpp\
 	$(BIN)/vertex.glsl.cpp\
 	$(BIN)/fragment.glsl.cpp\
 
@@ -73,19 +73,20 @@ TARGETS+=$(BIN)/deeep.$(EXT)
 #------------------------------------------------------------------------------
 
 SRCS_TESTS:=\
+	extra/miniz.c\
 	src/engine/base64.cpp\
 	src/engine/decompress.cpp\
 	src/engine/json.cpp\
-	src/game/entities/explosion.cpp\
 	src/game/entities/bonus.cpp\
-	extra/miniz.c\
-	tests/tests.cpp\
-	tests/tests_main.cpp\
+	src/game/entities/explosion.cpp\
+	src/game/entities/rockman.cpp\
 	tests/base64.cpp\
 	tests/decompress.cpp\
-	tests/json.cpp\
-	tests/tokenizer.cpp\
 	tests/game/entities.cpp\
+	tests/json.cpp\
+	tests/tests.cpp\
+	tests/tests_main.cpp\
+	tests/tokenizer.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 $(BIN)/tests.$(EXT): $(OBJS_TESTS)

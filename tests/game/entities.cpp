@@ -123,3 +123,10 @@ unittest("Entity: animate")
   assert(nearlyEquals(1, maxVal));
 }
 
+#include "game/entities/rockman.h"
+
+unittest("Entity: rockman")
+{
+  auto ent = makeRockman();
+}
+

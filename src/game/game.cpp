@@ -19,6 +19,7 @@
 #include "base/scene.h"
 #include "base/util.h"
 #include "entities/player.h"
+#include "entities/rockman.h"
 #include "game.h"
 #include "sounds.h"
 #include "models.h"
@@ -274,7 +275,7 @@ public:
     auto const levelIdx = clamp<int>(m_level, 0, levels.size() - 1);
     levels[levelIdx] (m_tiles, start, this);
 
-    m_player = createRockman();
+    m_player = makeRockman().release();
     m_player->addUpgrade(m_upgrades);
     m_player->pos = Vector2f(start.x, start.y);
     spawn(m_player);

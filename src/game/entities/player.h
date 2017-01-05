@@ -17,5 +17,3 @@ enum
   UPGRADE_DASH = 4,
 };
 
-Player* createRockman();
-

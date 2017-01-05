@@ -405,8 +405,8 @@ struct Rockman : Player
   Int upgrades;
 };
 
-Player* createRockman()
+std::unique_ptr<Player> makeRockman()
 {
-  return new Rockman;
+  return make_unique<Rockman>();
 }
 
