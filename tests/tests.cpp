@@ -14,6 +14,7 @@
 #include <iostream>
 #include <cassert>
 #include <stdexcept>
+#include <cstring>
 #include "tests.h"
 
 namespace
@@ -39,13 +40,16 @@ int RegisterTest(void (* proc)(), const char* testName)
   return 1;
 }
 
-void RunTests()
+void RunTests(const char* filter)
 {
-  std::cout << "Running " << numTests << " tests." << std::endl;
+  std::cout << "Running tests." << std::endl;
   bool success = true;
 
   for(int i = 0; i < numTests; ++i)
   {
+    if(!strstr(tests[i].sName, filter))
+      continue;
+
     try
     {
       std::cout << "[" << i << "] " << tests[i].sName << std::endl;

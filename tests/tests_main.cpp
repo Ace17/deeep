@@ -13,9 +13,14 @@
 
 #include "tests.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-  RunTests();
+  char const* filter = "";
+
+  if(argc == 2)
+    filter = argv[1];
+
+  RunTests(filter);
   return 0;
 }
 

@@ -19,7 +19,7 @@
 #include <vector>
 
 int RegisterTest(void (* f)(), const char* testName);
-void RunTests();
+void RunTests(const char* filter);
 
 struct Registrator
 {
