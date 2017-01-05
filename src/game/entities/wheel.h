@@ -92,7 +92,7 @@ public:
       game->playSound(SND_EXPLODE);
       dead = true;
 
-      auto explosion = make_unique<Explosion>();
+      auto explosion = makeExplosion();
       explosion->pos = getCenter();
       game->spawn(explosion.release());
     }

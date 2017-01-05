@@ -48,6 +48,7 @@ SRCS:=\
 	src/game/level3.cpp\
 	src/game/level4.cpp\
 	src/game/entities/rockman.cpp\
+	src/game/entities/explosion.cpp\
 	src/engine/app.cpp\
 	src/engine/json.cpp\
 	src/engine/main.cpp\
@@ -74,6 +75,7 @@ SRCS_TESTS:=\
 	src/engine/base64.cpp\
 	src/engine/decompress.cpp\
 	src/engine/json.cpp\
+	src/game/entities/explosion.cpp\
 	extra/miniz.c\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
@@ -81,6 +83,7 @@ SRCS_TESTS:=\
 	tests/decompress.cpp\
 	tests/json.cpp\
 	tests/tokenizer.cpp\
+	tests/game/entities.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 $(BIN)/tests.$(EXT): $(OBJS_TESTS)
