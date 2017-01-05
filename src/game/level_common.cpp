@@ -2,6 +2,7 @@
 #include "game/entities/wheel.h"
 #include "game/entities/teleporter.h"
 #include "game/entities/bonus.h"
+#include "game/entities/player.h"
 
 int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
 {
@@ -22,30 +23,30 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
     return 0;
   case '@':
     {
-      auto bonus = new Bonus(0, 0);
+      auto bonus = makeBonus(0, 0);
       bonus->pos = Vector2f(pos.x, pos.y);
-      game->spawn(bonus);
+      game->spawn(bonus.release());
       return 0;
     }
   case '$':
     {
-      auto bonus = new Bonus(3, UPGRADE_SHOOT);
+      auto bonus = makeBonus(3, UPGRADE_SHOOT);
       bonus->pos = Vector2f(pos.x, pos.y);
-      game->spawn(bonus);
+      game->spawn(bonus.release());
       return 0;
     }
   case '%':
     {
-      auto bonus = new Bonus(4, UPGRADE_CLIMB);
+      auto bonus = makeBonus(4, UPGRADE_CLIMB);
       bonus->pos = Vector2f(pos.x, pos.y);
-      game->spawn(bonus);
+      game->spawn(bonus.release());
       return 0;
     }
   case '^':
     {
-      auto bonus = new Bonus(5, UPGRADE_DASH);
+      auto bonus = makeBonus(5, UPGRADE_DASH);
       bonus->pos = Vector2f(pos.x, pos.y);
-      game->spawn(bonus);
+      game->spawn(bonus.release());
       return 0;
     }
   default:

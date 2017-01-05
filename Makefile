@@ -49,6 +49,7 @@ SRCS:=\
 	src/game/level4.cpp\
 	src/game/entities/rockman.cpp\
 	src/game/entities/explosion.cpp\
+	src/game/entities/bonus.cpp\
 	src/engine/app.cpp\
 	src/engine/json.cpp\
 	src/engine/main.cpp\
@@ -76,6 +77,7 @@ SRCS_TESTS:=\
 	src/engine/decompress.cpp\
 	src/engine/json.cpp\
 	src/game/entities/explosion.cpp\
+	src/game/entities/bonus.cpp\
 	extra/miniz.c\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
