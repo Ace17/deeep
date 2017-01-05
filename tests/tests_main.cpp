@@ -11,7 +11,10 @@
  * License, or (at your option) any later version.
  */
 
+#include <iostream>
 #include "tests.h"
+
+using namespace std;
 
 int main(int argc, char* argv[])
 {
@@ -20,7 +23,14 @@ int main(int argc, char* argv[])
   if(argc == 2)
     filter = argv[1];
 
-  RunTests(filter);
+  try
+  {
+    RunTests(filter);
+  }
+  catch(std::exception const& e)
+  {
+    cerr << "Fatal: " << e.what() << endl;
+  }
   return 0;
 }
 

@@ -43,31 +43,14 @@ int RegisterTest(void (* proc)(), const char* testName)
 void RunTests(const char* filter)
 {
   std::cout << "Running tests." << std::endl;
-  bool success = true;
 
   for(int i = 0; i < numTests; ++i)
   {
     if(!strstr(tests[i].sName, filter))
       continue;
 
-    try
-    {
-      std::cout << "[" << i << "] " << tests[i].sName << std::endl;
-      tests[i].run();
-    }
-    catch(std::exception const& e)
-    {
-      std::cout << "Test aborted on exception: " << e.what() << std::endl;
-      success = false;
-    }
-    catch(...)
-    {
-      std::cout << "Test aborted on exception" << std::endl;
-      success = false;
-    }
+    std::cout << "[" << i << "] " << tests[i].sName << std::endl;
+    tests[i].run();
   }
-
-  if(!success)
-    throw std::runtime_error("At least one test failed");
 }
 
