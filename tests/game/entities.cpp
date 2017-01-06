@@ -11,13 +11,13 @@ unittest("Entity: explosion")
   auto explosion = makeExplosion();
 
   assert(!explosion->dead);
-  assert(explosion->getActor().ratio == 0);
+  assertEquals(0, explosion->getActor().ratio);
 
   for(int i = 0; i < 10000; ++i)
     explosion->tick();
 
   assert(explosion->dead);
-  assert(int(explosion->getActor().ratio * 100) == 100);
+  assertEquals(100, int(explosion->getActor().ratio * 100));
 }
 
 #include "game/entities/player.h"
@@ -58,9 +58,9 @@ struct NullGame : IGame
   {
   }
 
-  virtual bool isSolid(Vector2f)
+  virtual bool isSolid(Vector2f pos)
   {
-    return false;
+    return pos.y < 0;
   }
 
   virtual void trigger(int)
@@ -91,12 +91,12 @@ unittest("Entity: pickup bonus")
   ent->game = &game;
 
   assert(!ent->dead);
-  assert(player.upgrades == 0);
+  assertEquals(0, player.upgrades);
 
   ent->onCollide(&player);
 
   assert(ent->dead);
-  assert(player.upgrades == 4);
+  assertEquals(4, player.upgrades);
 }
 
 bool nearlyEquals(float expected, float actual)
@@ -125,8 +125,13 @@ unittest("Entity: animate")
 
 #include "game/entities/rockman.h"
 
-unittest("Entity: rockman")
+unittest("Entity: rockman falls")
 {
-  auto ent = makeRockman();
+  auto player = makeRockman();
+  auto game = NullGame();
+  player->game = &game;
+  player->tick();
+
+  assertEquals(ACTION_FALL, player->getActor().action);
 }
 

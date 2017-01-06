@@ -21,35 +21,13 @@
 #include "game/models.h"
 #include "game/sounds.h"
 #include "game/toggle.h"
+#include "rockman.h"
 
 auto const WALK_SPEED = 0.0075f;
 auto const MAX_HORZ_SPEED = 0.02f;
 auto const MAX_FALL_SPEED = 0.02f;
 auto const CLIMB_DELAY = 100;
 auto const HURT_DELAY = 500;
-
-enum ACTION
-{
-  ACTION_VICTORY,
-  ACTION_STAND,
-  ACTION_STAND_SHOOT,
-  ACTION_ENTRANCE,
-  ACTION_WALK,
-  ACTION_WALK_SHOOT,
-  ACTION_DASH,
-  ACTION_DASH_AIM,
-  ACTION_JUMP,
-  ACTION_FALL,
-  ACTION_LADDER,
-  ACTION_LADDER_END,
-  ACTION_LADDER_SHOOT,
-  ACTION_HADOKEN,
-  ACTION_SLIDE,
-  ACTION_SLIDE_SHOOT,
-  ACTION_CLIMB,
-  ACTION_HURT,
-  ACTION_FULL,
-};
 
 enum ORIENTATION
 {
