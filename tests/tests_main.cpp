@@ -26,11 +26,12 @@ int main(int argc, char* argv[])
   try
   {
     RunTests(filter);
+    return 0;
   }
   catch(std::exception const& e)
   {
     cerr << "Fatal: " << e.what() << endl;
+    return 1;
   }
-  return 0;
 }
 
