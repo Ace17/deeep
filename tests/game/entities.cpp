@@ -130,8 +130,30 @@ unittest("Entity: rockman falls")
   auto player = makeRockman();
   auto game = NullGame();
   player->game = &game;
+  player->pos.y = 10;
   player->tick();
 
   assertEquals(ACTION_FALL, player->getActor().action);
+}
+
+unittest("Entity: rockman stands on ground, then walks")
+{
+  auto player = makeRockman();
+  auto game = NullGame();
+  player->game = &game;
+
+  player->pos.y = 0;
+
+  for(int i = 0; i < 10; ++i)
+    player->tick();
+
+  assertEquals(ACTION_STAND, player->getActor().action);
+
+  auto cmd = Control();
+  cmd.right = true;
+  player->think(cmd);
+  player->tick();
+
+  assertEquals(ACTION_WALK, player->getActor().action);
 }
 

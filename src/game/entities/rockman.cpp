@@ -158,52 +158,7 @@ struct Rockman : Player
 
   void think(Control const& c) override
   {
-    time++;
-    computeVelocity(c);
-
-    // horizontal move
-    move(Vector2f(vel.x, 0));
-
-    // vertical move
-
-    if(move(Vector2f(0, vel.y)))
-    {
-      ground = false;
-    }
-    else
-    {
-      if(vel.y < 0 && !ground)
-      {
-        if(tryActivate(debounceLanding, 150))
-          game->playSound(SND_LAND);
-
-        ground = true;
-        dashDelay = 0;
-      }
-
-      vel.y = 0;
-    }
-
-    decrement(debounceFire);
-    decrement(debounceLanding);
-    decrement(climbDelay);
-    decrement(shootDelay);
-
-    if(upgrades & UPGRADE_SHOOT)
-    {
-      if(firebutton.toggle(c.fire) && tryActivate(debounceFire, 150))
-      {
-        auto b = make_unique<Bullet>();
-        auto sign = (dir == LEFT ? -1 : 1);
-        auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
-        auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
-        b->pos = pos + offsetV + offsetH * sign;
-        b->vel = Vector2f(0.025, 0) * sign;
-        game->spawn(b.release());
-        game->playSound(SND_FIRE);
-        shootDelay = 300;
-      }
-    }
+    control = c;
   }
 
   float health() override
@@ -327,6 +282,53 @@ struct Rockman : Player
     decrement(blinking);
     decrement(hurtDelay);
     decrement(dashDelay);
+
+    time++;
+    computeVelocity(control);
+
+    // horizontal move
+    move(Vector2f(vel.x, 0));
+
+    // vertical move
+
+    if(move(Vector2f(0, vel.y)))
+    {
+      ground = false;
+    }
+    else
+    {
+      if(vel.y < 0 && !ground)
+      {
+        if(tryActivate(debounceLanding, 150))
+          game->playSound(SND_LAND);
+
+        ground = true;
+        dashDelay = 0;
+      }
+
+      vel.y = 0;
+    }
+
+    decrement(debounceFire);
+    decrement(debounceLanding);
+    decrement(climbDelay);
+    decrement(shootDelay);
+
+    if(upgrades & UPGRADE_SHOOT)
+    {
+      if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 150))
+      {
+        auto b = make_unique<Bullet>();
+        auto sign = (dir == LEFT ? -1 : 1);
+        auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
+        auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
+        b->pos = pos + offsetV + offsetH * sign;
+        b->vel = Vector2f(0.025, 0) * sign;
+        game->spawn(b.release());
+        game->playSound(SND_FIRE);
+        shootDelay = 300;
+      }
+    }
   }
 
   virtual void onDamage(int amount) override
@@ -379,6 +381,7 @@ struct Rockman : Player
   Int dashDelay;
   Int shootDelay;
   Int life;
+  Control control;
 
   Int upgrades;
 };
