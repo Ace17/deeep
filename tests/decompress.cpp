@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-unittest("Decompress: simpe")
+unittest("Decompress: simple")
 {
   auto toString = [] (vector<uint8_t> s)
                   {
