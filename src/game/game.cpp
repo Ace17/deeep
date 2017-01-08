@@ -155,7 +155,7 @@ public:
     {
       auto delta = entity->pos - cameraPos;
 
-      if(abs(delta.x) > 8 || abs(delta.y) > 8)
+      if(abs(delta.x) > 8 || abs(delta.y) > 10)
         continue;
 
       r.push_back(entity->getActor());
@@ -207,7 +207,7 @@ public:
                       auto const posY = (y + (subTile / 2) * 0.5) * ts;
                       auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
                       // actor.action = 0 * (tile - 1) * 16 + composition[subTile];
-                      actor.action = (m_level % 2) * 16 + composition[subTile];
+                      actor.action = ((m_level + 1) % 8) * 16 + composition[subTile];
                       actor.scale = Vector2f(0.5, 0.5);
                       r.push_back(actor);
                     }
@@ -263,11 +263,11 @@ public:
     extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadTrainingLevel(Matrix<int> &tiles, Vector2i & start, IGame* game);
 
-    auto levels = vector<decltype(loadLevel1)*>(
+    auto const levels = vector<decltype(loadLevel1)*>(
     {
       &loadTrainingLevel,
-      &loadLevel3,
       &loadLevel1,
+      &loadLevel3,
       // &loadLevel2,
     });
 
@@ -297,7 +297,7 @@ public:
   };
 
   Int m_upgrades;
-  Int m_level;
+  Int m_level = 1;
   Bool m_levelFinished;
   LevelEnder m_ender;
 
