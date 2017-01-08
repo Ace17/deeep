@@ -170,6 +170,7 @@ struct Rockman : Player
   {
     upgrades |= upgrade;
     blinking = 2000;
+    life = 31;
   }
 
   virtual int getUpgrades() override
