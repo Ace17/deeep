@@ -31,5 +31,6 @@ struct IGame
   virtual bool isSolid(Vector2f pos) = 0;
   virtual void trigger(int triggerIdx) = 0;
   virtual void listen(int triggerIdx, ITriggerable*) = 0;
+  virtual Vector2f getPlayerPosition() = 0;
 };
 

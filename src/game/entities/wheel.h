@@ -7,6 +7,7 @@
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
+#include "game/toggle.h"
 #include "game/entities/explosion.h"
 
 class Wheel : public Entity
@@ -74,18 +75,20 @@ public:
     if(!move(Vector2f(0, vel.y)))
       vel.y = 0;
 
-    blinking = max(0, blinking - 1);
+    decrement(blinking);
   }
 
   virtual void onCollide(Entity* other) override
   {
-    other->onDamage(3);
+    other->onDamage(5);
   }
 
   virtual void onDamage(int amount) override
   {
     blinking = 100;
     life -= amount;
+
+    game->playSound(SND_DAMAGE);
 
     if(life < 0)
     {
@@ -96,8 +99,6 @@ public:
       explosion->pos = getCenter();
       game->spawn(explosion.release());
     }
-    else
-      game->playSound(SND_DAMAGE);
   }
 
   Int life = 30;

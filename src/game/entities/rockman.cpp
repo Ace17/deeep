@@ -329,6 +329,8 @@ struct Rockman : Player
         shootDelay = 300;
       }
     }
+
+    collisionGroup = blinking ? 0 : 1;
   }
 
   virtual void onDamage(int amount) override

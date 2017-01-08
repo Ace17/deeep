@@ -358,6 +358,11 @@ public:
     m_listeners[triggerIdx].push_back(triggerable);
   }
 
+  Vector2f getPlayerPosition() override
+  {
+    return m_player->pos;
+  }
+
   Player* m_player;
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;

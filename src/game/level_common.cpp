@@ -1,5 +1,6 @@
 #include "game/entities/switch.h"
 #include "game/entities/wheel.h"
+#include "game/entities/spider.h"
 #include "game/entities/teleporter.h"
 #include "game/entities/bonus.h"
 #include "game/entities/player.h"
@@ -86,6 +87,13 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
   case '*':
     {
       auto wh = new Wheel;
+      wh->pos = Vector2f(pos.x, pos.y);
+      game->spawn(wh);
+      return 0;
+    }
+  case '&':
+    {
+      auto wh = new Spider;
       wh->pos = Vector2f(pos.x, pos.y);
       game->spawn(wh);
       return 0;

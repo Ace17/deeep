@@ -70,6 +70,11 @@ struct NullGame : IGame
   virtual void listen(int, ITriggerable*)
   {
   }
+
+  virtual Vector2f getPlayerPosition()
+  {
+    return Vector2f(0, 0);
+  }
 };
 
 unittest("Entity: pickup bonus")
