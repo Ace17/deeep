@@ -151,7 +151,7 @@ public:
 
     addActorsForTileMap(r, cameraPos);
 
-    for(auto& entity : retro(m_entities))
+    for(auto& entity : m_entities)
     {
       auto delta = entity->pos - cameraPos;
 
@@ -170,7 +170,7 @@ public:
     }
 
     {
-      Actor lifebar(Vector2f(-4.5, 1), MDL_LIFEBAR);
+      Actor lifebar(Vector2f(-5.5, 1), MDL_LIFEBAR);
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Vector2f(0.7, 3);
