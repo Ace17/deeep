@@ -84,6 +84,7 @@ SRCS_TESTS:=\
 	tests/decompress.cpp\
 	tests/game/entities.cpp\
 	tests/json.cpp\
+	tests/util.cpp\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
 	tests/tokenizer.cpp\

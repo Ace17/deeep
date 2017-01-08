@@ -218,25 +218,21 @@ public:
 
   void checkCollisions()
   {
-    for(size_t i = 0; i < m_entities.size(); ++i)
+    for(auto p : allPairs((int)m_entities.size()))
     {
-      auto& me = *m_entities[i];
+      auto& me = *m_entities[p.first];
+      auto& other = *m_entities[p.second];
 
-      for(size_t j = i + 1; j < m_entities.size(); ++j)
+      auto bulletRect = me.getRect();
+      auto enemyRect = other.getRect();
+
+      if(overlaps(bulletRect, enemyRect))
       {
-        auto& other = *m_entities[j];
+        if(other.collidesWith & me.collisionGroup)
+          other.onCollide(&me);
 
-        auto bulletRect = me.getRect();
-        auto enemyRect = other.getRect();
-
-        if(overlaps(bulletRect, enemyRect))
-        {
-          if(other.collidesWith & me.collisionGroup)
-            other.onCollide(&me);
-
-          if(me.collidesWith & other.collisionGroup)
-            me.onCollide(&other);
-        }
+        if(me.collidesWith & other.collisionGroup)
+          me.onCollide(&other);
       }
     }
   }

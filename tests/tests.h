@@ -62,6 +62,17 @@ std::ostream & operator << (std::ostream& o, const std::vector<T>& v)
   return o;
 }
 
+static inline
+std::ostream & operator << (std::ostream& o, const std::pair<int, int>& p)
+{
+  o << "(";
+  o << p.first;
+  o << ", ";
+  o << p.second;
+  o << ")";
+  return o;
+}
+
 template<typename U, typename V>
 void assertEqualsFunc(U const& expected, V const& actual, const char* file, int line)
 {
