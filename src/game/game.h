@@ -32,6 +32,10 @@ struct Event
   }
 };
 
+struct EndLevelEvent : Event
+{
+};
+
 struct TriggerEvent : Event
 {
   int idx;

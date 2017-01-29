@@ -65,12 +65,7 @@ public:
       {
         target = nullptr;
         dead = true;
-
-        {
-          auto evt = make_unique<TriggerEvent>();
-          evt->idx = -1;
-          game->postEvent(move(evt));
-        }
+        game->postEvent(make_unique<EndLevelEvent>());
       }
     }
   }

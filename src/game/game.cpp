@@ -287,11 +287,8 @@ public:
     Game* game;
     void notify(const Event* evt)
     {
-      if(auto trg = evt->as<TriggerEvent>())
+      if(evt->as<EndLevelEvent>())
       {
-        if(trg->idx != -1)
-          return;
-
         game->m_shouldLoadLevel = true;
         game->m_level++;
       }
