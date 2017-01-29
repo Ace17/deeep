@@ -24,43 +24,12 @@
 #include "game.h"
 #include "sounds.h"
 #include "models.h"
+#include "level_graph.h"
 
 using namespace std;
 
 // from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
-
-void addRandomWidgets(Matrix<int>& m_tiles)
-{
-  auto rect = [&] (Vector2i pos, Size2i size, int tile)
-              {
-                for(int dy = 0; dy < size.height; ++dy)
-                  for(int dx = 0; dx < size.width; ++dx)
-                    m_tiles.set(dx + pos.x, dy + pos.y, tile);
-              };
-
-  auto isFull = [&] (Vector2i pos, Size2i size)
-                {
-                  for(int dy = 0; dy < size.height; ++dy)
-                    for(int dx = 0; dx < size.width; ++dx)
-                      if(m_tiles.get(dx + pos.x, dy + pos.y) == 0)
-                        return false;
-
-                  return true;
-                };
-
-  auto const maxX = m_tiles.size.width - 4;
-  auto const maxY = m_tiles.size.height - 4;
-
-  for(int i = 0; i < (maxX * maxY) / 100; ++i)
-  {
-    auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
-    auto size = Size2i(2, 2);
-
-    if(isFull(pos + Vector2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
-      rect(pos, size, 3);
-  }
-}
 
 class Game : public Scene, public IGame
 {
@@ -77,7 +46,7 @@ public:
   {
     if(m_shouldLoadLevel)
     {
-      loadLevel();
+      loadLevel(m_level);
       m_shouldLoadLevel = false;
     }
 
@@ -246,7 +215,7 @@ public:
     m_spawned.clear();
   }
 
-  void loadLevel()
+  void loadLevel(int levelIdx)
   {
     auto const upgrades = m_player ? m_player->getUpgrades() : 0;
 
@@ -255,22 +224,8 @@ public:
     m_listeners.clear();
     m_player = nullptr;
 
-    extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame* game);
-    extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame* game);
-    extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
-    extern void loadTrainingLevel(Matrix<int> &tiles, Vector2i & start, IGame* game);
-
-    auto const levels = makeVector(
-    {
-      &loadTrainingLevel,
-      &loadLevel1,
-      &loadLevel3,
-      // &loadLevel2,
-    });
-
     Vector2i start;
-    auto const levelIdx = clamp<int>(m_level, 0, levels.size() - 1);
-    levels[levelIdx] (m_tiles, start, this);
+    Graph_loadLevel(levelIdx, m_tiles, this, start);
 
     m_player = makeRockman().release();
     m_player->addUpgrade(upgrades);
@@ -279,8 +234,6 @@ public:
 
     m_ender.game = this;
     subscribeForEvents(&m_ender);
-
-    addRandomWidgets(m_tiles);
   }
 
   struct LevelEnder : IEventSink

@@ -58,6 +58,7 @@ SRCS:=\
 	src/game/level3.cpp\
 	src/game/level4.cpp\
 	src/game/level_common.cpp\
+	src/game/level_graph.cpp\
 	src/game/smarttiles.cpp\
 	$(BIN)/vertex.glsl.cpp\
 	$(BIN)/fragment.glsl.cpp\
