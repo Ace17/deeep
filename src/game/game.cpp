@@ -88,8 +88,6 @@ public:
     checkCollisions();
     removeDeadThings();
 
-    m_upgrades = m_player->getUpgrades();
-
     m_debug = c.debug;
   }
 
@@ -249,6 +247,8 @@ public:
 
   void loadLevel()
   {
+    auto const upgrades = m_player ? m_player->getUpgrades() : 0;
+
     m_entities.clear();
     m_spawned.clear();
     m_listeners.clear();
@@ -272,7 +272,7 @@ public:
     levels[levelIdx] (m_tiles, start, this);
 
     m_player = makeRockman().release();
-    m_player->addUpgrade(m_upgrades);
+    m_player->addUpgrade(upgrades);
     m_player->pos = Vector2f(start.x, start.y);
     spawn(m_player);
 
@@ -295,7 +295,6 @@ public:
     }
   };
 
-  Int m_upgrades;
   Int m_level = 1;
   Bool m_shouldLoadLevel;
   LevelEnder m_ender;
