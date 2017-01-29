@@ -29,44 +29,44 @@ using namespace std;
 // from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 
+void addRandomWidgets(Matrix<int>& m_tiles)
+{
+  auto rect = [&] (Vector2i pos, Size2i size, int tile)
+              {
+                for(int dy = 0; dy < size.height; ++dy)
+                  for(int dx = 0; dx < size.width; ++dx)
+                    m_tiles.set(dx + pos.x, dy + pos.y, tile);
+              };
+
+  auto isFull = [&] (Vector2i pos, Size2i size)
+                {
+                  for(int dy = 0; dy < size.height; ++dy)
+                    for(int dx = 0; dx < size.width; ++dx)
+                      if(m_tiles.get(dx + pos.x, dy + pos.y) == 0)
+                        return false;
+
+                  return true;
+                };
+
+  auto const maxX = m_tiles.size.width - 4;
+  auto const maxY = m_tiles.size.height - 4;
+
+  for(int i = 0; i < (maxX * maxY) / 100; ++i)
+  {
+    auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
+    auto size = Size2i(2, 2);
+
+    if(isFull(pos + Vector2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
+      rect(pos, size, 3);
+  }
+}
+
 class Game : public Scene, public IGame
 {
 public:
   Game() : m_tiles(Size2i(1, 1))
   {
     m_shouldLoadLevel = true;
-  }
-
-  void addRandomWidgets()
-  {
-    auto rect = [&] (Vector2i pos, Size2i size, int tile)
-                {
-                  for(int dy = 0; dy < size.height; ++dy)
-                    for(int dx = 0; dx < size.width; ++dx)
-                      m_tiles.set(dx + pos.x, dy + pos.y, tile);
-                };
-
-    auto isFull = [&] (Vector2i pos, Size2i size) -> bool
-                  {
-                    for(int dy = 0; dy < size.height; ++dy)
-                      for(int dx = 0; dx < size.width; ++dx)
-                        if(m_tiles.get(dx + pos.x, dy + pos.y) == 0)
-                          return false;
-
-                    return true;
-                  };
-
-    auto const maxX = m_tiles.size.width - 4;
-    auto const maxY = m_tiles.size.height - 4;
-
-    for(int i = 0; i < (maxX * maxY) / 100; ++i)
-    {
-      auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
-      auto size = Size2i(2, 2);
-
-      if(isFull(pos + Vector2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
-        rect(pos, size, 3);
-    }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -279,7 +279,7 @@ public:
     m_ender.game = this;
     subscribeForEvents(&m_ender);
 
-    addRandomWidgets();
+    addRandomWidgets(m_tiles);
   }
 
   struct LevelEnder : IEventSink
