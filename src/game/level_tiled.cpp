@@ -35,6 +35,20 @@ vector<int> convertFromLittleEndian(vector<uint8_t> const& input)
   return r;
 }
 
+vector<int> decompressTiles(string data)
+{
+  while(data.size() % 4)
+    data += "=";
+
+  auto const compDataBuffer = decodeBase64(data);
+  Span<const uint8_t> compData;
+  compData.data = compDataBuffer.data();
+  compData.len = compDataBuffer.size();
+
+  auto const uncompData = decompress(compData);
+  return convertFromLittleEndian(uncompData);
+}
+
 vector<Level> loadQuest(string path) // tiled TMX format
 {
   vector<Level> r;
@@ -54,21 +68,13 @@ vector<Level> loadQuest(string path) // tiled TMX format
 
     auto data = lay->getMember<json::String>("data")->value;
 
-    while(data.size() % 4)
-      data += "=";
-
-    auto const compDataBuffer = decodeBase64(data);
-    Span<const uint8_t> compData;
-    compData.data = compDataBuffer.data();
-    compData.len = compDataBuffer.size();
-
-    auto const uncompData = decompress(compData);
-    auto buff = convertFromLittleEndian(uncompData);
+    auto buff = decompressTiles(data);
 
     const auto width = lay->getMember<json::Number>("width")->value;
     const auto height = lay->getMember<json::Number>("height")->value;
 
-    assert(width * height == (int)buff.size());
+    if(width * height != (int)buff.size())
+      throw runtime_error("invalid TMX file: width x height doesn't match data length");
 
     level.tiles.resize(Size2i(width / 2, height / 2));
 
