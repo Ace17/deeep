@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <array>
 #include <map>
+#include <set>
 #include "base/scene.h"
 #include "base/util.h"
 #include "entities/player.h"
@@ -354,7 +355,7 @@ public:
 
   void subscribeForEvents(IEventSink* sink) override
   {
-    m_listeners.push_back(sink);
+    m_listeners.insert(sink);
   }
 
   Vector2f getPlayerPosition() override
@@ -366,7 +367,7 @@ public:
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
 
-  vector<IEventSink*> m_listeners;
+  set<IEventSink*> m_listeners;
 
   Matrix<int> m_tiles;
   vector<SOUND> m_sounds;
