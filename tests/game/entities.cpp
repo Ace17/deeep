@@ -63,11 +63,11 @@ struct NullGame : IGame
     return pos.y < 0;
   }
 
-  virtual void trigger(int)
+  virtual void postEvent(unique_ptr<Event> )
   {
   }
 
-  virtual void listen(int, ITriggerable*)
+  virtual void subscribeForEvents(IEventSink*)
   {
   }
 

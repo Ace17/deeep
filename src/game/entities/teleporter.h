@@ -63,9 +63,14 @@ public:
 
       if(delay == 0)
       {
-        game->trigger(-1);
         target = nullptr;
         dead = true;
+
+        {
+          auto evt = make_unique<TriggerEvent>();
+          evt->idx = -1;
+          game->postEvent(move(evt));
+        }
       }
     }
   }

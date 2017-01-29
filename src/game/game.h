@@ -19,9 +19,27 @@
 
 struct Entity;
 
-struct ITriggerable
+struct Event
 {
-  virtual void trigger() = 0;
+  virtual ~Event()
+  {
+  }; // force a vtable so we can dynamic_cast events
+
+  template<typename T>
+  const T* as() const
+  {
+    return dynamic_cast<const T*>(this);
+  }
+};
+
+struct TriggerEvent : Event
+{
+  int idx;
+};
+
+struct IEventSink
+{
+  virtual void notify(const Event* evt) = 0;
 };
 
 struct IGame
@@ -29,8 +47,8 @@ struct IGame
   virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
   virtual bool isSolid(Vector2f pos) = 0;
-  virtual void trigger(int triggerIdx) = 0;
-  virtual void listen(int triggerIdx, ITriggerable*) = 0;
+  virtual void postEvent(unique_ptr<Event> event) = 0;
+  virtual void subscribeForEvents(IEventSink*) = 0;
   virtual Vector2f getPlayerPosition() = 0;
 };
 

@@ -57,20 +57,23 @@ public:
     blinking = 1200;
     state = !state;
     game->playSound(SND_SWITCH);
-    game->trigger(id);
+
+    auto evt = make_unique<TriggerEvent>();
+    evt->idx = id;
+    game->postEvent(move(evt));
   }
 
   Bool state;
   const int id;
 };
 
-class Door : public Entity, public ITriggerable
+class Door : public Entity, public IEventSink
 {
 public:
   Door(int id_, IGame* g) : id(id_)
   {
     game = g;
-    game->listen(id, this);
+    game->subscribeForEvents(this);
     size = Size2f(1, 1);
     solid = true;
   }
@@ -82,8 +85,14 @@ public:
     return r;
   }
 
-  virtual void trigger() override
+  virtual void notify(const Event* evt) override
   {
+    if(auto trg = evt->as<TriggerEvent>())
+    {
+      if(trg->idx != id)
+        return;
+    }
+
     state = !state;
     solid = !solid;
   }

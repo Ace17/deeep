@@ -277,18 +277,24 @@ public:
     spawn(m_player);
 
     m_ender.game = this;
-    listen(-1, &m_ender);
+    subscribeForEvents(&m_ender);
 
     addRandomWidgets();
   }
 
-  struct LevelEnder : ITriggerable
+  struct LevelEnder : IEventSink
   {
     Game* game;
-    void trigger()
+    void notify(const Event* evt)
     {
-      game->m_shouldLoadLevel = true;
-      game->m_level++;
+      if(auto trg = evt->as<TriggerEvent>())
+      {
+        if(trg->idx != -1)
+          return;
+
+        game->m_shouldLoadLevel = true;
+        game->m_level++;
+      }
     }
   };
 
@@ -344,18 +350,15 @@ public:
     return false;
   }
 
-  void trigger(int triggerIdx) override
+  void postEvent(unique_ptr<Event> event) override
   {
-    if(!exists(m_listeners, triggerIdx))
-      return;
-
-    for(auto& listener : m_listeners[triggerIdx])
-      listener->trigger();
+    for(auto& listener : m_listeners)
+      listener->notify(event.get());
   }
 
-  void listen(int triggerIdx, ITriggerable* triggerable) override
+  void subscribeForEvents(IEventSink* sink) override
   {
-    m_listeners[triggerIdx].push_back(triggerable);
+    m_listeners.push_back(sink);
   }
 
   Vector2f getPlayerPosition() override
@@ -367,7 +370,7 @@ public:
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
 
-  map<int, vector<ITriggerable*>> m_listeners;
+  vector<IEventSink*> m_listeners;
 
   Matrix<int> m_tiles;
   vector<SOUND> m_sounds;
