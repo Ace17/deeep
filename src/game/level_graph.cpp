@@ -1,4 +1,5 @@
 #include "level_graph.h"
+#include "level_common.h"
 
 void addRandomWidgets(Matrix<int>& tiles)
 {
@@ -32,11 +33,11 @@ void addRandomWidgets(Matrix<int>& tiles)
   }
 }
 
-void loadTrainingLevel(Matrix<int>& tiles, Vector2i& start, IGame* game);
+Level loadTrainingLevel(IGame* game);
 
-void loadTinyQuest(Matrix<int>& tiles, Vector2i& start, IGame* game);
-void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
-void loadLevel3(Matrix<int>& tiles, Vector2i& start, IGame* game);
+Level loadTinyQuest(IGame* game);
+Level loadLevel2(IGame* game);
+Level loadLevel3(IGame* game);
 
 static auto const allLevels = makeVector(
 {
@@ -46,11 +47,12 @@ static auto const allLevels = makeVector(
   // &loadLevel2,
 });
 
-void Graph_loadLevel(int levelIdx, Matrix<int>& tiles, IGame* game, Vector2i& start)
+Level Graph_loadLevel(int levelIdx, IGame* game)
 {
   levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
-  allLevels[levelIdx] (tiles, start, game);
 
-  addRandomWidgets(tiles);
+  auto r = allLevels[levelIdx] (game);
+  addRandomWidgets(r.tiles);
+  return r;
 }
 

@@ -2,5 +2,11 @@
 
 #include "game.h"
 
-void Graph_loadLevel(int levelIdx, Matrix<int>& tiles, IGame* game, Vector2i& start);
+struct Level
+{
+  Matrix<int> tiles;
+  Vector2i start;
+};
+
+Level Graph_loadLevel(int levelIdx, IGame* game);
 

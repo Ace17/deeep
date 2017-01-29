@@ -224,12 +224,12 @@ public:
     m_listeners.clear();
     m_player = nullptr;
 
-    Vector2i start;
-    Graph_loadLevel(levelIdx, m_tiles, this, start);
+    auto level = Graph_loadLevel(levelIdx, this);
+    m_tiles = move(level.tiles);
 
     m_player = makeRockman().release();
     m_player->addUpgrade(upgrades);
-    m_player->pos = Vector2f(start.x, start.y);
+    m_player->pos = Vector2f(level.start.x, level.start.y);
     spawn(m_player);
 
     m_ender.game = this;

@@ -5,6 +5,7 @@
 #include "game/entities/detector.h"
 #include "game/entities/bonus.h"
 #include "game/entities/player.h"
+#include "game/level_graph.h"
 
 int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& portalId)
 {
@@ -111,9 +112,10 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& port
   }
 }
 
-void loadLevel(Matrix<char> const& input, Matrix<int>& tiles, Vector2i& start, IGame* game)
+Level loadLevel(Matrix<char> const& input, IGame* game)
 {
-  tiles.resize(input.size);
+  Level r;
+  r.tiles.resize(input.size);
 
   int portalId = 0;
 
@@ -122,9 +124,11 @@ void loadLevel(Matrix<char> const& input, Matrix<int>& tiles, Vector2i& start, I
     {
       auto val = input.get(x, y);
       auto pos = Vector2i(x, y);
-      auto tile = interpretTile(pos, start, game, val, portalId);
+      auto tile = interpretTile(pos, r.start, game, val, portalId);
 
-      tiles.set(x, y, tile);
+      r.tiles.set(x, y, tile);
     }
+
+  return r;
 }
 

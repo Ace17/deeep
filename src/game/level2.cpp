@@ -18,6 +18,7 @@
 #include "base/util.h"
 #include "game/game.h"
 #include "game/graph_tools.h"
+#include "game/level_graph.h"
 
 int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& portalId);
 
@@ -97,8 +98,9 @@ Matrix<Cell> createConnectionMatrix(int numCols, int numRows, default_random_eng
   return cells;
 }
 
-void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
+Level loadLevel2(IGame* game)
 {
+  Level r;
   default_random_engine gen;
 
   auto seedVal = chrono::system_clock::now().time_since_epoch().count();
@@ -111,14 +113,14 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
 
   {
     auto emptyCell = [&] (int, int, int& tile) { tile = ' '; };
-    tiles.scan(emptyCell);
+    r.tiles.scan(emptyCell);
   }
 
   auto rect = [&] (Vector2i pos, Size2i size, int val)
               {
                 for(int y = 0; y < size.height; ++y)
                   for(int x = 0; x < size.width; ++x)
-                    tiles.set(x + pos.x, y + pos.y, val);
+                    r.tiles.set(x + pos.x, y + pos.y, val);
               };
 
   for(int row = 0; row < numRows; ++row)
@@ -144,16 +146,18 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
     }
   }
 
-  tiles.get(4, 4) = '!';
+  r.tiles.get(4, 4) = '!';
 
   {
     int portalId = 0;
     auto onCell = [&] (int x, int y, int& tile)
                   {
-                    tile = interpretTile(Vector2i(x, y), start, game, tile, portalId);
+                    tile = interpretTile(Vector2i(x, y), r.start, game, tile, portalId);
                   };
 
-    tiles.scan(onCell);
+    r.tiles.scan(onCell);
   }
+
+  return r;
 }
 

@@ -101,9 +101,9 @@ static const char levelData[80][128 + 1] =
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 };
 
-void loadLevel3(Matrix<int>& tiles, Vector2i& start, IGame* game)
+Level loadLevel3(IGame* game)
 {
   auto data = toMatrix(levelData);
-  loadLevel(data, tiles, start, game);
+  return loadLevel(data, game);
 }
 

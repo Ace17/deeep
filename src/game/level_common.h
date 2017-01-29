@@ -1,10 +1,11 @@
 #pragma once
 
 #include "game/game.h"
+#include "level_graph.h"
 
 int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val);
 
-void loadLevel(Matrix<char> const& input, Matrix<int>& tiles, Vector2i& start, IGame* game);
+Level loadLevel(Matrix<char> const& input, IGame* game);
 
 template<size_t W_plus_one, size_t H>
 Matrix<char> toMatrix(const char(&data)[H][W_plus_one])
