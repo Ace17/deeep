@@ -24,6 +24,11 @@
 #include "game/toggle.h"
 #include "game/entities/explosion.h"
 
+struct TriggerEvent : Event
+{
+  int idx;
+};
+
 class Switch : public Entity
 {
 public:
@@ -91,10 +96,10 @@ public:
     {
       if(trg->idx != id)
         return;
-    }
 
-    state = !state;
-    solid = !solid;
+      state = !state;
+      solid = !solid;
+    }
   }
 
   Bool state;

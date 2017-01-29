@@ -19,7 +19,7 @@
 #include "game/game.h"
 #include "game/graph_tools.h"
 
-int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val);
+int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& portalId);
 
 const auto W = 32 * 2;
 const auto H = 32 * 2;
@@ -147,9 +147,10 @@ void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game)
   tiles.get(4, 4) = '!';
 
   {
+    int portalId = 0;
     auto onCell = [&] (int x, int y, int& tile)
                   {
-                    tile = interpretTile(Vector2i(x, y), start, game, tile);
+                    tile = interpretTile(Vector2i(x, y), start, game, tile, portalId);
                   };
 
     tiles.scan(onCell);

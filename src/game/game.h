@@ -36,11 +36,6 @@ struct EndLevelEvent : Event
 {
 };
 
-struct TriggerEvent : Event
-{
-  int idx;
-};
-
 struct IEventSink
 {
   virtual void notify(const Event* evt) = 0;

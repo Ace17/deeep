@@ -331,7 +331,7 @@ struct Rockman : Player
       }
     }
 
-    collisionGroup = blinking ? 0 : 1;
+    collisionGroup = blinking ? 0b10 : 0b11;
   }
 
   virtual void onDamage(int amount) override

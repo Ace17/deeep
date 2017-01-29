@@ -2,10 +2,11 @@
 #include "game/entities/wheel.h"
 #include "game/entities/spider.h"
 #include "game/entities/teleporter.h"
+#include "game/entities/detector.h"
 #include "game/entities/bonus.h"
 #include "game/entities/player.h"
 
-int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
+int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& portalId)
 {
   switch(val)
   {
@@ -98,6 +99,15 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val)
       game->spawn(wh);
       return 0;
     }
+  case 'P':
+    {
+      auto portal = new Detector;
+      portal->pos = Vector2f(pos.x, pos.y);
+      portal->size = Size2f(0.1, 3);
+      portal->id = portalId++;
+      game->spawn(portal);
+      return 0;
+    }
   }
 }
 
@@ -105,12 +115,14 @@ void loadLevel(Matrix<char> const& input, Matrix<int>& tiles, Vector2i& start, I
 {
   tiles.resize(input.size);
 
+  int portalId = 0;
+
   for(int y = 0; y < input.size.height; ++y)
     for(int x = 0; x < input.size.width; ++x)
     {
       auto val = input.get(x, y);
       auto pos = Vector2i(x, y);
-      auto tile = interpretTile(pos, start, game, val);
+      auto tile = interpretTile(pos, start, game, val, portalId);
 
       tiles.set(x, y, tile);
     }

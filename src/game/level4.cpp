@@ -38,7 +38,7 @@ static const char levelData[28][128 + 1] =
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   Z   XXXXXXXXXXXX a XXXX                         XXXXXXXXXXXXXXXXXXXXXXXAAAXXXXXXXXXXXXX",
   "XXX                                      Z      A  X        A  X                         A X                       XXXXXXXXXXXXX",
   "XXX                                      Z      A           A                            A                         XXXXXXXXXXXXX",
-  "XXX                                      Z      A  a        A  a    ZZZZZ        ZZZZZ   A a                       XXXXXXXXXXXXX",
+  "XXX         P                            Z      A  a        A  a    ZZZZZ        ZZZZZ   A a                       XXXXXXXXXXXXX",
   "XXX  !      XX   XXXXXXXXXXXXXXXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXZZZZZ        ZZZZZ   XXXXXXXXXXXXXXXXXXXXXXX   XXXXXXXXXXXXX",
   "XXXXXXXXXXXXXXAAAXXXXXXXXXXXXXXXX a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX           XX a XXXXXXXXXXXXXXXXXXXXXXX a XXXXXXXXXXXXX",
   "XXXXXXXXXXXXXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX           XX   XXXXXXXXXXXXXXXXXXXXXXX   XXXXXXXXXXXXX",
