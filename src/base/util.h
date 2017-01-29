@@ -216,3 +216,9 @@ inline auto allPairs(int n)
   return Range({ n });
 }
 
+template<typename T>
+std::vector<T> makeVector(std::initializer_list<T> list)
+{
+  return std::vector<T>(list);
+}
+

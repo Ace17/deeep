@@ -34,7 +34,7 @@ class Game : public Scene, public IGame
 public:
   Game() : m_tiles(Size2i(1, 1))
   {
-    m_levelFinished = true;
+    m_shouldLoadLevel = true;
   }
 
   void addRandomWidgets()
@@ -74,10 +74,10 @@ public:
 
   void tick(Control const& c) override
   {
-    if(m_levelFinished)
+    if(m_shouldLoadLevel)
     {
       loadLevel();
-      m_levelFinished = false;
+      m_shouldLoadLevel = false;
     }
 
     m_player->think(c);
@@ -259,7 +259,7 @@ public:
     extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
     extern void loadTrainingLevel(Matrix<int> &tiles, Vector2i & start, IGame* game);
 
-    auto const levels = vector<decltype(loadLevel1)*>(
+    auto const levels = makeVector(
     {
       &loadTrainingLevel,
       &loadLevel1,
@@ -287,14 +287,14 @@ public:
     Game* game;
     void trigger()
     {
-      game->m_levelFinished = true;
+      game->m_shouldLoadLevel = true;
       game->m_level++;
     }
   };
 
   Int m_upgrades;
   Int m_level = 1;
-  Bool m_levelFinished;
+  Bool m_shouldLoadLevel;
   LevelEnder m_ender;
 
   ////////////////////////////////////////////////////////////////
