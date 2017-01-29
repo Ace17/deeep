@@ -7,6 +7,8 @@
  */
 
 #include <cassert>
+#include <map>
+#include <string>
 #include "base/geom.h"
 #include "base/util.h"
 #include "engine/json.h"
@@ -49,16 +51,16 @@ vector<int> decompressTiles(string data)
   return convertFromLittleEndian(uncompData);
 }
 
-Level parseLevel(json::Object* lay)
+Level parseLevel(json::Object* tileLayer, json::Object* objects)
 {
   Level level;
 
-  auto data = lay->getMember<json::String>("data")->value;
+  auto data = tileLayer->getMember<json::String>("data")->value;
 
   auto buff = decompressTiles(data);
 
-  const auto width = lay->getMember<json::Number>("width")->value;
-  const auto height = lay->getMember<json::Number>("height")->value;
+  const auto width = tileLayer->getMember<json::Number>("width")->value;
+  const auto height = tileLayer->getMember<json::Number>("height")->value;
 
   if(width * height != (int)buff.size())
     throw runtime_error("invalid TMX file: width x height doesn't match data length");
@@ -86,12 +88,24 @@ Level parseLevel(json::Object* lay)
 
   level.start = Vector2i(58, 20);
 
+  if(objects)
+  {
+  }
+
   return level;
 }
 
 vector<Level> loadQuest(string path) // tiled TMX format
 {
   vector<Level> r;
+
+  struct JsonLevel
+  {
+    json::Object* tileLayer;
+    json::Object* objectLayer;
+  };
+
+  map<string, JsonLevel> jsonLevels;
 
   auto js = json::load(path);
   auto layers = js->getMember<json::Array>("layers");
@@ -100,11 +114,17 @@ vector<Level> loadQuest(string path) // tiled TMX format
   {
     auto lay = json::cast<json::Object>(layer.get());
     auto name = lay->getMember<json::String>("name")->value;
+    auto type = lay->getMember<json::String>("type")->value;
 
-    if(lay->getMember<json::String>("type")->value != "tilelayer")
-      continue;
+    if(type == "tilelayer")
+      jsonLevels[name].tileLayer = lay;
+    else
+      jsonLevels[name].objectLayer = lay;
+  }
 
-    r.push_back(parseLevel(lay));
+  for(auto jsonLevel : jsonLevels)
+  {
+    r.push_back(parseLevel(jsonLevel.second.tileLayer, jsonLevel.second.objectLayer));
   }
 
   return r;
