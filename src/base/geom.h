@@ -203,7 +203,9 @@ template<typename T>
 struct Matrix
 {
   Matrix() = default;
+
   Matrix(Matrix const &) = delete;
+  void operator = (Matrix const &) = delete;
 
   Matrix(Matrix&& other)
   {
