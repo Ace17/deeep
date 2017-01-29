@@ -34,14 +34,14 @@ void addRandomWidgets(Matrix<int>& tiles)
 
 void loadTrainingLevel(Matrix<int>& tiles, Vector2i& start, IGame* game);
 
-void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game);
+void loadTinyQuest(Matrix<int>& tiles, Vector2i& start, IGame* game);
 void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
 void loadLevel3(Matrix<int>& tiles, Vector2i& start, IGame* game);
 
 static auto const allLevels = makeVector(
 {
   &loadTrainingLevel,
-  &loadLevel1,
+  &loadTinyQuest,
   &loadLevel3,
   // &loadLevel2,
 });

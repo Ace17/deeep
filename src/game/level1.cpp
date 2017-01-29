@@ -103,7 +103,7 @@ static const char data_level1[82][128 + 1] =
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 };
 
-void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game)
+void loadTinyQuest(Matrix<int>& tiles, Vector2i& start, IGame* game)
 {
   auto data = toMatrix(data_level1);
   loadLevel(data, tiles, start, game);
