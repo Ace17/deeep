@@ -216,6 +216,7 @@ struct Matrix
 
   void operator = (Matrix&& other)
   {
+    delete[] data;
     data = other.data;
     size = other.size;
     other.data = nullptr;
