@@ -49,8 +49,19 @@ static auto const allLevels = makeVector(
 
 Level Graph_loadLevel(int levelIdx, IGame* game)
 {
-  levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
+  if(levelIdx >= 10)
+  {
+    levelIdx -= 10;
+    extern vector<Level> loadQuest(string path);
+    auto quest = loadQuest("res/quest.json");
 
+    if(levelIdx < 0 || levelIdx >= (int)quest.size())
+      throw runtime_error("No such level");
+
+    return move(quest[levelIdx]);
+  }
+
+  levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
   auto r = allLevels[levelIdx] (game);
   addRandomWidgets(r.tiles);
   return r;
