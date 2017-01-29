@@ -32,23 +32,24 @@ void addRandomWidgets(Matrix<int>& tiles)
   }
 }
 
+void loadTrainingLevel(Matrix<int>& tiles, Vector2i& start, IGame* game);
+
+void loadLevel1(Matrix<int>& tiles, Vector2i& start, IGame* game);
+void loadLevel2(Matrix<int>& tiles, Vector2i& start, IGame* game);
+void loadLevel3(Matrix<int>& tiles, Vector2i& start, IGame* game);
+
+static auto const allLevels = makeVector(
+{
+  &loadTrainingLevel,
+  &loadLevel1,
+  &loadLevel3,
+  // &loadLevel2,
+});
+
 void Graph_loadLevel(int levelIdx, Matrix<int>& tiles, IGame* game, Vector2i& start)
 {
-  extern void loadLevel1(Matrix<int> &tiles, Vector2i & start, IGame* game);
-  extern void loadLevel2(Matrix<int> &tiles, Vector2i & start, IGame* game);
-  extern void loadLevel3(Matrix<int> &tiles, Vector2i & start, IGame* game);
-  extern void loadTrainingLevel(Matrix<int> &tiles, Vector2i & start, IGame* game);
-
-  static auto const levels = makeVector(
-  {
-    &loadTrainingLevel,
-    &loadLevel1,
-    &loadLevel3,
-    // &loadLevel2,
-  });
-
-  levelIdx = clamp<int>(levelIdx, 0, levels.size() - 1);
-  levels[levelIdx] (tiles, start, game);
+  levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
+  allLevels[levelIdx] (tiles, start, game);
 
   addRandomWidgets(tiles);
 }
