@@ -10,6 +10,15 @@ scripts/reformat.sh src
 scripts/reformat.sh tests
 
 echo "----------------------------------------------------------------"
+echo "Building native version"
+
+BIN=bin/native \
+  CXX=g++ \
+  $MAKE
+
+./bin/native/tests.exe
+
+echo "----------------------------------------------------------------"
 echo "Building asmjs version"
 
 EMCC_ROOT=/tmp/toolchains/emscripten
@@ -20,14 +29,5 @@ PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH \
   CXXFLAGS="-O3 -g0 -DNDEBUG" \
   LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=32000000"  \
   $MAKE bin/asmjs/deeep.html
-
-echo "----------------------------------------------------------------"
-echo "Building native version"
-
-BIN=bin/native \
-  CXX=g++ \
-  $MAKE
-
-./bin/native/tests.exe
 
 echo Success!
