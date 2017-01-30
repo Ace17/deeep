@@ -56,6 +56,10 @@ Level parseLevel(json::Object* tileLayer, json::Object* objects)
   Level level;
 
   auto data = tileLayer->getMember<json::String>("data")->value;
+  auto const scale = 2;
+
+  level.pos.x = tileLayer->getMember<json::Number>("x")->value / scale;
+  level.pos.y = tileLayer->getMember<json::Number>("y")->value / scale;
 
   auto buff = decompressTiles(data);
 
@@ -65,15 +69,15 @@ Level parseLevel(json::Object* tileLayer, json::Object* objects)
   if(width * height != (int)buff.size())
     throw runtime_error("invalid TMX file: width x height doesn't match data length");
 
-  level.tiles.resize(Size2i(width / 2, height / 2));
+  level.tiles.resize(Size2i(width / scale, height / scale));
 
-  for(int y = 0; y < height / 2; ++y)
+  for(int y = 0; y < height / scale; ++y)
   {
-    for(int x = 0; x < width / 2; ++x)
+    for(int x = 0; x < width / scale; ++x)
     {
       level.tiles.set(x, y, 0);
 
-      int srcOffset = (x * 2 + (height - 1 - y * 2) * width);
+      int srcOffset = (x * scale + (height - 1 - y * scale) * width);
       int tile = buff[srcOffset];
 
       assert(tile >= 0);
@@ -105,6 +109,8 @@ vector<Level> loadQuest(string path) // tiled TMX format
     json::Object* objectLayer;
   };
 
+  json::Object* portalLayer = nullptr;
+
   map<string, JsonLevel> jsonLevels;
 
   auto js = json::load(path);
@@ -116,7 +122,9 @@ vector<Level> loadQuest(string path) // tiled TMX format
     auto name = lay->getMember<json::String>("name")->value;
     auto type = lay->getMember<json::String>("type")->value;
 
-    if(type == "tilelayer")
+    if(name == "portals")
+      portalLayer = lay;
+    else if(type == "tilelayer")
       jsonLevels[name].tileLayer = lay;
     else
       jsonLevels[name].objectLayer = lay;
@@ -128,6 +136,16 @@ vector<Level> loadQuest(string path) // tiled TMX format
       continue;
 
     r.push_back(parseLevel(jsonLevel.second.tileLayer, jsonLevel.second.objectLayer));
+  }
+
+  if(portalLayer)
+  {
+    auto objects = portalLayer->getMember<json::Array>("objects");
+
+    for(auto& portal : objects->elements)
+    {
+      (void)portal;
+    }
   }
 
   return r;

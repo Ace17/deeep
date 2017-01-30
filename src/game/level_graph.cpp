@@ -50,7 +50,7 @@ static auto const allLevels = makeVector(
 Level Graph_loadLevel(int levelIdx, IGame* game)
 {
   extern vector<Level> loadQuest(string path);
-  auto quest = loadQuest("res/quest.json");
+  auto quest = loadQuest("res/test_quest.json");
 
   if(levelIdx >= 10)
   {

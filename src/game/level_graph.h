@@ -4,6 +4,7 @@
 
 struct Level
 {
+  Vector2i pos;
   Matrix<int> tiles;
   Vector2i start;
 };
