@@ -124,6 +124,9 @@ vector<Level> loadQuest(string path) // tiled TMX format
 
   for(auto jsonLevel : jsonLevels)
   {
+    if(!jsonLevel.second.tileLayer)
+      continue;
+
     r.push_back(parseLevel(jsonLevel.second.tileLayer, jsonLevel.second.objectLayer));
   }
 
