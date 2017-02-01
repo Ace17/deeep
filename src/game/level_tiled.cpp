@@ -71,22 +71,21 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
 
     level.tiles.resize(Size2i(width, height));
 
-    for(int y = 0; y < height; ++y)
+    for(auto pos : rasterScan(width, height))
     {
-      for(int x = 0; x < width; ++x)
+      auto const x = pos.first;
+      auto const y = pos.second;
+      level.tiles.set(x, y, 0);
+
+      int srcOffset = (x + (height - 1 - y) * width);
+      int tile = buff[srcOffset];
+
+      assert(tile >= 0);
+
+      if(tile)
       {
-        level.tiles.set(x, y, 0);
-
-        int srcOffset = (x + (height - 1 - y) * width);
-        int tile = buff[srcOffset];
-
-        assert(tile >= 0);
-
-        if(tile)
-        {
-          auto const abstractTile = 1 + ((tile - 1) / 16);
-          level.tiles.set(x, y, abstractTile);
-        }
+        auto const abstractTile = 1 + ((tile - 1) / 16);
+        level.tiles.set(x, y, abstractTile);
       }
     }
   }

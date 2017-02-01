@@ -33,3 +33,23 @@ unittest("Util: allPairs simple")
   assertEquals(expected, result);
 }
 
+unittest("Util: rasterScan simple")
+{
+  auto expected = vector<pair<int, int>>(
+  {
+    make_pair(0, 0),
+    make_pair(1, 0),
+    make_pair(0, 1),
+    make_pair(1, 1),
+    make_pair(0, 2),
+    make_pair(1, 2),
+  });
+
+  vector<pair<int, int>> result;
+
+  for(auto p : rasterScan(2, 3))
+    result.push_back(p);
+
+  assertEquals(expected, result);
+}
+

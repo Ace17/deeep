@@ -216,6 +216,48 @@ inline auto allPairs(int n)
   return Range({ n });
 }
 
+inline auto rasterScan(int cx, int cy)
+{
+  struct Iterable
+  {
+    int cx;
+    int last;
+
+    struct State
+    {
+      int cx;
+      int i;
+
+      pair<int, int> operator * () const
+      {
+        return pair<int, int>(i % cx, i / cx);
+      }
+
+      bool operator != (State const& other) const
+      {
+        return i != other.i;
+      }
+
+      void operator ++ ()
+      {
+        ++i;
+      }
+    };
+
+    auto end()
+    {
+      return State({ cx, last });
+    }
+
+    auto begin()
+    {
+      return State({ cx, 0 });
+    }
+  };
+
+  return Iterable({ cx, cx * cy });
+}
+
 template<typename T>
 std::vector<T> makeVector(std::initializer_list<T> list)
 {
