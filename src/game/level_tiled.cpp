@@ -51,12 +51,12 @@ vector<int> decompressTiles(string data)
   return convertFromLittleEndian(uncompData);
 }
 
-Level parseLevel(json::Object* tileLayer, json::Object* objects)
+Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
 {
   Level level;
 
   auto data = tileLayer->getMember<json::String>("data")->value;
-  auto const scale = 2;
+  auto const scale = 1;
 
   level.pos.x = tileLayer->getMember<json::Number>("x")->value / scale;
   level.pos.y = tileLayer->getMember<json::Number>("y")->value / scale;
@@ -92,9 +92,25 @@ Level parseLevel(json::Object* tileLayer, json::Object* objects)
 
   level.start = Vector2i(58, 20);
 
-  if(objects)
+  if(objectLayer)
   {
+    auto objects = objectLayer->getMember<json::Array>("objects");
+
+    for(auto& jsonObj : objects->elements)
+    {
+      auto obj = json::cast<json::Object>(jsonObj.get());
+      auto const objx = obj->getMember<json::Number>("x")->value;
+      auto const objy = obj->getMember<json::Number>("y")->value;
+      auto const objHeight = obj->getMember<json::Number>("height")->value;
+      if(obj->getMember<json::String>("name")->value == "start")
+      {
+        level.start.x = objx / 16 / scale;
+        level.start.y = height - 1 - (objy + objHeight) / 16 / scale;
+      }
+    }
   }
+
+  level.start -= level.pos;
 
   return level;
 }
