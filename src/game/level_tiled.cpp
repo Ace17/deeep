@@ -90,8 +90,6 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
     }
   }
 
-  level.start = Vector2i(58, 20);
-
   if(objectLayer)
   {
     auto objects = objectLayer->getMember<json::Array>("objects");
