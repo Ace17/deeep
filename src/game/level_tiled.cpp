@@ -51,33 +51,43 @@ vector<int> decompressTiles(string data)
   return convertFromLittleEndian(uncompData);
 }
 
+Rect2i getRect(json::Object* obj)
+{
+  Rect2i r;
+
+  r.x = obj->getMember<json::Number>("x")->value;
+  r.y = obj->getMember<json::Number>("y")->value;
+  r.width = obj->getMember<json::Number>("width")->value;
+  r.height = obj->getMember<json::Number>("height")->value;
+
+  return r;
+}
+
 Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
 {
   Level level;
 
-  const auto width = tileLayer->getMember<json::Number>("width")->value;
-  const auto height = tileLayer->getMember<json::Number>("height")->value;
+  const auto rect = getRect(tileLayer);
+
+  level.pos = rect;
 
   {
     auto data = tileLayer->getMember<json::String>("data")->value;
 
-    level.pos.x = tileLayer->getMember<json::Number>("x")->value;
-    level.pos.y = tileLayer->getMember<json::Number>("y")->value;
-
     auto buff = decompressTiles(data);
 
-    if(width * height != (int)buff.size())
+    if(rect.width * rect.height != (int)buff.size())
       throw runtime_error("invalid TMX file: width x height doesn't match data length");
 
-    level.tiles.resize(Size2i(width, height));
+    level.tiles.resize(rect);
 
-    for(auto pos : rasterScan(width, height))
+    for(auto pos : rasterScan(rect.width, rect.height))
     {
       auto const x = pos.first;
       auto const y = pos.second;
       level.tiles.set(x, y, 0);
 
-      int srcOffset = (x + (height - 1 - y) * width);
+      int srcOffset = (x + (rect.height - 1 - y) * rect.width);
       int tile = buff[srcOffset];
 
       assert(tile >= 0);
@@ -97,14 +107,12 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
     for(auto& jsonObj : objects->elements)
     {
       auto obj = json::cast<json::Object>(jsonObj.get());
-      auto const objx = obj->getMember<json::Number>("x")->value;
-      auto const objy = obj->getMember<json::Number>("y")->value;
-      auto const objHeight = obj->getMember<json::Number>("height")->value;
+      auto const objRect = getRect(obj);
 
       if(obj->getMember<json::String>("name")->value == "start")
       {
-        level.start.x = objx / 16;
-        level.start.y = height - 1 - (objy + objHeight) / 16;
+        level.start.x = objRect.x / 16;
+        level.start.y = rect.height - 1 - (objRect.y + objRect.height) / 16;
       }
     }
   }
