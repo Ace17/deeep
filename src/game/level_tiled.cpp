@@ -55,36 +55,38 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
 {
   Level level;
 
-  auto data = tileLayer->getMember<json::String>("data")->value;
-
-  level.pos.x = tileLayer->getMember<json::Number>("x")->value;
-  level.pos.y = tileLayer->getMember<json::Number>("y")->value;
-
-  auto buff = decompressTiles(data);
-
   const auto width = tileLayer->getMember<json::Number>("width")->value;
   const auto height = tileLayer->getMember<json::Number>("height")->value;
 
-  if(width * height != (int)buff.size())
-    throw runtime_error("invalid TMX file: width x height doesn't match data length");
-
-  level.tiles.resize(Size2i(width, height));
-
-  for(int y = 0; y < height; ++y)
   {
-    for(int x = 0; x < width; ++x)
+    auto data = tileLayer->getMember<json::String>("data")->value;
+
+    level.pos.x = tileLayer->getMember<json::Number>("x")->value;
+    level.pos.y = tileLayer->getMember<json::Number>("y")->value;
+
+    auto buff = decompressTiles(data);
+
+    if(width * height != (int)buff.size())
+      throw runtime_error("invalid TMX file: width x height doesn't match data length");
+
+    level.tiles.resize(Size2i(width, height));
+
+    for(int y = 0; y < height; ++y)
     {
-      level.tiles.set(x, y, 0);
-
-      int srcOffset = (x + (height - 1 - y) * width);
-      int tile = buff[srcOffset];
-
-      assert(tile >= 0);
-
-      if(tile)
+      for(int x = 0; x < width; ++x)
       {
-        auto const abstractTile = 1 + ((tile - 1) / 16);
-        level.tiles.set(x, y, abstractTile);
+        level.tiles.set(x, y, 0);
+
+        int srcOffset = (x + (height - 1 - y) * width);
+        int tile = buff[srcOffset];
+
+        assert(tile >= 0);
+
+        if(tile)
+        {
+          auto const abstractTile = 1 + ((tile - 1) / 16);
+          level.tiles.set(x, y, abstractTile);
+        }
       }
     }
   }
