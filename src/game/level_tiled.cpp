@@ -56,10 +56,9 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
   Level level;
 
   auto data = tileLayer->getMember<json::String>("data")->value;
-  auto const scale = 1;
 
-  level.pos.x = tileLayer->getMember<json::Number>("x")->value / scale;
-  level.pos.y = tileLayer->getMember<json::Number>("y")->value / scale;
+  level.pos.x = tileLayer->getMember<json::Number>("x")->value;
+  level.pos.y = tileLayer->getMember<json::Number>("y")->value;
 
   auto buff = decompressTiles(data);
 
@@ -69,15 +68,15 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
   if(width * height != (int)buff.size())
     throw runtime_error("invalid TMX file: width x height doesn't match data length");
 
-  level.tiles.resize(Size2i(width / scale, height / scale));
+  level.tiles.resize(Size2i(width, height));
 
-  for(int y = 0; y < height / scale; ++y)
+  for(int y = 0; y < height; ++y)
   {
-    for(int x = 0; x < width / scale; ++x)
+    for(int x = 0; x < width; ++x)
     {
       level.tiles.set(x, y, 0);
 
-      int srcOffset = (x * scale + (height - 1 - y * scale) * width);
+      int srcOffset = (x + (height - 1 - y) * width);
       int tile = buff[srcOffset];
 
       assert(tile >= 0);
@@ -102,10 +101,11 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
       auto const objx = obj->getMember<json::Number>("x")->value;
       auto const objy = obj->getMember<json::Number>("y")->value;
       auto const objHeight = obj->getMember<json::Number>("height")->value;
+
       if(obj->getMember<json::String>("name")->value == "start")
       {
-        level.start.x = objx / 16 / scale;
-        level.start.y = height - 1 - (objy + objHeight) / 16 / scale;
+        level.start.x = objx / 16;
+        level.start.y = height - 1 - (objy + objHeight) / 16;
       }
     }
   }
