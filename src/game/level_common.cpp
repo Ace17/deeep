@@ -23,7 +23,6 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& port
       game->spawn(teleporter);
       return 0;
     }
-    return 0;
   case '@':
     {
       auto bonus = makeBonus(0, 0);
@@ -52,8 +51,6 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& port
       game->spawn(bonus.release());
       return 0;
     }
-  default:
-    return 4;
   case '.':
     return 1;
   case 'X': return 5;
@@ -109,6 +106,8 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& port
       game->spawn(portal);
       return 0;
     }
+  default:
+    return 4;
   }
 }
 
