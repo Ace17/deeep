@@ -7,47 +7,48 @@
 #include "game/entities/player.h"
 #include "game/level_graph.h"
 
-int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& portalId)
+int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& portalId)
 {
+  auto const pos = Vector2f(ipos.x, ipos.y);
   switch(val)
   {
   case ' ':
     return 0;
   case '!':
-    start = pos;
+    start = ipos;
     return 0;
   case '?':
     {
       auto teleporter = new Teleporter;
-      teleporter->pos = Vector2f(pos.x, pos.y);
+      teleporter->pos = pos;
       game->spawn(teleporter);
       return 0;
     }
   case '@':
     {
       auto bonus = makeBonus(0, 0);
-      bonus->pos = Vector2f(pos.x, pos.y);
+      bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
   case '$':
     {
       auto bonus = makeBonus(3, UPGRADE_SHOOT);
-      bonus->pos = Vector2f(pos.x, pos.y);
+      bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
   case '%':
     {
       auto bonus = makeBonus(4, UPGRADE_CLIMB);
-      bonus->pos = Vector2f(pos.x, pos.y);
+      bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
   case '^':
     {
       auto bonus = makeBonus(5, UPGRADE_DASH);
-      bonus->pos = Vector2f(pos.x, pos.y);
+      bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
@@ -62,7 +63,7 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& port
   case 'd':
     {
       auto sw = new Switch(val - 'a');
-      sw->pos = Vector2f(pos.x + 0.3, pos.y + 0.15);
+      sw->pos = pos + Vector2f(0.3, 0.15);
       game->spawn(sw);
       return 0;
     }
@@ -72,35 +73,35 @@ int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& port
   case 'D':
     {
       auto sw = new Door(val - 'A', game);
-      sw->pos = Vector2f(pos.x, pos.y);
+      sw->pos = pos;
       game->spawn(sw);
       return 0;
     }
   case '#':
     {
       auto ent = new BreakableDoor;
-      ent->pos = Vector2f(pos.x, pos.y);
+      ent->pos = pos;
       game->spawn(ent);
       return 0;
     }
   case '*':
     {
       auto wh = new Wheel;
-      wh->pos = Vector2f(pos.x, pos.y);
+      wh->pos = pos;
       game->spawn(wh);
       return 0;
     }
   case '&':
     {
       auto wh = new Spider;
-      wh->pos = Vector2f(pos.x, pos.y);
+      wh->pos = pos;
       game->spawn(wh);
       return 0;
     }
   case 'P':
     {
       auto portal = new Detector;
-      portal->pos = Vector2f(pos.x, pos.y);
+      portal->pos = pos;
       portal->size = Size2f(0.1, 3);
       portal->id = portalId++;
       game->spawn(portal);
