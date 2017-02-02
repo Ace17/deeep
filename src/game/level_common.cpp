@@ -119,15 +119,16 @@ Level loadLevel(Matrix<char> const& input, IGame* game)
 
   int portalId = 0;
 
-  for(int y = 0; y < input.size.height; ++y)
-    for(int x = 0; x < input.size.width; ++x)
-    {
-      auto val = input.get(x, y);
-      auto pos = Vector2i(x, y);
-      auto tile = interpretTile(pos, r.start, game, val, portalId);
+  for(auto pos : rasterScan(input.size.width, input.size.height))
+  {
+    auto const x = pos.first;
+    auto const y = pos.second;
 
-      r.tiles.set(x, y, tile);
-    }
+    auto val = input.get(x, y);
+    auto tile = interpretTile(Vector2i(x, y), r.start, game, val, portalId);
+
+    r.tiles.set(x, y, tile);
+  }
 
   return r;
 }
