@@ -295,6 +295,8 @@ void Display_init(int width, int height)
 
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+  printOpenGlVersion();
+
   mainWindow = SDL_CreateWindow(
     "My Game",
     SDL_WINDOWPOS_CENTERED,
@@ -312,8 +314,6 @@ void Display_init(int width, int height)
 
   // This makes our buffer swap syncronized with the monitor's vertical refresh
   SDL_GL_SetSwapInterval(1);
-
-  printOpenGlVersion();
 
   GLuint VertexArrayID;
   SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
