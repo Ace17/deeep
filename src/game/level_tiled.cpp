@@ -122,53 +122,56 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
   return level;
 }
 
-vector<Level> loadQuest(string path) // tiled TMX format
+map<string, json::Object*> getAllLayers(json::Object* js)
 {
-  vector<Level> r;
-
-  struct JsonLevel
-  {
-    json::Object* tileLayer;
-    json::Object* objectLayer;
-  };
-
-  json::Object* portalLayer = nullptr;
-
-  map<string, JsonLevel> jsonLevels;
-
-  auto js = json::load(path);
   auto layers = js->getMember<json::Array>("layers");
+
+  map<string, json::Object*> nameToLayer;
 
   for(auto& layer : layers->elements)
   {
     auto lay = json::cast<json::Object>(layer.get());
     auto name = lay->getMember<json::String>("name")->value;
-    auto type = lay->getMember<json::String>("type")->value;
-
-    if(name == "portals")
-      portalLayer = lay;
-    else if(type == "tilelayer")
-      jsonLevels[name].tileLayer = lay;
-    else
-      jsonLevels[name].objectLayer = lay;
+    nameToLayer[name] = lay;
   }
 
-  for(auto jsonLevel : jsonLevels)
+  return nameToLayer;
+}
+
+vector<Level> loadQuest(string path) // tiled TMX format
+{
+  auto js = json::load(path);
+
+  auto layers = getAllLayers(js.get());
+
+  auto layer = layers["rooms"];
+  if(!layer)
+    throw runtime_error("room layer was not found");
+
+  vector<Level> r;
+
+  for(auto& roomValue : layer->getMember<json::Array>("objects")->elements)
   {
-    if(!jsonLevel.second.tileLayer)
-      continue;
+    auto room = json::cast<json::Object>(roomValue.get());
+    auto rect = getRect(room);
+    Level level;
+    level.pos = rect;
+    level.tiles.resize(rect);
+    level.start = Vector2i(rect.width/2, rect.height/2);
 
-    r.push_back(parseLevel(jsonLevel.second.tileLayer, jsonLevel.second.objectLayer));
-  }
-
-  if(portalLayer)
-  {
-    auto objects = portalLayer->getMember<json::Array>("objects");
-
-    for(auto& portal : objects->elements)
+    for(int x=0;x < rect.width;++x)
     {
-      (void)portal;
+      level.tiles.set(x, 0, 1);
+      level.tiles.set(x, rect.height-1, 1);
     }
+
+    for(int y=0;y < min(3, rect.height-1);++y)
+    {
+      level.tiles.set(0, y, 1);
+      level.tiles.set(rect.width-1, y, 1);
+    }
+
+    r.push_back(move(level));
   }
 
   return r;
