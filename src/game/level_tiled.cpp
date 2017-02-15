@@ -138,6 +138,21 @@ map<string, json::Object*> getAllLayers(json::Object* js)
   return nameToLayer;
 }
 
+void addBoundaries(Level& level, Rect2i rect)
+{
+  for(int x = 0; x < rect.width; ++x)
+  {
+    level.tiles.set(x, 0, 1);
+    level.tiles.set(x, rect.height - 2, 1);
+  }
+
+  for(int y = 0; y < min(3, rect.height - 1); ++y)
+  {
+    level.tiles.set(0, y, 1);
+    level.tiles.set(rect.width - 2, y, 1);
+  }
+}
+
 vector<Level> loadQuest(string path) // tiled TMX format
 {
   auto js = json::load(path);
@@ -145,6 +160,7 @@ vector<Level> loadQuest(string path) // tiled TMX format
   auto layers = getAllLayers(js.get());
 
   auto layer = layers["rooms"];
+
   if(!layer)
     throw runtime_error("room layer was not found");
 
@@ -157,20 +173,9 @@ vector<Level> loadQuest(string path) // tiled TMX format
     Level level;
     level.pos = rect;
     level.tiles.resize(rect);
-    level.start = Vector2i(rect.width/2, rect.height/2);
+    level.start = Vector2i(rect.width / 2, rect.height / 2);
 
-    for(int x=0;x < rect.width;++x)
-    {
-      level.tiles.set(x, 0, 1);
-      level.tiles.set(x, rect.height-1, 1);
-    }
-
-    for(int y=0;y < min(3, rect.height-1);++y)
-    {
-      level.tiles.set(0, y, 1);
-      level.tiles.set(rect.width-1, y, 1);
-    }
-
+    addBoundaries(level, rect);
     r.push_back(move(level));
   }
 
