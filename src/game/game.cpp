@@ -21,6 +21,7 @@
 #include "base/util.h"
 #include "entities/player.h"
 #include "entities/rockman.h"
+#include "entities/detector.h"
 #include "game.h"
 #include "sounds.h"
 #include "models.h"
@@ -232,9 +233,33 @@ public:
     m_player->pos = Vector2f(level.start.x, level.start.y);
     spawn(m_player);
 
-    m_ender.game = this;
-    subscribeForEvents(&m_ender);
+    {
+      m_ender.game = this;
+      subscribeForEvents(&m_ender);
+    }
+
+    {
+      auto detector = make_unique<Detector>();
+      detector->size = Size2f(m_tiles.size.width, 1);
+      detector->pos = Vector2f(0, -1);
+      spawn(detector.release());
+
+      m_oobListener.game = this;
+      subscribeForEvents(&m_oobListener);
+    }
   }
+
+  struct OutOfBoundsListener : IEventSink
+  {
+    Game* game;
+    void notify(const Event* evt)
+    {
+      if(evt->as<TouchDetectorEvent>())
+      {
+        printf("out of bounds\n");
+      }
+    }
+  };
 
   struct LevelEnder : IEventSink
   {
@@ -252,6 +277,7 @@ public:
   Int m_level = 1;
   Bool m_shouldLoadLevel;
   LevelEnder m_ender;
+  OutOfBoundsListener m_oobListener;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities

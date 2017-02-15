@@ -142,6 +142,8 @@ void addBoundaries(Level& level, Rect2i rect)
 {
   for(int x = 0; x < rect.width; ++x)
   {
+    if(x % 7 == 0)
+      continue;
     level.tiles.set(x, 0, 1);
     level.tiles.set(x, rect.height - 2, 1);
   }
