@@ -244,22 +244,16 @@ public:
       detector->pos = Vector2f(0, -1);
       spawn(detector.release());
 
-      m_oobListener.game = this;
-      subscribeForEvents(&m_oobListener);
+      m_oobDelegator = makeDelegator<TouchDetectorEvent>(&onPlayerOutOfBounds);
+      subscribeForEvents(&m_oobDelegator);
     }
   }
 
-  struct OutOfBoundsListener : IEventSink
+  static void onPlayerOutOfBounds(const TouchDetectorEvent* event)
   {
-    Game* game;
-    void notify(const Event* evt)
-    {
-      if(evt->as<TouchDetectorEvent>())
-      {
-        printf("out of bounds\n");
-      }
-    }
-  };
+    (void)event;
+    printf("out of bounds\n");
+  }
 
   struct LevelEnder : IEventSink
   {
@@ -277,7 +271,7 @@ public:
   Int m_level = 1;
   Bool m_shouldLoadLevel;
   LevelEnder m_ender;
-  OutOfBoundsListener m_oobListener;
+  EventDelegator m_oobDelegator;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
