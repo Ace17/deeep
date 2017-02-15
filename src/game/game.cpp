@@ -217,6 +217,8 @@ public:
     m_spawned.clear();
   }
 
+  static int const DETECTOR_ID_BOUNDARY = -2;
+
   void loadLevel(int levelIdx)
   {
     auto const upgrades = m_player ? m_player->getUpgrades() : 0;
@@ -244,22 +246,20 @@ public:
       auto detector = make_unique<Detector>();
       detector->size = Size2f(m_tiles.size.width, 1);
       detector->pos = Vector2f(0, -1);
-      detector->id = -2;
+      detector->id = DETECTOR_ID_BOUNDARY;
       spawn(detector.release());
 
-      m_oobDelegator = makeDelegator<TouchDetectorEvent>(&onPlayerOutOfBounds);
+      m_oobDelegator = makeDelegator<TouchDetectorEvent>(&onTouchDetector);
       subscribeForEvents(&m_oobDelegator);
     }
   }
 
-  static void onPlayerOutOfBounds(const TouchDetectorEvent* event)
+  static void onTouchDetector(const TouchDetectorEvent* event)
   {
     (void)event;
 
-    if(event->whichOne != -2)
-      return;
-
-    printf("out of bounds\n");
+    if(event->whichOne == DETECTOR_ID_BOUNDARY)
+      printf("out of bounds\n");
   }
 
   void onEndLevel(const EndLevelEvent* event)
