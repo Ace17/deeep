@@ -17,6 +17,7 @@
 #include <array>
 #include <map>
 #include <set>
+#include <functional>
 #include "base/scene.h"
 #include "base/util.h"
 #include "entities/player.h"
@@ -234,7 +235,8 @@ public:
     spawn(m_player);
 
     {
-      m_ender.game = this;
+      auto f = bind(&Game::onEndLevel, this, std::placeholders::_1);
+      m_ender = makeDelegator<EndLevelEvent>(f);
       subscribeForEvents(&m_ender);
     }
 
@@ -242,6 +244,7 @@ public:
       auto detector = make_unique<Detector>();
       detector->size = Size2f(m_tiles.size.width, 1);
       detector->pos = Vector2f(0, -1);
+      detector->id = -2;
       spawn(detector.release());
 
       m_oobDelegator = makeDelegator<TouchDetectorEvent>(&onPlayerOutOfBounds);
@@ -252,25 +255,23 @@ public:
   static void onPlayerOutOfBounds(const TouchDetectorEvent* event)
   {
     (void)event;
+
+    if(event->whichOne != -2)
+      return;
+
     printf("out of bounds\n");
   }
 
-  struct LevelEnder : IEventSink
+  void onEndLevel(const EndLevelEvent* event)
   {
-    Game* game;
-    void notify(const Event* evt)
-    {
-      if(evt->as<EndLevelEvent>())
-      {
-        game->m_shouldLoadLevel = true;
-        game->m_level++;
-      }
-    }
-  };
+    (void)event;
+    m_shouldLoadLevel = true;
+    m_level++;
+  }
 
   Int m_level = 1;
   Bool m_shouldLoadLevel;
-  LevelEnder m_ender;
+  EventDelegator m_ender;
   EventDelegator m_oobDelegator;
 
   ////////////////////////////////////////////////////////////////
