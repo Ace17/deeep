@@ -342,7 +342,7 @@ public:
     return m_player->pos;
   }
 
-  Player* m_player;
+  Player* m_player = nullptr;
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
 
