@@ -52,6 +52,8 @@ Level Graph_loadLevel(int levelIdx, IGame* game)
   extern vector<Level> loadQuest(string path);
   auto quest = loadQuest("res/quest.json");
 
+  Level r;
+
   if(levelIdx >= 10)
   {
     levelIdx -= 10;
@@ -59,11 +61,14 @@ Level Graph_loadLevel(int levelIdx, IGame* game)
     if(levelIdx < 0 || levelIdx >= (int)quest.size())
       throw runtime_error("No such level");
 
-    return move(quest[levelIdx]);
+    r = move(quest[levelIdx]);
+  }
+  else
+  {
+    levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
+    r = allLevels[levelIdx] (game);
   }
 
-  levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
-  auto r = allLevels[levelIdx] (game);
   addRandomWidgets(r.tiles);
   return r;
 }
