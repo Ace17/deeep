@@ -51,12 +51,41 @@ struct Detector : public Entity
     if(touchDelay)
       return;
 
-    game->playSound(SND_SWITCH);
     game->postEvent(make_unique<TouchDetectorEvent>(id));
     touchDelay = 1000;
   }
 
   Int id;
   Int touchDelay;
+};
+
+struct LevelBoundaryDetector : public Entity
+{
+  LevelBoundaryDetector()
+  {
+    size = Size2f(1, 1);
+    solid = false;
+    collisionGroup = 0;
+  }
+
+  virtual Actor getActor() const override
+  {
+    auto r = Actor(pos, MDL_RECT);
+    r.scale = Vector2f(size.width, size.height);
+    return r;
+  }
+
+  virtual void onCollide(Entity*) override
+  {
+    if(touched)
+      return;
+
+    game->playSound(SND_SWITCH);
+    game->postEvent(make_unique<TouchLevelBoundary>(targetLevel));
+    touched = true;
+  }
+
+  Int targetLevel;
+  Bool touched;
 };
 

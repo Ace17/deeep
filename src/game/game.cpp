@@ -243,6 +243,12 @@ public:
     }
 
     {
+      auto f = bind(&Game::onTouchLevelBoundary, this, std::placeholders::_1);
+      m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
+      subscribeForEvents(&m_levelBoundary);
+    }
+
+    {
       auto detector = make_unique<Detector>();
       detector->size = Size2f(m_tiles.size.width, 1);
       detector->pos = Vector2f(0, -1);
@@ -269,9 +275,16 @@ public:
     m_level++;
   }
 
+  void onTouchLevelBoundary(const TouchLevelBoundary* event)
+  {
+    (void)event;
+    m_shouldLoadLevel = true;
+    m_level = event->targetLevel;
+  }
+
   Int m_level = 1;
   Bool m_shouldLoadLevel;
-  EventDelegator m_ender;
+  EventDelegator m_ender, m_levelBoundary;
   EventDelegator m_oobDelegator;
 
   ////////////////////////////////////////////////////////////////

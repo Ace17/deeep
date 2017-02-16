@@ -36,6 +36,16 @@ struct EndLevelEvent : Event
 {
 };
 
+struct TouchLevelBoundary : Event
+{
+  TouchLevelBoundary(int targetLevel_)
+  {
+    targetLevel = targetLevel_;
+  }
+
+  int targetLevel;
+};
+
 struct IEventSink
 {
   virtual void notify(const Event* evt) = 0;

@@ -1,5 +1,6 @@
 #include "level_graph.h"
 #include "level_common.h"
+#include "entities/detector.h"
 
 void addRandomWidgets(Matrix<int>& tiles)
 {
@@ -47,6 +48,32 @@ static auto const allLevels = makeVector(
   // &loadLevel2,
 });
 
+void addBoundaryDetectors(Level& level, IGame* game, int idx)
+{
+  (void)level;
+  (void)game;
+
+  auto const roomSize = level.tiles.size;
+
+  // right
+  {
+    auto detector = make_unique<LevelBoundaryDetector>();
+    detector->size = Size2f(1, roomSize.height);
+    detector->pos = Vector2f(roomSize.width, 0);
+    detector->targetLevel = idx + 1;
+    game->spawn(detector.release());
+  }
+
+  // left
+  {
+    auto detector = make_unique<LevelBoundaryDetector>();
+    detector->size = Size2f(1, roomSize.height);
+    detector->pos = Vector2f(-1, 0);
+    detector->targetLevel = idx - 1;
+    game->spawn(detector.release());
+  }
+}
+
 Level Graph_loadLevel(int levelIdx, IGame* game)
 {
   extern vector<Level> loadQuest(string path);
@@ -62,6 +89,7 @@ Level Graph_loadLevel(int levelIdx, IGame* game)
       throw runtime_error("No such level");
 
     r = move(quest[levelIdx]);
+    addBoundaryDetectors(r, game, levelIdx + 10);
   }
   else
   {
