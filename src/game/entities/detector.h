@@ -31,6 +31,7 @@ struct Detector : public Entity
   {
     size = Size2f(0.1, 3);
     solid = false;
+    collisionGroup = 0; // dont' trigger other detectors
   }
 
   virtual Actor getActor() const override
