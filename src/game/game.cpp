@@ -115,8 +115,8 @@ public:
     {
       // prevent camera from going outside the level
       auto const limit = 7.0f;
-      cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit - 1);
-      cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit - 1);
+      cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
+      cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
     }
 
     addActorsForTileMap(r, cameraPos);
