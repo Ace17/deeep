@@ -81,11 +81,12 @@ struct LevelBoundaryDetector : public Entity
       return;
 
     game->playSound(SND_SWITCH);
-    game->postEvent(make_unique<TouchLevelBoundary>(targetLevel));
+    game->postEvent(make_unique<TouchLevelBoundary>(targetLevel, transform));
     touched = true;
   }
 
   Int targetLevel;
+  Vector2f transform;
   Bool touched;
 };
 

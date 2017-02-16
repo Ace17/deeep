@@ -49,6 +49,7 @@ public:
     if(m_shouldLoadLevel)
     {
       loadLevel(m_level);
+      m_player->pos += m_transform;
       m_shouldLoadLevel = false;
     }
 
@@ -221,19 +222,28 @@ public:
 
   void loadLevel(int levelIdx)
   {
-    auto const upgrades = m_player ? m_player->getUpgrades() : 0;
+    if(m_player)
+    {
+      for(auto& entity : m_entities)
+        if(m_player == entity.get())
+          entity.release();
+    }
 
     m_entities.clear();
     m_spawned.clear();
     m_listeners.clear();
-    m_player = nullptr;
 
     auto level = Graph_loadLevel(levelIdx, this);
     m_tiles = move(level.tiles);
 
-    m_player = makeRockman().release();
-    m_player->addUpgrade(upgrades);
-    m_player->pos = Vector2f(level.start.x, level.start.y);
+    Vector2f nextPos;
+
+    if(!m_player)
+    {
+      m_player = makeRockman().release();
+      m_player->pos = Vector2f(level.start.x, level.start.y);
+    }
+
     spawn(m_player);
 
     {
@@ -272,6 +282,7 @@ public:
   {
     (void)event;
     m_shouldLoadLevel = true;
+    m_transform = Vector2f(0, 0);
     m_level++;
   }
 
@@ -279,11 +290,14 @@ public:
   {
     (void)event;
     m_shouldLoadLevel = true;
+    m_transform = event->transform;
     m_level = event->targetLevel;
   }
 
   Int m_level = 1;
+  Vector2f m_transform;
   Bool m_shouldLoadLevel;
+
   EventDelegator m_ender, m_levelBoundary;
   EventDelegator m_oobDelegator;
 

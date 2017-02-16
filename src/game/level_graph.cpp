@@ -61,6 +61,7 @@ void addBoundaryDetectors(Level& level, IGame* game, int idx)
     detector->size = Size2f(1, roomSize.height);
     detector->pos = Vector2f(roomSize.width, 0);
     detector->targetLevel = idx + 1;
+    detector->transform = Vector2f(-roomSize.width + 1, 0);
     game->spawn(detector.release());
   }
 
@@ -70,6 +71,7 @@ void addBoundaryDetectors(Level& level, IGame* game, int idx)
     detector->size = Size2f(1, roomSize.height);
     detector->pos = Vector2f(-1, 0);
     detector->targetLevel = idx - 1;
+    detector->transform = Vector2f(+roomSize.width - 1, 0);
     game->spawn(detector.release());
   }
 }

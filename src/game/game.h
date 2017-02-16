@@ -38,12 +38,14 @@ struct EndLevelEvent : Event
 
 struct TouchLevelBoundary : Event
 {
-  TouchLevelBoundary(int targetLevel_)
+  TouchLevelBoundary(int targetLevel_, Vector2f transform_)
   {
     targetLevel = targetLevel_;
+    transform = transform_;
   }
 
   int targetLevel;
+  Vector2f transform {};
 };
 
 struct IEventSink
