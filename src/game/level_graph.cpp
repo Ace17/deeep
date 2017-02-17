@@ -48,7 +48,7 @@ static auto const allLevels = makeVector(
   // &loadLevel2,
 });
 
-void addBoundaryDetectors(Level& level, IGame* game, int idx)
+void addBoundaryDetectors(Level& level, IGame* game, int idx, int width)
 {
   (void)level;
   (void)game;
@@ -71,7 +71,7 @@ void addBoundaryDetectors(Level& level, IGame* game, int idx)
     detector->size = Size2f(1, roomSize.height);
     detector->pos = Vector2f(-1, 0);
     detector->targetLevel = idx - 1;
-    detector->transform = Vector2f(+roomSize.width - 1, 0);
+    detector->transform = Vector2f(+width - 1, 0);
     game->spawn(detector.release());
   }
 }
@@ -85,13 +85,16 @@ Level Graph_loadLevel(int levelIdx, IGame* game)
 
   if(levelIdx >= 10)
   {
-    levelIdx -= 10;
+    {
+      auto const idx = levelIdx - 10;
 
-    if(levelIdx < 0 || levelIdx >= (int)quest.size())
-      throw runtime_error("No such level");
+      if(idx < 0 || idx >= (int)quest.size())
+        throw runtime_error("No such level");
 
-    r = move(quest[levelIdx]);
-    addBoundaryDetectors(r, game, levelIdx + 10);
+      r = move(quest[idx]);
+    }
+
+    addBoundaryDetectors(r, game, levelIdx, quest[levelIdx - 10 - 1].tiles.size.width);
   }
   else
   {
