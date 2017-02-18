@@ -138,7 +138,7 @@ map<string, json::Object*> getAllLayers(json::Object* js)
   return nameToLayer;
 }
 
-void addBoundaries(Level& level)
+void generateBasicRoom(Level& level)
 {
   auto const rect = level.tiles.size;
 
@@ -207,7 +207,7 @@ vector<Level> loadQuest(string path) // tiled TMX format
     level.tiles.resize(tilemapSize);
     level.start = Vector2i(tilemapSize.width / 2, tilemapSize.height / 4);
 
-    addBoundaries(level);
+    generateBasicRoom(level);
     r.push_back(move(level));
   }
 
