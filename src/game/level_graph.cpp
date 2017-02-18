@@ -48,30 +48,82 @@ static auto const allLevels = makeVector(
   // &loadLevel2,
 });
 
-void addBoundaryDetectors(vector<Level>& quest, int idx, IGame* game)
+bool isInsideRoom(Vector2i pos, Level const& room)
 {
-  auto const roomSize = quest[idx].tiles.size;
+  if(pos.x < room.pos.x)
+    return false;
+
+  if(pos.x >= room.pos.x + room.size.width)
+    return false;
+
+  if(pos.y < room.pos.y)
+    return false;
+
+  if(pos.y >= room.pos.y + room.size.height)
+    return false;
+
+  return true;
+}
+
+int getRoomAt(vector<Level> const& quest, Vector2i absPos)
+{
+  for(int i = 0; i < (int)quest.size(); ++i)
+  {
+    if(isInsideRoom(absPos, quest[i]))
+      return i;
+  }
+
+  return -1;
+}
+
+Vector2f toVector2f(Vector2i v)
+{
+  return Vector2f(v.x, v.y);
+}
+
+void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
+{
+  auto const& room = quest[roomIdx];
+
+  auto const CELL_SIZE = 16;
 
   // right
-  if(idx + 1 < (int)quest.size())
+  for(int row = 0; row < room.size.height; ++row)
   {
+    auto const neighboorPos = room.pos + Vector2i(room.size.width, row);
+    auto const neighboorIdx = getRoomAt(quest, neighboorPos);
+
+    if(neighboorIdx < 0)
+      continue;
+
+    auto& otherRoom = quest[neighboorIdx];
+
     auto detector = make_unique<LevelBoundaryDetector>();
-    detector->size = Size2f(1, roomSize.height);
-    detector->pos = Vector2f(roomSize.width, 0);
-    detector->targetLevel = idx + 1;
-    detector->transform = Vector2f(-roomSize.width + 1, 0);
+    detector->size = Size2f(1, 1) * CELL_SIZE;
+    detector->pos = Vector2f(room.size.width, row) * CELL_SIZE;
+    detector->targetLevel = neighboorIdx;
+    detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
+    detector->transform += Vector2f(1, 0); // margin
     game->spawn(detector.release());
   }
 
   // left
-  if(idx > 0)
+  for(int row = 0; row < room.size.height; ++row)
   {
-    auto const leftRoomSize = quest[idx - 1].tiles.size;
+    auto const neighboorPos = room.pos + Vector2i(-1, row);
+    auto const neighboorIdx = getRoomAt(quest, neighboorPos);
+
+    if(neighboorIdx < 0)
+      continue;
+
+    auto& otherRoom = quest[neighboorIdx];
+
     auto detector = make_unique<LevelBoundaryDetector>();
-    detector->size = Size2f(1, roomSize.height);
-    detector->pos = Vector2f(-1, 0);
-    detector->targetLevel = idx - 1;
-    detector->transform = Vector2f(+leftRoomSize.width - 1, 0);
+    detector->size = Size2f(1, 1) * CELL_SIZE;
+    detector->pos = Vector2f(-1, row) * CELL_SIZE;
+    detector->targetLevel = neighboorIdx;
+    detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
+    detector->transform += Vector2f(-1, 0); // margin
     game->spawn(detector.release());
   }
 }
@@ -83,9 +135,9 @@ Level Graph_loadLevel(int levelIdx, IGame* game)
 
   Level r;
 
-  if(levelIdx >= 10)
+  if(levelIdx >= 13)
   {
-    levelIdx -= 10;
+    levelIdx -= 13;
     levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
     r = allLevels[levelIdx] (game);
   }

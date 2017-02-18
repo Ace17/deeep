@@ -68,12 +68,26 @@ typedef Initialized<bool> Bool;
 template<typename T>
 struct GenericSize
 {
+  typedef GenericSize<T> MyType;
+
   GenericSize() : width(0), height(0)
   {
   }
 
   GenericSize(T w, T h) : width(w), height(h)
   {
+  }
+
+  template<typename F>
+  friend MyType operator * (MyType const& a, F val)
+  {
+    return MyType(a.width * val, a.height * val);
+  }
+
+  template<typename F>
+  friend MyType operator / (MyType const& a, F val)
+  {
+    return MyType(a.width / val, a.height / val);
   }
 
   T width, height;
@@ -117,6 +131,12 @@ struct GenericVector
   friend MyType operator * (MyType const& a, F val)
   {
     return MyType(a.x * val, a.y * val);
+  }
+
+  template<typename F>
+  friend MyType operator / (MyType const& a, F val)
+  {
+    return MyType(a.x / val, a.y / val);
   }
 
   template<typename F>

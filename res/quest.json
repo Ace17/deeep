@@ -6,15 +6,15 @@
          "name":"rooms",
          "objects":[
                 {
-                 "height":16,
+                 "height":32,
                  "id":2,
                  "name":"Corridor",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":80,
-                 "x":416,
-                 "y":512
+                 "width":32,
+                 "x":432,
+                 "y":448
                 }, 
                 {
                  "height":96,
@@ -94,14 +94,14 @@
                  "y":496
                 }, 
                 {
-                 "height":32,
+                 "height":16,
                  "id":10,
                  "name":"Junction",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
-                 "x":688,
+                 "width":16,
+                 "x":416,
                  "y":464
                 }, 
                 {
@@ -116,7 +116,7 @@
                  "y":528
                 }, 
                 {
-                 "height":32,
+                 "height":16,
                  "id":12,
                  "name":"Entrance",
                  "rotation":0,
@@ -124,7 +124,7 @@
                  "visible":true,
                  "width":48,
                  "x":368,
-                 "y":496
+                 "y":448
                 }, 
                 {
                  "height":16,
@@ -134,8 +134,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":352,
-                 "y":512
+                 "x":416,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",

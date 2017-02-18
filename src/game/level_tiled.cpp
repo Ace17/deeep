@@ -187,10 +187,14 @@ vector<Level> loadQuest(string path) // tiled TMX format
       rect.y /= PELS_PER_TILE;
       rect.width /= PELS_PER_TILE;
       rect.height /= PELS_PER_TILE;
+
+      // tiled stores its positions with Y axis pointing downwards.
+      // reverse it so it points upwards.
+      rect.y = 64 - rect.y - rect.height;
     }
 
     auto const CELL_SIZE = 16;
-    auto const tilemapSize = Size2i(rect.width * CELL_SIZE, rect.height * CELL_SIZE);
+    auto const tilemapSize = Size2i(rect.width, rect.height) * CELL_SIZE;
 
     Level level;
     level.pos = rect;

@@ -82,14 +82,24 @@ SRCS_TESTS:=\
 	src/game/entities/bonus.cpp\
 	src/game/entities/explosion.cpp\
 	src/game/entities/rockman.cpp\
+	src/game/level_graph.cpp\
 	tests/base64.cpp\
 	tests/decompress.cpp\
 	tests/game/entities.cpp\
+	tests/game/level_graph.cpp\
 	tests/json.cpp\
 	tests/util.cpp\
 	tests/tests.cpp\
 	tests/tests_main.cpp\
 	tests/tokenizer.cpp\
+
+# get rid of those
+SRCS_TESTS+=\
+	src/game/level1.cpp\
+	src/game/level3.cpp\
+	src/game/level4.cpp\
+	src/game/level_common.cpp\
+	src/game/level_tiled.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 $(BIN)/tests.$(EXT): $(OBJS_TESTS)
