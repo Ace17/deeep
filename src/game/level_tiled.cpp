@@ -202,6 +202,7 @@ vector<Room> loadQuest(string path) // tiled TMX format
     auto const tilemapSize = Size2i(rect.width, rect.height) * CELL_SIZE;
 
     Room room;
+    room.name = jsonRoom->getMember<json::String>("name")->value;
     room.pos = rect;
     room.size = rect;
     room.tiles.resize(tilemapSize);
