@@ -185,7 +185,7 @@ vector<Room> loadQuest(string path) // tiled TMX format
     auto rect = getRect(jsonRoom);
 
     {
-      // tiled stores its dimensions as pixel units
+      // tiled stores dimensions as pixel units
       // convert them back to logical units (i.e tile units)
       auto const PELS_PER_TILE = 4;
       rect.x /= PELS_PER_TILE;
@@ -193,7 +193,7 @@ vector<Room> loadQuest(string path) // tiled TMX format
       rect.width /= PELS_PER_TILE;
       rect.height /= PELS_PER_TILE;
 
-      // tiled stores its positions with Y axis pointing downwards.
+      // tiled uses a downwards pointing Y axis.
       // reverse it so it points upwards.
       rect.y = 64 - rect.y - rect.height;
     }
