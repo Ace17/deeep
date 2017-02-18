@@ -24,6 +24,7 @@
 #include "base/geom.h"
 #include "base/scene.h"
 #include "ratecounter.h"
+#include "sound.h"
 
 using namespace std;
 
@@ -36,9 +37,7 @@ void Display_beginDraw();
 void Display_endDraw();
 void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
 
-void Audio_init();
-void Audio_loadSound(int id, string path);
-void Audio_playSound(int id);
+Audio* createAudio(bool dummy = false);
 
 Scene* createGame(vector<string> argv);
 
@@ -56,10 +55,10 @@ public:
     memset(keys, 0, sizeof keys);
 
     Display_init(512, 512);
-    Audio_init();
+    m_audio.reset(createAudio());
 
     for(auto sound : m_scene->getSounds())
-      Audio_loadSound(sound.id, sound.path);
+      m_audio->loadSound(sound.id, sound.path);
 
     for(auto model : m_scene->getModels())
       Display_loadModel(model.id, model.path);
@@ -158,7 +157,7 @@ private:
     auto sounds = m_scene->readSounds();
 
     for(auto sound : sounds)
-      Audio_playSound(sound);
+      m_audio->playSound(sound);
   }
 
   void fpsChanged(int fps)
@@ -186,7 +185,7 @@ private:
 
     if(evt->key.keysym.sym == SDLK_PAUSE || evt->key.keysym.sym == SDLK_RETURN)
     {
-      Audio_playSound(0);
+      m_audio->playSound(0);
       m_paused = !m_paused;
     }
 
@@ -209,6 +208,7 @@ private:
   unique_ptr<Scene> m_scene;
   bool m_slowMotion;
   Bool m_paused;
+  unique_ptr<Audio> m_audio;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

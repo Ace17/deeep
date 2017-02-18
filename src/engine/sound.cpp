@@ -16,51 +16,76 @@
 #include <algorithm>
 #include <string>
 #include <SDL_mixer.h>
+#include "sound.h"
 
 using namespace std;
 
 static vector<Mix_Chunk*> sounds;
 
-void Audio_init()
+struct SdlAudio : Audio
 {
-  auto ret = Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 1024);
+  SdlAudio()
+  {
+    auto ret = Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 1024);
 
-  if(ret == -1)
-    throw runtime_error("Can't open audio");
+    if(ret == -1)
+      throw runtime_error("Can't open audio");
 
-  ret = Mix_AllocateChannels(16);
+    ret = Mix_AllocateChannels(16);
 
-  if(ret == -1)
-    throw runtime_error("Can't allocate channels");
+    if(ret == -1)
+      throw runtime_error("Can't allocate channels");
 
-  auto m = Mix_LoadMUS("res/music/default.ogg");
+    auto m = Mix_LoadMUS("res/music/default.ogg");
 
-  if(!m)
-    throw runtime_error("Can't load music");
+    if(!m)
+      throw runtime_error("Can't load music");
 
-  Mix_FadeInMusic(m, -1, 2000);
-}
+    Mix_FadeInMusic(m, -1, 2000);
+  }
 
-void Audio_loadSound(int id, string path)
+  ~SdlAudio()
+  {
+    for(auto chunk : sounds)
+      Mix_FreeChunk(chunk);
+  }
+
+  void loadSound(int id, string path) override
+  {
+    auto snd = Mix_LoadWAV(path.c_str());
+
+    if(!snd)
+      throw runtime_error("Can't load sound: '" + path + "' : " + SDL_GetError());
+
+    sounds.resize(max(id + 1, (int)sounds.size()));
+
+    sounds[id] = snd;
+  }
+
+  void playSound(int id) override
+  {
+    Mix_PlayChannel(-1, sounds[id], 0);
+  }
+};
+
+struct DummyAudio : Audio
 {
-  auto snd = Mix_LoadWAV(path.c_str());
+  void loadSound(int id, std::string path) override
+  {
+    printf("sound[%d]: '%s'\n", id, path.c_str());
+  }
 
-  if(!snd)
-    throw runtime_error("Can't load sound: '" + path + "' : " + SDL_GetError());
+  void playSound(int id) override
+  {
+    printf("sound: #%d\n", id);
+  }
+};
 
-  sounds.resize(max(id + 1, (int)sounds.size()));
-
-  sounds[id] = snd;
-}
-
-void Audio_destroy()
+Audio* createAudio(bool dummy)
 {
-  for(auto chunk : sounds)
-    Mix_FreeChunk(chunk);
-}
+  if(dummy)
+    return new DummyAudio;
 
-void Audio_playSound(int id)
-{
-  Mix_PlayChannel(-1, sounds[id], 0);
+  return new SdlAudio;
 }
 
