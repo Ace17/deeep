@@ -30,6 +30,8 @@
 
 using namespace std;
 
+static int const DETECTOR_ID_BOUNDARY = -2;
+
 // from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 
@@ -221,8 +223,6 @@ public:
 
     m_spawned.clear();
   }
-
-  static int const DETECTOR_ID_BOUNDARY = -2;
 
   void loadLevel(int levelIdx)
   {
