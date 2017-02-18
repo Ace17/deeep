@@ -87,10 +87,19 @@ void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
 
   auto const CELL_SIZE = 16;
 
+  auto addDetector =
+    [&] ()
+    {
+      auto detector = make_unique<LevelBoundaryDetector>();
+      detector->size = Size2f(1, 1) * CELL_SIZE;
+      return detector;
+    };
+
   // right
   for(int row = 0; row < room.size.height; ++row)
   {
-    auto const neighboorPos = room.pos + Vector2i(room.size.width, row);
+    auto const delta = Vector2i(room.size.width, row);
+    auto const neighboorPos = room.pos + delta;
     auto const neighboorIdx = getRoomAt(quest, neighboorPos);
 
     if(neighboorIdx < 0)
@@ -98,9 +107,8 @@ void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
 
     auto& otherRoom = quest[neighboorIdx];
 
-    auto detector = make_unique<LevelBoundaryDetector>();
-    detector->size = Size2f(1, 1) * CELL_SIZE;
-    detector->pos = Vector2f(room.size.width, row) * CELL_SIZE;
+    auto detector = addDetector();
+    detector->pos = toVector2f(delta * CELL_SIZE);
     detector->targetLevel = neighboorIdx;
     detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
     detector->transform += Vector2f(1, 0); // margin
@@ -110,7 +118,8 @@ void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
   // left
   for(int row = 0; row < room.size.height; ++row)
   {
-    auto const neighboorPos = room.pos + Vector2i(-1, row);
+    auto const delta = Vector2i(-1, row);
+    auto const neighboorPos = room.pos + delta;
     auto const neighboorIdx = getRoomAt(quest, neighboorPos);
 
     if(neighboorIdx < 0)
@@ -118,9 +127,8 @@ void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
 
     auto& otherRoom = quest[neighboorIdx];
 
-    auto detector = make_unique<LevelBoundaryDetector>();
-    detector->size = Size2f(1, 1) * CELL_SIZE;
-    detector->pos = Vector2f(-1, row) * CELL_SIZE;
+    auto detector = addDetector();
+    detector->pos = toVector2f(delta * CELL_SIZE);
     detector->targetLevel = neighboorIdx;
     detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
     detector->transform += Vector2f(-1, 0); // margin
