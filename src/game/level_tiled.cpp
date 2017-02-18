@@ -159,6 +159,11 @@ void addBoundaries(Level& level)
     level.tiles.set(0, y, 1);
     level.tiles.set(rect.width - 1, y, 1);
   }
+
+  for(int y = 1; y < rect.height - 1; ++y)
+    for(int x = 1; x < rect.width - 1; ++x)
+      if((y - x) % 5 == 0 && x % 3 == 0)
+        level.tiles.set(x, y, 1);
 }
 
 vector<Level> loadQuest(string path) // tiled TMX format
@@ -182,7 +187,7 @@ vector<Level> loadQuest(string path) // tiled TMX format
     {
       // tiled stores its dimensions as pixel units
       // convert them back to logical units (i.e tile units)
-      auto const PELS_PER_TILE = 16;
+      auto const PELS_PER_TILE = 4;
       rect.x /= PELS_PER_TILE;
       rect.y /= PELS_PER_TILE;
       rect.width /= PELS_PER_TILE;
