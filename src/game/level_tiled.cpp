@@ -138,8 +138,10 @@ map<string, json::Object*> getAllLayers(json::Object* js)
   return nameToLayer;
 }
 
-void addBoundaries(Level& level, Rect2i rect)
+void addBoundaries(Level& level)
 {
+  auto const rect = level.tiles.size;
+
   for(int x = 0; x < rect.width; ++x)
   {
     if(x % 7 == 0)
@@ -173,12 +175,27 @@ vector<Level> loadQuest(string path) // tiled TMX format
   {
     auto room = json::cast<json::Object>(roomValue.get());
     auto rect = getRect(room);
+
+    {
+      // tiled stores its dimensions as pixel units
+      // convert them back to logical units (i.e tile units)
+      auto const PELS_PER_TILE = 16;
+      rect.x /= PELS_PER_TILE;
+      rect.y /= PELS_PER_TILE;
+      rect.width /= PELS_PER_TILE;
+      rect.height /= PELS_PER_TILE;
+    }
+
+    auto const CELL_SIZE = 16;
+    auto const tilemapSize = Size2i(rect.width * CELL_SIZE, rect.height * CELL_SIZE);
+
     Level level;
     level.pos = rect;
-    level.tiles.resize(rect);
-    level.start = Vector2i(rect.width / 2, rect.height / 4);
+    level.size = rect;
+    level.tiles.resize(tilemapSize);
+    level.start = Vector2i(tilemapSize.width / 2, tilemapSize.height / 4);
 
-    addBoundaries(level, rect);
+    addBoundaries(level);
     r.push_back(move(level));
   }
 
