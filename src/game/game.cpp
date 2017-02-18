@@ -122,11 +122,15 @@ public:
 
     addActorsForTileMap(r, cameraPos);
 
+    Rect2f cameraRect;
+    cameraRect.width = 16;
+    cameraRect.height = 16;
+    cameraRect.x = cameraPos.x - cameraRect.width / 2;
+    cameraRect.y = cameraPos.y - cameraRect.height / 2;
+
     for(auto& entity : m_entities)
     {
-      auto delta = entity->pos - cameraPos;
-
-      if(abs(delta.x) > 8 || abs(delta.y) > 10)
+      if(!overlaps(entity->getRect(), cameraRect))
         continue;
 
       r.push_back(entity->getActor());
