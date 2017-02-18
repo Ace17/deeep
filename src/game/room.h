@@ -2,7 +2,7 @@
 
 #include "game.h"
 
-struct Level
+struct Room
 {
   Vector2i pos;
   Size2i size;
@@ -10,5 +10,5 @@ struct Level
   Vector2i start;
 };
 
-Level Graph_loadLevel(int levelIdx, IGame* game);
+Room Graph_loadRoom(int levelIdx, IGame* game);
 

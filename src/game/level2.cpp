@@ -1,5 +1,5 @@
 /**
- * @brief Level 2
+ * @brief Room 2
  * @author Sebastien Alaiwan
  */
 
@@ -18,7 +18,7 @@
 #include "base/util.h"
 #include "game/game.h"
 #include "game/graph_tools.h"
-#include "game/level_graph.h"
+#include "game/room.h"
 
 int interpretTile(Vector2i pos, Vector2i& start, IGame* game, int val, int& portalId);
 
@@ -98,9 +98,9 @@ Matrix<Cell> createConnectionMatrix(int numCols, int numRows, default_random_eng
   return cells;
 }
 
-Level loadLevel2(IGame* game)
+Room loadLevel2(IGame* game)
 {
-  Level r;
+  Room r;
   default_random_engine gen;
 
   auto seedVal = chrono::system_clock::now().time_since_epoch().count();

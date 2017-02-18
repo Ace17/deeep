@@ -26,7 +26,7 @@
 #include "game.h"
 #include "sounds.h"
 #include "models.h"
-#include "level_graph.h"
+#include "room.h"
 
 using namespace std;
 
@@ -237,7 +237,7 @@ public:
     m_spawned.clear();
     m_listeners.clear();
 
-    auto level = Graph_loadLevel(levelIdx, this);
+    auto level = Graph_loadRoom(levelIdx, this);
     m_tiles = move(level.tiles);
 
     Vector2f nextPos;

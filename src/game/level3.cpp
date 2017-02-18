@@ -1,5 +1,5 @@
 /**
- * @brief Level 3
+ * @brief Room 3
  * @author Sebastien Alaiwan
  */
 
@@ -101,7 +101,7 @@ static const char levelData[80][128 + 1] =
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 };
 
-Level loadLevel3(IGame* game)
+Room loadLevel3(IGame* game)
 {
   auto data = toMatrix(levelData);
   return loadLevel(data, game);

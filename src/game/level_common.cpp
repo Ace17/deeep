@@ -5,7 +5,7 @@
 #include "game/entities/detector.h"
 #include "game/entities/bonus.h"
 #include "game/entities/player.h"
-#include "game/level_graph.h"
+#include "game/room.h"
 
 int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& portalId)
 {
@@ -112,9 +112,9 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
   }
 }
 
-Level loadLevel(Matrix<char> const& input, IGame* game)
+Room loadLevel(Matrix<char> const& input, IGame* game)
 {
-  Level r;
+  Room r;
   r.tiles.resize(input.size);
 
   int portalId = 0;

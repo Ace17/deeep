@@ -17,7 +17,7 @@
 #include "game/game.h"
 #include "game/entities/switch.h"
 #include "game/entities/wheel.h"
-#include "game/level_graph.h"
+#include "game/room.h"
 
 static
 vector<int> convertFromLittleEndian(vector<uint8_t> const& input)
@@ -63,13 +63,13 @@ Rect2i getRect(json::Object* obj)
   return r;
 }
 
-Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
+Room parseLevel(json::Object* tileLayer, json::Object* objectLayer)
 {
-  Level level;
+  Room room;
 
   const auto rect = getRect(tileLayer);
 
-  level.pos = rect;
+  room.pos = rect;
 
   {
     auto data = tileLayer->getMember<json::String>("data")->value;
@@ -79,13 +79,13 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
     if(rect.width * rect.height != (int)buff.size())
       throw runtime_error("invalid TMX file: width x height doesn't match data length");
 
-    level.tiles.resize(rect);
+    room.tiles.resize(rect);
 
     for(auto pos : rasterScan(rect.width, rect.height))
     {
       auto const x = pos.first;
       auto const y = pos.second;
-      level.tiles.set(x, y, 0);
+      room.tiles.set(x, y, 0);
 
       int srcOffset = (x + (rect.height - 1 - y) * rect.width);
       int tile = buff[srcOffset];
@@ -95,7 +95,7 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
       if(tile)
       {
         auto const abstractTile = 1 + ((tile - 1) / 16);
-        level.tiles.set(x, y, abstractTile);
+        room.tiles.set(x, y, abstractTile);
       }
     }
   }
@@ -111,15 +111,15 @@ Level parseLevel(json::Object* tileLayer, json::Object* objectLayer)
 
       if(obj->getMember<json::String>("name")->value == "start")
       {
-        level.start.x = objRect.x / 16;
-        level.start.y = rect.height - 1 - (objRect.y + objRect.height) / 16;
+        room.start.x = objRect.x / 16;
+        room.start.y = rect.height - 1 - (objRect.y + objRect.height) / 16;
       }
     }
   }
 
-  level.start -= level.pos;
+  room.start -= room.pos;
 
-  return level;
+  return room;
 }
 
 map<string, json::Object*> getAllLayers(json::Object* js)
@@ -138,35 +138,35 @@ map<string, json::Object*> getAllLayers(json::Object* js)
   return nameToLayer;
 }
 
-void generateBasicRoom(Level& level)
+void generateBasicRoom(Room& room)
 {
-  auto const rect = level.tiles.size;
+  auto const rect = room.tiles.size;
 
   for(int x = 0; x < rect.width; ++x)
   {
     if(x % 7 == 0)
       continue;
 
-    level.tiles.set(x, 0, 1);
+    room.tiles.set(x, 0, 1);
 
     // ceiling
     for(int i = 0; i < 6; ++i)
-      level.tiles.set(x, rect.height - 1 - i, 1);
+      room.tiles.set(x, rect.height - 1 - i, 1);
   }
 
   for(int y = 0; y < min(3, rect.height - 1); ++y)
   {
-    level.tiles.set(0, y, 1);
-    level.tiles.set(rect.width - 1, y, 1);
+    room.tiles.set(0, y, 1);
+    room.tiles.set(rect.width - 1, y, 1);
   }
 
   for(int y = 1; y < rect.height - 1; ++y)
     for(int x = 1; x < rect.width - 1; ++x)
       if((y - x) % 5 == 0 && x % 3 == 0)
-        level.tiles.set(x, y, 1);
+        room.tiles.set(x, y, 1);
 }
 
-vector<Level> loadQuest(string path) // tiled TMX format
+vector<Room> loadQuest(string path) // tiled TMX format
 {
   auto js = json::load(path);
 
@@ -177,12 +177,12 @@ vector<Level> loadQuest(string path) // tiled TMX format
   if(!layer)
     throw runtime_error("room layer was not found");
 
-  vector<Level> r;
+  vector<Room> r;
 
   for(auto& roomValue : layer->getMember<json::Array>("objects")->elements)
   {
-    auto room = json::cast<json::Object>(roomValue.get());
-    auto rect = getRect(room);
+    auto jsonRoom = json::cast<json::Object>(roomValue.get());
+    auto rect = getRect(jsonRoom);
 
     {
       // tiled stores its dimensions as pixel units
@@ -201,14 +201,14 @@ vector<Level> loadQuest(string path) // tiled TMX format
     auto const CELL_SIZE = 16;
     auto const tilemapSize = Size2i(rect.width, rect.height) * CELL_SIZE;
 
-    Level level;
-    level.pos = rect;
-    level.size = rect;
-    level.tiles.resize(tilemapSize);
-    level.start = Vector2i(tilemapSize.width / 2, tilemapSize.height / 4);
+    Room room;
+    room.pos = rect;
+    room.size = rect;
+    room.tiles.resize(tilemapSize);
+    room.start = Vector2i(tilemapSize.width / 2, tilemapSize.height / 4);
 
-    generateBasicRoom(level);
-    r.push_back(move(level));
+    generateBasicRoom(room);
+    r.push_back(move(room));
   }
 
   return r;

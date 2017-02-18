@@ -1,4 +1,4 @@
-#include "level_graph.h"
+#include "room.h"
 #include "level_common.h"
 #include "entities/detector.h"
 
@@ -34,11 +34,11 @@ void addRandomWidgets(Matrix<int>& tiles)
   }
 }
 
-Level loadTrainingLevel(IGame* game);
+Room loadTrainingLevel(IGame* game);
 
-Level loadTinyQuest(IGame* game);
-Level loadLevel2(IGame* game);
-Level loadLevel3(IGame* game);
+Room loadTinyQuest(IGame* game);
+Room loadLevel2(IGame* game);
+Room loadLevel3(IGame* game);
 
 static auto const allLevels = makeVector(
 {
@@ -48,7 +48,7 @@ static auto const allLevels = makeVector(
   // &loadLevel2,
 });
 
-bool isInsideRoom(Vector2i pos, Level const& room)
+bool isInsideRoom(Vector2i pos, Room const& room)
 {
   if(pos.x < room.pos.x)
     return false;
@@ -65,7 +65,7 @@ bool isInsideRoom(Vector2i pos, Level const& room)
   return true;
 }
 
-int getRoomAt(vector<Level> const& quest, Vector2i absPos)
+int getRoomAt(vector<Room> const& quest, Vector2i absPos)
 {
   for(int i = 0; i < (int)quest.size(); ++i)
   {
@@ -81,7 +81,7 @@ Vector2f toVector2f(Vector2i v)
   return Vector2f(v.x, v.y);
 }
 
-void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
+void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
 {
   auto const& room = quest[roomIdx];
 
@@ -139,12 +139,12 @@ void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
   }
 }
 
-Level Graph_loadLevel(int levelIdx, IGame* game)
+Room Graph_loadRoom(int levelIdx, IGame* game)
 {
-  extern vector<Level> loadQuest(string path);
+  extern vector<Room> loadQuest(string path);
   auto quest = loadQuest("res/quest.json");
 
-  Level r;
+  Room r;
 
   if(levelIdx >= 13)
   {

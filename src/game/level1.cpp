@@ -1,5 +1,5 @@
 /**
- * @brief Level 1
+ * @brief Room 1
  * @author Sebastien Alaiwan
  */
 
@@ -103,7 +103,7 @@ static const char data_level1[82][128 + 1] =
   "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 };
 
-Level loadTinyQuest(IGame* game)
+Room loadTinyQuest(IGame* game)
 {
   auto data = toMatrix(data_level1);
   return loadLevel(data, game);
