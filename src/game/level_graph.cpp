@@ -50,10 +50,10 @@ static auto const allLevels = makeVector(
 
 void addBoundaryDetectors(vector<Level>& quest, int idx, IGame* game)
 {
-  auto const leftRoomSize = quest[idx-1-10].tiles.size;
-  auto const roomSize = quest[idx-10].tiles.size;
+  auto const roomSize = quest[idx].tiles.size;
 
   // right
+  if(idx + 1 < (int)quest.size())
   {
     auto detector = make_unique<LevelBoundaryDetector>();
     detector->size = Size2f(1, roomSize.height);
@@ -64,7 +64,9 @@ void addBoundaryDetectors(vector<Level>& quest, int idx, IGame* game)
   }
 
   // left
+  if(idx > 0)
   {
+    auto const leftRoomSize = quest[idx - 1].tiles.size;
     auto detector = make_unique<LevelBoundaryDetector>();
     detector->size = Size2f(1, roomSize.height);
     detector->pos = Vector2f(-1, 0);
@@ -83,19 +85,18 @@ Level Graph_loadLevel(int levelIdx, IGame* game)
 
   if(levelIdx >= 10)
   {
-    auto const idx = levelIdx - 10;
-
-    if(idx < 0 || idx >= (int)quest.size())
-      throw runtime_error("No such level");
-
-    r = move(quest[idx]);
-
-    addBoundaryDetectors(quest, levelIdx, game);
+    levelIdx -= 10;
+    levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
+    r = allLevels[levelIdx] (game);
   }
   else
   {
-    levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
-    r = allLevels[levelIdx] (game);
+    if(levelIdx < 0 || levelIdx >= (int)quest.size())
+      throw runtime_error("No such level");
+
+    r = move(quest[levelIdx]);
+
+    addBoundaryDetectors(quest, levelIdx, game);
   }
 
   addRandomWidgets(r.tiles);
