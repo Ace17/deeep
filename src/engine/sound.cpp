@@ -20,8 +20,6 @@
 
 using namespace std;
 
-static vector<Mix_Chunk*> sounds;
-
 struct SdlAudio : Audio
 {
   SdlAudio()
@@ -66,6 +64,8 @@ struct SdlAudio : Audio
   {
     Mix_PlayChannel(-1, sounds[id], 0);
   }
+
+  vector<Mix_Chunk*> sounds;
 };
 
 struct DummyAudio : Audio
