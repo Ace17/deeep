@@ -95,44 +95,47 @@ void addBoundaryDetectors(vector<Level>& quest, int roomIdx, IGame* game)
       return detector;
     };
 
-  // right
-  for(int row = 0; row < room.size.height; ++row)
-  {
-    auto const delta = Vector2i(room.size.width, row);
-    auto const neighboorPos = room.pos + delta;
-    auto const neighboorIdx = getRoomAt(quest, neighboorPos);
+  auto tryToConnectRoom =
+    [&] (Vector2i delta, Vector2f margin)
+    {
+      auto const neighboorPos = room.pos + delta;
+      auto const neighboorIdx = getRoomAt(quest, neighboorPos);
 
-    if(neighboorIdx < 0)
-      continue;
+      if(neighboorIdx < 0)
+        return;
 
-    auto& otherRoom = quest[neighboorIdx];
+      auto& otherRoom = quest[neighboorIdx];
 
-    auto detector = addDetector();
-    detector->pos = toVector2f(delta * CELL_SIZE);
-    detector->targetLevel = neighboorIdx;
-    detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
-    detector->transform += Vector2f(1, 0); // margin
-    game->spawn(detector.release());
-  }
+      auto detector = addDetector();
+      detector->pos = toVector2f(delta * CELL_SIZE);
+      detector->targetLevel = neighboorIdx;
+      detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
+      detector->transform += margin;
+      game->spawn(detector.release());
+    };
 
   // left
   for(int row = 0; row < room.size.height; ++row)
   {
     auto const delta = Vector2i(-1, row);
-    auto const neighboorPos = room.pos + delta;
-    auto const neighboorIdx = getRoomAt(quest, neighboorPos);
+    auto const margin = Vector2f(-1, 0);
+    tryToConnectRoom(delta, margin);
+  }
 
-    if(neighboorIdx < 0)
-      continue;
+  // right
+  for(int row = 0; row < room.size.height; ++row)
+  {
+    auto const delta = Vector2i(room.size.width, row);
+    auto const margin = Vector2f(1, 0);
+    tryToConnectRoom(delta, margin);
+  }
 
-    auto& otherRoom = quest[neighboorIdx];
-
-    auto detector = addDetector();
-    detector->pos = toVector2f(delta * CELL_SIZE);
-    detector->targetLevel = neighboorIdx;
-    detector->transform = toVector2f(room.pos - otherRoom.pos) * CELL_SIZE;
-    detector->transform += Vector2f(-1, 0); // margin
-    game->spawn(detector.release());
+  // bottom
+  for(int col = 0; col < room.size.width; ++col)
+  {
+    auto const delta = Vector2i(col, -1);
+    auto const margin = Vector2f(0, -1);
+    tryToConnectRoom(delta, margin);
   }
 }
 
