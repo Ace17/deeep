@@ -148,7 +148,10 @@ void addBoundaries(Level& level)
       continue;
 
     level.tiles.set(x, 0, 1);
-    level.tiles.set(x, rect.height - 1, 1);
+
+    // ceiling
+    for(int i = 0; i < 6; ++i)
+      level.tiles.set(x, rect.height - 1 - i, 1);
   }
 
   for(int y = 0; y < min(3, rect.height - 1); ++y)
