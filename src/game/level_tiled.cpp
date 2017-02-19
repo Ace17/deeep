@@ -186,11 +186,14 @@ void generateBasicRoom(Room& room)
     {
       auto const c = x / 16;
       auto const col = x % 16;
-      auto const row = (y+c) % 4;
-      if(col >= 7 && col < 9 && row == 0)
+      auto const row = y % 16;
+      if(col >= 7 && col < 9 && (row+c)%4 == 0)
         room.tiles.set(x, y, 1);
 
-      if(col >= 11 && col < 13 && row == 2)
+      if(col >= 11 && col < 13 && (row+c)%4 == 2)
+        room.tiles.set(x, y, 1);
+
+      if(row == 0 && (col <4 || col >= 12))
         room.tiles.set(x, y, 1);
     }
 }
