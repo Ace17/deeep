@@ -40,7 +40,7 @@ Room loadTinyQuest(IGame* game);
 Room loadLevel2(IGame* game);
 Room loadLevel3(IGame* game);
 
-static auto const allLevels = makeVector(
+static auto const allRooms = makeVector(
 {
   &loadTrainingLevel,
   &loadTinyQuest,
@@ -90,7 +90,7 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
   auto addDetector =
     [&] ()
     {
-      auto detector = make_unique<LevelBoundaryDetector>();
+      auto detector = make_unique<RoomBoundaryDetector>();
       detector->size = Size2f(1, 1) * CELL_SIZE;
       return detector;
     };
@@ -139,27 +139,27 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
   }
 }
 
-Room Graph_loadRoom(int levelIdx, IGame* game)
+Room Graph_loadRoom(int roomIdx, IGame* game)
 {
   extern vector<Room> loadQuest(string path);
   auto quest = loadQuest("res/quest.json");
 
   Room r;
 
-  if(levelIdx >= 13)
+  if(roomIdx >= 13)
   {
-    levelIdx -= 13;
-    levelIdx = clamp<int>(levelIdx, 0, allLevels.size() - 1);
-    r = allLevels[levelIdx] (game);
+    roomIdx -= 13;
+    roomIdx = clamp<int>(roomIdx, 0, allRooms.size() - 1);
+    r = allRooms[roomIdx] (game);
   }
   else
   {
-    if(levelIdx < 0 || levelIdx >= (int)quest.size())
+    if(roomIdx < 0 || roomIdx >= (int)quest.size())
       throw runtime_error("No such level");
 
-    r = move(quest[levelIdx]);
+    r = move(quest[roomIdx]);
 
-    addBoundaryDetectors(quest, levelIdx, game);
+    addBoundaryDetectors(quest, roomIdx, game);
   }
 
   addRandomWidgets(r.tiles);

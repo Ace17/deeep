@@ -59,9 +59,9 @@ struct Detector : public Entity
   Int touchDelay;
 };
 
-struct LevelBoundaryDetector : public Entity
+struct RoomBoundaryDetector : public Entity
 {
-  LevelBoundaryDetector()
+  RoomBoundaryDetector()
   {
     size = Size2f(1, 1);
     solid = false;
