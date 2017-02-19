@@ -9,14 +9,12 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <fstream>
 #include "base/geom.h"
 #include "base/util.h"
 #include "engine/json.h"
 #include "engine/base64.h"
 #include "engine/decompress.h"
-#include "game/game.h"
-#include "game/entities/switch.h"
-#include "game/entities/wheel.h"
 #include "game/room.h"
 
 static
@@ -51,54 +49,95 @@ vector<int> decompressTiles(string data)
   return convertFromLittleEndian(uncompData);
 }
 
-Rect2i getRect(json::Object* obj)
+static
+Size2i getSize(json::Object* obj)
 {
-  Rect2i r;
+  Size2i r;
 
-  r.x = obj->getMember<json::Number>("x")->value;
-  r.y = obj->getMember<json::Number>("y")->value;
   r.width = obj->getMember<json::Number>("width")->value;
   r.height = obj->getMember<json::Number>("height")->value;
 
   return r;
 }
 
-Room parseLevel(json::Object* tileLayer, json::Object* objectLayer)
+Rect2i getRect(json::Object* obj)
 {
+  Rect2i r;
+
+  r.x = obj->getMember<json::Number>("x")->value;
+  r.y = obj->getMember<json::Number>("y")->value;
+
+  Size2i& s = r;
+  s = getSize(obj);
+
+  return r;
+}
+
+static
+map<string, json::Object*> getAllLayers(json::Object* js)
+{
+  auto layers = js->getMember<json::Array>("layers");
+
+  map<string, json::Object*> nameToLayer;
+
+  for(auto& layer : layers->elements)
+  {
+    auto lay = json::cast<json::Object>(layer.get());
+    auto name = lay->getMember<json::String>("name")->value;
+    nameToLayer[name] = lay;
+  }
+
+  return nameToLayer;
+}
+
+static
+Matrix<int> parseTileLayer(json::Object* json)
+{
+  Matrix<int> tiles;
+
+  auto const data = json->getMember<json::String>("data")->value;
+  auto const buff = decompressTiles(data);
+  auto const size = getSize(json);
+
+  if(size.width * size.height != (int)buff.size())
+    throw runtime_error("invalid TMX file: width x height doesn't match data length");
+
+  tiles.resize(size);
+
+  for(auto pos : rasterScan(size.width, size.height))
+  {
+    auto const x = pos.first;
+    auto const y = pos.second;
+    tiles.set(x, y, 0);
+
+    int srcOffset = (x + (size.height - 1 - y) * size.width);
+    int tile = buff[srcOffset];
+
+    assert(tile >= 0);
+
+    if(tile)
+    {
+      auto const abstractTile = 1 + ((tile - 1) / 16);
+      tiles.set(x, y, abstractTile);
+    }
+  }
+
+  return tiles;
+}
+
+Room parseRoom(json::Object* jsonRoom)
+{
+  auto layers = getAllLayers(jsonRoom);
+  json::Object* tileLayer {};
+  json::Object* objectLayer {};
+
   Room room;
 
   const auto rect = getRect(tileLayer);
 
   room.pos = rect;
 
-  {
-    auto data = tileLayer->getMember<json::String>("data")->value;
-
-    auto buff = decompressTiles(data);
-
-    if(rect.width * rect.height != (int)buff.size())
-      throw runtime_error("invalid TMX file: width x height doesn't match data length");
-
-    room.tiles.resize(rect);
-
-    for(auto pos : rasterScan(rect.width, rect.height))
-    {
-      auto const x = pos.first;
-      auto const y = pos.second;
-      room.tiles.set(x, y, 0);
-
-      int srcOffset = (x + (rect.height - 1 - y) * rect.width);
-      int tile = buff[srcOffset];
-
-      assert(tile >= 0);
-
-      if(tile)
-      {
-        auto const abstractTile = 1 + ((tile - 1) / 16);
-        room.tiles.set(x, y, abstractTile);
-      }
-    }
-  }
+  room.tiles = parseTileLayer(tileLayer);
 
   if(objectLayer)
   {
@@ -120,22 +159,6 @@ Room parseLevel(json::Object* tileLayer, json::Object* objectLayer)
   room.start -= room.pos;
 
   return room;
-}
-
-map<string, json::Object*> getAllLayers(json::Object* js)
-{
-  auto layers = js->getMember<json::Array>("layers");
-
-  map<string, json::Object*> nameToLayer;
-
-  for(auto& layer : layers->elements)
-  {
-    auto lay = json::cast<json::Object>(layer.get());
-    auto name = lay->getMember<json::String>("name")->value;
-    nameToLayer[name] = lay;
-  }
-
-  return nameToLayer;
 }
 
 void generateBasicRoom(Room& room)
@@ -208,7 +231,20 @@ vector<Room> loadQuest(string path) // tiled TMX format
     room.tiles.resize(tilemapSize);
     room.start = Vector2i(tilemapSize.width / 2, tilemapSize.height / 4);
 
-    generateBasicRoom(room);
+    {
+      auto const path = "res/rooms/" + room.name + ".json";
+
+      if(ifstream(path).is_open())
+      {
+        auto jsRoom = json::load(path);
+        auto layers = getAllLayers(jsRoom.get());
+        assert(layers["tiles"]);
+        room.tiles = parseTileLayer(layers["tiles"]);
+      }
+      else
+        generateBasicRoom(room);
+    }
+
     r.push_back(move(room));
   }
 
