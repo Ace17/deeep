@@ -167,9 +167,7 @@ void generateBasicRoom(Room& room)
 
   for(int x = 0; x < rect.width; ++x)
   {
-    if(x % 7 == 0)
-      continue;
-
+    // ground
     room.tiles.set(x, 0, 1);
 
     // ceiling
@@ -185,8 +183,16 @@ void generateBasicRoom(Room& room)
 
   for(int y = 1; y < rect.height - 1; ++y)
     for(int x = 1; x < rect.width - 1; ++x)
-      if((y - x) % 5 == 0 && x % 3 == 0)
+    {
+      auto const c = x / 16;
+      auto const col = x % 16;
+      auto const row = (y+c) % 4;
+      if(col >= 7 && col < 9 && row == 0)
         room.tiles.set(x, y, 1);
+
+      if(col >= 11 && col < 13 && row == 2)
+        room.tiles.set(x, y, 1);
+    }
 }
 
 vector<Room> loadQuest(string path) // tiled TMX format
