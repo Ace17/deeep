@@ -1,15 +1,15 @@
-{ "height":48,
+{ "height":16,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzNlEEOgCAMBOFn\/v9VaqKJh9LOlqI24aKd3YKLvbXWC9Zd2b5KflSEp0X54912riyf8R95WvwbRea5+oYzRWflZYVowG9pnbXkG\/XT\/Kq6pJ\/uX53f663YP\/GivFKUj\/4B1f4V923Gn87zp++v5t\/zjzjr+VPT87e4r++\/4kv0PH9lnoi3NNQCnu5dXOGvaGVyQHmiQzM1m2k1gyv5XsBXrR1CpwTl",
+         "data":"eJztk0EOABAQA9f\/P+3kZoMxwkETNzplq0REeWg13fK1+ZnoPsqj\/FP6fGdutAMrZ3Y6mHmP+Cf+fs+fcDPZM6HdNPiGZnIY9yV8661Jht2emBkqQbwA7A==",
          "encoding":"base64",
-         "height":48,
+         "height":16,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":16,
+         "width":32,
          "x":0,
          "y":0
         }],
@@ -33,5 +33,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":16
+ "width":32
 }

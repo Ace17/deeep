@@ -181,19 +181,20 @@ void generateBasicRoom(Room& room)
     room.tiles.set(rect.width - 1, y, 1);
   }
 
-  for(int y = 1; y < rect.height - 1; ++y)
-    for(int x = 1; x < rect.width - 1; ++x)
+  for(int y = 0; y < rect.height - 1; ++y)
+    for(int x = 0; x < rect.width - 1; ++x)
     {
       auto const c = x / 16;
       auto const col = x % 16;
       auto const row = y % 16;
-      if(col >= 7 && col < 9 && (row+c)%4 == 0)
+
+      if(col >= 7 && col < 9 && (row + c) % 4 == 0)
         room.tiles.set(x, y, 1);
 
-      if(col >= 11 && col < 13 && (row+c)%4 == 2)
+      if(col >= 11 && col < 13 && (row + c) % 4 == 2)
         room.tiles.set(x, y, 1);
 
-      if(row == 0 && (col <4 || col >= 12))
+      if(row == 1 && (col < 4 || col >= 12))
         room.tiles.set(x, y, 1);
     }
 }

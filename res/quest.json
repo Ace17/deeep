@@ -12,9 +12,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":8,
-                 "x":16,
-                 "y":36
+                 "width":12,
+                 "x":52,
+                 "y":24
                 }, 
                 {
                  "height":4,
@@ -24,8 +24,8 @@
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":24,
-                 "y":36
+                 "x":48,
+                 "y":24
                 }, 
                 {
                  "height":12,
@@ -35,19 +35,19 @@
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":28,
-                 "y":36
+                 "x":36,
+                 "y":24
                 }, 
                 {
-                 "height":16,
+                 "height":8,
                  "id":20,
                  "name":"Antichamber",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":8,
-                 "x":92,
-                 "y":56
+                 "width":16,
+                 "x":88,
+                 "y":52
                 }, 
                 {
                  "height":8,
@@ -56,9 +56,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
-                 "x":72,
-                 "y":48
+                 "width":12,
+                 "x":64,
+                 "y":24
                 }, 
                 {
                  "height":4,
@@ -68,8 +68,8 @@
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":32,
-                 "y":36
+                 "x":40,
+                 "y":24
                 }, 
                 {
                  "height":4,
@@ -78,7 +78,7 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
+                 "width":28,
                  "x":56,
                  "y":36
                 }, 
@@ -89,9 +89,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
-                 "x":60,
-                 "y":68
+                 "width":16,
+                 "x":72,
+                 "y":52
                 }, 
                 {
                  "height":24,
@@ -105,15 +105,15 @@
                  "y":40
                 }, 
                 {
-                 "height":8,
+                 "height":12,
                  "id":26,
                  "name":"SideBase",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":20,
-                 "x":88,
-                 "y":32
+                 "width":8,
+                 "x":84,
+                 "y":28
                 }, 
                 {
                  "height":8,
@@ -134,8 +134,41 @@
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":32,
-                 "y":44
+                 "x":52,
+                 "y":48
+                }, 
+                {
+                 "height":8,
+                 "id":29,
+                 "name":"FlatRoom",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12,
+                 "x":60,
+                 "y":48
+                }, 
+                {
+                 "height":4,
+                 "id":30,
+                 "name":"BottomRoom",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":76,
+                 "y":28
+                }, 
+                {
+                 "height":4,
+                 "id":31,
+                 "name":"Junction",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":28,
+                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -144,7 +177,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":29,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,

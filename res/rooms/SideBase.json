@@ -2,14 +2,14 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzNlEEOgCAMBOFn\/v9VaqKJh9LOlqI24aKd3YKLvbXWC9Zd2b5KflSEp0X54912riyf8R95WvwbRea5+oYzRWflZYVowG9pnbXkG\/XT\/Kq6pJ\/uX53f663YP\/GivFKUj\/4B1f4V923Gn87zp++v5t\/zjzjr+VPT87e4r++\/4kv0PH9lnoi3NNQCnu5dXOGvaGVyQHmiQzM1m2k1gyv5XsBXrR1CpwTl",
+         "data":"eJztlFkKwzAMRJ2b9f6nKpR+hGBtoxm7JRnQl7HeaLGPMcbxxBOnOAvM8foGxPT4TV\/Zmj\/+HVvT+yx+R9XZJnOG\/UBU4FN7ZPErO3Y97\/KRfUHeLouf2V\/PN4Pp8Zm5O+93t4+71L+KazEU9c9yRQyEr9QuPmN3\/8kH4x0oxHzLaq7Hic6YfO+viWpl8aN6LIaCz+glu\/7VHu5Wv8Ve5Wmm1TPJiD2\/rrzedfaOIVX9inlFd6OcWX5XnZlGPnfx0V5mPVT5Vi5kFypnij8DZXT5Cm61178Yb\/+uBVk=",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":16,
+         "width":32,
          "x":0,
          "y":0
         }],
@@ -33,5 +33,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":16
+ "width":32
 }

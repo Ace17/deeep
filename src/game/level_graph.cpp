@@ -146,9 +146,9 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
   Room r;
 
-  if(roomIdx >= 13)
+  if(roomIdx >= 20)
   {
-    roomIdx -= 13;
+    roomIdx -= 20;
     roomIdx = clamp<int>(roomIdx, 0, allRooms.size() - 1);
     r = allRooms[roomIdx] (game);
   }
