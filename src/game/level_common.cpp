@@ -7,6 +7,18 @@
 #include "game/entities/player.h"
 #include "game/room.h"
 
+static auto const ENTITY_UPGRADE_CLIMB = "upgrade_climb";
+
+unique_ptr<Entity> createEntity(string name)
+{
+  if(name == ENTITY_UPGRADE_CLIMB)
+  {
+    return makeBonus(4, UPGRADE_CLIMB);
+  }
+  else
+    throw runtime_error("unknown entity type: '" + name + "'");
+}
+
 int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& portalId)
 {
   auto const pos = Vector2f(ipos.x, ipos.y);

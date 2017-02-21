@@ -9,6 +9,14 @@ struct Room
   Matrix<int> tiles;
   Vector2i start;
   std::string name;
+
+  struct Thing
+  {
+    Vector2f pos;
+    std::string name;
+  };
+
+  vector<Thing> things;
 };
 
 Room Graph_loadRoom(int levelIdx, IGame* game);

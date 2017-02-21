@@ -139,6 +139,18 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
   }
 }
 
+unique_ptr<Entity> createEntity(string name);
+
+void addThings(Room const& room, IGame* game)
+{
+  for(auto const& thing : room.things)
+  {
+    auto entity = createEntity(thing.name);
+    entity->pos = thing.pos;
+    game->spawn(entity.release());
+  }
+}
+
 Room Graph_loadRoom(int roomIdx, IGame* game)
 {
   extern vector<Room> loadQuest(string path);
@@ -146,9 +158,9 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
   Room r;
 
-  if(roomIdx >= 20)
+  if(roomIdx >= 100)
   {
-    roomIdx -= 20;
+    roomIdx -= 100;
     roomIdx = clamp<int>(roomIdx, 0, allRooms.size() - 1);
     r = allRooms[roomIdx] (game);
   }
@@ -159,6 +171,7 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
     r = move(quest[roomIdx]);
 
+    addThings(r, game);
     addBoundaryDetectors(quest, roomIdx, game);
   }
 

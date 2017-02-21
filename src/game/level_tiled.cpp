@@ -74,6 +74,23 @@ Rect2i getRect(json::Object* obj)
 }
 
 static
+Rect2i convertRect(Rect2i rect, int pelsPerTile, int areaHeight)
+{
+  // tiled stores dimensions as pixel units
+  // convert them back to logical units (i.e tile units)
+  rect.x /= pelsPerTile;
+  rect.y /= pelsPerTile;
+  rect.width /= pelsPerTile;
+  rect.height /= pelsPerTile;
+
+  // tiled uses a downwards pointing Y axis.
+  // reverse it so it points upwards.
+  rect.y = areaHeight - rect.y - rect.height;
+
+  return rect;
+}
+
+static
 map<string, json::Object*> getAllLayers(json::Object* js)
 {
   auto layers = js->getMember<json::Array>("layers");
@@ -125,42 +142,6 @@ Matrix<int> parseTileLayer(json::Object* json)
   return tiles;
 }
 
-Room parseRoom(json::Object* jsonRoom)
-{
-  auto layers = getAllLayers(jsonRoom);
-  json::Object* tileLayer {};
-  json::Object* objectLayer {};
-
-  Room room;
-
-  const auto rect = getRect(tileLayer);
-
-  room.pos = rect;
-
-  room.tiles = parseTileLayer(tileLayer);
-
-  if(objectLayer)
-  {
-    auto objects = objectLayer->getMember<json::Array>("objects");
-
-    for(auto& jsonObj : objects->elements)
-    {
-      auto obj = json::cast<json::Object>(jsonObj.get());
-      auto const objRect = getRect(obj);
-
-      if(obj->getMember<json::String>("name")->value == "start")
-      {
-        room.start.x = objRect.x / 16;
-        room.start.y = rect.height - 1 - (objRect.y + objRect.height) / 16;
-      }
-    }
-  }
-
-  room.start -= room.pos;
-
-  return room;
-}
-
 void generateBasicRoom(Room& room)
 {
   auto const rect = room.tiles.size;
@@ -199,6 +180,26 @@ void generateBasicRoom(Room& room)
     }
 }
 
+static
+vector<Room::Thing> parseThingLayer(json::Object* objectLayer)
+{
+  vector<Room::Thing> r;
+  auto objects = objectLayer->getMember<json::Array>("objects");
+
+  for(auto& jsonObj : objects->elements)
+  {
+    auto obj = json::cast<json::Object>(jsonObj.get());
+    auto const objRect = convertRect(getRect(obj), 16, 16);
+
+    auto const name = obj->getMember<json::String>("name")->value;
+    auto const pos = Vector2f(objRect.x, objRect.y);
+
+    r.push_back(Room::Thing { pos, name });
+  }
+
+  return r;
+}
+
 vector<Room> loadQuest(string path) // tiled TMX format
 {
   auto js = json::load(path);
@@ -217,19 +218,8 @@ vector<Room> loadQuest(string path) // tiled TMX format
     auto jsonRoom = json::cast<json::Object>(roomValue.get());
     auto rect = getRect(jsonRoom);
 
-    {
-      // tiled stores dimensions as pixel units
-      // convert them back to logical units (i.e tile units)
-      auto const PELS_PER_TILE = 4;
-      rect.x /= PELS_PER_TILE;
-      rect.y /= PELS_PER_TILE;
-      rect.width /= PELS_PER_TILE;
-      rect.height /= PELS_PER_TILE;
-
-      // tiled uses a downwards pointing Y axis.
-      // reverse it so it points upwards.
-      rect.y = 64 - rect.y - rect.height;
-    }
+    auto const PELS_PER_TILE = 4;
+    rect = convertRect(rect, PELS_PER_TILE, 64);
 
     auto const CELL_SIZE = 16;
     auto const tilemapSize = Size2i(rect.width, rect.height) * CELL_SIZE;
@@ -250,6 +240,9 @@ vector<Room> loadQuest(string path) // tiled TMX format
         auto layers = getAllLayers(jsRoom.get());
         assert(layers["tiles"]);
         room.tiles = parseTileLayer(layers["tiles"]);
+
+        if(exists(layers, "things"))
+          room.things = parseThingLayer(layers["things"]);
       }
       else
         generateBasicRoom(room);
