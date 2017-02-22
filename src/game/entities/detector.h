@@ -27,8 +27,9 @@ struct TouchDetectorEvent : Event
 
 struct Detector : public Entity
 {
-  Detector()
+  Detector(int id_)
   {
+    id = id_;
     size = Size2f(0.1, 3);
     solid = false;
     collisionGroup = 0; // dont' trigger other detectors

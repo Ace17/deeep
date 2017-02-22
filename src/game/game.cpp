@@ -264,10 +264,9 @@ public:
     }
 
     {
-      auto detector = make_unique<Detector>();
+      auto detector = make_unique<Detector>(DETECTOR_ID_BOUNDARY);
       detector->size = Size2f(m_tiles.size.width, 1);
       detector->pos = Vector2f(0, -1);
-      detector->id = DETECTOR_ID_BOUNDARY;
       spawn(detector.release());
 
       m_oobDelegator = makeDelegator<TouchDetectorEvent>(&onTouchDetector);

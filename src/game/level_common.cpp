@@ -96,10 +96,9 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
     }
   case 'P':
     {
-      auto portal = new Detector;
+      auto portal = new Detector(portalId++);
       portal->pos = pos;
       portal->size = Size2f(0.1, 3);
-      portal->id = portalId++;
       game->spawn(portal);
       return 0;
     }
