@@ -1,6 +1,7 @@
 #include "room.h"
 #include "level_common.h"
 #include "entities/detector.h"
+#include "entity_factory.h"
 
 void addRandomWidgets(Matrix<int>& tiles)
 {
@@ -138,8 +139,6 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
     tryToConnectRoom(delta, margin);
   }
 }
-
-unique_ptr<Entity> createEntity(string name);
 
 void addThings(Room const& room, IGame* game)
 {
