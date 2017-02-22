@@ -411,6 +411,17 @@
                  "width":4,
                  "x":4,
                  "y":68
+                }, 
+                {
+                 "height":4,
+                 "id":56,
+                 "name":"RightRoom",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":4,
+                 "x":60,
+                 "y":72
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -419,7 +430,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":56,
+ "nextobjectid":57,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,

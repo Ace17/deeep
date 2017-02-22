@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztldsOxCAIRPH\/f7pvTWMVUUC8DMmkD+vCnJHtJiJKEARBEAS9OqVuZv\/WLZxcgf9efsn+e2Uz2s\/CR\/T\/iCbPaM+RGUR7Bf\/8TKLnczVrfgS\/xZldd4Do7yH34+mrNO9W\/tnsq\/FHZNDi5+qEHdDwc36t+3ntDpHOb22upo90zmj\/Hn5tNl5ldWeUPaXZSO5Aek9RGde4JTm03l2lvrXvczMl+675PfScXU2ct9JnOzBB0Cw9tPEFVQ==",
+         "data":"eJztVdESgCAIw\/\/\/6d46zxQxUFS2u10PGWyDKhFRAkEQBEHw5S2I7D1HRM8lInrOEdm\/ZOdnZfO3noUO7\/+IJk9vzZ4ZeGuF\/\/WZePfnsKq\/h3+LM6fuANFXQ6lnpq5av6j+V3vfzb9HBj3\/HG7YAY1\/Tq91vVm7Q6TT2+qrqSPt87f+iH9tNrNgNTMqrtJsJDOQzskr45ZvSQ69b1etbut5rqdk3zXvw8jZ3chpq907wRMIruID+eUFWA==",
          "encoding":"base64",
          "height":32,
          "name":"tiles",

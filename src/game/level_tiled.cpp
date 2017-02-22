@@ -144,10 +144,13 @@ Matrix<int> parseTileLayer(json::Object* json)
   return tiles;
 }
 
+static auto const CELL_SIZE = 16;
+
 static
-void generateBasicRoom(Room& room)
+void generateConcreteRoom(Room& room)
 {
-  auto const rect = room.tiles.size;
+  auto const rect = room.size * CELL_SIZE;
+  room.tiles.resize(Size2i(rect.width, rect.height));
 
   for(int x = 0; x < rect.width; ++x)
   {
@@ -184,7 +187,7 @@ void generateBasicRoom(Room& room)
 }
 
 static
-vector<Room::Thing> parseThingLayer(json::Object* objectLayer)
+vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
 {
   vector<Room::Thing> r;
   auto objects = objectLayer->getMember<json::Array>("objects");
@@ -192,7 +195,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer)
   for(auto& jsonObj : objects->elements)
   {
     auto obj = json::cast<json::Object>(jsonObj.get());
-    auto const objRect = convertRect(getRect(obj), 16, 16);
+    auto const objRect = convertRect(getRect(obj), 16, height);
 
     auto const name = obj->getMember<json::String>("name")->value;
     auto const pos = Vector2f(objRect.x, objRect.y);
@@ -211,7 +214,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
   room.tiles = parseTileLayer(layers["tiles"]);
 
   if(exists(layers, "things"))
-    room.things = parseThingLayer(layers["things"]);
+    room.things = parseThingLayer(layers["things"], room.size.height * 16);
 }
 
 static
@@ -222,7 +225,6 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   auto const PELS_PER_TILE = 4;
   rect = convertRect(rect, PELS_PER_TILE, 64);
 
-  auto const CELL_SIZE = 16;
   auto const sizeInTiles = Size2i(rect.width, rect.height) * CELL_SIZE;
 
   Room room;
@@ -241,8 +243,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
     }
     else
     {
-      room.tiles.resize(sizeInTiles);
-      generateBasicRoom(room);
+      generateConcreteRoom(room);
     }
   }
   return room;
