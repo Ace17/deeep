@@ -203,6 +203,17 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer)
   return r;
 }
 
+static
+void loadRoom(Room& room, json::Object* jsRoom)
+{
+  auto layers = getAllLayers(jsRoom);
+  assert(layers["tiles"]);
+  room.tiles = parseTileLayer(layers["tiles"]);
+
+  if(exists(layers, "things"))
+    room.things = parseThingLayer(layers["things"]);
+}
+
 vector<Room> loadQuest(string path) // tiled TMX format
 {
   auto js = json::load(path);
@@ -239,12 +250,7 @@ vector<Room> loadQuest(string path) // tiled TMX format
       if(ifstream(path).is_open())
       {
         auto jsRoom = json::load(path);
-        auto layers = getAllLayers(jsRoom.get());
-        assert(layers["tiles"]);
-        room.tiles = parseTileLayer(layers["tiles"]);
-
-        if(exists(layers, "things"))
-          room.things = parseThingLayer(layers["things"]);
+        loadRoom(room, jsRoom.get());
       }
       else
       {
