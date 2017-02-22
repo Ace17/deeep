@@ -35,6 +35,7 @@ vector<int> convertFromLittleEndian(vector<uint8_t> const& input)
   return r;
 }
 
+static
 vector<int> decompressTiles(string data)
 {
   while(data.size() % 4)
@@ -60,6 +61,7 @@ Size2i getSize(json::Object* obj)
   return r;
 }
 
+static
 Rect2i getRect(json::Object* obj)
 {
   Rect2i r;
@@ -142,6 +144,7 @@ Matrix<int> parseTileLayer(json::Object* json)
   return tiles;
 }
 
+static
 void generateBasicRoom(Room& room)
 {
   auto const rect = room.tiles.size;
