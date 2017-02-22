@@ -233,19 +233,18 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   room.size = rect;
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
 
-  {
-    auto const path = "res/rooms/" + room.name + ".json";
+  auto const path = "res/rooms/" + room.name + ".json";
 
-    if(ifstream(path).is_open())
-    {
-      auto jsRoom = json::load(path);
-      loadConcreteRoom(room, jsRoom.get());
-    }
-    else
-    {
-      generateConcreteRoom(room);
-    }
+  if(ifstream(path).is_open())
+  {
+    auto jsRoom = json::load(path);
+    loadConcreteRoom(room, jsRoom.get());
   }
+  else
+  {
+    generateConcreteRoom(room);
+  }
+
   return room;
 }
 
