@@ -55,7 +55,7 @@ public:
     memset(keys, 0, sizeof keys);
 
     Display_init(512, 512);
-    m_audio.reset(createAudio(true));
+    m_audio.reset(createAudio());
 
     for(auto sound : m_scene->getSounds())
       m_audio->loadSound(sound.id, sound.path);
