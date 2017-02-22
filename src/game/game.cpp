@@ -164,31 +164,31 @@ public:
 
   void addActorsForTileMap(vector<Actor>& r, Vector2f cameraPos) const
   {
-    auto onCell = [&] (int x, int y, int tile)
-                  {
-                    if(!tile)
-                      return;
+    auto onCell =
+      [&] (int x, int y, int tile)
+      {
+        if(!tile)
+          return;
 
-                    if(abs(x - cameraPos.x) > 8)
-                      return;
+        if(abs(x - cameraPos.x) > 8)
+          return;
 
-                    if(abs(y - cameraPos.y) > 8)
-                      return;
+        if(abs(y - cameraPos.y) > 8)
+          return;
 
-                    auto composition = computeTileFor(m_tiles, x, y);
+        auto composition = computeTileFor(m_tiles, x, y);
 
-                    for(int subTile = 0; subTile < 4; ++subTile)
-                    {
-                      auto const ts = 1.0;
-                      auto const posX = (x + (subTile % 2) * 0.5) * ts;
-                      auto const posY = (y + (subTile / 2) * 0.5) * ts;
-                      auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
-                      // actor.action = 0 * (tile - 1) * 16 + composition[subTile];
-                      actor.action = ((m_level + 1) % 8) * 16 + composition[subTile];
-                      actor.scale = Vector2f(0.5, 0.5);
-                      r.push_back(actor);
-                    }
-                  };
+        for(int subTile = 0; subTile < 4; ++subTile)
+        {
+          auto const ts = 1.0;
+          auto const posX = (x + (subTile % 2) * 0.5) * ts;
+          auto const posY = (y + (subTile / 2) * 0.5) * ts;
+          auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
+          actor.action = (m_visualTheme % 8) * 16 + composition[subTile];
+          actor.scale = Vector2f(0.5, 0.5);
+          r.push_back(actor);
+        }
+      };
 
     m_tiles.scan(onCell);
   }
@@ -239,6 +239,7 @@ public:
 
     auto level = Graph_loadRoom(levelIdx, this);
     m_tiles = move(level.tiles);
+    m_visualTheme = level.visualTheme;
     printf("Now in: %s\n", level.name.c_str());
 
     Vector2f nextPos;
@@ -299,6 +300,7 @@ public:
   }
 
   Int m_level = 1;
+  Int m_visualTheme;
   Vector2f m_transform;
   Bool m_shouldLoadLevel;
 

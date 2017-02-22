@@ -52,6 +52,7 @@ struct Detector : public Entity
     if(touchDelay)
       return;
 
+    game->playSound(SND_SWITCH);
     game->postEvent(make_unique<TouchDetectorEvent>(id));
     touchDelay = 1000;
   }
@@ -81,7 +82,6 @@ struct RoomBoundaryDetector : public Entity
     if(touched)
       return;
 
-    game->playSound(SND_SWITCH);
     game->postEvent(make_unique<TouchLevelBoundary>(targetLevel, transform));
     touched = true;
   }

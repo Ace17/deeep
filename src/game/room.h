@@ -6,6 +6,7 @@ struct Room
 {
   Vector2i pos;
   Size2i size;
+  int visualTheme = 0;
   Matrix<int> tiles;
   Vector2i start;
   std::string name;
