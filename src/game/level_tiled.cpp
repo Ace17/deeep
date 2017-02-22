@@ -225,14 +225,13 @@ vector<Room> loadQuest(string path) // tiled TMX format
     rect = convertRect(rect, PELS_PER_TILE, 64);
 
     auto const CELL_SIZE = 16;
-    auto const tilemapSize = Size2i(rect.width, rect.height) * CELL_SIZE;
+    auto const sizeInTiles = Size2i(rect.width, rect.height) * CELL_SIZE;
 
     Room room;
     room.name = jsonRoom->getMember<json::String>("name")->value;
     room.pos = rect;
     room.size = rect;
-    room.tiles.resize(tilemapSize);
-    room.start = Vector2i(tilemapSize.width / 2, tilemapSize.height / 4);
+    room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
 
     {
       auto const path = "res/rooms/" + room.name + ".json";
@@ -248,7 +247,10 @@ vector<Room> loadQuest(string path) // tiled TMX format
           room.things = parseThingLayer(layers["things"]);
       }
       else
+      {
+        room.tiles.resize(sizeInTiles);
         generateBasicRoom(room);
+      }
     }
 
     r.push_back(move(room));
