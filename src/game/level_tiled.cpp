@@ -204,7 +204,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer)
 }
 
 static
-void loadRoom(Room& room, json::Object* jsRoom)
+void loadConcreteRoom(Room& room, json::Object* jsRoom)
 {
   auto layers = getAllLayers(jsRoom);
   assert(layers["tiles"]);
@@ -212,6 +212,40 @@ void loadRoom(Room& room, json::Object* jsRoom)
 
   if(exists(layers, "things"))
     room.things = parseThingLayer(layers["things"]);
+}
+
+static
+Room loadAbstractRoom(json::Object* jsonRoom)
+{
+  auto rect = getRect(jsonRoom);
+
+  auto const PELS_PER_TILE = 4;
+  rect = convertRect(rect, PELS_PER_TILE, 64);
+
+  auto const CELL_SIZE = 16;
+  auto const sizeInTiles = Size2i(rect.width, rect.height) * CELL_SIZE;
+
+  Room room;
+  room.name = jsonRoom->getMember<json::String>("name")->value;
+  room.pos = rect;
+  room.size = rect;
+  room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
+
+  {
+    auto const path = "res/rooms/" + room.name + ".json";
+
+    if(ifstream(path).is_open())
+    {
+      auto jsRoom = json::load(path);
+      loadConcreteRoom(room, jsRoom.get());
+    }
+    else
+    {
+      room.tiles.resize(sizeInTiles);
+      generateBasicRoom(room);
+    }
+  }
+  return room;
 }
 
 vector<Room> loadQuest(string path) // tiled TMX format
@@ -230,35 +264,8 @@ vector<Room> loadQuest(string path) // tiled TMX format
   for(auto& roomValue : layer->getMember<json::Array>("objects")->elements)
   {
     auto jsonRoom = json::cast<json::Object>(roomValue.get());
-    auto rect = getRect(jsonRoom);
 
-    auto const PELS_PER_TILE = 4;
-    rect = convertRect(rect, PELS_PER_TILE, 64);
-
-    auto const CELL_SIZE = 16;
-    auto const sizeInTiles = Size2i(rect.width, rect.height) * CELL_SIZE;
-
-    Room room;
-    room.name = jsonRoom->getMember<json::String>("name")->value;
-    room.pos = rect;
-    room.size = rect;
-    room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
-
-    {
-      auto const path = "res/rooms/" + room.name + ".json";
-
-      if(ifstream(path).is_open())
-      {
-        auto jsRoom = json::load(path);
-        loadRoom(room, jsRoom.get());
-      }
-      else
-      {
-        room.tiles.resize(sizeInTiles);
-        generateBasicRoom(room);
-      }
-    }
-
+    auto room = loadAbstractRoom(jsonRoom);
     r.push_back(move(room));
   }
 
