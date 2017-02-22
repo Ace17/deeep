@@ -1,23 +1,11 @@
+#include "game/entity_factory.h"
 #include "game/entities/switch.h"
 #include "game/entities/wheel.h"
 #include "game/entities/spider.h"
 #include "game/entities/teleporter.h"
 #include "game/entities/detector.h"
-#include "game/entities/bonus.h"
 #include "game/entities/player.h"
 #include "game/room.h"
-
-static auto const ENTITY_UPGRADE_CLIMB = "upgrade_climb";
-
-unique_ptr<Entity> createEntity(string name)
-{
-  if(name == ENTITY_UPGRADE_CLIMB)
-  {
-    return makeBonus(4, UPGRADE_CLIMB);
-  }
-  else
-    throw runtime_error("unknown entity type: '" + name + "'");
-}
 
 int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& portalId)
 {
@@ -38,28 +26,28 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
     }
   case '@':
     {
-      auto bonus = makeBonus(0, 0);
+      auto bonus = createEntity(ENTITY_BONUS_LIFE);
       bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
   case '$':
     {
-      auto bonus = makeBonus(3, UPGRADE_SHOOT);
+      auto bonus = createEntity(ENTITY_UPGRADE_SHOOT);
       bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
   case '%':
     {
-      auto bonus = makeBonus(4, UPGRADE_CLIMB);
+      auto bonus = createEntity(ENTITY_UPGRADE_CLIMB);
       bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;
     }
   case '^':
     {
-      auto bonus = makeBonus(5, UPGRADE_DASH);
+      auto bonus = createEntity(ENTITY_UPGRADE_DASH);
       bonus->pos = pos;
       game->spawn(bonus.release());
       return 0;

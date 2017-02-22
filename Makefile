@@ -48,6 +48,7 @@ SRCS:=\
 	src/engine/main.cpp\
 	src/engine/model.cpp\
 	src/engine/sound.cpp\
+	src/game/entity_factory.cpp\
 	src/game/entities/bonus.cpp\
 	src/game/entities/explosion.cpp\
 	src/game/entities/rockman.cpp\
@@ -79,6 +80,7 @@ SRCS_TESTS:=\
 	src/engine/base64.cpp\
 	src/engine/decompress.cpp\
 	src/engine/json.cpp\
+	src/game/entity_factory.cpp\
 	src/game/entities/bonus.cpp\
 	src/game/entities/explosion.cpp\
 	src/game/entities/rockman.cpp\
