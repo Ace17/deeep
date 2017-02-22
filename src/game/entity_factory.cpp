@@ -28,6 +28,22 @@ unique_ptr<Entity> createEntity(string name)
   {
     return makeBonus(0, 0);
   }
+  else if(name == ENTITY_ENEMY_WHEEL)
+  {
+    return make_unique<Wheel>();
+  }
+  else if(name == ENTITY_ENEMY_SPIDER)
+  {
+    return make_unique<Spider>();
+  }
+  else if(name == ENTITY_FRAGILE_DOOR)
+  {
+    return make_unique<BreakableDoor>();
+  }
+  else if(name == ENTITY_TELEPORTER)
+  {
+    return make_unique<Teleporter>();
+  }
   else
     throw runtime_error("unknown entity type: '" + name + "'");
 }

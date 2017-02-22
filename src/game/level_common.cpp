@@ -1,10 +1,6 @@
 #include "game/entity_factory.h"
 #include "game/entities/switch.h"
-#include "game/entities/wheel.h"
-#include "game/entities/spider.h"
-#include "game/entities/teleporter.h"
 #include "game/entities/detector.h"
-#include "game/entities/player.h"
 #include "game/room.h"
 
 int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& portalId)
@@ -19,9 +15,9 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
     return 0;
   case '?':
     {
-      auto teleporter = new Teleporter;
+      auto teleporter = createEntity(ENTITY_TELEPORTER);
       teleporter->pos = pos;
-      game->spawn(teleporter);
+      game->spawn(teleporter.release());
       return 0;
     }
   case '@':
@@ -79,23 +75,23 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
     }
   case '#':
     {
-      auto ent = new BreakableDoor;
+      auto ent = createEntity(ENTITY_FRAGILE_DOOR);
       ent->pos = pos;
-      game->spawn(ent);
+      game->spawn(ent.release());
       return 0;
     }
   case '*':
     {
-      auto wh = new Wheel;
+      auto wh = createEntity(ENTITY_ENEMY_WHEEL);
       wh->pos = pos;
-      game->spawn(wh);
+      game->spawn(wh.release());
       return 0;
     }
   case '&':
     {
-      auto wh = new Spider;
+      auto wh = createEntity(ENTITY_ENEMY_SPIDER);
       wh->pos = pos;
-      game->spawn(wh);
+      game->spawn(wh.release());
       return 0;
     }
   case 'P':
