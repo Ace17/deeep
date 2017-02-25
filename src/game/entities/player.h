@@ -15,5 +15,6 @@ enum
   UPGRADE_SHOOT = 1,
   UPGRADE_CLIMB = 2,
   UPGRADE_DASH = 4,
+  UPGRADE_DJUMP = 8,
 };
 

@@ -53,6 +53,12 @@ static map<string, CreationFunc> getRegistry()
       return makeBonus(5, UPGRADE_DASH);
     };
 
+  r[ENTITY_UPGRADE_DJUMP] =
+    [] (EntityArgs &)
+    {
+      return makeBonus(6, UPGRADE_DJUMP);
+    };
+
   r[ENTITY_BONUS_LIFE] =
     [] (EntityArgs &)
     {

@@ -185,6 +185,9 @@ struct Rockman : Player
 
     airMove(c);
 
+    if(ground)
+      doubleJumped = false;
+
     if(vel.x > 0)
       dir = RIGHT;
 
@@ -196,8 +199,11 @@ struct Rockman : Player
 
     if(jumpbutton.toggle(c.jump))
     {
-      if(ground)
+      if(canJump())
       {
+        if(!ground)
+          doubleJumped = true;
+
         game->playSound(SND_JUMP);
         vel.y = 0.015;
       }
@@ -217,6 +223,17 @@ struct Rockman : Player
 
     vel.x = clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
     vel.y = max(vel.y, -MAX_FALL_SPEED);
+  }
+
+  bool canJump() const
+  {
+    if(ground)
+      return true;
+
+    if(upgrades & UPGRADE_DJUMP)
+      return !doubleJumped;
+
+    return false;
   }
 
   void airMove(Control c)
@@ -384,6 +401,7 @@ struct Rockman : Player
   Int dashDelay;
   Int shootDelay;
   Int life;
+  Bool doubleJumped;
   Control control;
 
   Int upgrades;

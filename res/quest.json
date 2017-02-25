@@ -97,8 +97,8 @@
                  "type":"",
                  "visible":true,
                  "width":12,
-                 "x":64,
-                 "y":24
+                 "x":56,
+                 "y":36
                 }, 
                 {
                  "height":4,
@@ -135,8 +135,8 @@
                  "type":"",
                  "visible":true,
                  "width":28,
-                 "x":56,
-                 "y":36
+                 "x":32,
+                 "y":16
                 }, 
                 {
                  "height":4,
@@ -268,8 +268,8 @@
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":76,
-                 "y":28
+                 "x":68,
+                 "y":40
                 }, 
                 {
                  "height":4,
@@ -726,6 +726,98 @@
                  "width":4,
                  "x":60,
                  "y":72
+                }, 
+                {
+                 "height":4,
+                 "id":62,
+                 "name":"ItemDoubleJump",
+                 "properties":
+                    {
+                     "visual":"0"
+                    },
+                 "propertytypes":
+                    {
+                     "visual":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":4,
+                 "x":28,
+                 "y":44
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":64,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "color":"#ff0000",
+         "draworder":"topdown",
+         "height":64,
+         "name":"items",
+         "objects":[
+                {
+                 "ellipse":true,
+                 "height":2,
+                 "id":58,
+                 "name":"shoot",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":2,
+                 "x":5,
+                 "y":69
+                }, 
+                {
+                 "ellipse":true,
+                 "height":2,
+                 "id":59,
+                 "name":"climb",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":2,
+                 "x":61,
+                 "y":25
+                }, 
+                {
+                 "ellipse":true,
+                 "height":2,
+                 "id":60,
+                 "name":"dash",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":2,
+                 "x":61,
+                 "y":73
+                }, 
+                {
+                 "ellipse":true,
+                 "height":2,
+                 "id":61,
+                 "name":"djump",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":2,
+                 "x":89,
+                 "y":29
+                }, 
+                {
+                 "ellipse":true,
+                 "height":2,
+                 "id":63,
+                 "name":"djump",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":2,
+                 "x":29,
+                 "y":45
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -734,7 +826,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":57,
+ "nextobjectid":64,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
