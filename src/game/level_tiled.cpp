@@ -168,8 +168,8 @@ void generateConcreteRoom(Room& room)
     room.tiles.set(rect.width - 1, y, 1);
   }
 
-  for(int y = 0; y < rect.height - 1; ++y)
-    for(int x = 0; x < rect.width - 1; ++x)
+  for(int y = 0; y < rect.height; ++y)
+    for(int x = 0; x < rect.width; ++x)
     {
       auto const c = x / 16;
       auto const col = x % 16;
@@ -183,6 +183,10 @@ void generateConcreteRoom(Room& room)
 
       if(row == 1 && (col < 4 || col >= 12))
         room.tiles.set(x, y, 1);
+
+      if(x == 0 || x == rect.width - 1)
+        if(row < 3 || row >= 6)
+          room.tiles.set(x, y, 1);
     }
 }
 
