@@ -93,3 +93,22 @@ struct RoomBoundaryDetector : Entity
   Bool touched;
 };
 
+struct RoomBoundaryBlocker : Entity
+{
+  RoomBoundaryBlocker(int groupsToBlock)
+  {
+    size = Size2f(1, 1);
+    solid = true;
+    collisionGroup = 0;
+    collidesWith = groupsToBlock;
+  }
+
+  virtual Actor getActor() const override
+  {
+    auto r = Actor(pos, MDL_RECT);
+    r.scale = Vector2f(size.width, size.height);
+    r.effect = EFFECT_BLINKING;
+    return r;
+  }
+};
+

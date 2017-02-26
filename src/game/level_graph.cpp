@@ -103,7 +103,13 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
       auto const neighboorIdx = getRoomAt(quest, neighboorPos);
 
       if(neighboorIdx < 0)
+      {
+        auto blocker = make_unique<RoomBoundaryBlocker>(-1);
+        blocker->pos = toVector2f(delta * CELL_SIZE);
+        blocker->size = Size2f(1, 1) * CELL_SIZE;
+        game->spawn(blocker.release());
         return;
+      }
 
       auto& otherRoom = quest[neighboorIdx];
 
