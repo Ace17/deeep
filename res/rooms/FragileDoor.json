@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYCQSYwPE6iWkHx8Y1U9e+BOjZqD1kwsGi35yzSE3TKmNAfH4AH8=",
+         "data":"eJxjZGBgYBzFo5gCTC6gRC+tAKl+HeiwpxQDAL\/jAMs=",
          "encoding":"base64",
          "height":16,
          "name":"tiles",
@@ -20,14 +20,14 @@
          "objects":[
                 {
                  "height":16,
-                 "id":3,
-                 "name":"upgrade_dash",
+                 "id":1,
+                 "name":"fragile_door",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":96
+                 "x":128,
+                 "y":176
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -36,7 +36,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":4,
+ "nextobjectid":2,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

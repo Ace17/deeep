@@ -239,7 +239,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
 
   {
     auto props = jsonRoom->getMember<json::Object>("properties");
-    room.visualTheme = atoi(props->getMember<json::String>("visual")->value.c_str());
+    room.theme = atoi(props->getMember<json::String>("theme")->value.c_str());
   }
 
   auto const path = "res/rooms/" + room.name + ".json";

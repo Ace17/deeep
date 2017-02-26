@@ -11,17 +11,17 @@
                  "name":"Corridor",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":12,
-                 "x":52,
+                 "x":36,
                  "y":24
                 }, 
                 {
@@ -30,17 +30,17 @@
                  "name":"Entrance",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":8,
+                 "x":20,
                  "y":68
                 }, 
                 {
@@ -49,17 +49,17 @@
                  "name":"Shelter",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":36,
+                 "x":20,
                  "y":24
                 }, 
                 {
@@ -68,17 +68,17 @@
                  "name":"Antichamber",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"5"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":88,
+                 "x":100,
                  "y":52
                 }, 
                 {
@@ -87,17 +87,17 @@
                  "name":"FlatRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":12,
-                 "x":56,
+                 "x":40,
                  "y":36
                 }, 
                 {
@@ -106,17 +106,17 @@
                  "name":"Junction",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":40,
+                 "x":24,
                  "y":24
                 }, 
                 {
@@ -125,17 +125,17 @@
                  "name":"LongCorridor",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":28,
-                 "x":32,
+                 "x":16,
                  "y":16
                 }, 
                 {
@@ -144,36 +144,36 @@
                  "name":"Tunnel",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"5"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":72,
+                 "x":84,
                  "y":52
                 }, 
                 {
                  "height":24,
                  "id":25,
-                 "name":"MainColumn",
+                 "name":"Column",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"2"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":48,
+                 "x":60,
                  "y":40
                 }, 
                 {
@@ -182,17 +182,17 @@
                  "name":"SideBase",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":84,
+                 "x":96,
                  "y":28
                 }, 
                 {
@@ -201,17 +201,17 @@
                  "name":"TopRoom",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":40,
+                 "x":24,
                  "y":32
                 }, 
                 {
@@ -220,36 +220,36 @@
                  "name":"BottomRoom",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"2"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":52,
+                 "x":64,
                  "y":48
                 }, 
                 {
                  "height":8,
                  "id":29,
-                 "name":"FlatRoom",
+                 "name":"Square",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"5"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":12,
-                 "x":60,
+                 "width":8,
+                 "x":76,
                  "y":48
                 }, 
                 {
@@ -258,17 +258,17 @@
                  "name":"BottomRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":68,
+                 "x":52,
                  "y":40
                 }, 
                 {
@@ -277,17 +277,17 @@
                  "name":"Junction",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":28,
+                 "x":12,
                  "y":32
                 }, 
                 {
@@ -296,17 +296,17 @@
                  "name":"BottomRoom",
                  "properties":
                     {
-                     "visual":"1"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":40,
+                 "x":52,
                  "y":60
                 }, 
                 {
@@ -315,17 +315,17 @@
                  "name":"BottomRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":92,
+                 "x":104,
                  "y":36
                 }, 
                 {
@@ -334,18 +334,18 @@
                  "name":"Tunnel",
                  "properties":
                     {
-                     "visual":"2"
+                     "theme":"2"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":32,
-                 "y":44
+                 "x":44,
+                 "y":52
                 }, 
                 {
                  "height":24,
@@ -353,17 +353,17 @@
                  "name":"MainColumn",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":108,
+                 "x":120,
                  "y":48
                 }, 
                 {
@@ -372,17 +372,17 @@
                  "name":"Entrance",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"5"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":104,
+                 "x":116,
                  "y":52
                 }, 
                 {
@@ -391,17 +391,17 @@
                  "name":"HighRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":100,
+                 "x":112,
                  "y":36
                 }, 
                 {
@@ -410,17 +410,17 @@
                  "name":"Tunnel",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":84,
+                 "x":96,
                  "y":44
                 }, 
                 {
@@ -429,17 +429,17 @@
                  "name":"Junction",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":112,
+                 "x":124,
                  "y":56
                 }, 
                 {
@@ -448,11 +448,30 @@
                  "name":"Corridor",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"3"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12,
+                 "x":108,
+                 "y":72
+                }, 
+                {
+                 "height":8,
+                 "id":41,
+                 "name":"FlatRoom",
+                 "properties":
+                    {
+                     "theme":"3"
+                    },
+                 "propertytypes":
+                    {
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
@@ -463,40 +482,21 @@
                 }, 
                 {
                  "height":8,
-                 "id":41,
-                 "name":"FlatRoom",
-                 "properties":
-                    {
-                     "visual":"0"
-                    },
-                 "propertytypes":
-                    {
-                     "visual":"string"
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":12,
-                 "x":84,
-                 "y":64
-                }, 
-                {
-                 "height":8,
                  "id":42,
                  "name":"FlatRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"3"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":12,
-                 "x":64,
+                 "x":76,
                  "y":64
                 }, 
                 {
@@ -505,17 +505,17 @@
                  "name":"Junction",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"3"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":76,
+                 "x":88,
                  "y":68
                 }, 
                 {
@@ -524,17 +524,17 @@
                  "name":"Shelter",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":56,
+                 "x":68,
                  "y":64
                 }, 
                 {
@@ -543,17 +543,17 @@
                  "name":"BottomRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":48,
+                 "x":60,
                  "y":72
                 }, 
                 {
@@ -562,17 +562,17 @@
                  "name":"BottomRoom",
                  "properties":
                     {
-                     "visual":"1"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":40,
+                 "x":52,
                  "y":72
                 }, 
                 {
@@ -581,17 +581,17 @@
                  "name":"TopRoom",
                  "properties":
                     {
-                     "visual":"1"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":24,
+                 "x":36,
                  "y":68
                 }, 
                 {
@@ -600,17 +600,17 @@
                  "name":"Shelter",
                  "properties":
                     {
-                     "visual":"1"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":20,
+                 "x":32,
                  "y":60
                 }, 
                 {
@@ -619,17 +619,17 @@
                  "name":"Tunnel",
                  "properties":
                     {
-                     "visual":"1"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":24,
+                 "x":36,
                  "y":60
                 }, 
                 {
@@ -638,36 +638,36 @@
                  "name":"Junction",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":8,
-                 "x":12,
+                 "x":24,
                  "y":68
                 }, 
                 {
                  "height":4,
                  "id":53,
-                 "name":"Entrance",
+                 "name":"FragileDoor",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":60,
+                 "x":72,
                  "y":64
                 }, 
                 {
@@ -676,17 +676,17 @@
                  "name":"Entrance",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"4"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":48,
+                 "x":32,
                  "y":24
                 }, 
                 {
@@ -695,17 +695,17 @@
                  "name":"ItemRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":4,
+                 "x":16,
                  "y":68
                 }, 
                 {
@@ -714,17 +714,17 @@
                  "name":"RightRoom",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"1"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":60,
+                 "x":72,
                  "y":72
                 }, 
                 {
@@ -733,18 +733,37 @@
                  "name":"ItemDoubleJump",
                  "properties":
                     {
-                     "visual":"0"
+                     "theme":"0"
                     },
                  "propertytypes":
                     {
-                     "visual":"string"
+                     "theme":"string"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":4,
-                 "x":28,
-                 "y":44
+                 "x":40,
+                 "y":52
+                }, 
+                {
+                 "height":4,
+                 "id":64,
+                 "name":"FragileDoor",
+                 "properties":
+                    {
+                     "theme":"2"
+                    },
+                 "propertytypes":
+                    {
+                     "theme":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":4,
+                 "x":72,
+                 "y":48
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -763,24 +782,24 @@
                  "ellipse":true,
                  "height":2,
                  "id":58,
-                 "name":"shoot",
+                 "name":"climb",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":5,
+                 "x":17,
                  "y":69
                 }, 
                 {
                  "ellipse":true,
                  "height":2,
                  "id":59,
-                 "name":"climb",
+                 "name":"shoot",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":61,
+                 "x":45,
                  "y":25
                 }, 
                 {
@@ -792,20 +811,8 @@
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":61,
+                 "x":73,
                  "y":73
-                }, 
-                {
-                 "ellipse":true,
-                 "height":2,
-                 "id":61,
-                 "name":"djump",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":2,
-                 "x":89,
-                 "y":29
                 }, 
                 {
                  "ellipse":true,
@@ -816,8 +823,8 @@
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":29,
-                 "y":45
+                 "x":41,
+                 "y":53
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -826,7 +833,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":64,
+ "nextobjectid":65,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,

@@ -239,7 +239,7 @@ public:
 
     auto level = Graph_loadRoom(levelIdx, this);
     m_tiles = move(level.tiles);
-    m_visualTheme = level.visualTheme;
+    m_visualTheme = level.theme;
     printf("Now in: %s\n", level.name.c_str());
 
     Vector2f nextPos;
