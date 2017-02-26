@@ -44,16 +44,7 @@ public:
   {
     auto nextPos = pos + delta;
 
-    if(game->isSolid(nextPos + Vector2f(0, 0)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(size.width, 0)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(0, size.height)))
-      return false;
-
-    if(game->isSolid(nextPos + Vector2f(size.width, size.height)))
+    if(game->isSolid(nextPos, size))
       return false;
 
     pos = nextPos;

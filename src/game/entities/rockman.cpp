@@ -278,11 +278,6 @@ struct Rockman : Player
 
     const Vector2f vertices[] =
     {
-      Vector2f(rect.x, rect.y),
-      Vector2f(rect.x + rect.width, rect.y),
-      Vector2f(rect.x + rect.width, rect.y + rect.height),
-      Vector2f(rect.x, rect.y + rect.height),
-
       Vector2f(rect.x, rect.y + rect.height / 2.0),
       Vector2f(rect.x + rect.width, rect.y + rect.height / 2.0),
     };
@@ -290,6 +285,9 @@ struct Rockman : Player
     for(auto& v : vertices)
       if(game->isSolid(v))
         return false;
+
+    if(game->isSolid(rect, rect))
+      return false;
 
     pos += delta;
     return true;
