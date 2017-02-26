@@ -158,6 +158,8 @@ private:
 
     for(auto sound : sounds)
       m_audio->playSound(sound);
+
+    m_audio->playMusic(m_scene->getMusic());
   }
 
   void fpsChanged(int fps)

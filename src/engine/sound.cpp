@@ -12,6 +12,7 @@
  */
 
 #include <vector>
+#include <fstream>
 #include <stdexcept>
 #include <algorithm>
 #include <string>
@@ -34,12 +35,7 @@ struct SdlAudio : Audio
     if(ret == -1)
       throw runtime_error("Can't allocate channels");
 
-    auto m = Mix_LoadMUS("res/music/default.ogg");
-
-    if(!m)
-      throw runtime_error("Can't load music");
-
-    Mix_FadeInMusic(m, -1, 2000);
+    playMusic(1);
   }
 
   ~SdlAudio()
@@ -65,7 +61,31 @@ struct SdlAudio : Audio
     Mix_PlayChannel(-1, sounds[id], 0);
   }
 
+  void playMusic(int id) override
+  {
+    if(id == currMusic)
+      return;
+
+    char path[256];
+    sprintf(path, "res/music/music-%02d.ogg", id);
+
+    if(!ifstream(path).is_open())
+    {
+      printf("music '%s' was not found, fallback on default music\n", path);
+      strcpy(path, "res/music/music-00.ogg");
+    }
+
+    auto music = Mix_LoadMUS(path);
+
+    if(!music)
+      throw runtime_error(string("Can't load music: ") + path);
+
+    Mix_FadeInMusic(music, -1, 2000);
+    currMusic = id;
+  }
+
   vector<Mix_Chunk*> sounds;
+  int currMusic = -1;
 };
 
 struct DummyAudio : Audio
@@ -79,6 +99,17 @@ struct DummyAudio : Audio
   {
     printf("sound: #%d\n", id);
   }
+
+  void playMusic(int id) override
+  {
+    if(id == currMusic)
+      return;
+
+    printf("music: #%d\n", id);
+    currMusic = id;
+  }
+
+  int currMusic = -1;
 };
 
 Audio* createAudio(bool dummy)

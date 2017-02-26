@@ -69,6 +69,7 @@ struct Scene
   virtual Span<const Resource> getModels() const = 0;
 
   virtual void tick(Control const& c) = 0;
+  virtual int getMusic() const = 0;
   virtual vector<Actor> getActors() const = 0;
   virtual vector<SOUND> readSounds() = 0;
 };

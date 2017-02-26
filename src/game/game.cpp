@@ -162,6 +162,11 @@ public:
     return std::move(m_sounds);
   }
 
+  int getMusic() const override
+  {
+    return m_visualTheme;
+  }
+
   void addActorsForTileMap(vector<Actor>& r, Vector2f cameraPos) const
   {
     auto onCell =
