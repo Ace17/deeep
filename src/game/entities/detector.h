@@ -33,7 +33,7 @@ struct Detector : Entity
     size = Size2f(0.1, 3);
     solid = false;
     collisionGroup = 0; // dont' trigger other detectors
-    collidesWith = 1; // only detect the player
+    collidesWith = 0b1001; // only detect the player
   }
 
   virtual Actor getActor() const override
@@ -69,7 +69,7 @@ struct RoomBoundaryDetector : Entity
     size = Size2f(1, 1);
     solid = false;
     collisionGroup = 0;
-    collidesWith = 1; // only detect the player
+    collidesWith = 0b1001; // only detect the player
   }
 
   virtual Actor getActor() const override
