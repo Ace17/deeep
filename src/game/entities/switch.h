@@ -29,9 +29,8 @@ struct TriggerEvent : Event
   int idx;
 };
 
-class Switch : public Entity
+struct Switch : Entity
 {
-public:
   Switch(int id_) : id(id_)
   {
     size = Size2f(0.5, 0.5);
@@ -72,9 +71,8 @@ public:
   const int id;
 };
 
-class Door : public Entity, public IEventSink
+struct Door : Entity, IEventSink
 {
-public:
   Door(int id_, IGame* g) : id(id_)
   {
     game = g;
@@ -106,7 +104,7 @@ public:
   const int id;
 };
 
-struct BreakableDoor : public Entity
+struct BreakableDoor : Entity
 {
   BreakableDoor()
   {

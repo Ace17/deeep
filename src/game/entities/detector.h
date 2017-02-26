@@ -25,7 +25,7 @@ struct TouchDetectorEvent : Event
   int whichOne;
 };
 
-struct Detector : public Entity
+struct Detector : Entity
 {
   Detector(int id_)
   {
@@ -62,7 +62,7 @@ struct Detector : public Entity
   Int touchDelay;
 };
 
-struct RoomBoundaryDetector : public Entity
+struct RoomBoundaryDetector : Entity
 {
   RoomBoundaryDetector()
   {

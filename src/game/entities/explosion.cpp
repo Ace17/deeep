@@ -11,7 +11,7 @@
 
 static auto const DURATION = 400;
 
-struct Explosion : public Entity
+struct Explosion : Entity
 {
   Explosion()
   {

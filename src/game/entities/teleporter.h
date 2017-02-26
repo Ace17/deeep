@@ -23,9 +23,8 @@
 #include "game/sounds.h"
 #include "game/toggle.h"
 
-class Teleporter : public Entity
+struct Teleporter : Entity
 {
-public:
   Teleporter()
   {
     size = Size2f(2, 0.5);

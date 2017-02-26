@@ -10,9 +10,8 @@
 #include "game/toggle.h"
 #include "game/entities/explosion.h"
 
-class Wheel : public Entity
+struct Wheel : Entity
 {
-public:
   Wheel()
   {
     dir = -1.0f;
