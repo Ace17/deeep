@@ -8,6 +8,7 @@ static auto const ENTITY_FRAGILE_DOOR = "fragile_door";
 
 static auto const ENTITY_ENEMY_WHEEL = "wheel";
 static auto const ENTITY_ENEMY_SPIDER = "spider";
+static auto const ENTITY_ENEMY_HOPPER = "hopper";
 
 static auto const ENTITY_BONUS_LIFE = "bonus_life";
 static auto const ENTITY_UPGRADE_CLIMB = "upgrade_climb";

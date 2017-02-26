@@ -26,6 +26,7 @@ unique_ptr<Entity> createEntity(string formula)
 #include "game/entities/switch.h"
 #include "game/entities/wheel.h"
 #include "game/entities/spider.h"
+#include "game/entities/hopper.h"
 #include "game/entities/teleporter.h"
 #include "game/entities/detector.h"
 #include "game/entities/bonus.h"
@@ -69,6 +70,12 @@ static map<string, CreationFunc> getRegistry()
     [] (EntityArgs &)
     {
       return make_unique<Wheel>();
+    };
+
+  r[ENTITY_ENEMY_HOPPER] =
+    [] (EntityArgs &)
+    {
+      return make_unique<Hopper>();
     };
 
   r[ENTITY_ENEMY_SPIDER] =

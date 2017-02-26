@@ -832,8 +832,33 @@
          "width":64,
          "x":0,
          "y":0
+        }, 
+        {
+         "color":"#0e76ff",
+         "draworder":"topdown",
+         "height":64,
+         "name":"doors",
+         "objects":[
+                {
+                 "ellipse":true,
+                 "height":4,
+                 "id":66,
+                 "name":"needs_shoot",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":2,
+                 "x":73,
+                 "y":64
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":64,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":65,
+ "nextobjectid":67,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
