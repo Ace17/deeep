@@ -58,9 +58,9 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
   case 'c':
   case 'd':
     {
-      auto sw = new Switch(val - 'a');
+      auto sw = makeSwitch(val - 'a');
       sw->pos = pos + Vector2f(0.3, 0.15);
-      game->spawn(sw);
+      game->spawn(sw.release());
       return 0;
     }
   case 'A':
@@ -68,9 +68,9 @@ int interpretTile(Vector2i ipos, Vector2i& start, IGame* game, int val, int& por
   case 'C':
   case 'D':
     {
-      auto sw = new Door(val - 'A', game);
+      auto sw = makeDoor(val - 'A');
       sw->pos = pos;
-      game->spawn(sw);
+      game->spawn(sw.release());
       return 0;
     }
   case '#':

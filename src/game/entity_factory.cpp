@@ -87,7 +87,19 @@ static map<string, CreationFunc> getRegistry()
   r[ENTITY_FRAGILE_DOOR] =
     [] (EntityArgs &)
     {
-      return make_unique<BreakableDoor>();
+      return makeBreakableDoor();
+    };
+
+  r["door(0)"] =
+    [] (EntityArgs &)
+    {
+      return makeDoor(0);
+    };
+
+  r["switch(0)"] =
+    [] (EntityArgs &)
+    {
+      return makeSwitch(0);
     };
 
   r[ENTITY_TELEPORTER] =

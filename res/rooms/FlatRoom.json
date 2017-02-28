@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlEsWgCAMA+H+l3blshbS0A923stOYYrBOcaYnU6ndCSyeGg+t\/qfnAmhur\/kUI2q3i\/tHwur\/553VtuXtU6Uf0Sy+6EzRDud6pTHOmg\/LPvuEuUvvY+Cnoe1Byx\/K8wefT3nAev7se7ILjf5r\/YiU4es\/tq6niBzZESbIct\/FAW5xx6p6v23POL7AyM=",
+         "data":"eJztk0kOACEIBPH\/n56TR8OkoVmUSvpmoFBcIrImk0nrnKjiofnc6s+cCaG7\/8mhG129N+Ofi9f+R\/5Zra9XnSz\/jFT3Q2fIdmLtlFddxn54+rPrsN\/BWsfS39IXuQsLzD2KhrG\/kTPd5K\/1RM8ysfpXotrdomgzVH6DP6D\/mJ2u3q\/lA4\/eAzY=",
          "encoding":"base64",
          "height":32,
          "name":"tiles",
@@ -12,8 +12,42 @@
          "width":48,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":32,
+         "name":"things",
+         "objects":[
+                {
+                 "height":16,
+                 "id":1,
+                 "name":"door(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":144,
+                 "y":448
+                }, 
+                {
+                 "height":16,
+                 "id":2,
+                 "name":"switch(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":352
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":48,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

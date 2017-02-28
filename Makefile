@@ -52,6 +52,7 @@ SRCS:=\
 	src/game/entities/bonus.cpp\
 	src/game/entities/explosion.cpp\
 	src/game/entities/rockman.cpp\
+	src/game/entities/switch.cpp\
 	src/game/game.cpp\
 	src/game/graph_tools.cpp\
 	src/game/level1.cpp\
@@ -84,6 +85,7 @@ SRCS_TESTS:=\
 	src/game/entities/bonus.cpp\
 	src/game/entities/explosion.cpp\
 	src/game/entities/rockman.cpp\
+	src/game/entities/switch.cpp\
 	src/game/level_graph.cpp\
 	tests/base64.cpp\
 	tests/decompress.cpp\
