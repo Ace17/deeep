@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztk0EOABAQA9f\/P+3kZoMxwkETNzplq0REeWg13fK1+ZnoPsqj\/FP6fGdutAMrZ3Y6mHmP+Cf+fs+fcDPZM6HdNPiGZnIY9yV8661Jht2emBkqQbwA7A==",
+         "data":"eJxjZGBgYBxEGAYGylxq248LkKuOXPvItZ9WYNR+6sQbuWmAFD2UpEFcZhOynxZ5H5v55NiLC1A7TshNm9SwnxaA2PCmFWBEY1MrvIm1ezBiADxoAPg=",
          "encoding":"base64",
          "height":16,
          "name":"tiles",
@@ -12,8 +12,53 @@
          "width":32,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":16,
+         "name":"things",
+         "objects":[
+                {
+                 "height":16,
+                 "id":1,
+                 "name":"door(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":368,
+                 "y":224
+                }, 
+                {
+                 "height":16,
+                 "id":2,
+                 "name":"switch(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":448,
+                 "y":208
+                }, 
+                {
+                 "height":16,
+                 "id":3,
+                 "name":"bonus_life",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":224
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":32,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
