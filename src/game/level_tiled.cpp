@@ -236,11 +236,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   room.pos = rect;
   room.size = rect;
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
-
-  {
-    auto props = jsonRoom->getMember<json::Object>("properties");
-    room.theme = atoi(props->getMember<json::String>("theme")->value.c_str());
-  }
+  room.theme = atoi(jsonRoom->getMember<json::String>("type")->value.c_str());
 
   auto const path = "res/rooms/" + room.name + ".json";
 
