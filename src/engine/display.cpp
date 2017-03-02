@@ -422,7 +422,7 @@ void Display_beginDraw()
 
   {
     auto const scaleMatrixId = glGetUniformLocation(g_ProgramId, "Scale");
-    auto const s = 0.15f;
+    auto const s = 0.125f;
     float mat[16] =
     {
       s, 0, 0, 0,

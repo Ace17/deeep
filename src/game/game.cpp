@@ -117,7 +117,7 @@ public:
 
     {
       // prevent camera from going outside the level
-      auto const limit = 7.0f;
+      auto const limit = 8.0f;
       cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
       cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
     }
@@ -175,10 +175,10 @@ public:
         if(!tile)
           return;
 
-        if(abs(x - cameraPos.x) > 8)
+        if(abs(x - cameraPos.x) > 9)
           return;
 
-        if(abs(y - cameraPos.y) > 8)
+        if(abs(y - cameraPos.y) > 9)
           return;
 
         auto composition = computeTileFor(m_tiles, x, y);

@@ -539,25 +539,6 @@
                 }, 
                 {
                  "height":4,
-                 "id":46,
-                 "name":"BottomRoom",
-                 "properties":
-                    {
-                     "theme":"1"
-                    },
-                 "propertytypes":
-                    {
-                     "theme":"string"
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":8,
-                 "x":60,
-                 "y":72
-                }, 
-                {
-                 "height":4,
                  "id":47,
                  "name":"BottomRoom",
                  "properties":
@@ -764,6 +745,25 @@
                  "width":4,
                  "x":72,
                  "y":48
+                }, 
+                {
+                 "height":4,
+                 "id":67,
+                 "name":"Junction",
+                 "properties":
+                    {
+                     "theme":"1"
+                    },
+                 "propertytypes":
+                    {
+                     "theme":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":60,
+                 "y":72
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -858,7 +858,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":67,
+ "nextobjectid":68,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
