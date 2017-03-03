@@ -1,49 +1,60 @@
-{ "height":48,
+{ "height":16,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzNlFEOwCAIQ\/Fmu\/+pln0sWcyAto5JE\/6oTwQcZjZ+jFuVfk+IHxXBPK5Q\/QrfY3p+Vag\/egP0PLS\/UR7qjXIyZpaT8Vbnl6l\/ZX+e\/ihn5ih+ls\/Wr+qL+a\/gI\/tfyUfv06n\/O+d\/vgfL373\/yv9XyV+pnxHIdHexik\/sJfV+rJ\/tZ3ZmByF\/wJuna5wpHwTA",
+         "data":"eJxjZGBgYBzFIx7TG4zaP2r\/YLCfnvbRQi2x+ogxk5j4INUfhOJ5oMu9kY4BVygBBg==",
          "encoding":"base64",
-         "height":48,
+         "height":16,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":16,
+         "width":32,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "height":48,
+         "height":16,
          "name":"things",
          "objects":[
                 {
                  "height":16,
                  "id":1,
-                 "name":"spider",
+                 "name":"hopper",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":16,
-                 "y":368
+                 "x":224,
+                 "y":176
                 }, 
                 {
                  "height":16,
                  "id":2,
-                 "name":"spider",
+                 "name":"hopper",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":208,
-                 "y":80
+                 "x":304,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":3,
+                 "name":"hopper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":176
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":16,
+         "width":32,
          "x":0,
          "y":0
         }],
@@ -67,5 +78,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":16
+ "width":32
 }

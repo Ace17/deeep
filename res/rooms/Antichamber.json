@@ -2,18 +2,30 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYKQjRgbDXT82dbj0kwNGun5kMyjVT078EdI\/0OmPGAwAQNsAlA==",
+         "data":"eJxjZGBgYBzFo3gUj+JRPIpHOIYBbGIMNJKnhx247CVkxnAEI9nvMDBS\/T0KiAPDtfzDpQaf24YLHgl+HMWkYQCa2AK5",
          "encoding":"base64",
          "height":16,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":16,
+         "width":64,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":16,
+         "name":"things",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":32,
          "x":0,
          "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -33,5 +45,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":16
+ "width":64
 }
