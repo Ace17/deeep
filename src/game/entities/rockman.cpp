@@ -108,6 +108,7 @@ struct Rockman : Player
         }
         else
         {
+          r.pos.y -= 0.3;
           r.action = ACTION_FALL;
           r.ratio = vel.y > 0 ? 0 : 1;
         }
