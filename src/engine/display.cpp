@@ -242,10 +242,13 @@ Model loadAnimation(string path)
 
     for(int i = 0; i < 64 * 2; ++i)
     {
-      auto col = i % 8;
-      auto row = i / 8;
+      auto const COLS = 8;
+      auto col = i % COLS;
+      auto row = i / COLS;
+
+      auto const SIZE = 16;
       Action action;
-      action.addTexture(path, Rect2i(col * 16, row * 16, 16, 16));
+      action.addTexture(path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
       m.actions.push_back(action);
     }
   }
