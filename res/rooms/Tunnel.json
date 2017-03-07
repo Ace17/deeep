@@ -2,14 +2,14 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYBzFo5gCTC6gRC+tAKl+HeiwpxQDAL\/jAMs=",
+         "data":"eJztljEOwCAMA8OY\/3+4S4cqAicuykBrSzeVuDYDMMxsCCF+TVT2faU3Mx1+Xf2+IvVXf\/U\/o39HxswT7U\/1XGW9WL+4jvFFyu5HNu+Oqv3RXDUPeh\/4zUz+oDqzklvuh\/rM5ph3QEbMh\/6FZlYwWWZi+5zM7v4JswtNFwNZ",
          "encoding":"base64",
          "height":16,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":16,
+         "width":64,
          "x":0,
          "y":0
         }, 
@@ -17,26 +17,15 @@
          "draworder":"topdown",
          "height":16,
          "name":"things",
-         "objects":[
-                {
-                 "height":16,
-                 "id":1,
-                 "name":"fragile_door",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":128,
-                 "y":176
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":16,
+         "width":32,
          "x":0,
          "y":0
         }],
- "nextobjectid":2,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -47,5 +36,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":16
+ "width":64
 }

@@ -86,17 +86,8 @@
  "tileheight":16,
  "tilesets":[
         {
-         "columns":8,
          "firstgid":1,
-         "image":"..\/tiles.png",
-         "imageheight":256,
-         "imagewidth":128,
-         "margin":0,
-         "name":"tiles",
-         "spacing":0,
-         "tilecount":128,
-         "tileheight":16,
-         "tilewidth":16
+         "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
  "version":1,
