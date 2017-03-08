@@ -222,7 +222,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
     auto const x = pos.first;
     auto const y = pos.second;
 
-    if(room.tiles.get(x, y) > 1)
+    if(room.tiles.get(x, y) >= 8)
     {
       auto const pos = Vector2f(x, y);
       room.things.push_back(Room::Thing { pos, "spikes" });
