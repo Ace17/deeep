@@ -103,9 +103,9 @@ struct Hopper : Entity
     }
   }
 
-  Int life = 30;
-  Int time;
-  Bool ground;
+  int life = 30;
+  int time = 0;
+  bool ground = false;
   float dir;
 };
 

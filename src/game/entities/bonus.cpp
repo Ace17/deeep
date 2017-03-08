@@ -58,7 +58,7 @@ struct Bonus : Entity
     }
   }
 
-  int time;
+  int time = 0;
   int modelAction;
   int type;
 };

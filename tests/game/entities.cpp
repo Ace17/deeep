@@ -33,7 +33,7 @@ struct NullPlayer : Player
     return 0;
   }
 
-  virtual void addUpgrade(Int)
+  virtual void addUpgrade(int)
   {
   }
 
@@ -81,7 +81,7 @@ unittest("Entity: pickup bonus")
 {
   struct MockPlayer : NullPlayer
   {
-    virtual void addUpgrade(Int upgrade)
+    virtual void addUpgrade(int upgrade)
     {
       upgrades |= upgrade;
     }
@@ -155,7 +155,7 @@ unittest("Entity: rockman stands on ground, then walks")
   assertEquals(ACTION_STAND, player->getActor().action);
 
   {
-    auto cmd = Control();
+    Control cmd {};
     cmd.right = true;
     player->think(cmd);
   }
@@ -166,7 +166,7 @@ unittest("Entity: rockman stands on ground, then walks")
   assert(player->getActor().scale.x > 0);
 
   {
-    auto cmd = Control();
+    Control cmd {};
     cmd.left = true;
     player->think(cmd);
   }

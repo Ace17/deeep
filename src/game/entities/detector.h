@@ -58,8 +58,8 @@ struct Detector : Entity
     touchDelay = 1000;
   }
 
-  Int id;
-  Int touchDelay;
+  int id = 0;
+  int touchDelay = 0;
 };
 
 struct RoomBoundaryDetector : Entity
@@ -88,9 +88,9 @@ struct RoomBoundaryDetector : Entity
     touched = true;
   }
 
-  Int targetLevel;
+  int targetLevel = 0;
   Vector2f transform;
-  Bool touched;
+  bool touched = false;
 };
 
 struct RoomBoundaryBlocker : Entity

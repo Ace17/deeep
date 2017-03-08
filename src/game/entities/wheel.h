@@ -91,8 +91,8 @@ struct Wheel : Entity
     }
   }
 
-  Int life = 30;
-  Int time;
+  int life = 30;
+  int time = 0;
   float dir;
 };
 

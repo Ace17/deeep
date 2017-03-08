@@ -40,7 +40,7 @@ struct Explosion : Entity
     return r;
   }
 
-  Int time;
+  int time = 0;
 };
 
 std::unique_ptr<Entity> makeExplosion()

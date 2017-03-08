@@ -305,10 +305,10 @@ public:
     m_level = event->targetLevel;
   }
 
-  Int m_level = 1;
-  Int m_visualTheme;
+  int m_level = 1;
+  int m_visualTheme = 0;
   Vector2f m_transform;
-  Bool m_shouldLoadLevel;
+  bool m_shouldLoadLevel = false;
 
   EventDelegator m_ender, m_levelBoundary;
   EventDelegator m_oobDelegator;

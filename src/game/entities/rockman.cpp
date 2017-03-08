@@ -77,7 +77,7 @@ struct Bullet : Entity
 
 struct Rockman : Player
 {
-  Rockman() : dir(RIGHT)
+  Rockman()
   {
     size = Size2f(0.9, 1.9);
     life = 31;
@@ -167,7 +167,7 @@ struct Rockman : Player
     return clamp(life / 31.0f, 0.0f, 1.0f);
   }
 
-  virtual void addUpgrade(Int upgrade) override
+  virtual void addUpgrade(int upgrade) override
   {
     upgrades |= upgrade;
     blinking = 2000;
@@ -182,7 +182,7 @@ struct Rockman : Player
   void computeVelocity(Control c)
   {
     if(hurtDelay || life <= 0)
-      c = Control();
+      c = Control {};
 
     airMove(c);
 
@@ -383,21 +383,21 @@ struct Rockman : Player
     game->playSound(SND_DIE);
   }
 
-  Int debounceFire;
-  Int debounceLanding;
-  ORIENTATION dir;
-  Bool ground;
+  int debounceFire = 0;
+  int debounceLanding = 0;
+  ORIENTATION dir = RIGHT;
+  bool ground = false;
   Toggle jumpbutton, firebutton, dashbutton;
-  Int time;
-  Int climbDelay;
-  Int hurtDelay;
-  Int dashDelay;
-  Int shootDelay;
-  Int life;
-  Bool doubleJumped;
-  Control control;
+  int time = 0;
+  int climbDelay = 0;
+  int hurtDelay = 0;
+  int dashDelay = 0;
+  int shootDelay = 0;
+  int life = 0;
+  bool doubleJumped = false;
+  Control control {};
 
-  Int upgrades;
+  int upgrades = 0;
 };
 
 std::unique_ptr<Player> makeRockman()

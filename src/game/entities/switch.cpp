@@ -64,7 +64,7 @@ struct Switch : Entity
     game->postEvent(move(evt));
   }
 
-  Bool state;
+  bool state = false;
   const int id;
 };
 
@@ -122,8 +122,8 @@ struct Door : Entity, IEventSink
     }
   }
 
-  Bool state;
-  Int openingDelay;
+  bool state = false;
+  int openingDelay = 0;
   const int id;
 };
 
@@ -179,7 +179,7 @@ struct BreakableDoor : Entity
       game->playSound(SND_DAMAGE);
   }
 
-  Int life = 130;
+  int life = 130;
 };
 
 unique_ptr<Entity> makeBreakableDoor()

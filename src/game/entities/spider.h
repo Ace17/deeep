@@ -133,8 +133,8 @@ struct Spider : Entity
     }
   }
 
-  Int life = 60;
-  Int time;
+  int life = 60;
+  int time = 0;
   float dir;
 };
 

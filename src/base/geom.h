@@ -17,51 +17,6 @@
 #include <cassert>
 
 ///////////////////////////////////////////////////////////////////////////////
-// Initialized
-///////////////////////////////////////////////////////////////////////////////
-
-template<typename T>
-struct Initialized
-{
-  Initialized()
-  {
-    val = T(0);
-  }
-
-  Initialized(T val_)
-  {
-    val = val_;
-  }
-
-  operator T const & () const
-  {
-    return val;
-  }
-
-  operator T & ()
-  {
-    return val;
-  }
-
-  T operator = (T const& val_)
-  {
-    val = val_;
-    return val_;
-  }
-
-  T operator += (T const& val_)
-  {
-    val += val_;
-    return val_;
-  }
-
-  T val;
-};
-
-typedef Initialized<int> Int;
-typedef Initialized<bool> Bool;
-
-///////////////////////////////////////////////////////////////////////////////
 // Dimension
 ///////////////////////////////////////////////////////////////////////////////
 

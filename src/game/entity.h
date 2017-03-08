@@ -22,7 +22,6 @@ struct Entity
   Entity()
   {
     size = Size2f(1, 1);
-    game = nullptr;
   }
 
   virtual ~Entity()
@@ -43,16 +42,16 @@ struct Entity
   {
   }
 
-  Bool dead;
-  Bool solid;
+  bool dead = false;
+  bool solid = false;
   Vector2f pos;
   Vector2f vel;
   Size2f size;
-  Int blinking;
-  IGame* game;
+  int blinking = 0;
+  IGame* game = nullptr;
 
-  Int collisionGroup = 1;
-  Int collidesWith = 0xFFFF;
+  int collisionGroup = 1;
+  int collidesWith = 0xFFFF;
 
   Rect2f getRect() const
   {

@@ -12,7 +12,7 @@ struct Toggle
     return newState && !oldState;
   }
 
-  Bool state;
+  bool state = false;
 };
 
 template<typename T, typename U>

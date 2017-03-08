@@ -86,8 +86,8 @@ struct Teleporter : Entity
   }
 
   bool state;
-  Int blink;
-  Int delay;
+  int blink = 0;
+  int delay = 0;
   Entity* target = nullptr;
 };
 

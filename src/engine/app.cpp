@@ -45,11 +45,9 @@ class App
 {
 public:
   App(vector<string> argv)
-    : m_running(1),
-    m_lastFps(0),
+    :
     m_args(argv),
-    m_scene(createGame(m_args)),
-    m_slowMotion(false)
+    m_scene(createGame(m_args))
   {
     SDL_Init(0);
     memset(keys, 0, sizeof keys);
@@ -200,16 +198,16 @@ private:
   }
 
   int keys[SDL_NUM_SCANCODES];
-  int m_running;
+  int m_running = 1;
 
   int m_lastTime;
-  int m_lastFps;
+  int m_lastFps = 0;
   RateCounter m_fps;
   Control m_control;
   vector<string> m_args;
   unique_ptr<Scene> m_scene;
-  bool m_slowMotion;
-  Bool m_paused;
+  bool m_slowMotion = false;
+  bool m_paused = false;
   unique_ptr<Audio> m_audio;
 };
 
