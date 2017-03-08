@@ -164,7 +164,7 @@ struct Game : Scene, IGame
 
   int getMusic() const override
   {
-    return m_visualTheme;
+    return m_theme;
   }
 
   void addActorsForTileMap(vector<Actor>& r, Vector2f cameraPos) const
@@ -189,7 +189,7 @@ struct Game : Scene, IGame
           auto const posX = (x + (subTile % 2) * 0.5) * ts;
           auto const posY = (y + (subTile / 2) * 0.5) * ts;
           auto actor = Actor(Vector2f(posX, posY), MDL_TILES);
-          actor.action = (m_visualTheme % 8) * 16 + composition[subTile];
+          actor.action = (m_theme % 8) * 16 + composition[subTile];
           actor.scale = Vector2f(0.5, 0.5);
           r.push_back(actor);
         }
@@ -244,7 +244,7 @@ struct Game : Scene, IGame
 
     auto level = Graph_loadRoom(levelIdx, this);
     m_tiles = move(level.tiles);
-    m_visualTheme = level.theme;
+    m_theme = level.theme;
     printf("Now in: %s\n", level.name.c_str());
 
     Vector2f nextPos;
@@ -305,7 +305,7 @@ struct Game : Scene, IGame
   }
 
   int m_level = 1;
-  int m_visualTheme = 0;
+  int m_theme = 0;
   Vector2f m_transform;
   bool m_shouldLoadLevel = false;
 
