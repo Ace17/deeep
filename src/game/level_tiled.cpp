@@ -134,11 +134,7 @@ Matrix<int> parseTileLayer(json::Object* json)
 
     assert(tile >= 0);
 
-    if(tile)
-    {
-      auto const abstractTile = 1 + ((tile - 1) / 16);
-      tiles.set(x, y, abstractTile);
-    }
+    tiles.set(x, y, tile);
   }
 
   return tiles;
@@ -219,6 +215,20 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
 
   if(exists(layers, "things"))
     room.things = parseThingLayer(layers["things"], room.size.height * 16);
+
+  // add spikes
+  for(auto pos : rasterScan(room.tiles.size.width, room.tiles.size.height))
+  {
+    auto const x = pos.first;
+    auto const y = pos.second;
+
+    if(room.tiles.get(x, y) > 1)
+    {
+      auto const pos = Vector2f(x, y);
+      room.things.push_back(Room::Thing { pos, "spikes" });
+      room.tiles.set(x, y, 0);
+    }
+  }
 }
 
 static

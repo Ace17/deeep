@@ -31,6 +31,7 @@ unique_ptr<Entity> createEntity(string formula)
 #include "game/entities/detector.h"
 #include "game/entities/bonus.h"
 #include "game/entities/player.h"
+#include "game/entities/spikes.h"
 
 static map<string, CreationFunc> getRegistry()
 {
@@ -82,6 +83,12 @@ static map<string, CreationFunc> getRegistry()
     [] (EntityArgs &)
     {
       return make_unique<Spider>();
+    };
+
+  r[ENTITY_SPIKES] =
+    [] (EntityArgs &)
+    {
+      return make_unique<Spikes>();
     };
 
   r[ENTITY_FRAGILE_DOOR] =

@@ -13,5 +13,6 @@ enum
   MDL_BONUS,
   MDL_BULLET,
   MDL_EXPLOSION,
+  MDL_SPIKES,
 };
 

@@ -103,6 +103,7 @@ public:
       { MDL_BONUS, "res/sprites/bonus.json" },
       { MDL_BULLET, "res/sprites/bullet.json" },
       { MDL_EXPLOSION, "res/sprites/explosion.json" },
+      { MDL_SPIKES, "res/sprites/spikes.json" },
     };
 
     return makeSpan(models);

@@ -426,7 +426,7 @@
                 {
                  "height":4,
                  "id":113,
-                 "name":"SideBase",
+                 "name":"BottomRoom",
                  "rotation":0,
                  "type":"0",
                  "visible":true,
@@ -457,20 +457,20 @@
                  "y":64
                 }, 
                 {
-                 "height":12,
+                 "height":4,
                  "id":116,
-                 "name":"SideBase",
+                 "name":"Square",
                  "rotation":0,
                  "type":"0",
                  "visible":true,
-                 "width":8,
-                 "x":136,
-                 "y":28
+                 "width":16,
+                 "x":128,
+                 "y":36
                 }, 
                 {
                  "height":24,
                  "id":117,
-                 "name":"SideBase",
+                 "name":"Column",
                  "rotation":0,
                  "type":"0",
                  "visible":true,

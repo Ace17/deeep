@@ -5,6 +5,7 @@
 
 static auto const ENTITY_TELEPORTER = "teleporter";
 static auto const ENTITY_FRAGILE_DOOR = "fragile_door";
+static auto const ENTITY_SPIKES = "spikes";
 
 static auto const ENTITY_ENEMY_WHEEL = "wheel";
 static auto const ENTITY_ENEMY_SPIDER = "spider";
