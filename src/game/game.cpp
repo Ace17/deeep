@@ -35,9 +35,8 @@ static int const DETECTOR_ID_BOUNDARY = -2;
 // from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 
-class Game : public Scene, public IGame
+struct Game : Scene, IGame
 {
-public:
   Game() : m_tiles(Size2i(1, 1))
   {
     m_shouldLoadLevel = true;
