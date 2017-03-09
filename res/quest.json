@@ -13,7 +13,7 @@
                  "type":"3",
                  "visible":true,
                  "width":12,
-                 "x":120,
+                 "x":136,
                  "y":68
                 }, 
                 {
@@ -57,7 +57,7 @@
                  "type":"1",
                  "visible":true,
                  "width":8,
-                 "x":68,
+                 "x":84,
                  "y":72
                 }, 
                 {
@@ -68,7 +68,7 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":80,
+                 "x":96,
                  "y":64
                 }, 
                 {
@@ -79,7 +79,7 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":80,
+                 "x":96,
                  "y":72
                 }, 
                 {
@@ -112,7 +112,7 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":76,
+                 "x":92,
                  "y":64
                 }, 
                 {
@@ -145,7 +145,7 @@
                  "type":"3",
                  "visible":true,
                  "width":8,
-                 "x":132,
+                 "x":148,
                  "y":72
                 }, 
                 {
@@ -211,7 +211,7 @@
                  "type":"1",
                  "visible":true,
                  "width":16,
-                 "x":44,
+                 "x":60,
                  "y":68
                 }, 
                 {
@@ -277,7 +277,7 @@
                  "type":"1",
                  "visible":true,
                  "width":8,
-                 "x":60,
+                 "x":76,
                  "y":72
                 }, 
                 {
@@ -332,7 +332,7 @@
                  "type":"3",
                  "visible":true,
                  "width":8,
-                 "x":112,
+                 "x":128,
                  "y":68
                 }, 
                 {
@@ -420,7 +420,7 @@
                  "type":"0",
                  "visible":true,
                  "width":16,
-                 "x":84,
+                 "x":100,
                  "y":64
                 }, 
                 {
@@ -453,7 +453,7 @@
                  "type":"3",
                  "visible":true,
                  "width":12,
-                 "x":100,
+                 "x":116,
                  "y":64
                 }, 
                 {
@@ -510,6 +510,17 @@
                  "width":8,
                  "x":60,
                  "y":60
+                }, 
+                {
+                 "height":4,
+                 "id":121,
+                 "name":"Fragile",
+                 "rotation":0,
+                 "type":"1",
+                 "visible":true,
+                 "width":16,
+                 "x":44,
+                 "y":68
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -557,7 +568,7 @@
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":81,
+                 "x":97,
                  "y":73
                 }, 
                 {
@@ -594,7 +605,7 @@
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":81,
+                 "x":97,
                  "y":64
                 }],
          "opacity":1,
@@ -604,7 +615,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":121,
+ "nextobjectid":122,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,

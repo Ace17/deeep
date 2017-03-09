@@ -32,6 +32,7 @@ unique_ptr<Entity> createEntity(string formula)
 #include "game/entities/bonus.h"
 #include "game/entities/player.h"
 #include "game/entities/spikes.h"
+#include "game/entities/blocks.h"
 
 static map<string, CreationFunc> getRegistry()
 {
@@ -95,6 +96,12 @@ static map<string, CreationFunc> getRegistry()
     [] (EntityArgs &)
     {
       return makeBreakableDoor();
+    };
+
+  r["fragile_block"] =
+    [] (EntityArgs &)
+    {
+      return make_unique<FragileBlock>();
     };
 
   r["door(0)"] =
