@@ -10,7 +10,7 @@ struct Spikes : Entity
   Spikes()
   {
     size = Size2f(1, 1);
-    solid = 0;
+    solid = 1;
     collisionGroup = (1 << 1);
     collidesWith = 1; // only the player
   }
@@ -19,7 +19,6 @@ struct Spikes : Entity
   {
     auto r = Actor(pos, MDL_SPIKES);
     r.scale = size;
-    r.action = 0;
     r.ratio = 0;
 
     return r;

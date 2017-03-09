@@ -161,10 +161,10 @@ struct Game : Scene, IGame
       auto& me = *m_entities[p.first];
       auto& other = *m_entities[p.second];
 
-      auto bulletRect = me.getRect();
-      auto enemyRect = other.getRect();
+      auto rect = me.getRect();
+      auto otherRect = enlarge(other.getRect(), 1.05);
 
-      if(overlaps(bulletRect, enemyRect))
+      if(overlaps(rect, otherRect))
       {
         if(other.collidesWith & me.collisionGroup)
           other.onCollide(&me);
@@ -173,6 +173,16 @@ struct Game : Scene, IGame
           me.onCollide(&other);
       }
     }
+  }
+
+  static Rect2f enlarge(Rect2f rect, float ratio)
+  {
+    Rect2f r;
+    r.width = rect.width * ratio;
+    r.height = rect.height * ratio;
+    r.x = rect.x - (r.width - rect.width) * 0.5;
+    r.y = rect.y - (r.height - rect.height) * 0.5;
+    return r;
   }
 
   void removeDeadThings()

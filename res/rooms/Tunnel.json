@@ -17,7 +17,29 @@
          "draworder":"topdown",
          "height":16,
          "name":"things",
-         "objects":[],
+         "objects":[
+                {
+                 "height":16,
+                 "id":4,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":80
+                }, 
+                {
+                 "height":16,
+                 "id":5,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":656,
+                 "y":80
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -25,7 +47,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":4,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
