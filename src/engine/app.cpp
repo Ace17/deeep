@@ -22,6 +22,7 @@
 #include <memory>
 #include "SDL.h"
 #include "base/geom.h"
+#include "base/resource.h"
 #include "base/scene.h"
 #include "ratecounter.h"
 #include "sound.h"
@@ -55,10 +56,10 @@ public:
     Display_init(768, 768);
     m_audio.reset(createAudio());
 
-    for(auto sound : m_scene->getSounds())
+    for(auto sound : getSounds())
       m_audio->loadSound(sound.id, sound.path);
 
-    for(auto model : m_scene->getModels())
+    for(auto model : getModels())
       Display_loadModel(model.id, model.path);
 
     m_lastTime = SDL_GetTicks();

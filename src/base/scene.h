@@ -55,19 +55,10 @@ struct Control
   bool debug;
 };
 
-struct Resource
-{
-  int id;
-  char const* path;
-};
-
 // game, seen by the outside world
 
 struct Scene
 {
-  virtual Span<const Resource> getSounds() const = 0;
-  virtual Span<const Resource> getModels() const = 0;
-
   virtual void tick(Control const& c) = 0;
   virtual int getMusic() const = 0;
   virtual vector<Actor> getActors() const = 0;
