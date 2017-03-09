@@ -39,7 +39,7 @@ struct Detector : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_RECT);
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
     return r;
   }
 
@@ -75,7 +75,7 @@ struct RoomBoundaryDetector : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_RECT);
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
     return r;
   }
 
@@ -106,7 +106,7 @@ struct RoomBoundaryBlocker : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_RECT);
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
     r.effect = EFFECT_BLINKING;
     return r;
   }

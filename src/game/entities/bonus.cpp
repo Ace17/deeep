@@ -33,7 +33,7 @@ struct Bonus : Entity
   {
     auto s = sin(time * 0.01);
     auto r = Actor(pos, MDL_BONUS);
-    r.scale = Vector2f(1, 1);
+    r.scale = Size2f(1, 1);
     r.ratio = max(s, 0.0);
     r.action = modelAction;
 

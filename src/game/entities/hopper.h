@@ -23,8 +23,8 @@ struct Hopper : Entity
   {
     auto r = Actor(pos, MDL_RECT);
 
-    r.scale = Vector2f(size.width, size.height);
-    r.pos += Vector2f(-(r.scale.x - size.width) * 0.5, 0);
+    r.scale = size;
+    r.pos += Vector2f(-(r.scale.width - size.width) * 0.5, 0);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
@@ -33,7 +33,7 @@ struct Hopper : Entity
     r.ratio = (time % 800) / 800.0f;
 
     if(dir > 0)
-      r.scale.x = -r.scale.x;
+      r.scale.width = -r.scale.width;
 
     return r;
   }

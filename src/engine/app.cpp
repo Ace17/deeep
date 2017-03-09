@@ -144,7 +144,7 @@ private:
 
     for(auto& actor : m_scene->getActors())
     {
-      auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.x, actor.scale.y);
+      auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
       Display_drawActor(where, (int)actor.model, actor.effect == EFFECT_BLINKING, actor.action, actor.ratio);
     }
 

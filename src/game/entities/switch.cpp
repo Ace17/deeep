@@ -36,7 +36,7 @@ struct Switch : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
-    r.scale = Vector2f(0.5, 0.5);
+    r.scale = Size2f(0.5, 0.5);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
@@ -102,7 +102,7 @@ struct Door : Entity, IEventSink
     auto r = Actor(pos, MDL_DOOR);
     r.action = 1;
     r.ratio = state ? 1 - (openingDelay / 1000.0f) : 0;
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
     return r;
   }
 
@@ -148,7 +148,7 @@ struct BreakableDoor : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_DOOR);
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
 
     if(blinking)
       r.effect = EFFECT_BLINKING;

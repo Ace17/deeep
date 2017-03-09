@@ -21,7 +21,7 @@ struct SpiderBullet : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_RECT);
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
     r.action = 0;
     r.ratio = 0;
 
@@ -60,7 +60,7 @@ struct Spider : Entity
   {
     auto r = Actor(pos, MDL_RECT);
 
-    r.scale = Vector2f(1, 1);
+    r.scale = Size2f(1, 1);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
@@ -69,7 +69,7 @@ struct Spider : Entity
     r.ratio = (time % 800) / 800.0f;
 
     if(dir > 0)
-      r.scale.x = -r.scale.x;
+      r.scale.width = -r.scale.width;
 
     return r;
   }

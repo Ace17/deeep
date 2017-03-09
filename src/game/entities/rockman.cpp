@@ -47,12 +47,12 @@ struct Bullet : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_BULLET);
-    r.scale = Vector2f(size.width, size.height);
+    r.scale = size;
     r.action = 0;
     r.ratio = 0;
 
     // re-center
-    r.pos += Vector2f(r.scale.x * 0.5, 0);
+    r.pos += Vector2f(r.scale.width * 0.5, 0);
 
     return r;
   }
@@ -86,10 +86,10 @@ struct Rockman : Player
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_ROCKMAN);
-    r.scale = Vector2f(3, 3);
+    r.scale = Size2f(3, 3);
 
     // re-center
-    r.pos += Vector2f(-(r.scale.x - size.width) * 0.5, -0.1);
+    r.pos += Vector2f(-(r.scale.width - size.width) * 0.5, -0.1);
 
     if(hurtDelay || life < 0)
     {
@@ -104,7 +104,7 @@ struct Rockman : Player
         {
           r.action = ACTION_CLIMB;
           r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
-          r.scale.x *= -1;
+          r.scale.width *= -1;
         }
         else
         {
@@ -149,7 +149,7 @@ struct Rockman : Player
     }
 
     if(dir == LEFT)
-      r.scale.x *= -1;
+      r.scale.width *= -1;
 
     if(blinking)
       r.effect = EFFECT_BLINKING;

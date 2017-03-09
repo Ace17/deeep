@@ -32,7 +32,7 @@ struct Actor
 {
   Actor(Vector2f pos_ = Vector2f(0, 0), MODEL model_ = 0) : pos(pos_), model(model_)
   {
-    scale = Vector2f(1, 1);
+    scale = Size2f(1, 1);
     effect = EFFECT_NORMAL;
     ratio = 0;
   }
@@ -41,7 +41,7 @@ struct Actor
   MODEL model;
   int action = 0;
   float ratio = 1; // in [0 .. 1]
-  Vector2f scale;
+  Size2f scale;
   EFFECT_TYPE effect = EFFECT_NORMAL;
 };
 

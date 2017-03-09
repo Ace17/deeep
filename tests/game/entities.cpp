@@ -163,7 +163,7 @@ unittest("Entity: rockman stands on ground, then walks")
   player->tick();
 
   assertEquals(ACTION_WALK, player->getActor().action);
-  assert(player->getActor().scale.x > 0);
+  assert(player->getActor().scale.width > 0);
 
   {
     Control cmd {};
@@ -174,6 +174,6 @@ unittest("Entity: rockman stands on ground, then walks")
   player->tick();
 
   assertEquals(ACTION_WALK, player->getActor().action);
-  assert(player->getActor().scale.x < 0);
+  assert(player->getActor().scale.width < 0);
 }
 

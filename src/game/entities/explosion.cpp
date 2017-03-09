@@ -34,8 +34,8 @@ struct Explosion : Entity
     auto r = Actor(pos, MDL_EXPLOSION);
 
     r.ratio = time / (float)DURATION;
-    r.scale = Vector2f(3, 3);
-    r.pos += Vector2f(-r.scale.x * 0.5, -r.scale.y * 0.5);
+    r.scale = Size2f(3, 3);
+    r.pos += Vector2f(-r.scale.width * 0.5, -r.scale.height * 0.5);
 
     return r;
   }

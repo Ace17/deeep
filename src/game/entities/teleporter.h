@@ -38,7 +38,7 @@ struct Teleporter : Entity
   {
     auto r = Actor(pos, MDL_TELEPORTER);
     r.pos.y -= size.height * 0.9;
-    r.scale = Vector2f(size.width, size.height * 4);
+    r.scale = Size2f(size.width, size.height * 4);
     r.ratio = state ? 1 : 0;
 
     if(blink)

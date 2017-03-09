@@ -24,8 +24,8 @@ struct Wheel : Entity
   {
     auto r = Actor(pos, MDL_WHEEL);
 
-    r.scale = Vector2f(3, 3);
-    r.pos += Vector2f(-(r.scale.x - size.width) * 0.5, -0.3);
+    r.scale = Size2f(3, 3);
+    r.pos += Vector2f(-(r.scale.width - size.width) * 0.5, -0.3);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
@@ -34,7 +34,7 @@ struct Wheel : Entity
     r.ratio = (time % 200) / 200.0f;
 
     if(dir > 0)
-      r.scale.x = -r.scale.x;
+      r.scale.width = -r.scale.width;
 
     return r;
   }
