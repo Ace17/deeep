@@ -104,6 +104,12 @@ static map<string, CreationFunc> getRegistry()
       return make_unique<FragileBlock>();
     };
 
+  r["crumble_block"] =
+    [] (EntityArgs &)
+    {
+      return make_unique<CrumbleBlock>();
+    };
+
   r["door(0)"] =
     [] (EntityArgs &)
     {

@@ -72,6 +72,17 @@
                  "width":16,
                  "x":816,
                  "y":192
+                }, 
+                {
+                 "height":16,
+                 "id":6,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":640,
+                 "y":176
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -80,7 +91,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":6,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
