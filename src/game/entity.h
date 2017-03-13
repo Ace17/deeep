@@ -19,11 +19,6 @@
 
 struct Entity
 {
-  Entity()
-  {
-    size = Size2f(1, 1);
-  }
-
   virtual ~Entity()
   {
   }
@@ -46,7 +41,7 @@ struct Entity
   bool solid = false;
   Vector2f pos;
   Vector2f vel;
-  Size2f size;
+  Size2f size = Size2f(1, 1);
   int blinking = 0;
   IGame* game = nullptr;
 
