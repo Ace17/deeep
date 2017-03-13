@@ -4,6 +4,7 @@
 
 #include "base/util.h"
 #include "base/scene.h"
+#include "game/collision_groups.h"
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
@@ -16,8 +17,8 @@ struct Wheel : Entity
   {
     dir = -1.0f;
     size = Size2f(1.5, 1.5);
-    collisionGroup = (1 << 1);
-    collidesWith = 1; // only the player
+    collisionGroup = CG_WALLS;
+    collidesWith = CG_SOLIDPLAYER;
   }
 
   virtual Actor getActor() const override

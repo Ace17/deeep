@@ -2,6 +2,7 @@
 
 #include "base/util.h"
 #include "base/scene.h"
+#include "game/collision_groups.h"
 #include "game/entity.h"
 #include "game/models.h"
 
@@ -10,7 +11,7 @@ struct CrumbleBlock : Entity
   CrumbleBlock()
   {
     size = Size2f(1, 1);
-    collisionGroup = (1 << 1);
+    collisionGroup = CG_WALLS;
   }
 
   virtual Actor getActor() const override
@@ -45,7 +46,7 @@ struct CrumbleBlock : Entity
     }
     else
     {
-      collidesWith = 1; // only the player
+      collidesWith = CG_PLAYER;
       solid = 1;
     }
   }

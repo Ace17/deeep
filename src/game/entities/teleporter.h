@@ -18,6 +18,7 @@
 
 #include "base/util.h"
 #include "base/scene.h"
+#include "game/collision_groups.h"
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
@@ -30,8 +31,8 @@ struct Teleporter : Entity
     size = Size2f(2, 0.5);
     solid = false;
     state = false;
-    collisionGroup = -1;
-    collidesWith = -1;
+    collisionGroup = CG_ALL;
+    collidesWith = CG_ALL;
   }
 
   virtual Actor getActor() const override

@@ -16,6 +16,7 @@
 
 #include "base/util.h"
 #include "base/scene.h"
+#include "game/collision_groups.h"
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
@@ -142,7 +143,7 @@ struct BreakableDoor : Entity
   {
     size = Size2f(1, 3);
     solid = true;
-    collisionGroup = (1 << 1);
+    collisionGroup = CG_WALLS;
   }
 
   virtual Actor getActor() const override

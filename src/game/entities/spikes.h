@@ -11,8 +11,8 @@ struct Spikes : Entity
   {
     size = Size2f(1, 1);
     solid = 1;
-    collisionGroup = (1 << 1);
-    collidesWith = 1; // only the player
+    collisionGroup = CG_WALLS;
+    collidesWith = CG_SOLIDPLAYER;
   }
 
   virtual Actor getActor() const override

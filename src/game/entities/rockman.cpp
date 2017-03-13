@@ -16,6 +16,7 @@
 #include "base/scene.h"
 #include "base/util.h"
 
+#include "game/collision_groups.h"
 #include "game/entities/player.h"
 #include "game/entity.h"
 #include "game/models.h"
@@ -341,7 +342,10 @@ struct Rockman : Player
       }
     }
 
-    collisionGroup = blinking ? 0b1000 : 0b1001;
+    collisionGroup = CG_PLAYER;
+
+    if(!blinking)
+      collisionGroup |= CG_SOLIDPLAYER;
   }
 
   virtual void onDamage(int amount) override
