@@ -55,12 +55,12 @@ struct Hopper : Entity
     else
       vel.x = dir * 0.003;
 
-    // horizontal move
-    if(!move(this, Vector2f(vel.x, 0)))
+    auto trace = slideMove(this, vel);
+
+    if(!trace.horz)
       dir = -dir;
 
-    // vertical move
-    if(!move(this, Vector2f(0, vel.y)))
+    if(!trace.vert)
     {
       ground = true;
       vel.y = 0;

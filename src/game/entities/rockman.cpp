@@ -276,12 +276,9 @@ struct Rockman : Player
     time++;
     computeVelocity(control);
 
-    // horizontal move
-    move(this, Vector2f(vel.x, 0));
+    auto trace = slideMove(this, vel);
 
-    // vertical move
-
-    if(move(this, Vector2f(0, vel.y)))
+    if(trace.vert)
     {
       ground = false;
     }

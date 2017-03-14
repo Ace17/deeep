@@ -26,3 +26,20 @@ bool move(Entity* ent, Vector2f delta)
   return true;
 }
 
+struct Trace
+{
+  bool horz;
+  bool vert;
+};
+
+inline
+Trace slideMove(Entity* ent, Vector2f vel)
+{
+  Trace r;
+
+  r.horz = move(ent, Vector2f(vel.x, 0));
+  r.vert = move(ent, Vector2f(0, vel.y));
+
+  return r;
+}
+

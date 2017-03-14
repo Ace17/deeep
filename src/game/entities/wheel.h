@@ -48,12 +48,12 @@ struct Wheel : Entity
     vel.x = dir * 0.003;
     vel.y -= 0.00005; // gravity
 
-    // horizontal move
-    if(!move(this, Vector2f(vel.x, 0)))
+    auto trace = slideMove(this, vel);
+
+    if(!trace.horz)
       dir = -dir;
 
-    // vertical move
-    if(!move(this, Vector2f(0, vel.y)))
+    if(!trace.vert)
       vel.y = 0;
 
     decrement(blinking);
