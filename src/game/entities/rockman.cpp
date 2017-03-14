@@ -18,6 +18,7 @@
 
 #include "game/collision_groups.h"
 #include "game/entities/player.h"
+#include "game/entities/move.h"
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
@@ -266,29 +267,6 @@ struct Rockman : Player
       vel.x = 0;
   }
 
-  bool move(Vector2f delta)
-  {
-    auto rect = getRect();
-    rect.x += delta.x;
-    rect.y += delta.y;
-
-    const Vector2f vertices[] =
-    {
-      Vector2f(rect.x, rect.y + rect.height / 2.0),
-      Vector2f(rect.x + rect.width, rect.y + rect.height / 2.0),
-    };
-
-    for(auto& v : vertices)
-      if(game->isPointSolid(v))
-        return false;
-
-    if(game->isSolid(rect, rect))
-      return false;
-
-    pos += delta;
-    return true;
-  }
-
   virtual void tick() override
   {
     decrement(blinking);
@@ -299,11 +277,11 @@ struct Rockman : Player
     computeVelocity(control);
 
     // horizontal move
-    move(Vector2f(vel.x, 0));
+    move(this, Vector2f(vel.x, 0));
 
     // vertical move
 
-    if(move(Vector2f(0, vel.y)))
+    if(move(this, Vector2f(0, vel.y)))
     {
       ground = false;
     }

@@ -10,6 +10,7 @@
 #include "game/sounds.h"
 #include "game/toggle.h"
 #include "game/entities/explosion.h"
+#include "game/entities/move.h"
 
 struct Wheel : Entity
 {
@@ -40,17 +41,6 @@ struct Wheel : Entity
     return r;
   }
 
-  bool move(Vector2f delta)
-  {
-    auto nextPos = pos + delta;
-
-    if(game->isSolid(nextPos, size))
-      return false;
-
-    pos = nextPos;
-    return true;
-  }
-
   virtual void tick() override
   {
     ++time;
@@ -59,11 +49,11 @@ struct Wheel : Entity
     vel.y -= 0.00005; // gravity
 
     // horizontal move
-    if(!move(Vector2f(vel.x, 0)))
+    if(!move(this, Vector2f(vel.x, 0)))
       dir = -dir;
 
     // vertical move
-    if(!move(Vector2f(0, vel.y)))
+    if(!move(this, Vector2f(0, vel.y)))
       vel.y = 0;
 
     decrement(blinking);

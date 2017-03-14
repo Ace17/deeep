@@ -38,17 +38,6 @@ struct Hopper : Entity
     return r;
   }
 
-  bool move(Vector2f delta)
-  {
-    auto nextPos = pos + delta;
-
-    if(game->isSolid(nextPos, size))
-      return false;
-
-    pos = nextPos;
-    return true;
-  }
-
   virtual void tick() override
   {
     ++time;
@@ -67,11 +56,11 @@ struct Hopper : Entity
       vel.x = dir * 0.003;
 
     // horizontal move
-    if(!move(Vector2f(vel.x, 0)))
+    if(!move(this, Vector2f(vel.x, 0)))
       dir = -dir;
 
     // vertical move
-    if(!move(Vector2f(0, vel.y)))
+    if(!move(this, Vector2f(0, vel.y)))
     {
       ground = true;
       vel.y = 0;
