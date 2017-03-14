@@ -234,7 +234,6 @@ Model loadAnimation(string path)
   {
     auto m2 = loadModel(path);
     m.actions = move(m2.actions);
-    return m;
   }
   else if(endsWith(path, ".mdl"))
   {
@@ -278,10 +277,7 @@ void printOpenGlVersion()
 
   auto notNull = [] (char const* s) -> string
                  {
-                   if(s)
-                     return s;
-                   else
-                     return "<null>";
+                   return s ? s : "<null>";
                  };
 
   cout << "OpenGL version: " << notNull(sVersion) << endl;
@@ -300,10 +296,8 @@ void Display_init(int width, int height)
 
   mainWindow = SDL_CreateWindow(
     "My Game",
-    SDL_WINDOWPOS_CENTERED,
-    SDL_WINDOWPOS_CENTERED,
-    width,
-    height,
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    width, height,
     SDL_WINDOW_OPENGL
     );
 
