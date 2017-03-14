@@ -15,8 +15,8 @@ struct Hopper : Entity
   {
     dir = -1.0f;
     size = Size2f(1, 0.5);
-    collisionGroup = (1 << 1);
-    collidesWith = 1; // only the player
+    collisionGroup = CG_WALLS;
+    collidesWith = CG_SOLIDPLAYER;
   }
 
   virtual Actor getActor() const override

@@ -14,6 +14,7 @@
 #include "game/models.h"
 #include "game/sounds.h"
 #include "game/toggle.h"
+#include "game/collision_groups.h"
 
 struct TouchDetectorEvent : Event
 {
@@ -33,7 +34,7 @@ struct Detector : Entity
     size = Size2f(0.1, 3);
     solid = false;
     collisionGroup = 0; // dont' trigger other detectors
-    collidesWith = 0b1001; // only detect the player
+    collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
   }
 
   virtual Actor getActor() const override
@@ -69,7 +70,7 @@ struct RoomBoundaryDetector : Entity
     size = Size2f(1, 1);
     solid = false;
     collisionGroup = 0;
-    collidesWith = 0b1001; // only detect the player
+    collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
   }
 
   virtual Actor getActor() const override

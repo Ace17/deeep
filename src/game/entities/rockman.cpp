@@ -43,7 +43,7 @@ struct Bullet : Entity
   {
     size = Size2f(0.5, 0.4);
     collisionGroup = 0;
-    collidesWith = (1 << 1);
+    collidesWith = CG_WALLS;
   }
 
   virtual Actor getActor() const override
