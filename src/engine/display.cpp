@@ -30,8 +30,8 @@ using namespace std;
 #include "base/geom.h"
 #include "model.h"
 
-vector<Model> g_Models;
-GLuint g_ProgramId;
+static vector<Model> g_Models;
+static GLuint g_ProgramId;
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
@@ -350,16 +350,9 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
       SAFE_GL(glUniform4f(colorId, 0.8, 0.4, 0.4, 0));
   }
 
-  // Get a handle for our "MVP" uniform.
   auto const matrixId = glGetUniformLocation(g_ProgramId, "MVP");
 
-  if(matrixId < 0)
-    throw runtime_error("glGetUniformLocation failed");
-
-  if(model.actions.empty())
-    throw runtime_error("model has no actions");
-
-  if(actionIdx >= (int)model.actions.size())
+  if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
     throw runtime_error("invalid action index");
 
   auto const& action = model.actions[actionIdx];
