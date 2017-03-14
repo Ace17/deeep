@@ -55,7 +55,6 @@ SRCS:=\
 	src/game/entities/switch.cpp\
 	src/game/game.cpp\
 	src/game/resources.cpp\
-	src/game/level_common.cpp\
 	src/game/level_graph.cpp\
 	src/game/smarttiles.cpp\
 	src/game/level_tiled.cpp\
@@ -95,7 +94,6 @@ SRCS_TESTS:=\
 
 # get rid of those
 SRCS_TESTS+=\
-	src/game/level_common.cpp\
 	src/game/level_tiled.cpp\
 
 OBJS_TESTS:=$(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)

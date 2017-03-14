@@ -1,5 +1,4 @@
 #include "room.h"
-#include "level_common.h"
 #include "entities/detector.h"
 #include "entity_factory.h"
 
