@@ -292,7 +292,7 @@ struct Game : Scene, IGame
     m_spawned.push_back(unique(e));
   }
 
-  bool isSolid(Vector2f pos) override
+  bool isPointSolid(Vector2f pos) override
   {
     // entities
     {

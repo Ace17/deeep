@@ -58,7 +58,7 @@ struct NullGame : IGame
   {
   }
 
-  virtual bool isSolid(Vector2f pos)
+  virtual bool isPointSolid(Vector2f pos)
   {
     return pos.y < 0;
   }

@@ -279,7 +279,7 @@ struct Rockman : Player
     };
 
     for(auto& v : vertices)
-      if(game->isSolid(v))
+      if(game->isPointSolid(v))
         return false;
 
     if(game->isSolid(rect, rect))
@@ -373,10 +373,10 @@ struct Rockman : Player
   {
     auto const front = dir == RIGHT ? 0.7 : -0.7;
 
-    if(game->isSolid(pos + Vector2f(size.width / 2 + front, 0.3)))
+    if(game->isPointSolid(pos + Vector2f(size.width / 2 + front, 0.3)))
       return true;
 
-    if(game->isSolid(pos + Vector2f(size.width / 2 + front, 1.2)))
+    if(game->isPointSolid(pos + Vector2f(size.width / 2 + front, 1.2)))
       return true;
 
     return false;
