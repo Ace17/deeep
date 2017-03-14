@@ -77,7 +77,6 @@ struct Rockman : Player
   Rockman()
   {
     size = Size2f(0.9, 1.9);
-    life = 31;
   }
 
   virtual Actor getActor() const override
@@ -366,7 +365,7 @@ struct Rockman : Player
   int hurtDelay = 0;
   int dashDelay = 0;
   int shootDelay = 0;
-  int life = 0;
+  int life = 31;
   bool doubleJumped = false;
   Control control {};
 
