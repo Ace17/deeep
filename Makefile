@@ -55,11 +55,6 @@ SRCS:=\
 	src/game/entities/switch.cpp\
 	src/game/game.cpp\
 	src/game/resources.cpp\
-	src/game/graph_tools.cpp\
-	src/game/level1.cpp\
-	src/game/level2.cpp\
-	src/game/level3.cpp\
-	src/game/level4.cpp\
 	src/game/level_common.cpp\
 	src/game/level_graph.cpp\
 	src/game/smarttiles.cpp\
@@ -100,9 +95,6 @@ SRCS_TESTS:=\
 
 # get rid of those
 SRCS_TESTS+=\
-	src/game/level1.cpp\
-	src/game/level3.cpp\
-	src/game/level4.cpp\
 	src/game/level_common.cpp\
 	src/game/level_tiled.cpp\
 

@@ -35,20 +35,6 @@ void addRandomWidgets(Matrix<int>& tiles)
   }
 }
 
-Room loadTrainingLevel(IGame* game);
-
-Room loadTinyQuest(IGame* game);
-Room loadLevel2(IGame* game);
-Room loadLevel3(IGame* game);
-
-static auto const allRooms = makeVector(
-{
-  &loadTrainingLevel,
-  &loadTinyQuest,
-  &loadLevel3,
-  // &loadLevel2,
-});
-
 bool isInsideRoom(Vector2i pos, Room const& room)
 {
   if(pos.x < room.pos.x)
@@ -163,22 +149,13 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
   Room r;
 
-  if(roomIdx >= 100)
-  {
-    roomIdx -= 100;
-    roomIdx = clamp<int>(roomIdx, 0, allRooms.size() - 1);
-    r = allRooms[roomIdx] (game);
-  }
-  else
-  {
-    if(roomIdx < 0 || roomIdx >= (int)quest.size())
-      throw runtime_error("No such level");
+  if(roomIdx < 0 || roomIdx >= (int)quest.size())
+    throw runtime_error("No such level");
 
-    r = move(quest[roomIdx]);
+  r = move(quest[roomIdx]);
 
-    addThings(r, game);
-    addBoundaryDetectors(quest, roomIdx, game);
-  }
+  addThings(r, game);
+  addBoundaryDetectors(quest, roomIdx, game);
 
   addRandomWidgets(r.tiles);
 
