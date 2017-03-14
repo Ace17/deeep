@@ -211,7 +211,6 @@ Model rectangularModel(float w, float h)
 
   model.size = 4;
 
-  // Generate 1 buffer, put the resulting identifier in buffer
   SAFE_GL(glGenBuffers(1, &model.buffer));
   SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
   SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(myTriangle), myTriangle, GL_STATIC_DRAW));
