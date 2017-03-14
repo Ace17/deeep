@@ -3,7 +3,6 @@
 #include "game/entity.h"
 #include <memory>
 
-static auto const ENTITY_TELEPORTER = "teleporter";
 static auto const ENTITY_FRAGILE_DOOR = "fragile_door";
 static auto const ENTITY_SPIKES = "spikes";
 

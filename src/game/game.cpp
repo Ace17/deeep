@@ -224,12 +224,6 @@ struct Game : Scene, IGame
     spawn(m_player);
 
     {
-      auto f = bind(&Game::onEndLevel, this, std::placeholders::_1);
-      m_ender = makeDelegator<EndLevelEvent>(f);
-      subscribeForEvents(&m_ender);
-    }
-
-    {
       auto f = bind(&Game::onTouchLevelBoundary, this, std::placeholders::_1);
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
       subscribeForEvents(&m_levelBoundary);
@@ -254,14 +248,6 @@ struct Game : Scene, IGame
       printf("out of bounds\n");
   }
 
-  void onEndLevel(const EndLevelEvent* event)
-  {
-    (void)event;
-    m_shouldLoadLevel = true;
-    m_transform = Vector2f(0, 0);
-    m_level++;
-  }
-
   void onTouchLevelBoundary(const TouchLevelBoundary* event)
   {
     (void)event;
@@ -275,7 +261,7 @@ struct Game : Scene, IGame
   Vector2f m_transform;
   bool m_shouldLoadLevel = false;
 
-  EventDelegator m_ender, m_levelBoundary;
+  EventDelegator m_levelBoundary;
   EventDelegator m_oobDelegator;
 
   ////////////////////////////////////////////////////////////////

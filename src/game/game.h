@@ -32,10 +32,6 @@ struct Event
   }
 };
 
-struct EndLevelEvent : Event
-{
-};
-
 struct TouchLevelBoundary : Event
 {
   TouchLevelBoundary(int targetLevel_, Vector2f transform_)
