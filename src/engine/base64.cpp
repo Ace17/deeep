@@ -1,12 +1,9 @@
 /**
- * @file base64.cpp
- * @brief Tiny base64 decoder
- * @author Sebastien Alaiwan
- * @date 2016-04-03
+ * Tiny base64 decoder
  */
 
 /*
- * Copyright (C) 2016 - Sebastien Alaiwan
+ * Copyright (C) 2017 - Sebastien Alaiwan
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
