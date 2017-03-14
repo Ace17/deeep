@@ -111,7 +111,7 @@ struct Rockman : Player
         else
         {
           r.pos.y -= 0.3;
-          r.action = ACTION_FALL;
+          r.action = shootDelay ? ACTION_FALL_SHOOT : ACTION_FALL;
           r.ratio = vel.y > 0 ? 0 : 1;
         }
       }
@@ -309,6 +309,10 @@ struct Rockman : Player
         auto sign = (dir == LEFT ? -1 : 1);
         auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
         auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
+
+        if(!ground)
+          offsetV.y += 0.25;
+
         b->pos = pos + offsetV + offsetH * sign;
         b->vel = Vector2f(0.025, 0) * sign;
         game->spawn(b.release());

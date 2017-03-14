@@ -45,6 +45,10 @@
       "frames": [ 83, 84 ]
     },
     {
+      "name": "fallShoot",
+      "frames": [ 92 ]
+    },
+    {
       "name": "ladder",
       "frames": [ 4 ]
     },
