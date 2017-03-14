@@ -37,11 +37,6 @@ struct NullPlayer : Player
   {
   }
 
-  virtual int getUpgrades()
-  {
-    return 0;
-  }
-
   virtual Actor getActor() const override
   {
     return Actor(pos, 0);

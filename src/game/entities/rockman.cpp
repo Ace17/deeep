@@ -176,11 +176,6 @@ struct Rockman : Player
     life = 31;
   }
 
-  virtual int getUpgrades() override
-  {
-    return upgrades;
-  }
-
   void computeVelocity(Control c)
   {
     if(hurtDelay || life <= 0)
