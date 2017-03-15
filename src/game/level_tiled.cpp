@@ -260,6 +260,19 @@ Room loadAbstractRoom(json::Object* jsonRoom)
     generateConcreteRoom(room);
   }
 
+  auto const actualSize = room.tiles.size / CELL_SIZE;
+
+  if(actualSize != room.size)
+  {
+    char buffer[256];
+    sprintf(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
+            room.pos.x, room.pos.y,
+            path.c_str(), room.theme,
+            room.size.width, room.size.height,
+            actualSize.width, actualSize.height);
+    throw runtime_error(buffer);
+  }
+
   return room;
 }
 

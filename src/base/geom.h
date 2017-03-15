@@ -45,6 +45,16 @@ struct GenericSize
     return MyType(a.width / val, a.height / val);
   }
 
+  bool operator == (GenericSize const& other) const
+  {
+    return width == other.width && height == other.height;
+  }
+
+  bool operator != (GenericSize const& other) const
+  {
+    return !(*this == other);
+  }
+
   T width, height;
 };
 
