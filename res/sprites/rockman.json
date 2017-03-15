@@ -17,6 +17,10 @@
       "frames": [ 8, 9 ]
     },
     {
+      "name": "ball",
+      "frames": [ 4, 5, 6, 7 ]
+    },
+    {
       "name": "entrance",
       "frames": [ 4 ]
     },

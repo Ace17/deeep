@@ -87,7 +87,12 @@ struct Rockman : Player
     // re-center
     r.pos += Vector2f(-(r.scale.width - size.width) * 0.5, -0.1);
 
-    if(hurtDelay || life < 0)
+    if(ball)
+    {
+      r.action = ACTION_BALL;
+      r.ratio = (time % 300) / 300.0f;
+    }
+    else if(hurtDelay || life < 0)
     {
       r.action = ACTION_HURT;
       r.ratio = 1.0f - hurtDelay / float(HURT_DELAY);
@@ -310,6 +315,18 @@ struct Rockman : Player
       }
     }
 
+    if(control.down && !ball)
+    {
+      ball = true;
+      size = Size2f(0.9, 0.9);
+    }
+
+    if(control.up)
+    {
+      ball = false;
+      size = Size2f(0.9, 1.9);
+    }
+
     collisionGroup = CG_PLAYER;
 
     if(!blinking)
@@ -367,6 +384,7 @@ struct Rockman : Player
   int shootDelay = 0;
   int life = 31;
   bool doubleJumped = false;
+  bool ball = false;
   Control control {};
 
   int upgrades = 0;
