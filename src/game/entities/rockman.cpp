@@ -72,11 +72,13 @@ struct Bullet : Entity
   int life = 1000;
 };
 
+static auto const NORMAL_SIZE = Size2f(0.9, 1.9);
+
 struct Rockman : Player
 {
   Rockman()
   {
-    size = Size2f(0.9, 1.9);
+    size = NORMAL_SIZE;
   }
 
   virtual Actor getActor() const override
@@ -295,7 +297,7 @@ struct Rockman : Player
     decrement(climbDelay);
     decrement(shootDelay);
 
-    if(upgrades & UPGRADE_SHOOT)
+    if(upgrades & UPGRADE_SHOOT && !ball)
     {
       if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 150))
       {
@@ -321,10 +323,13 @@ struct Rockman : Player
       size = Size2f(0.9, 0.9);
     }
 
-    if(control.up)
+    if(control.up && ball)
     {
-      ball = false;
-      size = Size2f(0.9, 1.9);
+      if(!game->isSolid(pos, NORMAL_SIZE))
+      {
+        ball = false;
+        size = NORMAL_SIZE;
+      }
     }
 
     collisionGroup = CG_PLAYER;
