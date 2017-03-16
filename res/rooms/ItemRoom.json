@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYBxGmJkIjE0fDBCjHwYI6WcgII5NPylgpOtHNoNa+rHFGz4+tdIPpemXXAwA9CMA8Q==",
+         "data":"eJxjZGBgYBzFZIHBrp+a8tjU0Fs\/PjMo0c+MQz8zEWZQoh\/GZ8aDaZ3uAVWDALM=",
          "encoding":"base64",
          "height":16,
          "name":"tiles",
@@ -26,8 +26,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":128,
-                 "y":176
+                 "x":64,
+                 "y":208
                 }],
          "opacity":1,
          "type":"objectgroup",
