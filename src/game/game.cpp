@@ -62,6 +62,12 @@ struct Game : Scene, IGame
     removeDeadThings();
 
     m_debug = c.debug;
+
+    if(c.debug && m_debugFirstTime)
+    {
+      m_debugFirstTime = false;
+      m_player->addUpgrade(-1);
+    }
   }
 
   vector<Actor> getActors() const override
@@ -336,6 +342,7 @@ struct Game : Scene, IGame
   Matrix<int> m_tiles;
   vector<SOUND> m_sounds;
   bool m_debug;
+  bool m_debugFirstTime = true;
 
   // static stuff
 
