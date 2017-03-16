@@ -317,7 +317,7 @@ struct Rockman : Player
       }
     }
 
-    if(control.down && !ball)
+    if(control.down && !ball && (upgrades & UPGRADE_BALL))
     {
       ball = true;
       size = Size2f(0.9, 0.9);

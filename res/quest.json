@@ -455,6 +455,28 @@
                  "width":16,
                  "x":44,
                  "y":68
+                }, 
+                {
+                 "height":4,
+                 "id":122,
+                 "name":"ItemBall",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":4,
+                 "x":8,
+                 "y":68
+                }, 
+                {
+                 "height":4,
+                 "id":123,
+                 "name":"Antichamber",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":16,
+                 "x":12,
+                 "y":68
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -549,7 +571,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":122,
+ "nextobjectid":125,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
