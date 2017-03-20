@@ -383,23 +383,7 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
   SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
   SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
 
-  auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
-  auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
-
-  assert(positionLoc >= 0);
-  assert(texCoordLoc >= 0);
-
-  // connect the xyz to the "a_position" attribute of the vertex shader
-  SAFE_GL(glEnableVertexAttribArray(positionLoc));
-  SAFE_GL(glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
-
-  // connect the uv coords to the "v_texCoord" attribute of the vertex shader
-  SAFE_GL(glEnableVertexAttribArray(texCoordLoc));
-  SAFE_GL(glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
-
   SAFE_GL(glDrawElements(GL_TRIANGLES, model.numIndices, GL_UNSIGNED_SHORT, 0));
-
-  SAFE_GL(glDisableVertexAttribArray(positionLoc));
 }
 
 void Display_beginDraw()
@@ -420,6 +404,22 @@ void Display_beginDraw()
       0, 0, 0, 1,
     };
     SAFE_GL(glUniformMatrix4fv(scaleMatrixId, 1, GL_FALSE, mat));
+  }
+
+  {
+    auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
+    auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
+
+    assert(positionLoc >= 0);
+    assert(texCoordLoc >= 0);
+
+    // connect the xyz to the "a_position" attribute of the vertex shader
+    SAFE_GL(glEnableVertexAttribArray(positionLoc));
+    SAFE_GL(glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
+
+    // connect the uv coords to the "v_texCoord" attribute of the vertex shader
+    SAFE_GL(glEnableVertexAttribArray(texCoordLoc));
+    SAFE_GL(glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
   }
 }
 
