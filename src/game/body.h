@@ -1,6 +1,5 @@
 #include <functional>
 #include "base/geom.h"
-#include "game.h"
 
 using namespace std;
 

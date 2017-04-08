@@ -53,11 +53,6 @@ struct NullGame : IGame
   {
   }
 
-  virtual bool isPointSolid(Vector2f pos)
-  {
-    return pos.y < 0;
-  }
-
   virtual void postEvent(unique_ptr<Event> )
   {
   }
@@ -69,6 +64,54 @@ struct NullGame : IGame
   virtual Vector2f getPlayerPosition()
   {
     return Vector2f(0, 0);
+  }
+};
+
+struct NullPhysics : IPhysics
+{
+  // called by game
+  void addBody(Body*)
+  {
+    assert(false);
+  }
+
+  void removeBody(Body*)
+  {
+    assert(false);
+  }
+
+  void clearBodies()
+  {
+    assert(false);
+  }
+
+  void checkForOverlaps()
+  {
+    assert(false);
+  }
+
+  void setEdifice(function<bool(Rect2f)> )
+  {
+    assert(false);
+  }
+
+  // called by entities
+  bool moveBody(Body* body, Vector2f delta)
+  {
+    auto rect = body->getRect();
+    rect.x += delta.x;
+    rect.y += delta.y;
+
+    if(isSolid(rect))
+      return false;
+
+    body->pos += delta;
+    return true;
+  }
+
+  bool isSolid(Rect2f rect) const
+  {
+    return rect.y < 0;
   }
 };
 
@@ -85,10 +128,12 @@ unittest("Entity: pickup bonus")
   };
 
   NullGame game;
+  NullPhysics physics;
   MockPlayer player;
 
   auto ent = makeBonus(0, 4);
   ent->game = &game;
+  ent->physics = &physics;
 
   assert(!ent->dead);
   assertEquals(0, player.upgrades);
@@ -129,7 +174,9 @@ unittest("Entity: rockman falls")
 {
   auto player = makeRockman();
   auto game = NullGame();
+  auto physics = NullPhysics();
   player->game = &game;
+  player->physics = &physics;
   player->pos.y = 10;
   player->tick();
 
@@ -140,7 +187,9 @@ unittest("Entity: rockman stands on ground, then walks")
 {
   auto player = makeRockman();
   auto game = NullGame();
+  auto physics = NullPhysics();
   player->game = &game;
+  player->physics = &physics;
 
   player->pos.y = 0;
 

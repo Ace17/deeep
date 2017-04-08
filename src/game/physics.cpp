@@ -1,5 +1,7 @@
 #include "game/body.h"
+#include "base/util.h"
 #include <vector>
+#include <memory>
 
 using namespace std;
 
