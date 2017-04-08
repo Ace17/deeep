@@ -48,9 +48,6 @@ struct Bullet : Entity
     r.action = 0;
     r.ratio = 0;
 
-    // re-center
-    r.pos += Vector2f(r.scale.width * 0.5, 0);
-
     return r;
   }
 
