@@ -32,16 +32,13 @@ struct Actor
 {
   Actor(Vector2f pos_ = Vector2f(0, 0), MODEL model_ = 0) : pos(pos_), model(model_)
   {
-    scale = Size2f(1, 1);
-    effect = EFFECT_NORMAL;
-    ratio = 0;
   }
 
-  Vector2f pos;
-  MODEL model;
+  Vector2f pos = Vector2f(0, 0);
+  MODEL model = 0;
   int action = 0;
-  float ratio = 1; // in [0 .. 1]
-  Size2f scale;
+  float ratio = 0; // in [0 .. 1]
+  Size2f scale = Size2f(1, 1);
   EFFECT_TYPE effect = EFFECT_NORMAL;
 };
 
