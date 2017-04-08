@@ -58,10 +58,7 @@ struct Physics : IPhysics
     rect.x += delta.x;
     rect.y += delta.y;
 
-    if(rectOverlapsSolidBody(rect))
-      return false;
-
-    if(m_isSolid(rect))
+    if(isSolid(rect))
       return false;
 
     body->pos += delta;
