@@ -27,7 +27,13 @@ struct Body
   }
 };
 
-struct IPhysics
+struct IPhysicsProbe
+{
+  virtual bool moveBody(Body* body, Vector2f delta) = 0;
+  virtual bool isSolid(Rect2f) const = 0;
+};
+
+struct IPhysics : IPhysicsProbe
 {
   // called by game
   virtual void addBody(Body* body) = 0;
@@ -35,9 +41,5 @@ struct IPhysics
   virtual void clearBodies() = 0;
   virtual void checkForOverlaps() = 0;
   virtual void setEdifice(function<bool(Rect2f)> isSolid) = 0;
-
-  // called by entities
-  virtual bool moveBody(Body* body, Vector2f delta) = 0;
-  virtual bool isSolid(Rect2f) const = 0;
 };
 

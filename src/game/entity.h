@@ -50,7 +50,7 @@ struct Entity : Body
   Vector2f vel;
   int blinking = 0;
   IGame* game = nullptr;
-  IPhysics* physics = nullptr;
+  IPhysicsProbe* physics = nullptr;
 
   Vector2f getCenter() const
   {

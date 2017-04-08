@@ -67,34 +67,8 @@ struct NullGame : IGame
   }
 };
 
-struct NullPhysics : IPhysics
+struct NullPhysicsProbe : IPhysicsProbe
 {
-  // called by game
-  void addBody(Body*)
-  {
-    assert(false);
-  }
-
-  void removeBody(Body*)
-  {
-    assert(false);
-  }
-
-  void clearBodies()
-  {
-    assert(false);
-  }
-
-  void checkForOverlaps()
-  {
-    assert(false);
-  }
-
-  void setEdifice(function<bool(Rect2f)> )
-  {
-    assert(false);
-  }
-
   // called by entities
   bool moveBody(Body* body, Vector2f delta)
   {
@@ -128,7 +102,7 @@ unittest("Entity: pickup bonus")
   };
 
   NullGame game;
-  NullPhysics physics;
+  NullPhysicsProbe physics;
   MockPlayer player;
 
   auto ent = makeBonus(0, 4);
@@ -174,7 +148,7 @@ unittest("Entity: rockman falls")
 {
   auto player = makeRockman();
   auto game = NullGame();
-  auto physics = NullPhysics();
+  auto physics = NullPhysicsProbe();
   player->game = &game;
   player->physics = &physics;
   player->pos.y = 10;
@@ -187,7 +161,7 @@ unittest("Entity: rockman stands on ground, then walks")
 {
   auto player = makeRockman();
   auto game = NullGame();
-  auto physics = NullPhysics();
+  auto physics = NullPhysicsProbe();
   player->game = &game;
   player->physics = &physics;
 
