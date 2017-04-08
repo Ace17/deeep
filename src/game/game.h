@@ -73,32 +73,8 @@ struct IGame
 {
   virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
-  virtual bool isPointSolid(Vector2f pos) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;
   virtual void subscribeForEvents(IEventSink*) = 0;
   virtual Vector2f getPlayerPosition() = 0;
-
-  bool isSolid(Vector2f pos, Size2f size)
-  {
-    if(isPointSolid(pos + Vector2f(0, 0)))
-      return true;
-
-    if(isPointSolid(pos + Vector2f(size.width, 0)))
-      return true;
-
-    if(isPointSolid(pos + Vector2f(0, size.height)))
-      return true;
-
-    if(isPointSolid(pos + Vector2f(size.width, size.height)))
-      return true;
-
-    if(isPointSolid(pos + Vector2f(0, size.height/2)))
-      return true;
-
-    if(isPointSolid(pos + Vector2f(size.width, size.height/2)))
-      return true;
-
-    return false;
-  }
 };
 

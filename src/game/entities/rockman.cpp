@@ -322,7 +322,13 @@ struct Rockman : Player
 
     if(control.up && ball)
     {
-      if(!game->isSolid(pos, NORMAL_SIZE))
+      Rect2f rect;
+      rect.width = NORMAL_SIZE.width;
+      rect.height = NORMAL_SIZE.height;
+      rect.x = pos.x;
+      rect.y = pos.y;
+
+      if(!physics->isSolid(rect))
       {
         ball = false;
         size = NORMAL_SIZE;
@@ -360,10 +366,13 @@ struct Rockman : Player
   {
     auto const front = dir == RIGHT ? 0.7 : -0.7;
 
-    if(game->isPointSolid(pos + Vector2f(size.width / 2 + front, 0.3)))
-      return true;
+    Rect2f rect;
+    rect.x = pos.x + size.width / 2 + front;
+    rect.y = pos.y + 0.3;
+    rect.width = 0.01;
+    rect.height = 0.9;
 
-    if(game->isPointSolid(pos + Vector2f(size.width / 2 + front, 1.2)))
+    if(physics->isSolid(rect))
       return true;
 
     return false;

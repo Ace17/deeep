@@ -30,11 +30,15 @@ struct Body
 
 struct IPhysics
 {
+  // called by game
   virtual void addBody(Body* body) = 0;
   virtual void removeBody(Body* body) = 0;
   virtual void clearBodies() = 0;
-  virtual bool moveBody(Body* body, Vector2f delta) = 0;
   virtual void checkForOverlaps() = 0;
   virtual void setEdifice(function<bool(Rect2f)> isSolid) = 0;
+
+  // called by entities
+  virtual bool moveBody(Body* body, Vector2f delta) = 0;
+  virtual bool isSolid(Rect2f) const = 0;
 };
 

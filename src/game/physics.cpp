@@ -68,6 +68,17 @@ struct Physics : IPhysics
     return true;
   }
 
+  bool isSolid(Rect2f rect) const
+  {
+    if(rectOverlapsSolidBody(rect))
+      return true;
+
+    if(m_isSolid(rect))
+      return true;
+
+    return false;
+  }
+
   void checkForOverlaps()
   {
     for(auto p : allPairs((int)m_bodies.size()))
@@ -95,8 +106,7 @@ struct Physics : IPhysics
   }
 
 private:
-
-  bool rectOverlapsSolidBody(Rect2f myRect)
+  bool rectOverlapsSolidBody(Rect2f myRect) const
   {
     for(auto& body : m_bodies)
     {

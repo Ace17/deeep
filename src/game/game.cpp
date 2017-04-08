@@ -264,23 +264,6 @@ struct Game : Scene, IGame
     m_spawned.push_back(unique(e));
   }
 
-  bool isPointSolid(Vector2f pos) override
-  {
-    // tiles
-    {
-      auto const x = (int)pos.x;
-      auto const y = (int)pos.y;
-
-      if(m_tiles.isInside(x, y))
-      {
-        if(m_tiles.get(x, y) != 0)
-          return true;
-      }
-    }
-
-    return false;
-  }
-
   void postEvent(unique_ptr<Event> event) override
   {
     for(auto& listener : m_listeners)
@@ -334,7 +317,39 @@ struct Game : Scene, IGame
 
   bool isRectSolid(Rect2f rect)
   {
-    return isSolid(rect, rect);
+    if(isPointSolid(Vector2f(rect.x, rect.y)))
+      return true;
+
+    if(isPointSolid(Vector2f(rect.x, rect.y + rect.height)))
+      return true;
+
+    if(isPointSolid(Vector2f(rect.x + rect.width, rect.y)))
+      return true;
+
+    if(isPointSolid(Vector2f(rect.x + rect.width, rect.y + rect.height)))
+      return true;
+
+    if(isPointSolid(Vector2f(rect.x, rect.y + rect.height / 2)))
+      return true;
+
+    if(isPointSolid(Vector2f(rect.x + rect.width, rect.y + rect.height / 2)))
+      return true;
+
+    return false;
+  }
+
+  bool isPointSolid(Vector2f pos)
+  {
+    auto const x = (int)pos.x;
+    auto const y = (int)pos.y;
+
+    if(!m_tiles.isInside(x, y))
+      return false;
+
+    if(m_tiles.get(x, y) == 0)
+      return false;
+
+    return true;
   }
 };
 
