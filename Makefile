@@ -36,6 +36,9 @@ LDFLAGS+=-lGL -lGLU
 
 CXXFLAGS+=-O3
 
+CXXFLAGS+=-g3
+LDFLAGS+=-g
+
 #------------------------------------------------------------------------------
 
 SRCS:=\
@@ -54,6 +57,7 @@ SRCS:=\
 	src/game/entities/rockman.cpp\
 	src/game/entities/switch.cpp\
 	src/game/game.cpp\
+	src/game/physics.cpp\
 	src/game/resources.cpp\
 	src/game/level_graph.cpp\
 	src/game/smarttiles.cpp\

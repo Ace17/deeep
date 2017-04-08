@@ -34,11 +34,16 @@ static int const DETECTOR_ID_BOUNDARY = -2;
 // from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
 
+// from physics.cpp
+unique_ptr<IPhysics> createPhysics();
+
 struct Game : Scene, IGame
 {
   Game() : m_tiles(Size2i(1, 1))
   {
     m_shouldLoadLevel = true;
+    m_physics = createPhysics();
+    m_physics->setEdifice(bind(&Game::isRectSolid, this, placeholders::_1));
   }
 
   ////////////////////////////////////////////////////////////////
@@ -58,7 +63,7 @@ struct Game : Scene, IGame
     for(auto& e : m_entities)
       e->tick();
 
-    checkCollisions();
+    m_physics->checkForOverlaps();
     removeDeadThings();
 
     m_debug = c.debug;
@@ -160,43 +165,15 @@ struct Game : Scene, IGame
     m_tiles.scan(onCell);
   }
 
-  void checkCollisions()
-  {
-    for(auto p : allPairs((int)m_entities.size()))
-    {
-      auto& me = *m_entities[p.first];
-      auto& other = *m_entities[p.second];
-
-      auto rect = me.getRect();
-      auto otherRect = enlarge(other.getRect(), 1.05);
-
-      if(overlaps(rect, otherRect))
-      {
-        if(other.collidesWith & me.collisionGroup)
-          other.onCollide(&me);
-
-        if(me.collidesWith & other.collisionGroup)
-          me.onCollide(&other);
-      }
-    }
-  }
-
-  static Rect2f enlarge(Rect2f rect, float ratio)
-  {
-    Rect2f r;
-    r.width = rect.width * ratio;
-    r.height = rect.height * ratio;
-    r.x = rect.x - (r.width - rect.width) * 0.5;
-    r.y = rect.y - (r.height - rect.height) * 0.5;
-    return r;
-  }
-
   void removeDeadThings()
   {
     removeDeadEntities(m_entities);
 
     for(auto& spawned : m_spawned)
+    {
+      m_physics->addBody(spawned.get());
       m_entities.push_back(move(spawned));
+    }
 
     m_spawned.clear();
   }
@@ -209,6 +186,8 @@ struct Game : Scene, IGame
         if(m_player == entity.get())
           entity.release();
     }
+
+    m_physics->clearBodies();
 
     m_entities.clear();
     m_spawned.clear();
@@ -281,27 +260,12 @@ struct Game : Scene, IGame
   void spawn(Entity* e) override
   {
     e->game = this;
+    e->physics = m_physics.get();
     m_spawned.push_back(unique(e));
   }
 
   bool isPointSolid(Vector2f pos) override
   {
-    // entities
-    {
-      auto myRect = Rect2f(pos.x, pos.y, 0, 0);
-
-      for(auto& entity : m_entities)
-      {
-        if(!entity->solid)
-          continue;
-
-        auto rect = entity->getRect();
-
-        if(overlaps(rect, myRect))
-          return true;
-      }
-    }
-
     // tiles
     {
       auto const x = (int)pos.x;
@@ -336,6 +300,7 @@ struct Game : Scene, IGame
   Player* m_player = nullptr;
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
+  unique_ptr<IPhysics> m_physics;
 
   set<IEventSink*> m_listeners;
 
@@ -346,7 +311,7 @@ struct Game : Scene, IGame
 
   // static stuff
 
-  static void removeDeadEntities(uvector<Entity>& entities)
+  void removeDeadEntities(uvector<Entity>& entities)
   {
     auto oldEntities = std::move(entities);
 
@@ -354,6 +319,8 @@ struct Game : Scene, IGame
     {
       if(!entity->dead)
         entities.push_back(move(entity));
+      else
+        m_physics->removeBody(entity.get());
     }
   }
 
@@ -363,6 +330,11 @@ struct Game : Scene, IGame
     auto r = Actor(Vector2f(rect.x, rect.y), MDL_RECT);
     r.scale = rect;
     return r;
+  }
+
+  bool isRectSolid(Rect2f rect)
+  {
+    return isSolid(rect, rect);
   }
 };
 

@@ -16,11 +16,20 @@
 #include "base/scene.h"
 #include "base/geom.h"
 #include "game.h"
+#include "body.h"
 
-struct Entity
+struct Entity : Body
 {
   virtual ~Entity()
   {
+  }
+
+  // from Body
+  virtual void onCollision(Body* otherBody) override
+  {
+    auto other = dynamic_cast<Entity*>(otherBody);
+    assert(other);
+    onCollide(other);
   }
 
   virtual Actor getActor() const = 0;
@@ -38,25 +47,10 @@ struct Entity
   }
 
   bool dead = false;
-  bool solid = false;
-  Vector2f pos;
   Vector2f vel;
-  Size2f size = Size2f(1, 1);
   int blinking = 0;
   IGame* game = nullptr;
-
-  int collisionGroup = 1;
-  int collidesWith = 0xFFFF;
-
-  Rect2f getRect() const
-  {
-    Rect2f r;
-    r.x = pos.x;
-    r.y = pos.y;
-    r.height = size.height;
-    r.width = size.width;
-    return r;
-  }
+  IPhysics* physics = nullptr;
 
   Vector2f getCenter() const
   {

@@ -92,6 +92,12 @@ struct IGame
     if(isPointSolid(pos + Vector2f(size.width, size.height)))
       return true;
 
+    if(isPointSolid(pos + Vector2f(0, size.height/2)))
+      return true;
+
+    if(isPointSolid(pos + Vector2f(size.width, size.height/2)))
+      return true;
+
     return false;
   }
 };
