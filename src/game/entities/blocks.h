@@ -59,6 +59,7 @@ struct FragileBlock : Entity
   FragileBlock()
   {
     size = Size2f(1, 1);
+    reappear();
   }
 
   virtual Actor getActor() const override
@@ -76,23 +77,31 @@ struct FragileBlock : Entity
 
   virtual void onDamage(int) override
   {
-    disappearTimer = 3000;
+    disappear();
   }
 
   void tick() override
   {
-    decrement(disappearTimer);
+    if(decrement(disappearTimer))
+    {
+      reappear();
 
-    if(disappearTimer > 0)
-    {
-      collisionGroup = 0;
-      solid = 0;
+      if(physics->getBodiesInRect(getRect(), false, this))
+        disappear();
     }
-    else
-    {
-      collisionGroup = -1;
-      solid = 1;
-    }
+  }
+
+  void reappear()
+  {
+    collisionGroup = -1;
+    solid = 1;
+  }
+
+  void disappear()
+  {
+    disappearTimer = 3000;
+    collisionGroup = 0;
+    solid = 0;
   }
 
   int disappearTimer = 0;

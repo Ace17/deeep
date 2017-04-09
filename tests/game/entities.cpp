@@ -87,6 +87,11 @@ struct NullPhysicsProbe : IPhysicsProbe
   {
     return rect.y < 0;
   }
+
+  Body* getBodiesInRect(Rect2f, bool, const Body*) const
+  {
+    return nullptr;
+  }
 };
 
 unittest("Entity: pickup bonus")

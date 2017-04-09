@@ -26,9 +26,13 @@ bool tryActivate(T& val, U delay)
 }
 
 template<typename T>
-void decrement(T& val)
+bool decrement(T& val)
 {
+  auto oldVal = val;
+
   if(val > 0)
     val--;
+
+  return oldVal && !val;
 }
 

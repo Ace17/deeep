@@ -6,15 +6,15 @@
          "name":"rooms",
          "objects":[
                 {
-                 "height":8,
+                 "height":16,
                  "id":76,
-                 "name":"FlatRoom",
+                 "name":"TestRoom",
                  "rotation":0,
-                 "type":"3",
+                 "type":"5",
                  "visible":true,
-                 "width":12,
-                 "x":136,
-                 "y":68
+                 "width":16,
+                 "x":4,
+                 "y":4
                 }, 
                 {
                  "height":4,
@@ -488,6 +488,17 @@
                  "width":16,
                  "x":76,
                  "y":64
+                }, 
+                {
+                 "height":8,
+                 "id":127,
+                 "name":"FlatRoom",
+                 "rotation":0,
+                 "type":"3",
+                 "visible":true,
+                 "width":12,
+                 "x":136,
+                 "y":68
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -582,7 +593,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":127,
+ "nextobjectid":128,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
