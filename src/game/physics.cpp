@@ -60,16 +60,42 @@ struct Physics : IPhysics
     rect.x += delta.x;
     rect.y += delta.y;
 
-    if(isSolid(rect))
-      return false;
+    auto const blocked = isSolid(body, rect);
 
-    body->pos += delta;
-    return true;
+    if(!blocked)
+    {
+      body->pos += delta;
+
+      if(body->pusher)
+      {
+        // move stacked bodies
+        for(auto otherBody : m_bodies)
+        {
+          if(otherBody->ground == body)
+            moveBody(otherBody, delta);
+        }
+
+        // push potential non-solid bodies
+        for(auto other : m_bodies)
+          if(other != body && overlaps(rect, other->getRect()))
+            moveBody(other, delta);
+      }
+    }
+
+    // update ground
+    {
+      auto feet = rect;
+      feet.y -= 0.01;
+      feet.height = 0.01;
+      body->ground = getSolidBodyInRect(feet, body);
+    }
+
+    return !blocked;
   }
 
-  bool isSolid(Rect2f rect) const
+  bool isSolid(const Body* except, Rect2f rect) const
   {
-    if(rectOverlapsSolidBody(rect))
+    if(getSolidBodyInRect(rect, except))
       return true;
 
     if(m_isSolid(rect))
@@ -105,20 +131,23 @@ struct Physics : IPhysics
   }
 
 private:
-  bool rectOverlapsSolidBody(Rect2f myRect) const
+  Body* getSolidBodyInRect(Rect2f myRect, const Body* except) const
   {
     for(auto& body : m_bodies)
     {
       if(!body->solid)
         continue;
 
+      if(body == except)
+        continue;
+
       auto rect = body->getRect();
 
       if(overlaps(rect, myRect))
-        return true;
+        return body;
     }
 
-    return false;
+    return nullptr;
   }
 
   vector<Body*> m_bodies;

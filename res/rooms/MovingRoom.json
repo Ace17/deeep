@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztVUEOwCAIw\/9\/erdlcYooCipt0uygg7aymYgogSAIgiD48hZE9v5FRM85InoG5Fg1G6P1Zujg\/Ox+n3jfgZ4ZeGuFf\/tMvPtzsOrv4X\/GnlNngOivIdezUlepX1T\/1t538++RQcs\/hxtmQOOf0zu73qrZIdLprfXV1JH2Ga3f41+bzSrMOjPKntJsJGcgPSevjGu+JTm0\/l2lurX3uZ6Sedd8Dz17dyOnrbR2gicQtOID4jYFSg==",
+         "data":"eJzt1TsOwCAMBFFz\/0vTIYRcIPOVd1aaluSlCMXMChEREbWyTNneT9E8TtHsDb\/vP\/VNoufueB\/PevM\/sHJuhnsvenaWex\/\/\/PNemU\/6fxx+\/Erecfjx48ev7lcdfvxE6lXYIwNj",
          "encoding":"base64",
          "height":32,
          "name":"tiles",
@@ -20,41 +20,8 @@
          "objects":[
                 {
                  "height":16,
-                 "id":1,
-                 "name":"upgrade_shoot",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":96,
-                 "y":400
-                }, 
-                {
-                 "height":16,
-                 "id":2,
-                 "name":"wheel",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":240,
-                 "y":192
-                }, 
-                {
-                 "height":16,
-                 "id":3,
-                 "name":"wheel",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":720,
-                 "y":192
-                }, 
-                {
-                 "height":16,
                  "id":4,
-                 "name":"wheel",
+                 "name":"hopper",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -64,25 +31,91 @@
                 }, 
                 {
                  "height":16,
-                 "id":5,
-                 "name":"wheel",
+                 "id":7,
+                 "name":"moving_platform(0)",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":816,
+                 "x":224,
+                 "y":416
+                }, 
+                {
+                 "height":16,
+                 "id":8,
+                 "name":"moving_platform(1)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":464,
+                 "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":9,
+                 "name":"moving_platform(1)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
                  "y":192
                 }, 
                 {
                  "height":16,
-                 "id":6,
-                 "name":"fragile_block",
+                 "id":10,
+                 "name":"moving_platform(0)",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":640,
-                 "y":176
+                 "x":288,
+                 "y":384
+                }, 
+                {
+                 "height":16,
+                 "id":11,
+                 "name":"moving_platform(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":336,
+                 "y":336
+                }, 
+                {
+                 "height":16,
+                 "id":12,
+                 "name":"moving_platform(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":544,
+                 "y":304
+                }, 
+                {
+                 "height":16,
+                 "id":13,
+                 "name":"moving_platform(1)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":432,
+                 "y":336
+                }, 
+                {
+                 "height":16,
+                 "id":14,
+                 "name":"moving_platform(1)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":480,
+                 "y":336
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -91,7 +124,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":7,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

@@ -6,10 +6,12 @@ using namespace std;
 struct Body
 {
   bool solid = false;
+  bool pusher = false; // push and crush?
   Vector2f pos;
   Size2f size = Size2f(1, 1);
   int collisionGroup = 1;
   int collidesWith = 0xFFFF;
+  Body* ground = nullptr; // the body we rest on (if any)
 
   // only called if (this->collidesWith & other->collisionGroup)
   virtual void onCollision(Body* /*other*/)
@@ -30,7 +32,7 @@ struct Body
 struct IPhysicsProbe
 {
   virtual bool moveBody(Body* body, Vector2f delta) = 0;
-  virtual bool isSolid(Rect2f) const = 0;
+  virtual bool isSolid(const Body* body, Rect2f) const = 0;
 };
 
 struct IPhysics : IPhysicsProbe

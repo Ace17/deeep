@@ -76,14 +76,14 @@ struct NullPhysicsProbe : IPhysicsProbe
     rect.x += delta.x;
     rect.y += delta.y;
 
-    if(isSolid(rect))
+    if(isSolid(body, rect))
       return false;
 
     body->pos += delta;
     return true;
   }
 
-  bool isSolid(Rect2f rect) const
+  bool isSolid(const Body* /*body*/, Rect2f rect) const
   {
     return rect.y < 0;
   }

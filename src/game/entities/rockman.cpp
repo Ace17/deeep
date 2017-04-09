@@ -328,7 +328,7 @@ struct Rockman : Player
       rect.x = pos.x;
       rect.y = pos.y;
 
-      if(!physics->isSolid(rect))
+      if(!physics->isSolid(this, rect))
       {
         ball = false;
         size = NORMAL_SIZE;
@@ -372,7 +372,7 @@ struct Rockman : Player
     rect.width = 0.01;
     rect.height = 0.9;
 
-    if(physics->isSolid(rect))
+    if(physics->isSolid(this, rect))
       return true;
 
     return false;
