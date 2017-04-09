@@ -83,10 +83,12 @@ SRCS_TESTS:=\
 	src/game/entities/rockman.cpp\
 	src/game/entities/switch.cpp\
 	src/game/level_graph.cpp\
+	src/game/physics.cpp\
 	tests/base64.cpp\
 	tests/decompress.cpp\
 	tests/game/entities.cpp\
 	tests/game/level_graph.cpp\
+	tests/game/physics.cpp\
 	tests/json.cpp\
 	tests/util.cpp\
 	tests/tests.cpp\
