@@ -86,14 +86,14 @@ struct FragileBlock : Entity
     {
       reappear();
 
-      if(physics->getBodiesInRect(getRect(), false, this))
+      if(physics->getBodiesInRect(getRect(), CG_PLAYER, false, this))
         disappear();
     }
   }
 
   void reappear()
   {
-    collisionGroup = -1;
+    collisionGroup = CG_WALLS;
     solid = 1;
   }
 

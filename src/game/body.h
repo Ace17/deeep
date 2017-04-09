@@ -33,7 +33,7 @@ struct IPhysicsProbe
 {
   virtual bool moveBody(Body* body, Vector2f delta) = 0;
   virtual bool isSolid(const Body* body, Rect2f) const = 0;
-  virtual Body* getBodiesInRect(Rect2f myRect, bool onlySolid = false, const Body* except = nullptr) const = 0;
+  virtual Body* getBodiesInRect(Rect2f myRect, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
 };
 
 struct IPhysics : IPhysicsProbe

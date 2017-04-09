@@ -130,7 +130,7 @@ struct Physics : IPhysics
     m_isSolid = isSolid;
   }
 
-  Body* getBodiesInRect(Rect2f myRect, bool onlySolid, const Body* except) const
+  Body* getBodiesInRect(Rect2f myRect, int collisionGroup, bool onlySolid, const Body* except) const
   {
     for(auto& body : m_bodies)
     {
@@ -138,6 +138,9 @@ struct Physics : IPhysics
         continue;
 
       if(body == except)
+        continue;
+
+      if(!(body->collisionGroup & collisionGroup))
         continue;
 
       auto rect = body->getRect();
@@ -152,7 +155,7 @@ struct Physics : IPhysics
 private:
   Body* getSolidBodyInRect(Rect2f myRect, const Body* except) const
   {
-    return getBodiesInRect(myRect, true, except);
+    return getBodiesInRect(myRect, -1, true, except);
   }
 
   vector<Body*> m_bodies;

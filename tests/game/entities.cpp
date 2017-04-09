@@ -88,7 +88,7 @@ struct NullPhysicsProbe : IPhysicsProbe
     return rect.y < 0;
   }
 
-  Body* getBodiesInRect(Rect2f, bool, const Body*) const
+  Body* getBodiesInRect(Rect2f, int, bool, const Body*) const
   {
     return nullptr;
   }

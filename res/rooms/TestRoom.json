@@ -127,6 +127,28 @@
                  "width":16,
                  "x":224,
                  "y":704
+                }, 
+                {
+                 "height":16,
+                 "id":11,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":688
+                }, 
+                {
+                 "height":16,
+                 "id":12,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":672
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -135,7 +157,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":11,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztVUEOwCAIw\/9\/erdlcYooCipt0uygg7aymYgogSAIgiD48hZE9v5FRM85InoG5Fg1G6P1Zujg\/Ox+n3jfgZ4ZeGuFf\/tMvPtzsOrv4X\/GnlNngOivIdezUlepX1T\/1t538++RQcs\/hxtmQOOf0zu73qrZIdLprfXV1JH2Ga3f41+bzSrMOjPKntJsJGcgPSevjGu+JTm0\/l2lurX3uZ6Sedd8Dz17dyOnrbR2gicQtOID4jYFSg==",
+         "data":"eJztlcESgCAIRPH\/f7rp0sEUMQQkl5mdDinsA8tCRAWCIAiCoEc7hcZjdvY7Wp5mfWZjtoiMzKfPzZPfMu\/XfVp+bt3u90n0HRjZg2iv4PfvSXR9LrzqR\/CvWJP1DBC9PdR+LH216p3K782+G39ED0b8XPzhDGj4Ob+r81mdHSKd315dTR5pna\/5Z\/i1vbGKVTOj6intjWQG0jlF9bjHLenD6N\/Vytvbz9WUnHfN9zCzdjdx3lrvMjBBkJcuiiMFag==",
          "encoding":"base64",
          "height":32,
          "name":"tiles",
@@ -42,17 +42,6 @@
                 }, 
                 {
                  "height":16,
-                 "id":3,
-                 "name":"wheel",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":720,
-                 "y":192
-                }, 
-                {
-                 "height":16,
                  "id":4,
                  "name":"wheel",
                  "rotation":0,
@@ -64,25 +53,69 @@
                 }, 
                 {
                  "height":16,
-                 "id":5,
-                 "name":"wheel",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":816,
-                 "y":192
-                }, 
-                {
-                 "height":16,
                  "id":6,
                  "name":"fragile_block",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":640,
-                 "y":176
+                 "x":672,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":8,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":688,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":9,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":704,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":10,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":720,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":11,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":736,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":12,
+                 "name":"fragile_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":752,
+                 "y":144
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -91,7 +124,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":7,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
