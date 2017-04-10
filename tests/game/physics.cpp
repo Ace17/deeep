@@ -66,7 +66,7 @@ unittest("Physics: simple move")
   assertNearlyEquals(Vector2f(20, 10), fix.mover.pos);
 }
 
-unittest("Physics: left move, blocked by vertical wall at (0;_)")
+unittest("Physics: left move, blocked by vertical wall at x=0")
 {
   Fixture fix;
   fix.mover.pos = Vector2f(10, 10);
