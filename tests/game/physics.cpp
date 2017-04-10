@@ -44,56 +44,54 @@ bool isSolid(Rect2f rect)
   return rect.y < 0 || rect.x < 0;
 }
 
+struct Fixture
+{
+  Fixture() : physics(createPhysics())
+  {
+    physics->setEdifice(&isSolid);
+    physics->addBody(&mover);
+  }
+
+  unique_ptr<IPhysics> physics;
+  Body mover;
+};
+
 unittest("Physics: simple move")
 {
-  auto physics = createPhysics();
-  physics->setEdifice(&isSolid);
+  Fixture fix;
+  fix.mover.pos = Vector2f(10, 10);
 
-  Body mover;
-  mover.pos = Vector2f(10, 10);
-
-  physics->addBody(&mover);
-
-  auto allowed = physics->moveBody(&mover, Vector2f(10, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(10, 0));
   assert(allowed);
-  assertNearlyEquals(Vector2f(20, 10), mover.pos);
+  assertNearlyEquals(Vector2f(20, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by vertical wall at (0;_)")
 {
-  auto physics = createPhysics();
-  physics->setEdifice(&isSolid);
+  Fixture fix;
+  fix.mover.pos = Vector2f(10, 10);
 
-  Body mover;
-  mover.pos = Vector2f(10, 10);
-
-  physics->addBody(&mover);
-
-  auto allowed = physics->moveBody(&mover, Vector2f(-20, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(-20, 0));
   assert(!allowed);
 
-  assertNearlyEquals(Vector2f(10, 10), mover.pos);
+  assertNearlyEquals(Vector2f(10, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by a bigger body")
 {
-  auto physics = createPhysics();
-  physics->setEdifice(&isSolid);
-
-  Body mover;
-  mover.pos = Vector2f(100, 10);
-  mover.size = Size2f(1, 1);
-  physics->addBody(&mover);
+  Fixture fix;
+  fix.mover.pos = Vector2f(100, 10);
+  fix.mover.size = Size2f(1, 1);
 
   Body blocker;
   blocker.pos = Vector2f(200, 5);
   blocker.size = Size2f(10, 10);
   blocker.solid = true;
-  physics->addBody(&blocker);
+  fix.physics->addBody(&blocker);
 
-  auto allowed = physics->moveBody(&mover, Vector2f(100, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(100, 0));
   assert(!allowed);
 
-  assertNearlyEquals(Vector2f(100, 10), mover.pos);
+  assertNearlyEquals(Vector2f(100, 10), fix.mover.pos);
 }
 
