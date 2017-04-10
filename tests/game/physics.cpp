@@ -49,13 +49,51 @@ unittest("Physics: simple move")
   auto physics = createPhysics();
   physics->setEdifice(&isSolid);
 
-  Body body;
-  body.pos = Vector2f(10, 10);
+  Body mover;
+  mover.pos = Vector2f(10, 10);
 
-  physics->addBody(&body);
+  physics->addBody(&mover);
 
-  physics->moveBody(&body, Vector2f(10, 0));
+  auto allowed = physics->moveBody(&mover, Vector2f(10, 0));
+  assert(allowed);
+  assertNearlyEquals(Vector2f(20, 10), mover.pos);
+}
 
-  assertNearlyEquals(Vector2f(20, 10), body.pos);
+unittest("Physics: left move, blocked by vertical wall at (0;_)")
+{
+  auto physics = createPhysics();
+  physics->setEdifice(&isSolid);
+
+  Body mover;
+  mover.pos = Vector2f(10, 10);
+
+  physics->addBody(&mover);
+
+  auto allowed = physics->moveBody(&mover, Vector2f(-20, 0));
+  assert(!allowed);
+
+  assertNearlyEquals(Vector2f(10, 10), mover.pos);
+}
+
+unittest("Physics: left move, blocked by a bigger body")
+{
+  auto physics = createPhysics();
+  physics->setEdifice(&isSolid);
+
+  Body mover;
+  mover.pos = Vector2f(100, 10);
+  mover.size = Size2f(1, 1);
+  physics->addBody(&mover);
+
+  Body blocker;
+  blocker.pos = Vector2f(200, 5);
+  blocker.size = Size2f(10, 10);
+  blocker.solid = true;
+  physics->addBody(&blocker);
+
+  auto allowed = physics->moveBody(&mover, Vector2f(100, 0));
+  assert(!allowed);
+
+  assertNearlyEquals(Vector2f(100, 10), mover.pos);
 }
 
