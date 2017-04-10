@@ -44,7 +44,7 @@ struct CrumbleBlock : Entity
       if(disappearTimer < 900)
         solid = 0;
     }
-    else
+    else if(!physics->getBodiesInRect(getRect(), CG_PLAYER, false, this))
     {
       collidesWith = CG_PLAYER;
       solid = 1;
