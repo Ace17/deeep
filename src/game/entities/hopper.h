@@ -44,7 +44,7 @@ struct Hopper : Entity
 
     vel.y -= 0.00005; // gravity
 
-    if(time % 500 == 0 && rand() % 4 == 0)
+    if(ground && time % 500 == 0 && rand() % 4 == 0)
     {
       vel.y = 0.013;
       ground = false;
