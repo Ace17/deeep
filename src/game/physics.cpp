@@ -83,6 +83,7 @@ struct Physics : IPhysics
     }
 
     // update ground
+    if(!body->pusher)
     {
       auto feet = rect;
       feet.y -= 0.01;
