@@ -16,6 +16,7 @@ static auto const ENTITY_UPGRADE_SHOOT = "upgrade_shoot";
 static auto const ENTITY_UPGRADE_DASH = "upgrade_dash";
 static auto const ENTITY_UPGRADE_DJUMP = "upgrade_djump";
 static auto const ENTITY_UPGRADE_BALL = "upgrade_ball";
+static auto const ENTITY_UPGRADE_SLIDE = "upgrade_slide";
 
 // e.g:
 // createEntity("spider");

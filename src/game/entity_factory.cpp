@@ -68,6 +68,12 @@ static map<string, CreationFunc> getRegistry()
       return makeBonus(7, UPGRADE_BALL);
     };
 
+  r[ENTITY_UPGRADE_SLIDE] =
+    [] (EntityArgs &)
+    {
+      return makeBonus(8, UPGRADE_SLIDE);
+    };
+
   r[ENTITY_BONUS_LIFE] =
     [] (EntityArgs &)
     {

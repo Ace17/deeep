@@ -149,6 +149,17 @@
                  "width":16,
                  "x":96,
                  "y":672
+                }, 
+                {
+                 "height":16,
+                 "id":13,
+                 "name":"upgrade_slide",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":608,
+                 "y":752
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -157,7 +168,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":13,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

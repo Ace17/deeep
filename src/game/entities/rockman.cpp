@@ -200,13 +200,16 @@ struct Rockman : Player
 
     sliding = false;
 
-    if(!ball && !ground)
+    if(upgrades & UPGRADE_SLIDE)
     {
-      if(vel.y < 0 && facingWall() && (c.left || c.right))
+      if(!ball && !ground)
       {
-        doubleJumped = false;
-        vel.y *= 0.97;
-        sliding = true;
+        if(vel.y < 0 && facingWall() && (c.left || c.right))
+        {
+          doubleJumped = false;
+          vel.y *= 0.97;
+          sliding = true;
+        }
       }
     }
 
