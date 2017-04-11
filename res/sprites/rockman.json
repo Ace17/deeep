@@ -70,11 +70,11 @@
     },
     {
       "name": "slide",
-      "frames": [ 4 ]
+      "frames": [ 67 ]
     },
     {
       "name": "slideShoot",
-      "frames": [ 4 ]
+      "frames": [ 66 ]
     },
     {
       "name": "climb",

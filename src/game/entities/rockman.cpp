@@ -91,6 +91,11 @@ struct Rockman : Player
       r.action = ACTION_BALL;
       r.ratio = (time % 300) / 300.0f;
     }
+    else if(sliding)
+    {
+      r.action = ACTION_SLIDE;
+      r.ratio = (time % 300) / 300.0f;
+    }
     else if(hurtDelay || life < 0)
     {
       r.action = ACTION_HURT;
@@ -192,6 +197,18 @@ struct Rockman : Player
 
     // gravity
     vel.y -= 0.00005;
+
+    sliding = false;
+
+    if(!ball && !ground)
+    {
+      if(vel.y < 0 && facingWall() && (c.left || c.right))
+      {
+        doubleJumped = false;
+        vel.y *= 0.97;
+        sliding = true;
+      }
+    }
 
     if(jumpbutton.toggle(c.jump))
     {
@@ -303,7 +320,11 @@ struct Rockman : Player
         auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
         auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
 
-        if(!ground)
+        if(sliding)
+        {
+          sign = -sign;
+        }
+        else if(!ground)
           offsetV.y += 0.25;
 
         b->pos = pos + offsetV + offsetH * sign;
@@ -396,6 +417,7 @@ struct Rockman : Player
   int life = 31;
   bool doubleJumped = false;
   bool ball = false;
+  bool sliding = false;
   Control control {};
 
   int upgrades = 0;
