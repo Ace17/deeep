@@ -39,55 +39,55 @@ static map<string, CreationFunc> getRegistry()
 {
   map<string, CreationFunc> r;
 
-  r[ENTITY_UPGRADE_CLIMB] =
+  r["upgrade_climb"] =
     [] (EntityArgs &)
     {
       return makeBonus(4, UPGRADE_CLIMB);
     };
 
-  r[ENTITY_UPGRADE_SHOOT] =
+  r["upgrade_shoot"] =
     [] (EntityArgs &)
     {
       return makeBonus(3, UPGRADE_SHOOT);
     };
 
-  r[ENTITY_UPGRADE_DASH] =
+  r["upgrade_dash"] =
     [] (EntityArgs &)
     {
       return makeBonus(5, UPGRADE_DASH);
     };
 
-  r[ENTITY_UPGRADE_DJUMP] =
+  r["upgrade_djump"] =
     [] (EntityArgs &)
     {
       return makeBonus(6, UPGRADE_DJUMP);
     };
 
-  r[ENTITY_UPGRADE_BALL] =
+  r["upgrade_ball"] =
     [] (EntityArgs &)
     {
       return makeBonus(7, UPGRADE_BALL);
     };
 
-  r[ENTITY_UPGRADE_SLIDE] =
+  r["upgrade_slide"] =
     [] (EntityArgs &)
     {
       return makeBonus(8, UPGRADE_SLIDE);
     };
 
-  r[ENTITY_BONUS_LIFE] =
+  r["bonus_life"] =
     [] (EntityArgs &)
     {
       return makeBonus(0, 0);
     };
 
-  r[ENTITY_ENEMY_WHEEL] =
+  r["wheel"] =
     [] (EntityArgs &)
     {
       return make_unique<Wheel>();
     };
 
-  r[ENTITY_ENEMY_HOPPER] =
+  r["hopper"] =
     [] (EntityArgs &)
     {
       return make_unique<Hopper>();
@@ -99,19 +99,19 @@ static map<string, CreationFunc> getRegistry()
       return make_unique<Sweeper>();
     };
 
-  r[ENTITY_ENEMY_SPIDER] =
+  r["spider"] =
     [] (EntityArgs &)
     {
       return make_unique<Spider>();
     };
 
-  r[ENTITY_SPIKES] =
+  r["spikes"] =
     [] (EntityArgs &)
     {
       return make_unique<Spikes>();
     };
 
-  r[ENTITY_FRAGILE_DOOR] =
+  r["fragile_door"] =
     [] (EntityArgs &)
     {
       return makeBreakableDoor();
