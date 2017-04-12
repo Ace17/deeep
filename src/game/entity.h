@@ -18,6 +18,11 @@
 #include "game.h"
 #include "body.h"
 
+struct Damageable
+{
+  virtual void onDamage(int /*amount*/) = 0;
+};
+
 struct Entity : Body
 {
   virtual ~Entity()
@@ -39,10 +44,6 @@ struct Entity : Body
 
   // only called if (this->collidesWith & other->collisionGroup)
   virtual void onCollide(Entity* /*other*/)
-  {
-  }
-
-  virtual void onDamage(int /*amount*/)
   {
   }
 

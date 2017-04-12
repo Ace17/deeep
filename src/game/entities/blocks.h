@@ -54,7 +54,7 @@ struct CrumbleBlock : Entity
   int disappearTimer = 0;
 };
 
-struct FragileBlock : Entity
+struct FragileBlock : Entity, Damageable
 {
   FragileBlock()
   {

@@ -40,14 +40,16 @@ struct SpiderBullet : Entity
 
   void onCollide(Entity* other) override
   {
-    other->onDamage(4);
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(4);
+
     dead = true;
   }
 
   int life = 1000;
 };
 
-struct Spider : Entity
+struct Spider : Entity, Damageable
 {
   Spider()
   {
@@ -113,7 +115,8 @@ struct Spider : Entity
 
   virtual void onCollide(Entity* other) override
   {
-    other->onDamage(5);
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(5);
   }
 
   virtual void onDamage(int amount) override

@@ -12,7 +12,7 @@
 #include "game/entities/explosion.h"
 #include "game/entities/move.h"
 
-struct Wheel : Entity
+struct Wheel : Entity, Damageable
 {
   Wheel()
   {
@@ -61,7 +61,8 @@ struct Wheel : Entity
 
   virtual void onCollide(Entity* other) override
   {
-    other->onDamage(5);
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(5);
   }
 
   virtual void onDamage(int amount) override

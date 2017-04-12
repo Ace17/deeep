@@ -137,7 +137,7 @@ unique_ptr<Entity> makeDoor(int id)
 
 #include "game/entities/explosion.h"
 
-struct BreakableDoor : Entity
+struct BreakableDoor : Entity, Damageable
 {
   BreakableDoor()
   {

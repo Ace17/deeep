@@ -62,7 +62,9 @@ struct Bullet : Entity
 
   void onCollide(Entity* other) override
   {
-    other->onDamage(10);
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(10);
+
     dead = true;
   }
 
@@ -71,7 +73,7 @@ struct Bullet : Entity
 
 static auto const NORMAL_SIZE = Size2f(0.9, 1.9);
 
-struct Rockman : Player
+struct Rockman : Player, Damageable
 {
   Rockman()
   {

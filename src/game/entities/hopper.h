@@ -9,7 +9,7 @@
 #include "game/sounds.h"
 #include "game/entities/explosion.h"
 
-struct Hopper : Entity
+struct Hopper : Entity, Damageable
 {
   Hopper()
   {
@@ -71,7 +71,8 @@ struct Hopper : Entity
 
   virtual void onCollide(Entity* other) override
   {
-    other->onDamage(5);
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(5);
   }
 
   virtual void onDamage(int amount) override

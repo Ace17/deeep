@@ -26,7 +26,8 @@ struct Spikes : Entity
 
   void onCollide(Entity* other) override
   {
-    other->onDamage(1000);
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(1000);
   }
 };
 
