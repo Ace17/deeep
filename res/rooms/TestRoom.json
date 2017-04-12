@@ -160,6 +160,17 @@
                  "width":16,
                  "x":608,
                  "y":752
+                }, 
+                {
+                 "height":16,
+                 "id":14,
+                 "name":"sweeper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":752,
+                 "y":672
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -168,7 +179,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":14,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
