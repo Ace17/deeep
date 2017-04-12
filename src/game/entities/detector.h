@@ -100,7 +100,7 @@ struct RoomBoundaryBlocker : Entity
   {
     size = Size2f(1, 1);
     solid = true;
-    collisionGroup = 0;
+    collisionGroup = CG_WALLS;
     collidesWith = groupsToBlock;
   }
 
