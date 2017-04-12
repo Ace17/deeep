@@ -181,9 +181,6 @@ struct Rockman : Player
 
   void computeVelocity(Control c)
   {
-    if(hurtDelay || life <= 0)
-      c = Control {};
-
     airMove(c);
 
     if(ground)
@@ -285,6 +282,9 @@ struct Rockman : Player
     decrement(blinking);
     decrement(hurtDelay);
     decrement(dashDelay);
+
+    if(hurtDelay || life <= 0)
+      control = Control {};
 
     time++;
     computeVelocity(control);
