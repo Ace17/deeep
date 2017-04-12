@@ -7,6 +7,10 @@
     {
       "name": "default",
       "frames": [ 0, 1 ]
+    },
+    {
+      "name": "hidden",
+      "frames": [ 1 ]
     }
   ]
 }
