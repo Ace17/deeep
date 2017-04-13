@@ -19,7 +19,6 @@
 using namespace std;
 
 #define GL_GLEXT_PROTOTYPES 1
-#include "GL/glu.h"
 #include "GL/gl.h"
 #include "GL/glext.h"
 #include "SDL_video.h"
