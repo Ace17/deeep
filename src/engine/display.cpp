@@ -67,18 +67,16 @@ int compileShader(string code, int type)
   SAFE_GL(glCompileShader(shaderId));
 
   // Check compile result
-  int logLength;
   GLint Result;
   SAFE_GL(glGetShaderiv(shaderId, GL_COMPILE_STATUS, &Result));
 
   if(!Result)
   {
+    int logLength;
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &logLength);
     vector<char> msg(logLength);
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
     cerr << msg.data();
-
-    cerr << code << endl;
 
     throw runtime_error("Can't compile shader");
   }
@@ -102,15 +100,17 @@ int linkShaders(vector<int> ids)
 
   // Check the program
   GLint Result = GL_FALSE;
-  int InfoLogLength;
   glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-  glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 
   if(!Result)
   {
-    vector<char> msgBuf(InfoLogLength);
-    glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, msgBuf.data());
-    cout << msgBuf.data();
+    int logLength;
+    glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &logLength);
+    vector<char> msg(logLength);
+    glGetProgramInfoLog(ProgramID, logLength, nullptr, msg.data());
+    cout << msg.data();
+
+    throw runtime_error("Can't link shader");
   }
 
   cout << "OK" << endl;
