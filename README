@@ -6,16 +6,18 @@ Author: Sebastien Alaiwan
 Description
 -----------
 
-This is a demo of a platform independent C++11 game project.
-It uses SDL, SDL_mixer, and the OpenGL core profile.
-It's meant as an example of a real-time game which can be compiled to native
-code, or, using Emscripten, to Javascript, and maybe one day to WebAssembly.
+This is a demo of a platform-independent C++14 game project.
+It uses SDL2, SDL2_mixer, SDL2_image, and the OpenGL core profile.
+
+It's meant as an example of a platformer/metroidvania game
+which can be compiled to native code, or, using Emscripten, to Javascript,
+and maybe one day to WebAssembly.
 
 The code doesn't contain any reference/dependency to Emscripten, except in the
-main file, where the main loop function gets passed to Emscripten.
+entry-point file, where the main loop function gets passed to Emscripten.
 
-This code also shows how to isolate your game logic code (entities, bullets)
-from your I/O code (display, audio).
+This code also shows how to isolate your game logic code (doors, switches,
+powerups, bullets, ..) from your I/O code (display, audio, input).
 
 Directory structure
 -------------------
@@ -23,9 +25,9 @@ Directory structure
 bin:        output directory for binaries.
 ./check:    main check script. Call this to build native and asmjs versions.
 src/engine: I/O code (game-agnostic)
-src/game:   game logic
+src/game:   game logic (engine-agnostic)
 src/base:   utilities shared between game logic and I/O code ; scene declaration
-res:        game resources (sounds, pictures)
+res:        game resources (sounds, sprites, tiles)
 
 
 Build
@@ -40,9 +42,21 @@ It can be compiled to native code using your native compiler (gcc or clang):
 
 $ make
 
+The binaries will be generated to a 'bin' directory (This can be overriden
+using the BIN makefile variable).
+
 It can also be compiled to Javascript, using Emscripten.
+In theory, it's as simple as:
 
 $ CXX=emcc make
 
-See how the ./check script does for more information.
+However, in practise, more options need to be injected to the makefile.
+See how the ./check script works for more information about this.
+
+Run the game
+------------
+
+Just run the following command:
+
+$ bin/deeep.exe
 
