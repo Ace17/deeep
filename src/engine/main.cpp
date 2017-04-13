@@ -31,10 +31,6 @@ bool App_tick(App*);
 extern "C"
 {
 void emscripten_set_main_loop(void (* f)(), int, int);
-char const* gluErrorString(int)
-{
-  return "unknown";
-}
 }
 
 static App* g_pApp;

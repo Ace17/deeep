@@ -52,7 +52,6 @@ void ensureGl(char const* expr, int line)
   ss << "OpenGL error" << endl;
   ss << "Expr: " << expr << endl;
   ss << "Line: " << line << endl;
-  ss << "Msg: " << gluErrorString(errorCode) << endl;
   ss << "Code: " << errorCode;
   throw runtime_error(ss.str());
 }
