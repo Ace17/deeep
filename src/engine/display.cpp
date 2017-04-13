@@ -106,7 +106,7 @@ int linkShaders(vector<int> ids)
   glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
   glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 
-  if(0)
+  if(!Result)
   {
     vector<char> msgBuf(InfoLogLength);
     glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, msgBuf.data());
