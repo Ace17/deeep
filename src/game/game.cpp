@@ -168,6 +168,10 @@ struct Game : Scene, IGame
 
     for(auto& spawned : m_spawned)
     {
+      spawned->game = this;
+      spawned->physics = m_physics.get();
+      spawned->enter();
+
       m_physics->addBody(spawned.get());
       m_entities.push_back(move(spawned));
     }
@@ -237,8 +241,6 @@ struct Game : Scene, IGame
 
   void spawn(Entity* e) override
   {
-    e->game = this;
-    e->physics = m_physics.get();
     m_spawned.push_back(unique(e));
   }
 
@@ -251,6 +253,11 @@ struct Game : Scene, IGame
   void subscribeForEvents(IEventSink* sink) override
   {
     m_listeners.insert(sink);
+  }
+
+  void unsubscribeForEvents(IEventSink* sink) override
+  {
+    m_listeners.erase(sink);
   }
 
   Vector2f getPlayerPosition() override
@@ -281,7 +288,10 @@ struct Game : Scene, IGame
       if(!entity->dead)
         entities.push_back(move(entity));
       else
+      {
+        entity->leave();
         m_physics->removeBody(entity.get());
+      }
     }
   }
 

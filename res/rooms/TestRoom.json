@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlcESxCAIQ+3\/\/\/TedpxdpKkCUklmcqoSHq31aq1dNE3TNE1\/fYoqs\/eqyKypInOvavy\/vBK\/13mYrWfRx4jpDfeJZw\/Z71TvfPLncGRPUhaqqG9iBz+y74RvQOMfyZtfyqvK78n+Bn7vGczwa6rOr\/VrXc9idtLaJjyz6HmlDpqzIpR\/NcdLHvzSfEc5yDtA39OuGY+4kTloZ0qbJ5qP7Nd6QfRkj\/X\/16KmVkd65sG0k38lPzqb\/OQnP\/nJT37ykz87\/yma4T9Rd\/zVVJG5VzV+6fuX1nich9l6Fn1kuf9We4++\/3bPwDuf\/Hkc1ZPEj+pkfmTf6fwjkZ\/8lfk1VefXerashWbs4B\/lrtRBc1ZkyW8lC64nWdkUyf9UWfuKktW589TdnaKtr+DK7OT\/9wcF4wm0",
+         "data":"eJztlcESxCAIQ+3\/\/\/TeOs4u0qyAUklmcqoSHq31aq1dNE3TNE3fPkWV2XtVZNZUkblXNf5vXok\/6jzM1vPoY8T0hvsksofsd2p0PvlzeGVPUhaqVd\/EDn5k3wnfgMY\/UjS\/lFeVP5L9DfzRM5jh11SdX+vXu57H7KS1TXjm0bOlDppjEcpvzYlSBL8031EO8g7Q97RrxiNuZA7amdLmieYj+7VeEP2zx\/v\/61FTqyM9i2DayW\/JX51NfvKTn\/zkJz\/5yZ+d\/xTN8J+oJ\/5qqsjcqxq\/9P1LayLOw2w9jz6y3H\/W3lfff7tnEJ1P\/jxe1ZPEj+pkfmTf6fwjkZ\/8lfk1VefXevashWbs4B\/lWuqgORZ58nsJ4ffMyiaP9xqlrH2tkte5i9TTnaKtr+DK7OT\/9QcMMwm1",
          "encoding":"base64",
          "height":64,
          "name":"tiles",
@@ -171,6 +171,28 @@
                  "width":16,
                  "x":752,
                  "y":672
+                }, 
+                {
+                 "height":16,
+                 "id":15,
+                 "name":"door(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":704,
+                 "y":960
+                }, 
+                {
+                 "height":16,
+                 "id":16,
+                 "name":"switch(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":640,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -179,7 +201,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":15,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

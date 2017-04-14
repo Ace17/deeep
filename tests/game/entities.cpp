@@ -61,6 +61,10 @@ struct NullGame : IGame
   {
   }
 
+  virtual void unsubscribeForEvents(IEventSink*)
+  {
+  }
+
   virtual Vector2f getPlayerPosition()
   {
     return Vector2f(0, 0);

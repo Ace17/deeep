@@ -82,16 +82,18 @@ struct Door : Entity, IEventSink
     solid = true;
   }
 
-  bool subscribed = false;
+  void enter() override
+  {
+    game->subscribeForEvents(this);
+  }
+
+  void leave() override
+  {
+    game->unsubscribeForEvents(this);
+  }
 
   virtual void tick() override
   {
-    if(!subscribed)
-    {
-      game->subscribeForEvents(this);
-      subscribed = true;
-    }
-
     decrement(openingDelay);
 
     if(openingDelay == 0 && state)

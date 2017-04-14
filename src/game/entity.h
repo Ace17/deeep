@@ -29,6 +29,14 @@ struct Entity : Body
   {
   }
 
+  virtual void enter()
+  {
+  }
+
+  virtual void leave()
+  {
+  }
+
   // from Body
   virtual void onCollision(Body* otherBody) override
   {
