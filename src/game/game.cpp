@@ -22,14 +22,11 @@
 #include "base/util.h"
 #include "entities/player.h"
 #include "entities/rockman.h"
-#include "entities/detector.h"
 #include "game.h"
 #include "models.h" // MDL_LIFEBAR
 #include "room.h"
 
 using namespace std;
-
-static int const DETECTOR_ID_BOUNDARY = -2;
 
 // from smarttiles
 array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
@@ -213,24 +210,6 @@ struct Game : Scene, IGame
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
       subscribeForEvents(&m_levelBoundary);
     }
-
-    {
-      auto detector = make_unique<Detector>(DETECTOR_ID_BOUNDARY);
-      detector->size = Size2f(m_tiles.size.width, 1);
-      detector->pos = Vector2f(0, -1);
-      spawn(detector.release());
-
-      m_oobDelegator = makeDelegator<TouchDetectorEvent>(&onTouchDetector);
-      subscribeForEvents(&m_oobDelegator);
-    }
-  }
-
-  static void onTouchDetector(const TouchDetectorEvent* event)
-  {
-    (void)event;
-
-    if(event->whichOne == DETECTOR_ID_BOUNDARY)
-      printf("out of bounds\n");
   }
 
   void onTouchLevelBoundary(const TouchLevelBoundary* event)
@@ -247,7 +226,6 @@ struct Game : Scene, IGame
   bool m_shouldLoadLevel = false;
 
   EventDelegator m_levelBoundary;
-  EventDelegator m_oobDelegator;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
