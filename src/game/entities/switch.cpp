@@ -31,13 +31,13 @@ struct Switch : Entity
 {
   Switch(int id_) : id(id_)
   {
-    size = Size2f(0.5, 0.5);
+    size = Size2f(0.75, 0.75);
   }
 
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
-    r.scale = Size2f(0.5, 0.5);
+    r.scale = size;
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
