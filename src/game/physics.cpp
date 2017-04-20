@@ -116,14 +116,17 @@ struct Physics : IPhysics
       auto otherRect = enlarge(other.getRect(), 1.05);
 
       if(overlaps(rect, otherRect))
-      {
-        if(other.collidesWith & me.collisionGroup)
-          other.onCollision(&me);
-
-        if(me.collidesWith & other.collisionGroup)
-          me.onCollision(&other);
-      }
+        collideBodies(me, other);
     }
+  }
+
+  void collideBodies(Body& me, Body& other)
+  {
+    if(other.collidesWith & me.collisionGroup)
+      other.onCollision(&me);
+
+    if(me.collidesWith & other.collisionGroup)
+      me.onCollision(&other);
   }
 
   void setEdifice(function<bool(Rect2f)> isSolid)
