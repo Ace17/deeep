@@ -283,7 +283,9 @@ struct Rockman : Player, Damageable
   {
     decrement(blinking);
     decrement(hurtDelay);
-    decrement(dashDelay);
+
+    if(ground)
+      decrement(dashDelay);
 
     if(hurtDelay || life <= 0)
       control = Control {};
