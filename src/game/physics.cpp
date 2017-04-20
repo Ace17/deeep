@@ -24,17 +24,6 @@ void unstableRemove(vector<T>& container, Lambda predicate)
   }
 }
 
-static
-Rect2f enlarge(Rect2f rect, float ratio)
-{
-  Rect2f r;
-  r.width = rect.width * ratio;
-  r.height = rect.height * ratio;
-  r.x = rect.x - (r.width - rect.width) * 0.5;
-  r.y = rect.y - (r.height - rect.height) * 0.5;
-  return r;
-}
-
 struct Physics : IPhysics
 {
   void addBody(Body* body)
@@ -62,7 +51,12 @@ struct Physics : IPhysics
 
     auto const blocked = isSolid(body, rect);
 
-    if(!blocked)
+    if(blocked)
+    {
+      if(auto blocker = getSolidBodyInRect(rect, body))
+        collideBodies(*body, *blocker);
+    }
+    else
     {
       body->pos += delta;
 
@@ -113,7 +107,7 @@ struct Physics : IPhysics
       auto& other = *m_bodies[p.second];
 
       auto rect = me.getRect();
-      auto otherRect = enlarge(other.getRect(), 1.05);
+      auto otherRect = other.getRect();
 
       if(overlaps(rect, otherRect))
         collideBodies(me, other);
