@@ -19,12 +19,6 @@ struct Conveyor : Entity
   {
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
-    r.ratio = 0;
-    r.action = 0;
-
-    if(!solid)
-      r.scale = Size2f(0.01, 0.01);
-
     return r;
   }
 
