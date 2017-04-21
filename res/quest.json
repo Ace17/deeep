@@ -46,8 +46,8 @@
                  "type":"1",
                  "visible":true,
                  "width":8,
-                 "x":84,
-                 "y":72
+                 "x":100,
+                 "y":84
                 }, 
                 {
                  "height":4,
@@ -57,8 +57,8 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":96,
-                 "y":64
+                 "x":112,
+                 "y":76
                 }, 
                 {
                  "height":4,
@@ -68,8 +68,8 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":96,
-                 "y":72
+                 "x":112,
+                 "y":84
                 }, 
                 {
                  "height":4,
@@ -101,8 +101,8 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":92,
-                 "y":64
+                 "x":108,
+                 "y":76
                 }, 
                 {
                  "height":12,
@@ -134,8 +134,8 @@
                  "type":"3",
                  "visible":true,
                  "width":8,
-                 "x":148,
-                 "y":72
+                 "x":164,
+                 "y":84
                 }, 
                 {
                  "height":4,
@@ -178,8 +178,8 @@
                  "type":"1",
                  "visible":true,
                  "width":16,
-                 "x":60,
-                 "y":68
+                 "x":76,
+                 "y":80
                 }, 
                 {
                  "height":4,
@@ -222,8 +222,8 @@
                  "type":"1",
                  "visible":true,
                  "width":8,
-                 "x":76,
-                 "y":72
+                 "x":92,
+                 "y":84
                 }, 
                 {
                  "height":8,
@@ -277,8 +277,8 @@
                  "type":"3",
                  "visible":true,
                  "width":8,
-                 "x":128,
-                 "y":68
+                 "x":144,
+                 "y":80
                 }, 
                 {
                  "height":4,
@@ -354,8 +354,8 @@
                  "type":"0",
                  "visible":true,
                  "width":16,
-                 "x":100,
-                 "y":64
+                 "x":116,
+                 "y":76
                 }, 
                 {
                  "height":4,
@@ -387,8 +387,8 @@
                  "type":"3",
                  "visible":true,
                  "width":12,
-                 "x":116,
-                 "y":64
+                 "x":132,
+                 "y":76
                 }, 
                 {
                  "height":4,
@@ -486,8 +486,8 @@
                  "type":"1",
                  "visible":true,
                  "width":16,
-                 "x":76,
-                 "y":64
+                 "x":92,
+                 "y":76
                 }, 
                 {
                  "height":8,
@@ -497,7 +497,18 @@
                  "type":"3",
                  "visible":true,
                  "width":12,
-                 "x":136,
+                 "x":152,
+                 "y":80
+                }, 
+                {
+                 "height":16,
+                 "id":128,
+                 "name":"BigRoom",
+                 "rotation":0,
+                 "type":"1",
+                 "visible":true,
+                 "width":16,
+                 "x":60,
                  "y":68
                 }],
          "opacity":1,
@@ -546,8 +557,8 @@
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":97,
-                 "y":73
+                 "x":113,
+                 "y":85
                 }, 
                 {
                  "ellipse":true,
@@ -583,8 +594,8 @@
                  "type":"",
                  "visible":true,
                  "width":2,
-                 "x":97,
-                 "y":64
+                 "x":113,
+                 "y":76
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -593,7 +604,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":128,
+ "nextobjectid":129,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,

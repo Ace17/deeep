@@ -24,7 +24,16 @@ struct Conveyor : Entity
 
   void onCollide(Entity* other) override
   {
+    // avoid infinite recursion
+    // (if the conveyor pushes the player towards the conveyor)
+    if(noRecurse)
+      return;
+
+    noRecurse = true;
     physics->moveBody(other, Vector2f(-0.004, 0));
+    noRecurse = false;
   }
+
+  bool noRecurse = false;
 };
 
