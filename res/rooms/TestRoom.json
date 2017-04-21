@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlcEOwyAMQ+lx\/\/\/Du01oC6kHDlBiSzkV4rwAzVVKuRQKhUKhUHziFGVmr5WR2VNG5lrZ+L95Lf6o99Cbj1FHi+kJ8ySyht1narS\/+PeImTVZXqhm3YkV\/Mi+E+6Ax99SNL\/ll5U\/kv0J\/NE96OH3lJ3fq5edj9E7a20xvjFqHsmD+owI5R\/1iVIEv9Xflg9yBug5repxixvpg\/emvH6i\/sh+rxZE\/+xh\/38ZOb081rcIppX8I\/6zvcUvfvGLX\/ziF7\/4d+c\/RT38J+qOP5syMtfKxm\/df2tNxHvozceoY9b8i+Co87+M2Gn+Ixy97CvmP5O\/R0\/jR\/virZlZy7\/nNqOuVfzIvtP5WxK\/+DPze8rO79XMzIV6rOBv+Y7kQX1GxORnCeFneu0mxrlGade6Zon17iJ1N1O89RkiM7v4f+MNFdYJwg==",
+         "data":"eJztlc0SwyAIhO2x7\/\/CvXUyLeJGfjSyO8MpyvKhhldr7cVgMBgMBuMbp6gy+1UVmTVVZL6qGv8vr8Qf9R5m83nU0WN6wjyJrGH3mRrtT\/49IrMmyQtV1p1YwY\/sO+EOaPw9RfNLflX5I9mfwB\/dgxl+TdX5tXq983n0TlrbhG8eNVvyoD4WofxWnyhF8Ev97fkgZ4Ce06oe97iRPmhvSusn6o\/s12pBdGeP9\/\/XI6eWR\/oWwbSS3+Kf7U1+8pOf\/OQnP\/nJvzv\/KZrhP1Ej\/mqqyHxVNX7p\/ktrIt7DbD5k32hN1vyzcoxqfwsx8s6c\/wjHHa2e\/578M3oaP9oXbU1mLXfPLaOuVfzIvtP5eyI\/+Svza6rOr9XsmQv1WMHf87XkQX0s8uT3EsLv6bWbPM41SrvWlSWvdxep0UzR1leIyuzk\/48Pu+8JvQ==",
          "encoding":"base64",
          "height":64,
          "name":"tiles",
@@ -270,6 +270,72 @@
                  "width":16,
                  "x":384,
                  "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":24,
+                 "name":"conveyor(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":800,
+                 "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":25,
+                 "name":"conveyor(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":816,
+                 "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":26,
+                 "name":"conveyor(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":832,
+                 "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":27,
+                 "name":"conveyor(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":848,
+                 "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":28,
+                 "name":"conveyor(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":864,
+                 "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":29,
+                 "name":"conveyor(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":880,
+                 "y":720
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -278,7 +344,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":24,
+ "nextobjectid":30,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

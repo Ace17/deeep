@@ -34,6 +34,7 @@ unique_ptr<Entity> createEntity(string formula)
 #include "game/entities/spikes.h"
 #include "game/entities/blocks.h"
 #include "game/entities/moving_platform.h"
+#include "game/entities/conveyor.h"
 
 static map<string, CreationFunc> getRegistry()
 {
@@ -151,6 +152,12 @@ static map<string, CreationFunc> getRegistry()
     [] (EntityArgs &)
     {
       return make_unique<MovingPlatform>(1);
+    };
+
+  r["conveyor(0)"] =
+    [] (EntityArgs &)
+    {
+      return make_unique<Conveyor>();
     };
 
   return r;
