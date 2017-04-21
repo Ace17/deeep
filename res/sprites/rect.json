@@ -11,6 +11,18 @@
     {
       "name": "hidden",
       "frames": [ 1 ]
+    },
+    {
+      "name": "conveyor",
+      "frames": [ 2 ]
+    },
+    {
+      "name": "cross",
+      "frames": [ 3 ]
+    },
+    {
+      "name": "hollow",
+      "frames": [ 4 ]
     }
   ]
 }

@@ -18,7 +18,9 @@ struct Conveyor : Entity
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_RECT);
+    r.action = 2;
     r.scale = size;
+    r.scale.width *= -1;
     return r;
   }
 

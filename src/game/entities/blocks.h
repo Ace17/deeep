@@ -19,7 +19,7 @@ struct CrumbleBlock : Entity
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
     r.ratio = 0;
-    r.action = 0;
+    r.action = 3;
 
     if(!solid)
       r.scale = Size2f(0.01, 0.01);
@@ -67,7 +67,7 @@ struct FragileBlock : Entity, Damageable
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
     r.ratio = 0;
-    r.action = solid ? 0 : 1;
+    r.action = solid ? 4 : 1;
 
     return r;
   }
