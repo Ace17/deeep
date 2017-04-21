@@ -9,7 +9,7 @@ struct Spikes : Entity
 {
   Spikes()
   {
-    size = Size2f(1, 1);
+    size = Size2f(1, 0.95);
     solid = 1;
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
