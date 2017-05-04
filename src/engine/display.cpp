@@ -1,7 +1,4 @@
-/**
- * @brief OpenGL stuff
- * @author Sebastien Alaiwan
- */
+// OpenGL stuff
 
 /*
  * Copyright (C) 2017 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
@@ -20,7 +17,6 @@ using namespace std;
 
 #define GL_GLEXT_PROTOTYPES 1
 #include "GL/gl.h"
-#include "GL/glext.h"
 #include "SDL_video.h"
 #include "SDL_image.h"
 
@@ -29,8 +25,10 @@ using namespace std;
 #include "base/geom.h"
 #include "model.h"
 
-static vector<Model> g_Models;
+static GLint g_MVP;
+static GLint g_colorId;
 static GLuint g_ProgramId;
+static vector<Model> g_Models;
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
@@ -138,6 +136,9 @@ int loadTexture(string path, Rect2i rect)
   if(rect.width == 0 && rect.height == 0)
     rect = Rect2i(0, 0, surface->w, surface->h);
 
+  if(rect.x < 0 || rect.y < 0 || rect.x + rect.width > surface->w || rect.y + rect.height > surface->h)
+    throw runtime_error("Invalid boundaries for '" + path + "'");
+
   GLuint texture;
 
   auto const bpp = surface->format->BytesPerPixel;
@@ -189,14 +190,17 @@ GLuint loadShaders()
 }
 
 static
-Model rectangularModel(float w, float h)
+Model boxModel()
 {
-  const GLfloat myTriangle[] =
+  float w = 1;
+  float h = 1;
+
+  const GLfloat myBox[] =
   {
-    0, h, 0, 0, 0,
-    0, 0, 0, 0, 1,
-    w, 0, 0, 1, 1,
-    w, h, 0, 1, 0,
+    0, h, 0, /* uv */ 0, 0,
+    0, 0, 0, /* uv */ 0, 1,
+    w, 0, 0, /* uv */ 1, 1,
+    w, h, 0, /* uv */ 1, 0,
   };
 
   const GLushort indices[] =
@@ -211,51 +215,60 @@ Model rectangularModel(float w, float h)
 
   SAFE_GL(glGenBuffers(1, &model.buffer));
   SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-  SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(myTriangle), myTriangle, GL_STATIC_DRAW));
+  SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(myBox), myBox, GL_STATIC_DRAW));
 
   SAFE_GL(glGenBuffers(1, &model.indices));
   SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
   SAFE_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW));
 
-  model.numIndices = 6;
+  model.numIndices = sizeof(indices) / sizeof(*indices);
 
   return model;
 }
 
 static
+Model loadTiledAnimation(string path, int count, int COLS, int SIZE)
+{
+  auto m = boxModel();
+
+  for(int i = 0; i < count; ++i)
+  {
+    auto col = i % COLS;
+    auto row = i / COLS;
+
+    Action action;
+    action.addTexture(path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
+    m.actions.push_back(action);
+  }
+
+  return m;
+}
+
+static
 Model loadAnimation(string path)
 {
-  auto m = rectangularModel(1, 1);
-
   if(endsWith(path, ".json"))
   {
+    auto m = boxModel();
+
     auto m2 = loadModel(path);
     m.actions = move(m2.actions);
+    return m;
   }
   else if(endsWith(path, ".mdl"))
   {
     path = setExtension(path, "png");
 
-    for(int i = 0; i < 64 * 2; ++i)
-    {
-      auto const COLS = 8;
-      auto col = i % COLS;
-      auto row = i / COLS;
-
-      auto const SIZE = 16;
-      Action action;
-      action.addTexture(path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
-      m.actions.push_back(action);
-    }
+    return loadTiledAnimation(path, 64 * 2, 8, 16);
   }
   else
   {
+    auto m = boxModel();
     Action action;
     action.addTexture(path, Rect2i());
     m.actions.push_back(action);
+    return m;
   }
-
-  return m;
 }
 
 void Display_loadModel(int id, const char* path)
@@ -317,6 +330,12 @@ void Display_init(int width, int height)
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  g_MVP = glGetUniformLocation(g_ProgramId, "MVP");
+  assert(g_MVP >= 0);
+
+  g_colorId = glGetUniformLocation(g_ProgramId, "v_color");
+  assert(g_colorId >= 0);
 }
 
 void Display_setCaption(const char* caption)
@@ -324,13 +343,10 @@ void Display_setCaption(const char* caption)
   SDL_SetWindowTitle(mainWindow, caption);
 }
 
-void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)
+static
+void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, float ratio)
 {
-  auto& model = g_Models.at(modelId);
-
-  auto const colorId = glGetUniformLocation(g_ProgramId, "v_color");
-
-  SAFE_GL(glUniform4f(colorId, 0, 0, 0, 0));
+  SAFE_GL(glUniform4f(g_colorId, 0, 0, 0, 0));
 
   if(blinking)
   {
@@ -338,10 +354,8 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
     blinkCounter++;
 
     if((blinkCounter / 4) % 2)
-      SAFE_GL(glUniform4f(colorId, 0.8, 0.4, 0.4, 0));
+      SAFE_GL(glUniform4f(g_colorId, 0.8, 0.4, 0.4, 0));
   }
-
-  auto const matrixId = glGetUniformLocation(g_ProgramId, "MVP");
 
   if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
     throw runtime_error("invalid action index");
@@ -351,7 +365,8 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
   if(action.textures.empty())
     throw runtime_error("action has no textures");
 
-  int idx = clamp<int>(ratio * action.textures.size(), 0, action.textures.size() - 1);
+  auto const N = (int)action.textures.size();
+  auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
   glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -376,12 +391,26 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
     dx, dy, 0, 1,
   };
 
-  SAFE_GL(glUniformMatrix4fv(matrixId, 1, GL_FALSE, mat));
+  // scaling
+  {
+    for(auto& val : mat)
+      val *= 0.125;
+
+    mat[15] = 1;
+  }
+
+  SAFE_GL(glUniformMatrix4fv(g_MVP, 1, GL_FALSE, mat));
 
   SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
   SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
 
   SAFE_GL(glDrawElements(GL_TRIANGLES, model.numIndices, GL_UNSIGNED_SHORT, 0));
+}
+
+void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)
+{
+  auto& model = g_Models.at(modelId);
+  drawModel(where, model, blinking, actionIdx, ratio);
 }
 
 void Display_beginDraw()
@@ -390,19 +419,6 @@ void Display_beginDraw()
 
   SAFE_GL(glClearColor(0, 0, 0, 1));
   SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
-
-  {
-    auto const scaleMatrixId = glGetUniformLocation(g_ProgramId, "Scale");
-    auto const s = 0.125f;
-    float mat[16] =
-    {
-      s, 0, 0, 0,
-      0, s, 0, 0,
-      0, 0, s, 0,
-      0, 0, 0, 1,
-    };
-    SAFE_GL(glUniformMatrix4fv(scaleMatrixId, 1, GL_FALSE, mat));
-  }
 
   {
     auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
