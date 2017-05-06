@@ -208,6 +208,7 @@ struct Rockman : Player, Damageable
           doubleJumped = false;
           vel.y *= 0.97;
           sliding = true;
+          dashDelay = 0;
         }
       }
     }
@@ -228,6 +229,7 @@ struct Rockman : Player, Damageable
         vel.y = 0.015;
         climbDelay = CLIMB_DELAY;
         doubleJumped = false;
+        dashDelay = 0;
       }
       else if((upgrades & UPGRADE_DJUMP) && !doubleJumped)
       {
@@ -345,7 +347,7 @@ struct Rockman : Player, Damageable
     if(control.down && !ball && (upgrades & UPGRADE_BALL))
     {
       ball = true;
-      size = Size2f(0.9, 0.9);
+      size = Size2f(NORMAL_SIZE.width, 0.9);
     }
 
     if(control.up && ball)
@@ -409,6 +411,7 @@ struct Rockman : Player, Damageable
   void die()
   {
     game->playSound(SND_DIE);
+    ball = false;
   }
 
   int debounceFire = 0;
