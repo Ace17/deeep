@@ -12,8 +12,7 @@ vector<uint8_t> decompress(Span<const uint8_t> buffer)
   vector<uint8_t> r;
 
   int ret;
-  z_stream s;
-  memset(&s, 0, sizeof s);
+  z_stream s {};
   s.next_in = buffer.data;
   s.avail_in = buffer.len;
   ret = inflateInit(&s);
