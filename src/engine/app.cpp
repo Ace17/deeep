@@ -12,8 +12,6 @@
  * License, or (at your option) any later version.
  */
 
-#include <stdio.h>
-#include <string.h>
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
@@ -37,6 +35,7 @@ void Display_loadModel(int id, const char* imagePath);
 void Display_beginDraw();
 void Display_endDraw();
 void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
+void Display_drawText(Vector2f pos, char const* text);
 
 Audio* createAudio(bool dummy = false);
 
@@ -51,7 +50,6 @@ public:
     m_scene(createGame(m_args))
   {
     SDL_Init(0);
-    memset(keys, 0, sizeof keys);
 
     Display_init(768, 768);
     m_audio.reset(createAudio());
@@ -82,10 +80,9 @@ public:
       m_lastTime += m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
 
       if(!m_paused)
-      {
         m_scene->tick(m_control);
-        dirty = true;
-      }
+
+      dirty = true;
     }
 
     if(dirty)
@@ -131,11 +128,12 @@ private:
     m_control.right = keys[SDL_SCANCODE_RIGHT];
     m_control.up = keys[SDL_SCANCODE_UP];
     m_control.down = keys[SDL_SCANCODE_DOWN];
+
     m_control.fire = keys[SDL_SCANCODE_Z];
     m_control.jump = keys[SDL_SCANCODE_X];
     m_control.dash = keys[SDL_SCANCODE_C];
 
-    m_control.debug = keys[SDL_SCANCODE_G];
+    m_control.debug = keys[SDL_SCANCODE_SCROLLLOCK];
   }
 
   void draw()
@@ -147,6 +145,13 @@ private:
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
       Display_drawActor(where, (int)actor.model, actor.effect == EFFECT_BLINKING, actor.action, actor.ratio);
     }
+
+    if(m_paused)
+      Display_drawText(Vector2f(0, 0), "PAUSE");
+    else if(m_slowMotion)
+      Display_drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
+    else if(m_control.debug)
+      Display_drawText(Vector2f(0, 0), "DEBUG MODE");
 
     Display_endDraw();
   }
@@ -163,9 +168,9 @@ private:
 
   void fpsChanged(int fps)
   {
-    char szFps[128];
-    sprintf(szFps, "Deeep (%d FPS)", fps);
-    Display_setCaption(szFps);
+    char title[128];
+    sprintf(title, "Deeep (%d FPS)", fps);
+    Display_setCaption(title);
   }
 
   void onQuit()
@@ -198,7 +203,7 @@ private:
     keys[evt->key.keysym.scancode] = 0;
   }
 
-  int keys[SDL_NUM_SCANCODES];
+  int keys[SDL_NUM_SCANCODES] {};
   int m_running = 1;
 
   int m_lastTime;

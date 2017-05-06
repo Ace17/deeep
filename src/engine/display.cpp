@@ -29,6 +29,7 @@ static GLint g_MVP;
 static GLint g_colorId;
 static GLuint g_ProgramId;
 static vector<Model> g_Models;
+static Model g_fontModel;
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
@@ -331,6 +332,8 @@ void Display_init(int width, int height)
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+  g_fontModel = loadTiledAnimation("res/font.png", 256, 16, 8);
+
   g_MVP = glGetUniformLocation(g_ProgramId, "MVP");
   assert(g_MVP >= 0);
 
@@ -411,6 +414,22 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
 {
   auto& model = g_Models.at(modelId);
   drawModel(where, model, blinking, actionIdx, ratio);
+}
+
+void Display_drawText(Vector2f pos, char const* text)
+{
+  Rect2f rect;
+  rect.width = 0.5;
+  rect.height = 0.5;
+  rect.x = pos.x - strlen(text) * rect.width / 2;
+  rect.y = pos.y;
+
+  while(*text)
+  {
+    drawModel(rect, g_fontModel, false, *text, 0);
+    rect.x += rect.width;
+    ++text;
+  }
 }
 
 void Display_beginDraw()
