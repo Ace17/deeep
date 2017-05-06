@@ -1,7 +1,4 @@
-/**
- * @brief Audio stuff
- * @author Sebastien Alaiwan
- */
+// Audio stuff
 
 /*
  * Copyright (C) 2017 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
@@ -25,7 +22,7 @@ struct SdlAudio : Audio
 {
   SdlAudio()
   {
-    auto ret = Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 1024);
+    auto ret = Mix_OpenAudio(0, 0, 0, 0);
 
     if(ret == -1)
       throw runtime_error("Can't open audio");
@@ -34,6 +31,14 @@ struct SdlAudio : Audio
 
     if(ret == -1)
       throw runtime_error("Can't allocate channels");
+
+    {
+      int freq;
+      Uint16 fmt;
+      int channels;
+      Mix_QuerySpec(&freq, &fmt, &channels);
+      printf("Audio: %d Hz %d channels\n", freq, channels);
+    }
 
     playMusic(1);
   }
@@ -46,6 +51,12 @@ struct SdlAudio : Audio
 
   void loadSound(int id, string path) override
   {
+    if(!ifstream(path).is_open())
+    {
+      printf("sound '%s' was not found, fallback on default sound\n", path.c_str());
+      path = "res/sounds/default.ogg";
+    }
+
     auto snd = Mix_LoadWAV(path.c_str());
 
     if(!snd)
@@ -72,7 +83,7 @@ struct SdlAudio : Audio
     if(!ifstream(path).is_open())
     {
       printf("music '%s' was not found, fallback on default music\n", path);
-      strcpy(path, "res/music/music-00.ogg");
+      strcpy(path, "res/music/default.ogg");
     }
 
     auto music = Mix_LoadMUS(path);
