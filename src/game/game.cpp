@@ -1,7 +1,4 @@
-/**
- * @brief Game logic
- * @author Sebastien Alaiwan
- */
+// Game logic
 
 /*
  * Copyright (C) 2017 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
@@ -17,13 +14,12 @@
 #include <array>
 #include <map>
 #include <set>
-#include <functional>
 #include "base/scene.h"
 #include "base/util.h"
 #include "entities/player.h"
 #include "entities/rockman.h"
 #include "game.h"
-#include "models.h" // MDL_LIFEBAR
+#include "models.h" // MDL_TILES
 #include "room.h"
 
 using namespace std;
@@ -40,7 +36,7 @@ struct Game : Scene, IGame
   {
     m_shouldLoadLevel = true;
     m_physics = createPhysics();
-    m_physics->setEdifice(bind(&Game::isRectSolid, this, placeholders::_1));
+    m_physics->setEdifice(bind(&Game::isBoxSolid, this, placeholders::_1));
   }
 
   ////////////////////////////////////////////////////////////////
@@ -88,15 +84,15 @@ struct Game : Scene, IGame
 
     addActorsForTileMap(r, cameraPos);
 
-    Box cameraRect;
-    cameraRect.width = 16;
-    cameraRect.height = 16;
-    cameraRect.x = cameraPos.x - cameraRect.width / 2;
-    cameraRect.y = cameraPos.y - cameraRect.height / 2;
+    Box cameraBox;
+    cameraBox.width = 16;
+    cameraBox.height = 16;
+    cameraBox.x = cameraPos.x - cameraBox.width / 2;
+    cameraBox.y = cameraPos.y - cameraBox.height / 2;
 
     for(auto& entity : m_entities)
     {
-      if(!overlaps(entity->getBox(), cameraRect))
+      if(!overlaps(entity->getBox(), cameraBox))
         continue;
 
       r.push_back(entity->getActor());
@@ -198,8 +194,6 @@ struct Game : Scene, IGame
     m_tiles = move(level.tiles);
     m_theme = level.theme;
     printf("Now in: %s\n", level.name.c_str());
-
-    Vector nextPos;
 
     if(!m_player)
     {
@@ -303,7 +297,7 @@ struct Game : Scene, IGame
     return r;
   }
 
-  bool isRectSolid(Box box)
+  bool isBoxSolid(Box box)
   {
     if(isPointSolid(Vector(box.x, box.y)))
       return true;
