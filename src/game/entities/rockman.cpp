@@ -352,13 +352,13 @@ struct Rockman : Player, Damageable
 
     if(control.up && ball)
     {
-      Rect2f rect;
-      rect.width = NORMAL_SIZE.width;
-      rect.height = NORMAL_SIZE.height;
-      rect.x = pos.x;
-      rect.y = pos.y;
+      Box box;
+      box.width = NORMAL_SIZE.width;
+      box.height = NORMAL_SIZE.height;
+      box.x = pos.x;
+      box.y = pos.y;
 
-      if(!physics->isSolid(this, rect))
+      if(!physics->isSolid(this, box))
       {
         ball = false;
         size = NORMAL_SIZE;
@@ -396,13 +396,13 @@ struct Rockman : Player, Damageable
   {
     auto const front = dir == RIGHT ? 0.7 : -0.7;
 
-    Rect2f rect;
-    rect.x = pos.x + size.width / 2 + front;
-    rect.y = pos.y + 0.3;
-    rect.width = 0.01;
-    rect.height = 0.9;
+    Box box;
+    box.x = pos.x + size.width / 2 + front;
+    box.y = pos.y + 0.3;
+    box.width = 0.01;
+    box.height = 0.9;
 
-    if(physics->isSolid(this, rect))
+    if(physics->isSolid(this, box))
       return true;
 
     return false;

@@ -62,7 +62,7 @@ Size2i getSize(json::Object* obj)
 }
 
 static
-Rect2i getRect(json::Object* obj)
+Rect2i getBox(json::Object* obj)
 {
   Rect2i r;
 
@@ -110,9 +110,9 @@ map<string, json::Object*> getAllLayers(json::Object* js)
 }
 
 static
-Matrix<int> parseTileLayer(json::Object* json)
+Matrix2<int> parseTileLayer(json::Object* json)
 {
-  Matrix<int> tiles;
+  Matrix2<int> tiles;
 
   auto const data = json->getMember<json::String>("data")->value;
   auto const buff = decompressTiles(data);
@@ -195,7 +195,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
   for(auto& jsonObj : objects->elements)
   {
     auto obj = json::cast<json::Object>(jsonObj.get());
-    auto const objRect = convertRect(getRect(obj), 16, height);
+    auto const objRect = convertRect(getBox(obj), 16, height);
 
     auto const name = obj->getMember<json::String>("name")->value;
     auto const pos = Vector2f(objRect.x, objRect.y);
@@ -234,17 +234,17 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
 static
 Room loadAbstractRoom(json::Object* jsonRoom)
 {
-  auto rect = getRect(jsonRoom);
+  auto box = getBox(jsonRoom);
 
   auto const PELS_PER_TILE = 4;
-  rect = convertRect(rect, PELS_PER_TILE, 64);
+  box = convertRect(box, PELS_PER_TILE, 64);
 
-  auto const sizeInTiles = Size2i(rect.width, rect.height) * CELL_SIZE;
+  auto const sizeInTiles = Size2i(box.width, box.height) * CELL_SIZE;
 
   Room room;
   room.name = jsonRoom->getMember<json::String>("name")->value;
-  room.pos = rect;
-  room.size = rect;
+  room.pos = box;
+  room.size = box;
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
   room.theme = atoi(jsonRoom->getMember<json::String>("type")->value.c_str());
 

@@ -16,7 +16,7 @@
 
 using namespace std;
 
-typedef Matrix<int> TileMap;
+typedef Matrix2<int> TileMap;
 
 static const Vector2i dirs[] =
 {

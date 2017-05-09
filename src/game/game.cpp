@@ -29,7 +29,7 @@
 using namespace std;
 
 // from smarttiles
-array<int, 4> computeTileFor(Matrix<int> const& m, int x, int y);
+array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 
 // from physics.cpp
 unique_ptr<IPhysics> createPhysics();
@@ -88,7 +88,7 @@ struct Game : Scene, IGame
 
     addActorsForTileMap(r, cameraPos);
 
-    Rect2f cameraRect;
+    Box cameraRect;
     cameraRect.width = 16;
     cameraRect.height = 16;
     cameraRect.x = cameraPos.x - cameraRect.width / 2;
@@ -96,7 +96,7 @@ struct Game : Scene, IGame
 
     for(auto& entity : m_entities)
     {
-      if(!overlaps(entity->getRect(), cameraRect))
+      if(!overlaps(entity->getBox(), cameraRect))
         continue;
 
       r.push_back(entity->getActor());
@@ -272,7 +272,7 @@ struct Game : Scene, IGame
 
   set<IEventSink*> m_listeners;
 
-  Matrix<int> m_tiles;
+  Matrix2<int> m_tiles;
   vector<SOUND> m_sounds;
   bool m_debug;
   bool m_debugFirstTime = true;
@@ -297,30 +297,30 @@ struct Game : Scene, IGame
 
   static Actor getDebugActor(Entity* entity)
   {
-    auto rect = entity->getRect();
-    auto r = Actor(Vector2f(rect.x, rect.y), MDL_RECT);
-    r.scale = rect;
+    auto box = entity->getBox();
+    auto r = Actor(Vector2f(box.x, box.y), MDL_RECT);
+    r.scale = box;
     return r;
   }
 
-  bool isRectSolid(Rect2f rect)
+  bool isRectSolid(Box box)
   {
-    if(isPointSolid(Vector2f(rect.x, rect.y)))
+    if(isPointSolid(Vector2f(box.x, box.y)))
       return true;
 
-    if(isPointSolid(Vector2f(rect.x, rect.y + rect.height)))
+    if(isPointSolid(Vector2f(box.x, box.y + box.height)))
       return true;
 
-    if(isPointSolid(Vector2f(rect.x + rect.width, rect.y)))
+    if(isPointSolid(Vector2f(box.x + box.width, box.y)))
       return true;
 
-    if(isPointSolid(Vector2f(rect.x + rect.width, rect.y + rect.height)))
+    if(isPointSolid(Vector2f(box.x + box.width, box.y + box.height)))
       return true;
 
-    if(isPointSolid(Vector2f(rect.x, rect.y + rect.height / 2)))
+    if(isPointSolid(Vector2f(box.x, box.y + box.height / 2)))
       return true;
 
-    if(isPointSolid(Vector2f(rect.x + rect.width, rect.y + rect.height / 2)))
+    if(isPointSolid(Vector2f(box.x + box.width, box.y + box.height / 2)))
       return true;
 
     return false;

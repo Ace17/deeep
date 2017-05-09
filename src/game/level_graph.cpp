@@ -2,7 +2,7 @@
 #include "entities/detector.h"
 #include "entity_factory.h"
 
-void addRandomWidgets(Matrix<int>& tiles)
+void addRandomWidgets(Matrix2<int>& tiles)
 {
   auto rect = [&] (Vector2i pos, Size2i size, int tile)
               {

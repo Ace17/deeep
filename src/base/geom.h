@@ -78,6 +78,10 @@ struct GenericVector
   {
   }
 
+  GenericVector(GenericSize<T> size) : x(size.width), y(size.height)
+  {
+  }
+
   MyType operator += (MyType const& other)
   {
     x += other.x;
@@ -131,25 +135,23 @@ typedef GenericVector<int> Vector2i;
 typedef GenericVector<float> Vector2f;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Rect
+// Box
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-struct GenericRect : GenericVector<T>, GenericSize<T>
+struct GenericBox : GenericVector<T>, GenericSize<T>
 {
-  GenericRect()
-  {
-  }
+  GenericBox() = default;
 
-  GenericRect(T x, T y, T w, T h) :
+  GenericBox(T x, T y, T w, T h) :
     GenericVector<T>(x, y),
     GenericSize<T>(w, h)
   {
   }
 };
 
-typedef GenericRect<int> Rect2i;
-typedef GenericRect<float> Rect2f;
+typedef GenericBox<int> Rect2i;
+typedef GenericBox<float> Rect2f;
 
 template<typename T>
 bool segmentsOverlap(T s1x1, T s1x2, T s2x1, T s2x2)
@@ -164,7 +166,7 @@ bool segmentsOverlap(T s1x1, T s1x2, T s2x1, T s2x2)
 }
 
 template<typename T>
-bool overlaps(GenericRect<T> const& a, GenericRect<T> const& b)
+bool overlaps(GenericBox<T> const& a, GenericBox<T> const& b)
 {
   assert(a.width >= 0);
   assert(a.height >= 0);
@@ -185,21 +187,21 @@ bool overlaps(GenericRect<T> const& a, GenericRect<T> const& b)
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-struct Matrix
+struct Matrix2
 {
-  Matrix() = default;
+  Matrix2() = default;
 
-  Matrix(Matrix const &) = delete;
-  void operator = (Matrix const &) = delete;
+  Matrix2(Matrix2 const &) = delete;
+  void operator = (Matrix2 const &) = delete;
 
-  Matrix(Matrix&& other)
+  Matrix2(Matrix2&& other)
   {
     data = other.data;
     size = other.size;
     other.data = nullptr;
   }
 
-  void operator = (Matrix&& other)
+  void operator = (Matrix2&& other)
   {
     delete[] data;
     data = other.data;
@@ -207,12 +209,12 @@ struct Matrix
     other.data = nullptr;
   }
 
-  Matrix(Size2i size_) : size(size_)
+  Matrix2(Size2i size_) : size(size_)
   {
     resize(size_);
   }
 
-  ~Matrix()
+  ~Matrix2()
   {
     delete[] data;
   }
@@ -233,13 +235,13 @@ struct Matrix
   T& get(int x, int y)
   {
     assert(isInside(x, y));
-    return data[x + y * size.width];
+    return data[raster(x, y)];
   }
 
   const T& get(int x, int y) const
   {
     assert(isInside(x, y));
-    return data[x + y * size.width];
+    return data[raster(x, y)];
   }
 
   void set(int x, int y, T const& val)
@@ -277,5 +279,10 @@ struct Matrix
 
 private:
   T* data = nullptr;
+
+  int raster(int x, int y) const
+  {
+    return y * size.width + x;
+  }
 };
 

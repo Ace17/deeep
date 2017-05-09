@@ -1,6 +1,12 @@
 #include <functional>
 #include "base/geom.h"
 
+typedef GenericVector<float> Vector;
+typedef GenericSize<float> Size;
+typedef GenericBox<float> Box;
+
+static auto const UnitSize = Size(1, 1);
+
 using namespace std;
 
 struct Body
@@ -18,9 +24,9 @@ struct Body
   {
   }
 
-  Rect2f getRect() const
+  Box getBox() const
   {
-    Rect2f r;
+    Box r;
     r.x = pos.x;
     r.y = pos.y;
     r.height = size.height;
@@ -32,8 +38,8 @@ struct Body
 struct IPhysicsProbe
 {
   virtual bool moveBody(Body* body, Vector2f delta) = 0;
-  virtual bool isSolid(const Body* body, Rect2f) const = 0;
-  virtual Body* getBodiesInRect(Rect2f myRect, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
+  virtual bool isSolid(const Body* body, Box) const = 0;
+  virtual Body* getBodiesInBox(Box myRect, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
 };
 
 struct IPhysics : IPhysicsProbe
@@ -43,6 +49,6 @@ struct IPhysics : IPhysicsProbe
   virtual void removeBody(Body* body) = 0;
   virtual void clearBodies() = 0;
   virtual void checkForOverlaps() = 0;
-  virtual void setEdifice(function<bool(Rect2f)> isSolid) = 0;
+  virtual void setEdifice(function<bool(Box)> isSolid) = 0;
 };
 

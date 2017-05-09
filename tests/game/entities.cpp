@@ -76,7 +76,7 @@ struct NullPhysicsProbe : IPhysicsProbe
   // called by entities
   bool moveBody(Body* body, Vector2f delta)
   {
-    auto rect = body->getRect();
+    auto rect = body->getBox();
     rect.x += delta.x;
     rect.y += delta.y;
 
@@ -87,12 +87,12 @@ struct NullPhysicsProbe : IPhysicsProbe
     return true;
   }
 
-  bool isSolid(const Body* /*body*/, Rect2f rect) const
+  bool isSolid(const Body* /*body*/, Box rect) const
   {
     return rect.y < 0;
   }
 
-  Body* getBodiesInRect(Rect2f, int, bool, const Body*) const
+  Body* getBodiesInBox(Box, int, bool, const Body*) const
   {
     return nullptr;
   }
