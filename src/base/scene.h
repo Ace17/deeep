@@ -22,12 +22,13 @@ using namespace std;
 typedef int SOUND;
 typedef int MODEL;
 
-enum EFFECT_TYPE
+enum class Effect
 {
-  EFFECT_NORMAL,
-  EFFECT_BLINKING,
+  Normal,
+  Blinking,
 };
 
+// a game object, as seen by the user-interface, i.e a displayable object.
 struct Actor
 {
   Actor(Vector2f pos_ = Vector2f(0, 0), MODEL model_ = 0) : pos(pos_), model(model_)
@@ -39,7 +40,7 @@ struct Actor
   int action = 0;
   float ratio = 0; // in [0 .. 1]
   Size2f scale = Size2f(1, 1);
-  EFFECT_TYPE effect = EFFECT_NORMAL;
+  Effect effect = Effect::Normal;
 };
 
 struct Control

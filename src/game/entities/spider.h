@@ -66,7 +66,7 @@ struct Spider : Entity, Damageable
     r.scale = Size2f(1, 1);
 
     if(blinking)
-      r.effect = EFFECT_BLINKING;
+      r.effect = Effect::Blinking;
 
     r.action = 0;
     r.ratio = (time % 800) / 800.0f;

@@ -30,7 +30,7 @@ struct Wheel : Entity, Damageable
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.3);
 
     if(blinking)
-      r.effect = EFFECT_BLINKING;
+      r.effect = Effect::Blinking;
 
     r.action = 0;
     r.ratio = (time % 200) / 200.0f;

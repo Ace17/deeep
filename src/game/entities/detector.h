@@ -108,7 +108,7 @@ struct RoomBoundaryBlocker : Entity
   {
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
-    r.effect = EFFECT_BLINKING;
+    r.effect = Effect::Blinking;
     return r;
   }
 };
