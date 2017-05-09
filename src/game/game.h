@@ -35,14 +35,14 @@ struct Event
 
 struct TouchLevelBoundary : Event
 {
-  TouchLevelBoundary(int targetLevel_, Vector2f transform_)
+  TouchLevelBoundary(int targetLevel_, Vector transform_)
   {
     targetLevel = targetLevel_;
     transform = transform_;
   }
 
   int targetLevel;
-  Vector2f transform {};
+  Vector transform {};
 };
 
 struct IEventSink
@@ -79,6 +79,6 @@ struct IGame
   virtual void postEvent(unique_ptr<Event> event) = 0;
   virtual void subscribeForEvents(IEventSink*) = 0;
   virtual void unsubscribeForEvents(IEventSink*) = 0;
-  virtual Vector2f getPlayerPosition() = 0;
+  virtual Vector getPlayerPosition() = 0;
 };
 

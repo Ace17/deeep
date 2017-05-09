@@ -90,7 +90,7 @@ struct RoomBoundaryDetector : Entity
   }
 
   int targetLevel = 0;
-  Vector2f transform;
+  Vector transform;
   bool touched = false;
 };
 

@@ -13,7 +13,7 @@ struct Body
 {
   bool solid = false;
   bool pusher = false; // push and crush?
-  Vector2f pos;
+  Vector pos;
   Size2f size = Size2f(1, 1);
   int collisionGroup = 1;
   int collidesWith = 0xFFFF;
@@ -37,7 +37,7 @@ struct Body
 
 struct IPhysicsProbe
 {
-  virtual bool moveBody(Body* body, Vector2f delta) = 0;
+  virtual bool moveBody(Body* body, Vector delta) = 0;
   virtual bool isSolid(const Body* body, Box) const = 0;
   virtual Body* getBodiesInBox(Box myRect, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
 };

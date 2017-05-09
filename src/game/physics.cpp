@@ -43,7 +43,7 @@ struct Physics : IPhysics
     m_bodies.clear();
   }
 
-  bool moveBody(Body* body, Vector2f delta)
+  bool moveBody(Body* body, Vector delta)
   {
     auto rect = body->getBox();
     rect.x += delta.x;

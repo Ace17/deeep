@@ -86,7 +86,7 @@ struct Rockman : Player, Damageable
     r.scale = Size2f(3, 3);
 
     // re-center
-    r.pos += Vector2f(-(r.scale.width - size.width) * 0.5, -0.1);
+    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.1);
 
     if(ball)
     {
@@ -326,8 +326,8 @@ struct Rockman : Player, Damageable
       {
         auto b = make_unique<Bullet>();
         auto sign = (dir == LEFT ? -1 : 1);
-        auto offsetV = vel.x ? Vector2f(0, 1) : Vector2f(0, 0.9);
-        auto offsetH = vel.x ? Vector2f(0.8, 0) : Vector2f(0.7, 0);
+        auto offsetV = vel.x ? Vector(0, 1) : Vector(0, 0.9);
+        auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);
 
         if(sliding)
         {
@@ -337,7 +337,7 @@ struct Rockman : Player, Damageable
           offsetV.y += 0.25;
 
         b->pos = pos + offsetV + offsetH * sign;
-        b->vel = Vector2f(0.025, 0) * sign;
+        b->vel = Vector(0.025, 0) * sign;
         game->spawn(b.release());
         game->playSound(SND_FIRE);
         shootDelay = 300;

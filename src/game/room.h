@@ -13,7 +13,7 @@ struct Room
 
   struct Thing
   {
-    Vector2f pos;
+    Vector pos;
     std::string name;
   };
 

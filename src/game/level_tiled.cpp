@@ -198,7 +198,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
     auto const objRect = convertRect(getBox(obj), 16, height);
 
     auto const name = obj->getMember<json::String>("name")->value;
-    auto const pos = Vector2f(objRect.x, objRect.y);
+    auto const pos = Vector(objRect.x, objRect.y);
 
     r.push_back(Room::Thing { pos, name });
   }
@@ -224,7 +224,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
 
     if(room.tiles.get(x, y) >= 8)
     {
-      auto const pos = Vector2f(x, y);
+      auto const pos = Vector(x, y);
       room.things.push_back(Room::Thing { pos, "spikes" });
       room.tiles.set(x, y, 0);
     }

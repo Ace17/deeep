@@ -9,12 +9,12 @@ struct Trace
 };
 
 inline
-Trace slideMove(Entity* ent, Vector2f vel)
+Trace slideMove(Entity* ent, Vector vel)
 {
   Trace r;
 
-  r.horz = ent->physics->moveBody(ent, Vector2f(vel.x, 0));
-  r.vert = ent->physics->moveBody(ent, Vector2f(0, vel.y));
+  r.horz = ent->physics->moveBody(ent, Vector(vel.x, 0));
+  r.vert = ent->physics->moveBody(ent, Vector(0, vel.y));
 
   return r;
 }

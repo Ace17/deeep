@@ -109,7 +109,7 @@ struct Spider : Entity, Damageable
     auto const speed = 0.01;
     auto bullet = make_unique<SpiderBullet>();
     bullet->pos = getCenter();
-    bullet->vel = Vector2f(cos(angle) * speed, sin(angle) * speed);
+    bullet->vel = Vector(cos(angle) * speed, sin(angle) * speed);
     game->spawn(bullet.release());
   }
 

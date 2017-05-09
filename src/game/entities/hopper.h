@@ -24,7 +24,7 @@ struct Hopper : Entity, Damageable
     auto r = Actor(pos, MDL_RECT);
 
     r.scale = size;
-    r.pos += Vector2f(-(r.scale.width - size.width) * 0.5, 0);
+    r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
 
     if(blinking)
       r.effect = EFFECT_BLINKING;
