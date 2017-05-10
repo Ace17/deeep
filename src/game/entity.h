@@ -25,17 +25,13 @@ struct Damageable
 
 struct Entity : Body
 {
-  virtual ~Entity()
-  {
-  }
+  virtual ~Entity() {}
 
   virtual void enter()
   {
   }
 
-  virtual void leave()
-  {
-  }
+  virtual void leave() {}
 
   // from Body
   virtual void onCollision(Body* otherBody) override
@@ -46,14 +42,9 @@ struct Entity : Body
   }
 
   virtual Actor getActor() const = 0;
-  virtual void tick()
-  {
-  }
+  virtual void tick() {}
 
-  // only called if (this->collidesWith & other->collisionGroup)
-  virtual void onCollide(Entity* /*other*/)
-  {
-  }
+  virtual void onCollide(Entity* /*other*/) {}
 
   bool dead = false;
   Vector vel;
@@ -63,7 +54,7 @@ struct Entity : Body
 
   Vector getCenter() const
   {
-    return Vector(pos.x + size.width / 2, pos.y + size.height / 2);
+    return pos + size * 0.5;
   }
 };
 
