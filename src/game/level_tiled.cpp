@@ -62,7 +62,7 @@ Size2i getSize(json::Object* obj)
 }
 
 static
-Rect2i getBox(json::Object* obj)
+Rect2i getRect(json::Object* obj)
 {
   Rect2i r;
 
@@ -195,7 +195,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
   for(auto& jsonObj : objects->elements)
   {
     auto obj = json::cast<json::Object>(jsonObj.get());
-    auto const objRect = convertRect(getBox(obj), 16, height);
+    auto const objRect = convertRect(getRect(obj), 16, height);
 
     auto const name = obj->getMember<json::String>("name")->value;
     auto const pos = Vector(objRect.x, objRect.y);
@@ -234,7 +234,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
 static
 Room loadAbstractRoom(json::Object* jsonRoom)
 {
-  auto box = getBox(jsonRoom);
+  auto box = getRect(jsonRoom);
 
   auto const PELS_PER_TILE = 4;
   box = convertRect(box, PELS_PER_TILE, 64);
