@@ -14,7 +14,7 @@ struct Body
   bool solid = false;
   bool pusher = false; // push and crush?
   Vector pos;
-  Size2f size = Size2f(1, 1);
+  Size size = Size(1, 1);
   int collisionGroup = 1;
   int collidesWith = 0xFFFF;
   Body* ground = nullptr; // the body we rest on (if any)

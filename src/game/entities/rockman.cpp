@@ -36,7 +36,7 @@ struct Bullet : Entity
 {
   Bullet()
   {
-    size = Size2f(0.5, 0.4);
+    size = Size(0.5, 0.4);
     collisionGroup = 0;
     collidesWith = CG_WALLS;
   }
@@ -71,7 +71,7 @@ struct Bullet : Entity
   int life = 1000;
 };
 
-static auto const NORMAL_SIZE = Size2f(0.9, 1.9);
+static auto const NORMAL_SIZE = Size(0.9, 1.9);
 
 struct Rockman : Player, Damageable
 {
@@ -83,7 +83,7 @@ struct Rockman : Player, Damageable
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_ROCKMAN);
-    r.scale = Size2f(3, 3);
+    r.scale = Size(3, 3);
 
     // re-center
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.1);
@@ -347,7 +347,7 @@ struct Rockman : Player, Damageable
     if(control.down && !ball && (upgrades & UPGRADE_BALL))
     {
       ball = true;
-      size = Size2f(NORMAL_SIZE.width, 0.9);
+      size = Size(NORMAL_SIZE.width, 0.9);
     }
 
     if(control.up && ball)

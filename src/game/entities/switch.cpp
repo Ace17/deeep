@@ -31,7 +31,7 @@ struct Switch : Entity
 {
   Switch(int id_) : id(id_)
   {
-    size = Size2f(0.75, 0.75);
+    size = Size(0.75, 0.75);
   }
 
   virtual Actor getActor() const override
@@ -78,7 +78,7 @@ struct Door : Entity, IEventSink
 {
   Door(int id_) : id(id_)
   {
-    size = Size2f(1, 3);
+    size = Size(1, 3);
     solid = true;
   }
 
@@ -143,7 +143,7 @@ struct BreakableDoor : Entity, Damageable
 {
   BreakableDoor()
   {
-    size = Size2f(1, 3);
+    size = Size(1, 3);
     solid = true;
     collisionGroup = CG_WALLS;
   }

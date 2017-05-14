@@ -10,7 +10,7 @@ struct CrumbleBlock : Entity
 {
   CrumbleBlock()
   {
-    size = Size2f(1, 1);
+    size = Size(1, 1);
     collisionGroup = CG_WALLS;
   }
 
@@ -22,7 +22,7 @@ struct CrumbleBlock : Entity
     r.action = 3;
 
     if(!solid)
-      r.scale = Size2f(0.01, 0.01);
+      r.scale = Size(0.01, 0.01);
 
     return r;
   }
@@ -58,7 +58,7 @@ struct FragileBlock : Entity, Damageable
 {
   FragileBlock()
   {
-    size = Size2f(1, 1);
+    size = Size(1, 1);
     reappear();
   }
 

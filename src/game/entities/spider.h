@@ -14,7 +14,7 @@ struct SpiderBullet : Entity
 {
   SpiderBullet()
   {
-    size = Size2f(0.3, 0.3);
+    size = Size(0.3, 0.3);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
   }
@@ -54,7 +54,7 @@ struct Spider : Entity, Damageable
   Spider()
   {
     dir = -1.0f;
-    size = Size2f(1, 1);
+    size = Size(1, 1);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
   }
@@ -63,7 +63,7 @@ struct Spider : Entity, Damageable
   {
     auto r = Actor(pos, MDL_RECT);
 
-    r.scale = Size2f(1, 1);
+    r.scale = Size(1, 1);
 
     if(blinking)
       r.effect = Effect::Blinking;

@@ -9,7 +9,7 @@ struct Conveyor : Entity
 {
   Conveyor()
   {
-    size = Size2f(1, 1);
+    size = Size(1, 1);
     collisionGroup = CG_WALLS;
     collidesWith = CG_PLAYER;
     solid = 1;

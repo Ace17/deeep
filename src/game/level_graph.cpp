@@ -77,7 +77,7 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
     [&] ()
     {
       auto detector = make_unique<RoomBoundaryDetector>();
-      detector->size = Size2f(1, 1) * CELL_SIZE;
+      detector->size = Size(1, 1) * CELL_SIZE;
       return detector;
     };
 
@@ -91,7 +91,7 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
       {
         auto blocker = make_unique<RoomBoundaryBlocker>(-1);
         blocker->pos = toVector(delta * CELL_SIZE);
-        blocker->size = Size2f(1, 1) * CELL_SIZE;
+        blocker->size = Size(1, 1) * CELL_SIZE;
         game->spawn(blocker.release());
         return;
       }

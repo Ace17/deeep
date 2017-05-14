@@ -14,7 +14,7 @@ struct Hopper : Entity, Damageable
   Hopper()
   {
     dir = -1.0f;
-    size = Size2f(1, 0.5);
+    size = Size(1, 0.5);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
   }

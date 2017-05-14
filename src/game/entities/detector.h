@@ -31,7 +31,7 @@ struct Detector : Entity
   Detector(int id_)
   {
     id = id_;
-    size = Size2f(0.1, 3);
+    size = Size(0.1, 3);
     solid = false;
     collisionGroup = 0; // dont' trigger other detectors
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
@@ -67,7 +67,7 @@ struct RoomBoundaryDetector : Entity
 {
   RoomBoundaryDetector()
   {
-    size = Size2f(1, 1);
+    size = Size(1, 1);
     solid = false;
     collisionGroup = 0;
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
@@ -98,7 +98,7 @@ struct RoomBoundaryBlocker : Entity
 {
   RoomBoundaryBlocker(int groupsToBlock)
   {
-    size = Size2f(1, 1);
+    size = Size(1, 1);
     solid = true;
     collisionGroup = CG_WALLS;
     collidesWith = groupsToBlock;
