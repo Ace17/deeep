@@ -66,7 +66,7 @@ struct Physics : IPhysics
         for(auto otherBody : m_bodies)
         {
           if(otherBody->ground == body)
-            moveBody(otherBody, delta);
+            moveBody(otherBody, delta * 1.0001);
         }
 
         // push potential non-solid bodies

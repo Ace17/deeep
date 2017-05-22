@@ -297,7 +297,7 @@ struct Rockman : Player, Damageable
 
     auto trace = slideMove(this, vel);
 
-    if(trace.vert)
+    if(trace.vert && !Body::ground)
     {
       ground = false;
     }

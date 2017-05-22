@@ -154,6 +154,12 @@ static map<string, CreationFunc> getRegistry()
       return make_unique<MovingPlatform>(1);
     };
 
+  r["elevator"] =
+    [] (EntityArgs &)
+    {
+      return make_unique<Elevator>();
+    };
+
   r["conveyor(0)"] =
     [] (EntityArgs &)
     {

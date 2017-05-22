@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlc0SwyAIhO2x7\/\/CvXUyLeJGfjSyO8MpyvKhhldr7cVgMBgMBuMbp6gy+1UVmTVVZL6qGv8vr8Qf9R5m83nU0WN6wjyJrGH3mRrtT\/49IrMmyQtV1p1YwY\/sO+EOaPw9RfNLflX5I9mfwB\/dgxl+TdX5tXq983n0TlrbhG8eNVvyoD4WofxWnyhF8Ev97fkgZ4Ce06oe97iRPmhvSusn6o\/s12pBdGeP9\/\/XI6eWR\/oWwbSS3+Kf7U1+8pOf\/OQnP\/nJvzv\/KZrhP1Ej\/mqqyHxVNX7p\/ktrIt7DbD5k32hN1vyzcoxqfwsx8s6c\/wjHHa2e\/578M3oaP9oXbU1mLXfPLaOuVfzIvtP5eyI\/+Svza6rOr9XsmQv1WMHf87XkQX0s8uT3EsLv6bWbPM41SrvWlSWvdxep0UzR1leIyuzk\/48Pu+8JvQ==",
+         "data":"eJztmNsKwzAMQ9vH\/f8Pj72MUhxHTXxJYwkMgyWWTi4L7DyO42SxWCwWi\/WvXVSZ\/aqKzJoqMl9Vjf\/OK\/F73YfRfhY5WkxveE88M6z+pnr7k3+NiswkeaGKOhMZ\/Mi8Hc6Axt+SN7\/kV5Xfk\/0N\/N5rMMKvqTq\/lte6n8XaSWMP4TuLzDN9UJ8ZofyzPl7y4JfWt+WD7IHFPnmqxY2sg3antPXUejydr2VB9GSO9e+v5D\/aD\/3Og2mGPzpLJjtyfivyZ\/mvwJ\/pT37yk5\/85Cc\/kvWtGuHfUT3+aspgPhufM5TtHy3p\/EtjPO7DaD9kXm9M1Ps3y9HL\/hGq5x35\/iMcT5T9\/lvyj+ht\/Oi6aGMiszzdt4hcWfzIvN35WyI\/+Svza6rOr2W27IV6ZPC3fGf6oD4zsuS3EsJv6bWaLPbVS6vmipLVvfNU703RxmdWVJ4V2X91\/z+jGn9WfQF6KAnC",
          "encoding":"base64",
          "height":64,
          "name":"tiles",
@@ -336,6 +336,28 @@
                  "width":16,
                  "x":880,
                  "y":720
+                }, 
+                {
+                 "height":16,
+                 "id":30,
+                 "name":"elevator",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":544,
+                 "y":976
+                }, 
+                {
+                 "height":16,
+                 "id":31,
+                 "name":"elevator",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":464,
+                 "y":672
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -344,7 +366,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":30,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
