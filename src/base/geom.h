@@ -159,15 +159,15 @@ typedef GenericBox<int> Rect2i;
 typedef GenericBox<float> Rect2f;
 
 template<typename T>
-bool segmentsOverlap(T s1x1, T s1x2, T s2x1, T s2x2)
+bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
 {
-  if(s1x1 > s2x1)
+  if(a_left > b_left)
   {
-    std::swap(s1x1, s2x1);
-    std::swap(s1x2, s2x2);
+    std::swap(a_left, b_left);
+    std::swap(a_right, b_right);
   }
 
-  return s2x1 >= s1x1 && s2x1 <= s1x2;
+  return b_left >= a_left && b_left <= a_right;
 }
 
 template<typename T>
