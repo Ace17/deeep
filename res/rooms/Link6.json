@@ -2,14 +2,14 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztl9sKgDAIhrfL3v+FuwpiePg9TIsShIrp9881V3OMMQlfjRoj+dviq+3nf5u\/6ujiPoW\/apjM9T1WeobEd647Z92aqvld\/dh6nqzatPc1el4h+qV7JN7L1\/brTr7UL7x5vN8b1PiDcTS\/RYNnrGVeUk3RWqN8hOnha7o0fVLsDj7CyeiPFn50r1M8Kz+j5tG8yP5DOZF5WfY\/F7ejrhbL5CM9zfP+aTyPTk5zhXn5mevk4SP5KvmRcyuDj+bu4kusDv6d+UX+E+rfzb+YnJ5qq+ZH+1UG27L+GWc65df\/2K78b\/MT3TkCIQ==",
+         "data":"eJztk0EKACAIBPX\/n+4eQuooGLiw0KFZxVJFRNdr6Iiy3ESeZFXOMZNB33j55ekeZUXqUr5z7wj7ypjyV37kLVXwVp5Xd73of37Nyzp7eW\/96H1PX131rV6qdp+wxAeuLQGs",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":16,
          "x":0,
          "y":0
         }, 
@@ -20,91 +20,58 @@
          "objects":[
                 {
                  "height":16,
-                 "id":78,
-                 "name":"crumble_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":368,
-                 "y":144
-                }, 
-                {
-                 "height":16,
-                 "id":79,
+                 "id":77,
                  "name":"elevator",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":448,
-                 "y":688
+                 "x":112,
+                 "y":640
                 }, 
                 {
                  "height":16,
                  "id":80,
-                 "name":"crumble_block",
+                 "name":"fragile_block",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":384,
-                 "y":144
+                 "x":0,
+                 "y":704
                 }, 
                 {
                  "height":16,
                  "id":81,
-                 "name":"crumble_block",
+                 "name":"fragile_block",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":144
+                 "x":0,
+                 "y":672
                 }, 
                 {
                  "height":16,
                  "id":82,
-                 "name":"crumble_block",
+                 "name":"fragile_block",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":128,
-                 "y":144
+                 "x":0,
+                 "y":688
                 }, 
                 {
                  "height":16,
                  "id":83,
-                 "name":"fragile_block",
+                 "name":"elevator",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
-                 "x":496,
-                 "y":192
-                }, 
-                {
-                 "height":16,
-                 "id":84,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":496,
-                 "y":176
-                }, 
-                {
-                 "height":16,
-                 "id":85,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":496,
-                 "y":160
+                 "width":32,
+                 "x":176,
+                 "y":384
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -113,7 +80,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":86,
+ "nextobjectid":84,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -124,5 +91,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":32
+ "width":16
 }

@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzt19EKwCAIheG63Pu\/8K4nakeCQvYLwsayz0FbNMcY00kb3pgsu9WfDnx8\/Px79a4r82f1t94b\/+vf+hdX9xPbm+3TPtvdr5T+s3ulvqvv1VTnUfwnyMyPalZ+tMbUNVNZt9WxO6H6pwMfHx8fHx8fHx8f\/7\/+qh\/l3NSx\/gXmQgG9",
+         "data":"eJztlUsOwCAIRHXZ+1+4Kxc1BPkMog2TkDQt8hDQ9tZaJ2wW5cPZbet3q\/jFLz5\/XqlnTXxufda+i\/\/lZ93F2v8Jl+ecMyK2h5+xf20Of+SPdw9haP4caxV7B1\/qH71\/idB8jb+XPzRmS8tG8S21up1vicFJ4kNJ0vdIvrVmp\/Ctc2XhS+\/\/KD6VA2q2kWcnm\/8svkfzPf1F8SNrIOFH1kDLn5XN54TkU\/cVWuh+evlZKn4OXztb3tk8df0L7TwDYw==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -31,14 +31,14 @@
                 }, 
                 {
                  "height":16,
-                 "id":78,
+                 "id":79,
                  "name":"elevator",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":368,
-                 "y":144
+                 "x":432,
+                 "y":464
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -47,7 +47,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":79,
+ "nextobjectid":80,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

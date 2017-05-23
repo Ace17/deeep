@@ -332,8 +332,8 @@
                  "type":"0",
                  "visible":true,
                  "width":4,
-                 "x":16,
-                 "y":68
+                 "x":84,
+                 "y":180
                 }, 
                 {
                  "height":8,
@@ -587,6 +587,28 @@
                  "width":4,
                  "x":56,
                  "y":48
+                }, 
+                {
+                 "height":12,
+                 "id":252,
+                 "name":"Link6",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":4,
+                 "x":96,
+                 "y":164
+                }, 
+                {
+                 "height":4,
+                 "id":253,
+                 "name":"ItemSlide",
+                 "rotation":0,
+                 "type":"5",
+                 "visible":true,
+                 "width":4,
+                 "x":84,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -621,7 +643,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":252,
+ "nextobjectid":254,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
