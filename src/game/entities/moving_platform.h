@@ -62,6 +62,7 @@ struct Elevator : Entity
     r.scale = size;
     r.ratio = 0;
     r.action = 4;
+
     if(liftTimer > 0)
       r.effect = Effect::Blinking;
 
@@ -74,6 +75,7 @@ struct Elevator : Entity
     {
       if(triggeredTime == 0)
         trigger();
+
       triggeredTime = 100;
     }
   }
