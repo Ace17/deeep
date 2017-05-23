@@ -11,6 +11,8 @@
 #include <cassert>
 #include <sstream>
 #include <vector>
+#include <map>
+#include <memory>
 #include <iostream>
 #include <stdexcept>
 using namespace std;
@@ -117,22 +119,29 @@ int linkShaders(vector<int> ids)
 }
 
 static
-SDL_Surface* loadPicture(string path)
+SDL_Surface* getPicture(string path)
 {
-  auto surface = IMG_Load((char*)path.c_str());
+  static map<string, shared_ptr<SDL_Surface>> cache;
 
-  if(!surface)
-    throw runtime_error(string("Can't load texture: ") + SDL_GetError());
+  if(cache.find(path) == cache.end())
+  {
+    auto surface = IMG_Load((char*)path.c_str());
 
-  if(surface->format->BitsPerPixel != 32)
-    throw runtime_error("only 32 bit pictures are supported");
+    if(!surface)
+      throw runtime_error(string("Can't load texture: ") + SDL_GetError());
 
-  return surface;
+    if(surface->format->BitsPerPixel != 32)
+      throw runtime_error("only 32 bit pictures are supported");
+
+    cache[path] = shared_ptr<SDL_Surface>(surface, SDL_FreeSurface);
+  }
+
+  return cache.at(path).get();
 }
 
 int loadTexture(string path, Rect2i rect)
 {
-  auto surface = loadPicture(path);
+  auto surface = getPicture(path);
 
   if(rect.width == 0 && rect.height == 0)
     rect = Rect2i(0, 0, surface->w, surface->h);
@@ -163,8 +172,6 @@ int loadTexture(string path, Rect2i rect)
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  SDL_FreeSurface(surface);
 
   return texture;
 }
