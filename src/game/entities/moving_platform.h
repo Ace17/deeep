@@ -95,7 +95,7 @@ struct Elevator : Entity
     if(liftTimer > 500 && liftTimer < 4500)
     {
       auto sign = liftTimer > 2500 ? 1 : -1;
-      physics->moveBody(this, Vector(0, sign * 0.006));
+      physics->moveBody(this, Vector(0, sign * 0.004));
     }
     else
     {
