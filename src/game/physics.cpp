@@ -45,9 +45,10 @@ struct Physics : IPhysics
 
   bool moveBody(Body* body, Vector delta)
   {
+    auto newPos = body->pos + delta;
+
     auto rect = body->getBox();
-    rect.x += delta.x;
-    rect.y += delta.y;
+    rect.pos() = newPos;
 
     auto const blocked = isSolid(body, rect);
 
@@ -58,7 +59,7 @@ struct Physics : IPhysics
     }
     else
     {
-      body->pos += delta;
+      body->pos = newPos;
 
       if(body->pusher)
       {

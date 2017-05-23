@@ -148,6 +148,11 @@ struct GenericBox : GenericVector<T>, GenericSize<T>
     GenericSize<T>(w, h)
   {
   }
+
+  GenericVector<T>& pos()
+  {
+    return *this;
+  }
 };
 
 typedef GenericBox<int> Rect2i;
