@@ -60,19 +60,7 @@ struct Physics : IPhysics
     else
     {
       if(body->pusher)
-      {
-        // move stacked bodies
-        for(auto otherBody : m_bodies)
-        {
-          if(otherBody->ground == body)
-            moveBody(otherBody, delta);
-        }
-
-        // push potential non-solid bodies
-        for(auto other : m_bodies)
-          if(other != body && overlaps(rect, other->getBox()))
-            moveBody(other, delta);
-      }
+        pushOthers(body, rect, delta);
 
       body->pos = newPos;
     }
@@ -87,6 +75,21 @@ struct Physics : IPhysics
     }
 
     return !blocked;
+  }
+
+  void pushOthers(Body* body, Box rect, Vector delta)
+  {
+    // move stacked bodies
+    for(auto otherBody : m_bodies)
+    {
+      if(otherBody->ground == body)
+        moveBody(otherBody, delta);
+    }
+
+    // push potential non-solid bodies
+    for(auto other : m_bodies)
+      if(other != body && overlaps(rect, other->getBox()))
+        moveBody(other, delta);
   }
 
   bool isSolid(const Body* except, Box rect) const
