@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlUsOwCAIRHXZ+1+4Kxc1BPkMog2TkDQt8hDQ9tZaJ2wW5cPZbet3q\/jFLz5\/XqlnTXxufda+i\/\/lZ93F2v8Jl+ecMyK2h5+xf20Of+SPdw9haP4caxV7B1\/qH71\/idB8jb+XPzRmS8tG8S21up1vicFJ4kNJ0vdIvrVmp\/Ctc2XhS+\/\/KD6VA2q2kWcnm\/8svkfzPf1F8SNrIOFH1kDLn5XN54TkU\/cVWuh+evlZKn4OXztb3tk8df0L7TwDYw==",
+         "data":"eJztldEOgCAIRfXR\/\/\/hnnzIEXEvKNa8m1sr4CAi1VJKFdYoyUZbX\/NfrcM\/\/MPX76v0jMTX\/LP2fXRX1ixG\/ydanmPOEbE9\/Iz9ozn8kd\/fNWFF88dYb7FX8K32s\/dvUTQfsffyu3pvoewoPlOrr\/OZGJosNpIs5z6Tz9ZsFz7bVwzfOv9n8aUcono78u5k89vLd2++Fns2niaEj9RgBt\/T40h+jF82n4nH8KV5FS3v2TJ1iq45w3\/KaSVfumMrtQMf7S1vb+7qfwHVGQND",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -39,6 +39,17 @@
                  "width":32,
                  "x":432,
                  "y":464
+                }, 
+                {
+                 "height":16,
+                 "id":80,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":448,
+                 "y":688
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -47,7 +58,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":80,
+ "nextobjectid":81,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

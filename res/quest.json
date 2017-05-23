@@ -157,7 +157,7 @@
                  "visible":true,
                  "width":8,
                  "x":80,
-                 "y":40
+                 "y":156
                 }, 
                 {
                  "height":16,
@@ -481,13 +481,13 @@
                 {
                  "height":4,
                  "id":242,
-                 "name":"Square",
+                 "name":"DashNeeded",
                  "rotation":0,
-                 "type":"0",
+                 "type":"3",
                  "visible":true,
                  "width":16,
-                 "x":76,
-                 "y":56
+                 "x":72,
+                 "y":140
                 }, 
                 {
                  "height":8,
@@ -609,6 +609,28 @@
                  "width":4,
                  "x":84,
                  "y":160
+                }, 
+                {
+                 "height":4,
+                 "id":254,
+                 "name":"ItemDash",
+                 "rotation":0,
+                 "type":"4",
+                 "visible":true,
+                 "width":4,
+                 "x":76,
+                 "y":156
+                }, 
+                {
+                 "height":4,
+                 "id":255,
+                 "name":"ItemShoot",
+                 "rotation":0,
+                 "type":"3",
+                 "visible":true,
+                 "width":4,
+                 "x":68,
+                 "y":140
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -643,7 +665,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":254,
+ "nextobjectid":256,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,

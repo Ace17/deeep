@@ -1,31 +1,42 @@
-{ "height":48,
+{ "height":16,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztk9EOxSAIQ93\/\/\/R9XQxCoUWX7TbxxQCnIlxjjMs4s6wY7zD5nv78Hj6izv9X8626p\/lejS\/w2f5XPES5GXW8vyLl3+9UxnOHT4ZfPU\/iR14q\/aryrfpv5zMzfpqPSM1XeGL52ZlS8hEvGU8e\/35X4SMeGD7iAY1dsaJ3KPhzTIYfeVDxKztR5d\/vd\/Kte3SumR30+KvaCFvJ92IU+5fxj\/RHwfb6t+J78azHTj7bix38aB6yvUVqIB7QPs3xKv6cj4jdD89Dlq\/ay118rybKt\/JYflWnuAq+wrtq79+S\/wNaQwNe",
+         "data":"eJxjZGBgYBzFZIFR\/QOrH9kMSvQz45BjZiCcVijRD+Mz48G0TvcANNsAng==",
          "encoding":"base64",
-         "height":48,
+         "height":16,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":16,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "height":32,
+         "height":16,
          "name":"things",
-         "objects":[],
+         "objects":[
+                {
+                 "height":16,
+                 "id":1,
+                 "name":"upgrade_dash",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":208
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
+         "width":16,
          "x":0,
          "y":0
         }],
- "nextobjectid":77,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -36,5 +47,5 @@
         }],
  "tilewidth":16,
  "version":1,
- "width":32
+ "width":16
 }
