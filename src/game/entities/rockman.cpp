@@ -103,54 +103,51 @@ struct Rockman : Player, Damageable
       r.action = ACTION_HURT;
       r.ratio = 1.0f - hurtDelay / float(HURT_DELAY);
     }
+    else if(!ground)
+    {
+      if(climbDelay)
+      {
+        r.action = ACTION_CLIMB;
+        r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
+        r.scale.width *= -1;
+      }
+      else
+      {
+        r.pos.y -= 0.3;
+        r.action = shootDelay ? ACTION_FALL_SHOOT : ACTION_FALL;
+        r.ratio = vel.y > 0 ? 0 : 1;
+      }
+    }
     else
     {
-      if(!ground)
+      if(vel.x != 0)
       {
-        if(climbDelay)
+        if(dashDelay)
         {
-          r.action = ACTION_CLIMB;
-          r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
-          r.scale.width *= -1;
+          r.ratio = min(400 - dashDelay, 400) / 100.0f;
+          r.action = ACTION_DASH;
         }
         else
         {
-          r.pos.y -= 0.3;
-          r.action = shootDelay ? ACTION_FALL_SHOOT : ACTION_FALL;
-          r.ratio = vel.y > 0 ? 0 : 1;
+          r.ratio = (time % 500) / 500.0f;
+
+          if(shootDelay == 0)
+            r.action = ACTION_WALK;
+          else
+            r.action = ACTION_WALK_SHOOT;
         }
       }
       else
       {
-        if(vel.x != 0)
+        if(shootDelay == 0)
         {
-          if(dashDelay)
-          {
-            r.ratio = min(400 - dashDelay, 400) / 100.0f;
-            r.action = ACTION_DASH;
-          }
-          else
-          {
-            r.ratio = (time % 500) / 500.0f;
-
-            if(shootDelay == 0)
-              r.action = ACTION_WALK;
-            else
-              r.action = ACTION_WALK_SHOOT;
-          }
+          r.ratio = (time % 1000) / 1000.0f;
+          r.action = ACTION_STAND;
         }
         else
         {
-          if(shootDelay == 0)
-          {
-            r.ratio = (time % 1000) / 1000.0f;
-            r.action = ACTION_STAND;
-          }
-          else
-          {
-            r.ratio = 0;
-            r.action = ACTION_STAND_SHOOT;
-          }
+          r.ratio = 0;
+          r.action = ACTION_STAND_SHOOT;
         }
       }
     }
