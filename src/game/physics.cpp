@@ -59,15 +59,13 @@ struct Physics : IPhysics
     }
     else
     {
-      body->pos = newPos;
-
       if(body->pusher)
       {
         // move stacked bodies
         for(auto otherBody : m_bodies)
         {
           if(otherBody->ground == body)
-            moveBody(otherBody, delta * 1.0001);
+            moveBody(otherBody, delta);
         }
 
         // push potential non-solid bodies
@@ -75,6 +73,8 @@ struct Physics : IPhysics
           if(other != body && overlaps(rect, other->getBox()))
             moveBody(other, delta);
       }
+
+      body->pos = newPos;
     }
 
     // update ground
