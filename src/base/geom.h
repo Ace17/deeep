@@ -167,7 +167,7 @@ bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
     std::swap(a_right, b_right);
   }
 
-  return b_left >= a_left && b_left <= a_right;
+  return b_left >= a_left && b_left < a_right;
 }
 
 template<typename T>

@@ -4,10 +4,14 @@
 typedef GenericVector<float> Vector;
 typedef GenericSize<float> Size;
 typedef GenericBox<float> Box;
+typedef GenericBox<int> IntBox;
 
 static auto const UnitSize = Size(1, 1);
 
 using namespace std;
+
+static auto const PRECISION = 1024;
+IntBox roundBox(Box b);
 
 struct Body
 {
@@ -24,7 +28,7 @@ struct Body
   {
   }
 
-  Box getBox() const
+  Box getFBox() const
   {
     Box r;
     r.x = pos.x;
@@ -33,13 +37,18 @@ struct Body
     r.width = size.width;
     return r;
   }
+
+  IntBox getBox() const
+  {
+    return roundBox(getFBox());
+  }
 };
 
 struct IPhysicsProbe
 {
   virtual bool moveBody(Body* body, Vector delta) = 0;
-  virtual bool isSolid(const Body* body, Box) const = 0;
-  virtual Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
+  virtual bool isSolid(const Body* body, IntBox) const = 0;
+  virtual Body* getBodiesInBox(IntBox myBox, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
 };
 
 struct IPhysics : IPhysicsProbe
@@ -49,6 +58,6 @@ struct IPhysics : IPhysicsProbe
   virtual void removeBody(Body* body) = 0;
   virtual void clearBodies() = 0;
   virtual void checkForOverlaps() = 0;
-  virtual void setEdifice(function<bool(Box)> isSolid) = 0;
+  virtual void setEdifice(function<bool(IntBox)> isSolid) = 0;
 };
 

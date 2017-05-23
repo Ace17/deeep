@@ -39,7 +39,7 @@ void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file
 unique_ptr<IPhysics> createPhysics();
 
 static
-bool isSolid(Rect2f rect)
+bool isSolid(IntBox rect)
 {
   return rect.y < 0 || rect.x < 0;
 }

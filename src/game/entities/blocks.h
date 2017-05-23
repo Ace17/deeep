@@ -29,7 +29,7 @@ struct CrumbleBlock : Entity
 
   void onCollide(Entity* other) override
   {
-    if(other->pos.y > pos.y + size.height)
+    if(other->pos.y > pos.y + size.height * 0.9)
       disappearTimer = 1000;
   }
 

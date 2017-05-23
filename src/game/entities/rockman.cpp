@@ -354,7 +354,7 @@ struct Rockman : Player, Damageable
       box.x = pos.x;
       box.y = pos.y;
 
-      if(!physics->isSolid(this, box))
+      if(!physics->isSolid(this, roundBox(box)))
       {
         ball = false;
         size = NORMAL_SIZE;
@@ -398,7 +398,7 @@ struct Rockman : Player, Damageable
     box.width = 0.01;
     box.height = 0.9;
 
-    if(physics->isSolid(this, box))
+    if(physics->isSolid(this, roundBox(box)))
       return true;
 
     return false;

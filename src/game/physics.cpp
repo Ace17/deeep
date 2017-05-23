@@ -5,6 +5,21 @@
 
 using namespace std;
 
+int roundCoord(float x)
+{
+  return round((double)x * PRECISION);
+}
+
+IntBox roundBox(Box b)
+{
+  IntBox r;
+  r.x = roundCoord(b.x);
+  r.y = roundCoord(b.y);
+  r.width = roundCoord(b.width);
+  r.height = roundCoord(b.height);
+  return r;
+}
+
 template<typename T, typename Lambda>
 void unstableRemove(vector<T>& container, Lambda predicate)
 {
@@ -47,8 +62,10 @@ struct Physics : IPhysics
   {
     auto newPos = body->pos + delta;
 
-    auto rect = body->getBox();
-    rect.pos() = newPos;
+    auto frect = body->getFBox();
+    frect.pos() = newPos;
+
+    auto rect = roundBox(frect);
 
     auto const blocked = isSolid(body, rect);
 
@@ -62,22 +79,23 @@ struct Physics : IPhysics
       if(body->pusher)
         pushOthers(body, rect, delta);
 
-      body->pos = newPos;
+      body->pos = frect.pos();
+      // assert(!getSolidBodyInBox(body->getBox(), body));
     }
 
     // update ground
     if(!body->pusher)
     {
-      auto feet = rect;
-      feet.y -= 0.01;
-      feet.height = 0.01;
+      auto feet = body->getBox();
+      feet.height = 16;
+      feet.y -= feet.height;
       body->ground = getSolidBodyInBox(feet, body);
     }
 
     return !blocked;
   }
 
-  void pushOthers(Body* body, Box rect, Vector delta)
+  void pushOthers(Body* body, IntBox rect, Vector delta)
   {
     // move stacked bodies
     for(auto otherBody : m_bodies)
@@ -92,7 +110,7 @@ struct Physics : IPhysics
         moveBody(other, delta);
   }
 
-  bool isSolid(const Body* except, Box rect) const
+  bool isSolid(const Body* except, IntBox rect) const
   {
     if(getSolidBodyInBox(rect, except))
       return true;
@@ -127,12 +145,12 @@ struct Physics : IPhysics
       me.onCollision(&other);
   }
 
-  void setEdifice(function<bool(Box)> isSolid)
+  void setEdifice(function<bool(IntBox)> edifice)
   {
-    m_isSolid = isSolid;
+    m_isSolid = edifice;
   }
 
-  Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid, const Body* except) const
+  Body* getBodiesInBox(IntBox myBox, int collisionGroup, bool onlySolid, const Body* except) const
   {
     for(auto& body : m_bodies)
     {
@@ -155,13 +173,13 @@ struct Physics : IPhysics
   }
 
 private:
-  Body* getSolidBodyInBox(Box myBox, const Body* except) const
+  Body* getSolidBodyInBox(IntBox myBox, const Body* except) const
   {
     return getBodiesInBox(myBox, -1, true, except);
   }
 
   vector<Body*> m_bodies;
-  function<bool(Box)> m_isSolid;
+  function<bool(IntBox)> m_isSolid;
 };
 
 unique_ptr<IPhysics> createPhysics()

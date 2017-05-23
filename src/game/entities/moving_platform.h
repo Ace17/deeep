@@ -30,6 +30,11 @@ struct MovingPlatform : Entity
   void tick() override
   {
     auto delta = 0.005 * sin(ticks * 0.005);
+
+    // moveBody doesn't work well with very small displacements
+    if(abs(delta) < 0.001)
+      delta = 0;
+
     auto v = dir ? Vector(delta, 0) : Vector(0, delta);
     physics->moveBody(this, v);
     ++ticks;
@@ -71,7 +76,7 @@ struct Elevator : Entity
 
   void onCollide(Entity* other) override
   {
-    if(other->pos.y > pos.y + size.height)
+    if(other->pos.y > pos.y + size.height / 2)
     {
       if(triggeredTime == 0)
         trigger();

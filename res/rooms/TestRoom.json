@@ -424,6 +424,17 @@
                  "width":16,
                  "x":736,
                  "y":448
+                }, 
+                {
+                 "height":16,
+                 "id":38,
+                 "name":"moving_platform(1)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":288,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -432,7 +443,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":38,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

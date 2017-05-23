@@ -92,7 +92,7 @@ struct Game : Scene, IGame
 
     for(auto& entity : m_entities)
     {
-      if(!overlaps(entity->getBox(), cameraBox))
+      if(!overlaps(entity->getFBox(), cameraBox))
         continue;
 
       r.push_back(entity->getActor());
@@ -291,39 +291,39 @@ struct Game : Scene, IGame
 
   static Actor getDebugActor(Entity* entity)
   {
-    auto box = entity->getBox();
+    auto box = entity->getFBox();
     auto r = Actor(Vector(box.x, box.y), MDL_RECT);
     r.scale = box;
     return r;
   }
 
-  bool isBoxSolid(Box box)
+  bool isBoxSolid(IntBox box)
   {
-    if(isPointSolid(Vector(box.x, box.y)))
+    if(isPointSolid(GenericVector<int>(box.x, box.y)))
       return true;
 
-    if(isPointSolid(Vector(box.x, box.y + box.height)))
+    if(isPointSolid(GenericVector<int>(box.x, box.y + box.height)))
       return true;
 
-    if(isPointSolid(Vector(box.x + box.width, box.y)))
+    if(isPointSolid(GenericVector<int>(box.x + box.width, box.y)))
       return true;
 
-    if(isPointSolid(Vector(box.x + box.width, box.y + box.height)))
+    if(isPointSolid(GenericVector<int>(box.x + box.width, box.y + box.height)))
       return true;
 
-    if(isPointSolid(Vector(box.x, box.y + box.height / 2)))
+    if(isPointSolid(GenericVector<int>(box.x, box.y + box.height / 2)))
       return true;
 
-    if(isPointSolid(Vector(box.x + box.width, box.y + box.height / 2)))
+    if(isPointSolid(GenericVector<int>(box.x + box.width, box.y + box.height / 2)))
       return true;
 
     return false;
   }
 
-  bool isPointSolid(Vector pos)
+  bool isPointSolid(GenericVector<int> pos)
   {
-    auto const x = (int)pos.x;
-    auto const y = (int)pos.y;
+    auto const x = pos.x / PRECISION;
+    auto const y = pos.y / PRECISION;
 
     if(!m_tiles.isInside(x, y))
       return false;
