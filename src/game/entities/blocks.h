@@ -16,10 +16,10 @@ struct CrumbleBlock : Entity
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor(pos, MDL_BLOCK);
     r.scale = size;
     r.ratio = 0;
-    r.action = 3;
+    r.action = 1;
 
     if(!solid)
       r.scale = Size(0.01, 0.01);
@@ -64,10 +64,10 @@ struct FragileBlock : Entity, Damageable
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor(pos, MDL_BLOCK);
     r.scale = size;
     r.ratio = 0;
-    r.action = solid ? 4 : 1;
+    r.action = solid ? 2 : 0;
 
     return r;
   }

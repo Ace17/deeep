@@ -1,0 +1,16 @@
+{
+  "type" : "sheet",
+  "sheet" : "elevator.png",
+  "width" : 48,
+  "height" : 16,
+  "actions": [
+    {
+      "name": "off",
+      "frames": [ 0, 1 ]
+    },
+    {
+      "name": "on",
+      "frames": [ 16, 17 ]
+    }
+  ]
+}

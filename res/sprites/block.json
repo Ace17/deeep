@@ -1,0 +1,20 @@
+{
+  "type" : "sheet",
+  "sheet" : "block.png",
+  "width" : 32,
+  "height" : 32,
+  "actions": [
+    {
+      "name": "hollow",
+      "frames": [ 0 ]
+    },
+    {
+      "name": "crumble",
+      "frames": [ 16 ]
+    },
+    {
+      "name": "crumble",
+      "frames": [ 32 ]
+    }
+  ]
+}

@@ -63,10 +63,10 @@ struct Elevator : Entity
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor(pos, MDL_ELEVATOR);
     r.scale = size;
     r.ratio = 0;
-    r.action = 4;
+    r.action = liftTimer > 0 ? 1 : 0;
 
     if(liftTimer > 0)
       r.effect = Effect::Blinking;

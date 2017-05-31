@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztk0EKACAIBPX\/n+4eQuooGLiw0KFZxVJFRNdr6Iiy3ESeZFXOMZNB33j55ekeZUXqUr5z7wj7ypjyV37kLVXwVp5Xd73of37Nyzp7eW\/96H1PX131rV6qdp+wxAeuLQGs",
+         "data":"eJztk0sOACEIQ+H+l57txDRaKBMxIwmJC1+Ln7qZ+e3bYs8qy3XhWT2VrzgPo6G+7d\/5qM7pvA8M4jOV5d7eO3gluzO+KrsK2zVzu3lUFTzSY2v0i\/7n1X2hNcuz\/tH9zFxf+aNZqrKvsEo\/G6gBtg==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -15,7 +15,6 @@
         }, 
         {
          "draworder":"topdown",
-         "height":32,
          "name":"things",
          "objects":[
                 {
@@ -70,13 +69,12 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":176,
+                 "x":160,
                  "y":384
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
          "x":0,
          "y":0
         }],
@@ -90,6 +88,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
- "version":1,
+ "type":"map",
+ "version":"1.0.0",
  "width":16
 }
