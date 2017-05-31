@@ -19,7 +19,7 @@
 #include "entities/player.h"
 #include "entities/rockman.h"
 #include "game.h"
-#include "models.h" // MDL_TILES
+#include "models.h" // MDL_TILES_00
 #include "room.h"
 
 using namespace std;
@@ -129,6 +129,8 @@ struct Game : Scene, IGame
 
   void addActorsForTileMap(vector<Actor>& r, Vector cameraPos) const
   {
+    auto const model = MDL_TILES_00 + m_theme%8;
+
     auto onCell =
       [&] (int x, int y, int tile)
       {
@@ -148,8 +150,8 @@ struct Game : Scene, IGame
           auto const ts = 1.0;
           auto const posX = (x + (subTile % 2) * 0.5) * ts;
           auto const posY = (y + (subTile / 2) * 0.5) * ts;
-          auto actor = Actor(Vector(posX, posY), MDL_TILES);
-          actor.action = (m_theme % 8) * 16 + composition[subTile];
+          auto actor = Actor(Vector(posX, posY), model);
+          actor.action = composition[subTile];
           actor.scale = Size(0.5, 0.5);
           r.push_back(actor);
         }
