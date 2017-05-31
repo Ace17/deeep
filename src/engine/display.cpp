@@ -271,11 +271,7 @@ Model loadAnimation(string path)
   }
   else
   {
-    auto m = boxModel();
-    Action action;
-    action.addTexture(path, Rect2i());
-    m.actions.push_back(action);
-    return m;
+    throw runtime_error("unknown format for '" + path + "'");
   }
 }
 
