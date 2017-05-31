@@ -299,39 +299,22 @@ struct Game : Scene, IGame
 
   bool isBoxSolid(IntBox box)
   {
-    if(isPointSolid(GenericVector<int>(box.x, box.y)))
-      return true;
+    auto const x1 = box.x;
+    auto const y1 = box.y;
+    auto const x2 = box.x + box.width;
+    auto const y2 = box.y + box.height;
 
-    if(isPointSolid(GenericVector<int>(box.x, box.y + box.height)))
-      return true;
+    auto const col1 = x1 / PRECISION;
+    auto const col2 = x2 / PRECISION;
+    auto const row1 = y1 / PRECISION;
+    auto const row2 = y2 / PRECISION;
 
-    if(isPointSolid(GenericVector<int>(box.x + box.width, box.y)))
-      return true;
-
-    if(isPointSolid(GenericVector<int>(box.x + box.width, box.y + box.height)))
-      return true;
-
-    if(isPointSolid(GenericVector<int>(box.x, box.y + box.height / 2)))
-      return true;
-
-    if(isPointSolid(GenericVector<int>(box.x + box.width, box.y + box.height / 2)))
-      return true;
+    for(int row = row1; row <= row2; row++)
+      for(int col = col1; col <= col2; col++)
+        if(m_tiles.isInside(col, row) && m_tiles.get(col, row))
+          return true;
 
     return false;
-  }
-
-  bool isPointSolid(GenericVector<int> pos)
-  {
-    auto const x = pos.x / PRECISION;
-    auto const y = pos.y / PRECISION;
-
-    if(!m_tiles.isInside(x, y))
-      return false;
-
-    if(m_tiles.get(x, y) == 0)
-      return false;
-
-    return true;
   }
 };
 
