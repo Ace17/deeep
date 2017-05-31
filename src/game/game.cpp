@@ -271,8 +271,6 @@ struct Game : Scene, IGame
   bool m_debug;
   bool m_debugFirstTime = true;
 
-  // static stuff
-
   void removeDeadEntities(uvector<Entity>& entities)
   {
     auto oldEntities = std::move(entities);
@@ -287,14 +285,6 @@ struct Game : Scene, IGame
         m_physics->removeBody(entity.get());
       }
     }
-  }
-
-  static Actor getDebugActor(Entity* entity)
-  {
-    auto box = entity->getFBox();
-    auto r = Actor(Vector(box.x, box.y), MDL_RECT);
-    r.scale = box;
-    return r;
   }
 
   bool isBoxSolid(IntBox box)
@@ -315,6 +305,16 @@ struct Game : Scene, IGame
           return true;
 
     return false;
+  }
+
+  // static stuff
+
+  static Actor getDebugActor(Entity* entity)
+  {
+    auto box = entity->getFBox();
+    auto r = Actor(Vector(box.x, box.y), MDL_RECT);
+    r.scale = box;
+    return r;
   }
 };
 
