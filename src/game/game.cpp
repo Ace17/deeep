@@ -160,7 +160,16 @@ struct Game : Scene, IGame
 
   void removeDeadThings()
   {
-    removeDeadEntities(m_entities);
+    for(auto& entity : m_entities)
+    {
+      if(entity->dead)
+      {
+        entity->leave();
+        m_physics->removeBody(entity.get());
+      }
+    }
+
+    unstableRemove(m_entities, &isDead);
 
     for(auto& spawned : m_spawned)
     {
@@ -173,6 +182,11 @@ struct Game : Scene, IGame
     }
 
     m_spawned.clear();
+  }
+
+  static bool isDead(unique_ptr<Entity> const& e)
+  {
+    return e->dead;
   }
 
   void loadLevel(int levelIdx)
@@ -270,22 +284,6 @@ struct Game : Scene, IGame
   vector<SOUND> m_sounds;
   bool m_debug;
   bool m_debugFirstTime = true;
-
-  void removeDeadEntities(uvector<Entity>& entities)
-  {
-    auto oldEntities = std::move(entities);
-
-    for(auto& entity : oldEntities)
-    {
-      if(!entity->dead)
-        entities.push_back(move(entity));
-      else
-      {
-        entity->leave();
-        m_physics->removeBody(entity.get());
-      }
-    }
-  }
 
   bool isBoxSolid(IntBox box)
   {

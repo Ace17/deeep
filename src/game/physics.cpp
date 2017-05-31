@@ -20,25 +20,6 @@ IntBox roundBox(Box b)
   return r;
 }
 
-template<typename T, typename Lambda>
-void unstableRemove(vector<T>& container, Lambda predicate)
-{
-  for(int i = 0; i < (int)container.size(); ++i)
-  {
-    if(predicate(container[i]))
-    {
-      auto const j = (int)container.size() - 1;
-
-      swap(container[i], container[j]);
-
-      if(i != j)
-        --i;
-
-      container.pop_back();
-    }
-  }
-}
-
 struct Physics : IPhysics
 {
   void addBody(Body* body)

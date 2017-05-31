@@ -213,3 +213,23 @@ std::vector<T> makeVector(std::initializer_list<T> list)
   return std::vector<T>(list);
 }
 
+// Remove an element from a vector. Might change the ordering.
+template<typename T, typename Lambda>
+void unstableRemove(vector<T>& container, Lambda predicate)
+{
+  for(int i = 0; i < (int)container.size(); ++i)
+  {
+    if(predicate(container[i]))
+    {
+      auto const j = (int)container.size() - 1;
+
+      swap(container[i], container[j]);
+
+      if(i != j)
+        --i;
+
+      container.pop_back();
+    }
+  }
+}
+
