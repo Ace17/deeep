@@ -24,6 +24,7 @@ echo "Building asmjs version"
 EMCC_ROOT=/tmp/toolchains/emscripten
 PKG_CONFIG_LIBDIR=$EMCC_ROOT/system/lib/pkgconfig \
 PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH \
+  EXT=".html" \
   BIN=bin/asmjs \
   CXX=emcc \
   CXXFLAGS="-O3 -g0 -DNDEBUG" \
