@@ -129,7 +129,7 @@ struct Game : Scene, IGame
 
   void addActorsForTileMap(vector<Actor>& r, Vector cameraPos) const
   {
-    auto const model = MDL_TILES_00 + m_theme%8;
+    auto const model = MDL_TILES_00 + m_theme % 8;
 
     auto onCell =
       [&] (int x, int y, int tile)

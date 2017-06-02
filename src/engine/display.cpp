@@ -267,6 +267,7 @@ Model loadAnimation(string path)
   else if(endsWith(path, ".mdl"))
   {
     path = setExtension(path, "png");
+
     if(!ifstream(path).is_open())
     {
       printf("tileset '%s' was not found, fallback on default tileset\n", path.c_str());
