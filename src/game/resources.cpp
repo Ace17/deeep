@@ -35,6 +35,7 @@ static const Resource models[] =
   { MDL_ELEVATOR, "res/sprites/elevator.json" },
   { MDL_RECT, "res/sprites/rect.json" },
   { MDL_SWITCH, "res/sprites/switch.json" },
+  { MDL_SWEEPER, "res/sprites/sweeper.json" },
   { MDL_ROCKMAN, "res/sprites/rockman.json" },
   { MDL_WHEEL, "res/sprites/wheel.json" },
   { MDL_LIFEBAR, "res/sprites/lifebar.json" },

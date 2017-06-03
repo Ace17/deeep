@@ -23,7 +23,7 @@ struct Sweeper : Entity, Damageable
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor(pos, MDL_SWEEPER);
 
     r.scale = size;
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
@@ -60,7 +60,7 @@ struct Sweeper : Entity, Damageable
 
   virtual void onDamage(int amount) override
   {
-    blinking = 100;
+    blinking = 750;
     life -= amount;
 
     game->playSound(SND_DAMAGE);
