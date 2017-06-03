@@ -78,6 +78,7 @@ struct Rockman : Player, Damageable
   Rockman()
   {
     size = NORMAL_SIZE;
+    g_AmbientLight = 0;
   }
 
   virtual Actor getActor() const override
@@ -289,6 +290,18 @@ struct Rockman : Player, Damageable
     if(hurtDelay || life <= 0)
       control = Control {};
 
+    // 'dying' animation
+    if(life <= 0)
+    {
+      decrement(dieDelay);
+
+      if(dieDelay < 1000)
+        g_AmbientLight -= 0.002;
+
+      if(dieDelay == 0)
+        respawn();
+    }
+
     time++;
     computeVelocity(control);
 
@@ -404,10 +417,24 @@ struct Rockman : Player, Damageable
     return false;
   }
 
+  void enter() override
+  {
+    respawnPosition = pos;
+  }
+
   void die()
   {
     game->playSound(SND_DIE);
     ball = false;
+    dieDelay = 1500;
+  }
+
+  void respawn()
+  {
+    g_AmbientLight = 0;
+    blinking = 2000;
+    life = 31;
+    pos = respawnPosition;
   }
 
   int debounceFire = 0;
@@ -419,12 +446,14 @@ struct Rockman : Player, Damageable
   int climbDelay = 0;
   int hurtDelay = 0;
   int dashDelay = 0;
+  int dieDelay = 0;
   int shootDelay = 0;
   int life = 31;
   bool doubleJumped = false;
   bool ball = false;
   bool sliding = false;
   Control control {};
+  Vector respawnPosition;
 
   int upgrades = 0;
 };

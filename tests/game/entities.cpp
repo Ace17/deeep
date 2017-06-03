@@ -98,6 +98,8 @@ struct NullPhysicsProbe : IPhysicsProbe
   }
 };
 
+float g_AmbientLight = 0;
+
 unittest("Entity: pickup bonus")
 {
   struct MockPlayer : NullPlayer

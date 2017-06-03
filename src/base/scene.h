@@ -63,3 +63,7 @@ struct Scene
   virtual vector<SOUND> readSounds() = 0;
 };
 
+// outside world, as seen by the game
+
+extern float g_AmbientLight;
+

@@ -356,10 +356,13 @@ void Display_setCaption(const char* caption)
   SDL_SetWindowTitle(mainWindow, caption);
 }
 
+float g_AmbientLight = 0;
+
 static
 void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, float ratio)
 {
-  SAFE_GL(glUniform4f(g_colorId, 0, 0, 0, 0));
+  float c = g_AmbientLight;
+  SAFE_GL(glUniform4f(g_colorId, c, c, c, 0));
 
   if(blinking)
   {
