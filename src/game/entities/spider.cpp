@@ -59,7 +59,7 @@ struct Spider : Entity, Damageable
 
   virtual Actor getActor() const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor(pos, MDL_SPIDER);
 
     r.scale = Size(1, 1);
 
@@ -67,7 +67,7 @@ struct Spider : Entity, Damageable
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 800) / 800.0f;
+    r.ratio = (time % 200) / 200.0f;
 
     if(dir > 0)
       r.scale.width = -r.scale.width;

@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztk9EOxSAIQ93\/\/\/R9XQxCoUWX7TbxxQCnIlxjjMs4s6wY7zD5nv78Hj6izv9X8626p\/lejS\/w2f5XPES5GXW8vyLl3+9UxnOHT4ZfPU\/iR14q\/aryrfpv5zMzfpqPSM1XeGL52ZlS8hEvGU8e\/35X4SMeGD7iAY1dsaJ3KPhzTIYfeVDxKztR5d\/vd\/Kte3SumR30+KvaCFvJ92IU+5fxj\/RHwfb6t+J78azHTj7bix38aB6yvUVqIB7QPs3xKv6cj4jdD89Dlq\/ay118rybKt\/JYflWnuAq+wrtq79+S\/wNaQwNe",
+         "data":"eJztk9EOxSAIQ93\/\/\/R9XQxCoUWX7TbxxQCnglxjjMs4s6wY7zD5nv78Hj6izvmr+Vbd03yvxhf4bP8rHqLcjDreX5Fy9juV8dzhk+FXz5P4kZdKv6p8q\/7b+cwfP81HpOYrPHk1q\/Nn2F3zZ\/n3uwof8cDwEQ9o7IoVvUPBn2My\/MiDil\/ZiSr\/fr+Tb92j\/5rZQY+\/qo2wlXwvRrF\/Gf9IfxRsr38rvhfPeuzks73YwY\/+Q7a3SA3EA9qnOV7Fn\/MRsfvhecjyVXu5i+\/VRPlWHsuv6hRXwVd4V+39W\/J\/TS8DXQ==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -15,17 +15,48 @@
         }, 
         {
          "draworder":"topdown",
-         "height":32,
          "name":"things",
-         "objects":[],
+         "objects":[
+                {
+                 "height":16,
+                 "id":77,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":480
+                }, 
+                {
+                 "height":16,
+                 "id":78,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":176,
+                 "y":144
+                }, 
+                {
+                 "height":16,
+                 "id":79,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":432,
+                 "y":336
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
          "x":0,
          "y":0
         }],
- "nextobjectid":77,
+ "nextobjectid":80,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -35,6 +66,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
- "version":1,
+ "type":"map",
+ "version":"1.0.0",
  "width":32
 }

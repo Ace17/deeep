@@ -15,7 +15,6 @@
         }, 
         {
          "draworder":"topdown",
-         "height":32,
          "name":"things",
          "objects":[
                 {
@@ -109,7 +108,6 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
          "x":0,
          "y":0
         }],
@@ -123,6 +121,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
- "version":1,
+ "type":"map",
+ "version":"1.0.0",
  "width":32
 }
