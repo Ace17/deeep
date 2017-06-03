@@ -1,14 +1,12 @@
-#pragma once
+#include "base/scene.h" // Actor
 
-#include <algorithm>
-
-#include "base/util.h"
-#include "base/scene.h"
 #include "game/collision_groups.h"
 #include "game/entity.h"
 #include "game/models.h"
 #include "game/sounds.h"
-#include "game/entities/explosion.h"
+#include "game/toggle.h" // decrement
+
+#include "explosion.h"
 
 struct SpiderBullet : Entity
 {
@@ -141,4 +139,9 @@ struct Spider : Entity, Damageable
   int time = 0;
   float dir;
 };
+
+unique_ptr<Entity> makeSpider()
+{
+  return make_unique<Spider>();
+}
 
