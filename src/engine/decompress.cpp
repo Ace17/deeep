@@ -5,6 +5,7 @@
 
 #include <cstring>
 #include <vector>
+#include <stdexcept>
 
 using namespace std;
 vector<uint8_t> decompress(Span<const uint8_t> buffer)

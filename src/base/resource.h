@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util.h"
+#include "span.h"
 
 struct Resource
 {
