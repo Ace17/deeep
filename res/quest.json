@@ -331,7 +331,7 @@
                  "type":"0",
                  "visible":true,
                  "width":4,
-                 "x":84,
+                 "x":68,
                  "y":180
                 }, 
                 {
@@ -606,7 +606,7 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":84,
+                 "x":72,
                  "y":160
                 }, 
                 {
@@ -630,6 +630,28 @@
                  "width":4,
                  "x":68,
                  "y":140
+                }, 
+                {
+                 "height":4,
+                 "id":256,
+                 "name":"corridor_4x1",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":16,
+                 "x":72,
+                 "y":180
+                }, 
+                {
+                 "height":4,
+                 "id":257,
+                 "name":"corridor_3x1",
+                 "rotation":0,
+                 "type":"1",
+                 "visible":true,
+                 "width":12,
+                 "x":76,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -659,7 +681,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":256,
+ "nextobjectid":258,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
