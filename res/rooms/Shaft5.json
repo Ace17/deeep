@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlUsOwCAIRHXZ+1+4Kxc1SJkB\/CROYtJU4VE6ai2lVGH0ktZo47T42br8y798fb9Kz0h+LX7Vd199teosjrwL+hj0rmJqiNgfkXy0Bk8P+vld+O3dIwyGbz23LP6bwWfyIDWM8mX4H+WzfWRGU\/MW4+MIPuuhk\/lMDk2WNZIs\/z2Tz\/ZsFz7rK4ZvPf+z+FINUd6O3Dur+c\/PvLdey3o2nyaEj\/Qgg+\/xOFIfE7eaz+Rj+NJ5FS3vv2X6FN1zhj+qaSZf2mMztQMf9ZbXm7vGv9BYAxE=",
+         "data":"eJztldEOgCAIRfWx\/\/\/hnnzI0LgXVNq4m1vL4BAg1lJKFVYv6ZvZ+pv9biU\/+cmfn1fpGfE\/sz\/136mnTs1iz7ugt0HvKiYGj\/PhyUdjsOSg34\/Cb+8uYTF87dzS9N8OPuMHiWHkb0X\/o3w2j8xqar3F9LEHn+2h5L99oNLUfSWfyVckvqWuKF87\/7V8pPajGL7yZDkfmjpE5F8f+9Z4Nd+z\/mZC+EgOVvDRHLDxMXan+Yw\/hi\/NK29Za8vkyTvnDH8U006+dMZ2KgIf7S1rb0a1vwE3AwMd",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -15,7 +15,6 @@
         }, 
         {
          "draworder":"topdown",
-         "height":32,
          "name":"things",
          "objects":[
                 {
@@ -50,15 +49,36 @@
                  "width":16,
                  "x":448,
                  "y":688
+                }, 
+                {
+                 "height":48,
+                 "id":81,
+                 "name":"door(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":432
+                }, 
+                {
+                 "height":16,
+                 "id":82,
+                 "name":"switch(0)",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":336
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
          "x":0,
          "y":0
         }],
- "nextobjectid":81,
+ "nextobjectid":83,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -68,6 +88,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
- "version":1,
+ "type":"map",
+ "version":"1.0.0",
  "width":32
 }
