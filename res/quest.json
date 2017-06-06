@@ -606,8 +606,8 @@
                  "type":"1",
                  "visible":true,
                  "width":4,
-                 "x":72,
-                 "y":160
+                 "x":64,
+                 "y":164
                 }, 
                 {
                  "height":4,
@@ -652,6 +652,28 @@
                  "width":12,
                  "x":76,
                  "y":160
+                }, 
+                {
+                 "height":8,
+                 "id":258,
+                 "name":"Link5",
+                 "rotation":0,
+                 "type":"1",
+                 "visible":true,
+                 "width":4,
+                 "x":96,
+                 "y":156
+                }, 
+                {
+                 "height":8,
+                 "id":259,
+                 "name":"stairs_2x2",
+                 "rotation":0,
+                 "type":"1",
+                 "visible":true,
+                 "width":8,
+                 "x":68,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -681,7 +703,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":258,
+ "nextobjectid":260,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
