@@ -331,8 +331,8 @@
                  "type":"0",
                  "visible":true,
                  "width":4,
-                 "x":68,
-                 "y":180
+                 "x":60,
+                 "y":188
                 }, 
                 {
                  "height":8,
@@ -639,8 +639,8 @@
                  "type":"0",
                  "visible":true,
                  "width":16,
-                 "x":72,
-                 "y":180
+                 "x":64,
+                 "y":188
                 }, 
                 {
                  "height":4,
@@ -674,6 +674,17 @@
                  "width":8,
                  "x":68,
                  "y":160
+                }, 
+                {
+                 "height":12,
+                 "id":260,
+                 "name":"stairs_2x3",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":8,
+                 "x":80,
+                 "y":180
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -703,7 +714,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":260,
+ "nextobjectid":261,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":4,
