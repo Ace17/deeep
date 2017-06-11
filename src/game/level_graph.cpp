@@ -126,7 +126,15 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
   for(int col = 0; col < room.size.width; ++col)
   {
     auto const delta = Vector2i(col, -1);
-    auto const margin = Vector(0, -1);
+    auto const margin = Vector(0, -2);
+    tryToConnectRoom(delta, margin);
+  }
+
+  // top
+  for(int col = 0; col < room.size.width; ++col)
+  {
+    auto const delta = Vector2i(col, room.size.height);
+    auto const margin = Vector(0, 2);
     tryToConnectRoom(delta, margin);
   }
 }
