@@ -1,8 +1,5 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 set -euo pipefail
-
-MAKE="make -j`nproc`"
 
 echo "----------------------------------------------------------------"
 echo "Reformatting ..."
@@ -13,22 +10,14 @@ echo "----------------------------------------------------------------"
 echo "Building native version"
 
 BIN=bin/native \
-  CXX=g++ \
-  $MAKE
+  make -j`nproc`
 
 ./bin/native/tests.exe
 
 echo "----------------------------------------------------------------"
 echo "Building asmjs version"
 
-EMCC_ROOT=/tmp/toolchains/emscripten
-PKG_CONFIG_LIBDIR=$EMCC_ROOT/system/lib/pkgconfig \
-PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH \
-  EXT=".html" \
-  BIN=bin/asmjs \
-  CXX=emcc \
-  CXXFLAGS="-O3 -g0 -DNDEBUG" \
-  LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=32000000"  \
-  $MAKE bin/asmjs/deeep.html
+BIN=bin/asmjs \
+  scripts/asmjs-make -j`nproc` bin/asmjs/deeep.html
 
 echo Success!

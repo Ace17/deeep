@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+EMCC_ROOT=/tmp/toolchains/emscripten
+PKG_CONFIG_LIBDIR=$EMCC_ROOT/system/lib/pkgconfig \
+PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH \
+  EXT=".html" \
+  CXX=emcc \
+  CXXFLAGS="-O3 -g0 -DNDEBUG" \
+  LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=$((32 * 1024 * 1024))"  \
+  make "$@"
+
