@@ -193,7 +193,8 @@ struct Rockman : Player, Damageable
       dir = LEFT;
 
     // gravity
-    vel.y -= 0.00005;
+    if(life >= 0)
+      vel.y -= 0.00005;
 
     sliding = false;
 
