@@ -34,11 +34,6 @@ struct Physics : IPhysics
     unstableRemove(m_bodies, isItTheOne);
   }
 
-  void clearBodies()
-  {
-    m_bodies.clear();
-  }
-
   bool moveBody(Body* body, Vector delta)
   {
     auto newPos = body->pos + delta;

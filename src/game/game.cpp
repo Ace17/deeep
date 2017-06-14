@@ -35,6 +35,11 @@ struct Game : Scene, IGame
   Game() : m_tiles(Size2i(1, 1))
   {
     m_shouldLoadLevel = true;
+    resetPhysics();
+  }
+
+  void resetPhysics()
+  {
     m_physics = createPhysics();
     m_physics->setEdifice(bind(&Game::isBoxSolid, this, placeholders::_1));
   }
@@ -200,7 +205,7 @@ struct Game : Scene, IGame
           entity.release();
     }
 
-    m_physics->clearBodies();
+    resetPhysics();
 
     m_entities.clear();
     m_spawned.clear();

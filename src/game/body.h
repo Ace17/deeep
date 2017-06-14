@@ -56,7 +56,6 @@ struct IPhysics : IPhysicsProbe
   // called by game
   virtual void addBody(Body* body) = 0;
   virtual void removeBody(Body* body) = 0;
-  virtual void clearBodies() = 0;
   virtual void checkForOverlaps() = 0;
   virtual void setEdifice(function<bool(IntBox)> isSolid) = 0;
 };
