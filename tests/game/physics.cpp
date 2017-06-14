@@ -1,5 +1,6 @@
 #include "tests/tests.h"
 #include "game/body.h"
+#include "game/physics.h"
 #include <cmath>
 #include <memory>
 
@@ -35,8 +36,6 @@ void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-unique_ptr<IPhysics> createPhysics();
 
 static
 bool isSolid(IntBox rect)

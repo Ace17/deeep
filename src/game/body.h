@@ -1,3 +1,5 @@
+#pragma once
+
 #include <functional>
 #include "base/geom.h"
 
@@ -49,14 +51,5 @@ struct IPhysicsProbe
   virtual bool moveBody(Body* body, Vector delta) = 0;
   virtual bool isSolid(const Body* body, IntBox) const = 0;
   virtual Body* getBodiesInBox(IntBox myBox, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
-};
-
-struct IPhysics : IPhysicsProbe
-{
-  // called by game
-  virtual void addBody(Body* body) = 0;
-  virtual void removeBody(Body* body) = 0;
-  virtual void checkForOverlaps() = 0;
-  virtual void setEdifice(function<bool(IntBox)> isSolid) = 0;
 };
 

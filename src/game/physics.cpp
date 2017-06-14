@@ -1,5 +1,6 @@
 #include "game/body.h"
 #include "base/util.h"
+#include "physics.h"
 #include <vector>
 #include <memory>
 

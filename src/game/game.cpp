@@ -12,7 +12,6 @@
 #include <cstdlib>
 #include <algorithm>
 #include <array>
-#include <map>
 #include <set>
 #include "base/scene.h"
 #include "base/util.h"
@@ -20,15 +19,13 @@
 #include "entities/rockman.h"
 #include "game.h"
 #include "models.h" // MDL_TILES_00
+#include "physics.h"
 #include "room.h"
 
 using namespace std;
 
 // from smarttiles
 array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
-
-// from physics.cpp
-unique_ptr<IPhysics> createPhysics();
 
 struct Game : Scene, IGame
 {
