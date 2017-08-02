@@ -35,6 +35,7 @@ src/engine: I/O code (game-agnostic)
 src/game:   game logic (engine-agnostic)
 src/base:   utilities shared between game logic and I/O code ; scene declaration
 res:        game resources (sounds, sprites, tiles)
+res-src:    "source code" for assets
 
 
 Build
