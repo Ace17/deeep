@@ -37,7 +37,7 @@ void Display_endDraw();
 void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
 void Display_drawText(Vector2f pos, char const* text);
 
-Audio* createAudio(bool dummy = false);
+Audio* createAudio();
 
 Scene* createGame(vector<string> argv);
 

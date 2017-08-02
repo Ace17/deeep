@@ -324,35 +324,8 @@ struct SdlAudio : Audio
   }
 };
 
-struct DummyAudio : Audio
+Audio* createAudio()
 {
-  void loadSound(int id, std::string path) override
-  {
-    printf("sound[%d]: '%s'\n", id, path.c_str());
-  }
-
-  void playSound(int id) override
-  {
-    printf("sound: #%d\n", id);
-  }
-
-  void playMusic(int id) override
-  {
-    if(id == currMusic)
-      return;
-
-    printf("music: #%d\n", id);
-    currMusic = id;
-  }
-
-  int currMusic = -1;
-};
-
-Audio* createAudio(bool dummy)
-{
-  if(dummy)
-    return new DummyAudio;
-
   return new SdlAudio;
 }
 
