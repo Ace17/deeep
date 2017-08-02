@@ -13,7 +13,8 @@ PKGS:=\
 	gl\
 	sdl2\
 	SDL2_image\
-	SDL2_mixer\
+	ogg \
+	vorbisfile \
 
 PKG_CFLAGS:=$(shell pkg-config $(PKGS) --cflags)
 PKG_LDFLAGS:=$(shell pkg-config $(PKGS) --libs || echo "ERROR")
@@ -21,6 +22,8 @@ PKG_LDFLAGS:=$(shell pkg-config $(PKGS) --libs || echo "ERROR")
 ifeq (ERROR,$(PKG_LDFLAGS))
   $(error At least one library was not found in the build environment)
 endif
+
+DBGFLAGS?=-g
 
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
@@ -31,8 +34,8 @@ LDFLAGS+=$(PKG_LDFLAGS)
 
 CXXFLAGS+=-O3
 
-#CXXFLAGS+=-g3
-#LDFLAGS+=-g
+CXXFLAGS+=$(DBGFLAGS)
+LDFLAGS+=$(DBGFLAGS)
 
 #------------------------------------------------------------------------------
 
@@ -71,6 +74,9 @@ $(BIN)/deeep$(EXT): $(SRCS:%.cpp=$(BIN)/%_cpp.o)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
 TARGETS+=$(BIN)/deeep$(EXT)
+
+#------------------------------------------------------------------------------
+include res-src/project.mk
 
 #------------------------------------------------------------------------------
 
