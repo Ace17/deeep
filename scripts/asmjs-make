@@ -10,10 +10,21 @@ readonly EMCC_ROOT=/tmp/toolchains/emscripten
 export PKG_CONFIG_LIBDIR=$EMCC_ROOT/system/lib/pkgconfig
 export PATH=$EMCC_ROOT:/tmp/toolchains/llvm-js/bin:$PATH
 
+if ! which emcc >/dev/null 2>/dev/null ; then
+  echo "emcc wasn't found in PATH" >&2
+  exit 1
+fi
+
+if [ ! -d $PKG_CONFIG_LIBDIR ] ; then
+  echo "PKG_CONFIG_LIBDIR points to an unexisting directory ('$PKG_CONFIG_LIBDIR')" >&2
+  exit 1
+fi
+
 export CXX=emcc
 export EXT=".html"
+export DBGFLAGS=""
 export CXXFLAGS="-O3 -g0 -DNDEBUG"
-export LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=$((32 * 1024 * 1024))"
+export LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=$((64 * 1024 * 1024)) -s PRECISE_F32=1"
 
 make "$@"
 
