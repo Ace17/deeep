@@ -363,10 +363,8 @@ struct Rockman : Player, Damageable
     if(control.up && ball)
     {
       Box box;
-      box.width = NORMAL_SIZE.width;
-      box.height = NORMAL_SIZE.height;
-      box.x = pos.x;
-      box.y = pos.y;
+      box.size = NORMAL_SIZE;
+      box.pos = pos;
 
       if(!physics->isSolid(this, roundBox(box)))
       {
@@ -407,10 +405,10 @@ struct Rockman : Player, Damageable
     auto const front = dir == RIGHT ? 0.7 : -0.7;
 
     Box box;
-    box.x = pos.x + size.width / 2 + front;
-    box.y = pos.y + 0.3;
-    box.width = 0.01;
-    box.height = 0.9;
+    box.pos.x = pos.x + size.width / 2 + front;
+    box.pos.y = pos.y + 0.3;
+    box.size.width = 0.01;
+    box.size.height = 0.9;
 
     if(physics->isSolid(this, roundBox(box)))
       return true;

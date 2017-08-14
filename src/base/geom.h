@@ -139,20 +139,16 @@ typedef GenericVector<float> Vector2f;
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-struct GenericBox : GenericVector<T>, GenericSize<T>
+struct GenericBox
 {
   GenericBox() = default;
 
-  GenericBox(T x, T y, T w, T h) :
-    GenericVector<T>(x, y),
-    GenericSize<T>(w, h)
+  GenericBox(T x, T y, T w, T h) : pos(x, y), size(w, h)
   {
   }
 
-  GenericVector<T>& pos()
-  {
-    return *this;
-  }
+  GenericVector<T> pos;
+  GenericSize<T> size;
 };
 
 typedef GenericBox<int> Rect2i;
@@ -173,15 +169,15 @@ bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
 template<typename T>
 bool overlaps(GenericBox<T> const& a, GenericBox<T> const& b)
 {
-  assert(a.width >= 0);
-  assert(a.height >= 0);
-  assert(b.width >= 0);
-  assert(b.height >= 0);
+  assert(a.size.width >= 0);
+  assert(a.size.height >= 0);
+  assert(b.size.width >= 0);
+  assert(b.size.height >= 0);
 
-  if(!segmentsOverlap(a.x, a.x + a.width, b.x, b.x + b.width))
+  if(!segmentsOverlap(a.pos.x, a.pos.x + a.size.width, b.pos.x, b.pos.x + b.size.width))
     return false;
 
-  if(!segmentsOverlap(a.y, a.y + a.height, b.y, b.y + b.height))
+  if(!segmentsOverlap(a.pos.y, a.pos.y + a.size.height, b.pos.y, b.pos.y + b.size.height))
     return false;
 
   return true;

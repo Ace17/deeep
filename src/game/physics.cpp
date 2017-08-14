@@ -14,10 +14,10 @@ int roundCoord(float x)
 IntBox roundBox(Box b)
 {
   IntBox r;
-  r.x = roundCoord(b.x);
-  r.y = roundCoord(b.y);
-  r.width = roundCoord(b.width);
-  r.height = roundCoord(b.height);
+  r.pos.x = roundCoord(b.pos.x);
+  r.pos.y = roundCoord(b.pos.y);
+  r.size.width = roundCoord(b.size.width);
+  r.size.height = roundCoord(b.size.height);
   return r;
 }
 
@@ -40,7 +40,7 @@ struct Physics : IPhysics
     auto newPos = body->pos + delta;
 
     auto frect = body->getFBox();
-    frect.pos() = newPos;
+    frect.pos = newPos;
 
     auto rect = roundBox(frect);
 
@@ -56,7 +56,7 @@ struct Physics : IPhysics
       if(body->pusher)
         pushOthers(body, rect, delta);
 
-      body->pos = frect.pos();
+      body->pos = frect.pos;
       // assert(!getSolidBodyInBox(body->getBox(), body));
     }
 
@@ -64,8 +64,8 @@ struct Physics : IPhysics
     if(!body->pusher)
     {
       auto feet = body->getBox();
-      feet.height = 16;
-      feet.y -= feet.height;
+      feet.size.height = 16;
+      feet.pos.y -= feet.size.height;
       body->ground = getSolidBodyInBox(feet, body);
     }
 

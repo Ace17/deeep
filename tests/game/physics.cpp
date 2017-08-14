@@ -40,7 +40,7 @@ void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file
 static
 bool isSolid(IntBox rect)
 {
-  return rect.y < 0 || rect.x < 0;
+  return rect.pos.y < 0 || rect.pos.x < 0;
 }
 
 struct Fixture

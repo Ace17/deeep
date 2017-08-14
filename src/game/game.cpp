@@ -87,10 +87,10 @@ struct Game : Scene, IGame
     addActorsForTileMap(r, cameraPos);
 
     Box cameraBox;
-    cameraBox.width = 16;
-    cameraBox.height = 16;
-    cameraBox.x = cameraPos.x - cameraBox.width / 2;
-    cameraBox.y = cameraPos.y - cameraBox.height / 2;
+    cameraBox.size.width = 16;
+    cameraBox.size.height = 16;
+    cameraBox.pos.x = cameraPos.x - cameraBox.size.width / 2;
+    cameraBox.pos.y = cameraPos.y - cameraBox.size.height / 2;
 
     for(auto& entity : m_entities)
     {
@@ -291,10 +291,10 @@ struct Game : Scene, IGame
 
   bool isBoxSolid(IntBox box)
   {
-    auto const x1 = box.x;
-    auto const y1 = box.y;
-    auto const x2 = box.x + box.width;
-    auto const y2 = box.y + box.height;
+    auto const x1 = box.pos.x;
+    auto const y1 = box.pos.y;
+    auto const x2 = box.pos.x + box.size.width;
+    auto const y2 = box.pos.y + box.size.height;
 
     auto const col1 = x1 / PRECISION;
     auto const col2 = x2 / PRECISION;
@@ -314,8 +314,8 @@ struct Game : Scene, IGame
   static Actor getDebugActor(Entity* entity)
   {
     auto box = entity->getFBox();
-    auto r = Actor(Vector(box.x, box.y), MDL_RECT);
-    r.scale = box;
+    auto r = Actor(box.pos, MDL_RECT);
+    r.scale = box.size;
     return r;
   }
 };

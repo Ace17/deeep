@@ -33,10 +33,8 @@ struct Body
   Box getFBox() const
   {
     Box r;
-    r.x = pos.x;
-    r.y = pos.y;
-    r.height = size.height;
-    r.width = size.width;
+    r.pos = pos;
+    r.size = size;
     return r;
   }
 

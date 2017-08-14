@@ -144,32 +144,32 @@ int loadTexture(string path, Rect2i rect)
 {
   auto surface = getPicture(path);
 
-  if(rect.width == 0 && rect.height == 0)
+  if(rect.size.width == 0 && rect.size.height == 0)
     rect = Rect2i(0, 0, surface->w, surface->h);
 
-  if(rect.x < 0 || rect.y < 0 || rect.x + rect.width > surface->w || rect.y + rect.height > surface->h)
+  if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->w || rect.pos.y + rect.size.height > surface->h)
     throw runtime_error("Invalid boundaries for '" + path + "'");
 
   GLuint texture;
 
   auto const bpp = surface->format->BytesPerPixel;
 
-  vector<uint8_t> img(rect.width* rect.height* bpp);
+  vector<uint8_t> img(rect.size.width* rect.size.height* bpp);
 
-  auto src = (Uint8*)surface->pixels + rect.x * bpp + rect.y * surface->pitch;
+  auto src = (Uint8*)surface->pixels + rect.pos.x * bpp + rect.pos.y * surface->pitch;
   auto dst = (Uint8*)img.data();
 
-  for(int y = 0; y < rect.height; ++y)
+  for(int y = 0; y < rect.size.height; ++y)
   {
-    memcpy(dst, src, bpp * rect.width);
+    memcpy(dst, src, bpp * rect.size.width);
     src += surface->pitch;
-    dst += bpp * rect.width;
+    dst += bpp * rect.size.width;
   }
 
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.width, rect.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.data());
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.size.width, rect.size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.data());
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -387,17 +387,17 @@ void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, f
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-  if(where.width < 0)
-    where.x -= where.width;
+  if(where.size.width < 0)
+    where.pos.x -= where.size.width;
 
-  if(where.height < 0)
-    where.y -= where.height;
+  if(where.size.height < 0)
+    where.pos.y -= where.size.height;
 
-  auto const dx = where.x;
-  auto const dy = where.y;
+  auto const dx = where.pos.x;
+  auto const dy = where.pos.y;
 
-  auto const sx = where.width;
-  auto const sy = where.height;
+  auto const sx = where.size.width;
+  auto const sy = where.size.height;
 
   float mat[16] =
   {
@@ -432,15 +432,15 @@ void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, 
 void Display_drawText(Vector2f pos, char const* text)
 {
   Rect2f rect;
-  rect.width = 0.5;
-  rect.height = 0.5;
-  rect.x = pos.x - strlen(text) * rect.width / 2;
-  rect.y = pos.y;
+  rect.size.width = 0.5;
+  rect.size.height = 0.5;
+  rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
+  rect.pos.y = pos.y;
 
   while(*text)
   {
     drawModel(rect, g_fontModel, false, *text, 0);
-    rect.x += rect.width;
+    rect.pos.x += rect.size.width;
     ++text;
   }
 }

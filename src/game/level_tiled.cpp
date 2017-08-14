@@ -66,11 +66,9 @@ Rect2i getRect(json::Object* obj)
 {
   Rect2i r;
 
-  r.x = obj->getMember<json::Number>("x")->value;
-  r.y = obj->getMember<json::Number>("y")->value;
-
-  Size2i& s = r;
-  s = getSize(obj);
+  r.pos.x = obj->getMember<json::Number>("x")->value;
+  r.pos.y = obj->getMember<json::Number>("y")->value;
+  r.size = getSize(obj);
 
   return r;
 }
@@ -80,14 +78,14 @@ Rect2i convertRect(Rect2i rect, int pelsPerTile, int areaHeight)
 {
   // tiled stores dimensions as pixel units
   // convert them back to logical units (i.e tile units)
-  rect.x /= pelsPerTile;
-  rect.y /= pelsPerTile;
-  rect.width /= pelsPerTile;
-  rect.height /= pelsPerTile;
+  rect.pos.x /= pelsPerTile;
+  rect.pos.y /= pelsPerTile;
+  rect.size.width /= pelsPerTile;
+  rect.size.height /= pelsPerTile;
 
   // tiled uses a downwards pointing Y axis.
   // reverse it so it points upwards.
-  rect.y = areaHeight - rect.y - rect.height;
+  rect.pos.y = areaHeight - rect.pos.y - rect.size.height;
 
   return rect;
 }
@@ -198,7 +196,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
     auto const objRect = convertRect(getRect(obj), 16, height);
 
     auto const name = obj->getMember<json::String>("name")->value;
-    auto const pos = Vector(objRect.x, objRect.y);
+    auto const pos = Vector(objRect.pos.x, objRect.pos.y);
 
     r.push_back(Room::Thing { pos, name });
   }
@@ -239,12 +237,12 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   auto const PELS_PER_TILE = 4;
   box = convertRect(box, PELS_PER_TILE, 64);
 
-  auto const sizeInTiles = Size2i(box.width, box.height) * CELL_SIZE;
+  auto const sizeInTiles = box.size * CELL_SIZE;
 
   Room room;
   room.name = jsonRoom->getMember<json::String>("name")->value;
-  room.pos = box;
-  room.size = box;
+  room.pos = box.pos;
+  room.size = box.size;
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
   room.theme = atoi(jsonRoom->getMember<json::String>("type")->value.c_str());
 

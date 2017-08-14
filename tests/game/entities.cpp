@@ -77,8 +77,8 @@ struct NullPhysicsProbe : IPhysicsProbe
   bool moveBody(Body* body, Vector2f delta)
   {
     auto rect = body->getFBox();
-    rect.x += delta.x;
-    rect.y += delta.y;
+    rect.pos.x += delta.x;
+    rect.pos.y += delta.y;
 
     if(isSolid(body, roundBox(rect)))
       return false;
@@ -89,7 +89,7 @@ struct NullPhysicsProbe : IPhysicsProbe
 
   bool isSolid(const Body* /*body*/, IntBox rect) const
   {
-    return rect.y < 0;
+    return rect.pos.y < 0;
   }
 
   Body* getBodiesInBox(IntBox, int, bool, const Body*) const
