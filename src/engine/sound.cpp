@@ -134,7 +134,7 @@ struct Voice
     m_loop = loop;
   }
 
-  int mix(Span<float> output)
+  void mix(Span<float> output)
   {
     while(output.len > 0)
     {
@@ -155,8 +155,6 @@ struct Voice
 
       m_player = m_sound->createPlayer();
     }
-
-    return output.len;
   }
 
 private:
@@ -242,9 +240,7 @@ struct SdlAudio : Audio
 
     assert(sound);
 
-    // SDL_PauseAudio(1);
     auto voice = allocVoice();
-    // SDL_PauseAudio(0);
 
     if(!voice)
       return;
