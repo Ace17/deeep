@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-
 #include "base/util.h"
 #include "base/scene.h"
 #include "game/entity.h"
