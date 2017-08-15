@@ -1,7 +1,3 @@
-/**
- * Auto-connecting tiles.
- */
-
 /*
  * Copyright (C) 2017 - Sebastien Alaiwan
  * This program is free software: you can redistribute it and/or modify
@@ -9,6 +5,9 @@
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  */
+
+// Auto-connecting tiles.
+
 #include <cassert>
 #include <array>
 #include "base/util.h"
