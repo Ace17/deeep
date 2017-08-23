@@ -78,7 +78,6 @@ struct Rockman : Player, Damageable
   Rockman()
   {
     size = NORMAL_SIZE;
-    g_AmbientLight = 0;
   }
 
   virtual Actor getActor() const override
@@ -297,7 +296,7 @@ struct Rockman : Player, Damageable
       decrement(dieDelay);
 
       if(dieDelay < 1000)
-        g_AmbientLight -= 0.002;
+        game->setAmbientLight((dieDelay - 1000) * 0.001);
 
       if(dieDelay == 0)
         respawn();
@@ -418,6 +417,7 @@ struct Rockman : Player, Damageable
 
   void enter() override
   {
+    game->setAmbientLight(0);
     respawnPosition = pos;
   }
 
@@ -430,7 +430,7 @@ struct Rockman : Player, Damageable
 
   void respawn()
   {
-    g_AmbientLight = 0;
+    game->setAmbientLight(0);
     blinking = 2000;
     life = 31;
     pos = respawnPosition;

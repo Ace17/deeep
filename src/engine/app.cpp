@@ -37,15 +37,15 @@ void Display_drawText(Vector2f pos, char const* text);
 
 Audio* createAudio();
 
-Scene* createGame(vector<string> argv);
+Scene* createGame(View* view, vector<string> argv);
 
-class App
+class App : View
 {
 public:
   App(vector<string> argv)
     :
     m_args(argv),
-    m_scene(createGame(m_args))
+    m_scene(createGame(this, m_args))
   {
     SDL_Init(0);
 
@@ -86,7 +86,6 @@ public:
     if(dirty)
     {
       draw();
-      playSounds();
       m_fps.tick(now);
     }
 
@@ -136,9 +135,14 @@ private:
 
   void draw()
   {
+    extern float g_AmbientLight;
+    g_AmbientLight = m_scene->ambientLight;
+
     Display_beginDraw();
 
-    for(auto& actor : m_scene->getActors())
+    auto actors = m_scene->getActors();
+
+    for(auto& actor : actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
       Display_drawActor(where, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
@@ -151,17 +155,13 @@ private:
     else if(m_control.debug)
       Display_drawText(Vector2f(0, 0), "DEBUG MODE");
 
+    if(m_textboxDelay > 0)
+    {
+      Display_drawText(Vector2f(0, 2), m_textbox.c_str());
+      m_textboxDelay--;
+    }
+
     Display_endDraw();
-  }
-
-  void playSounds()
-  {
-    auto sounds = m_scene->readSounds();
-
-    for(auto sound : sounds)
-      m_audio->playSound(sound);
-
-    m_audio->playMusic(m_scene->getMusic());
   }
 
   void fpsChanged(int fps)
@@ -182,7 +182,7 @@ private:
       onQuit();
 
     if(evt->key.keysym.sym == SDLK_F2)
-      m_scene.reset(createGame(m_args));
+      m_scene.reset(createGame(this, m_args));
 
     if(evt->key.keysym.sym == SDLK_TAB)
       m_slowMotion = !m_slowMotion;
@@ -201,6 +201,23 @@ private:
     keys[evt->key.keysym.scancode] = 0;
   }
 
+  // View implementation
+  void textBox(char const* msg) override
+  {
+    m_textbox = msg;
+    m_textboxDelay = 60 * 2;
+  }
+
+  void playMusic(int id) override
+  {
+    m_audio->playMusic(id);
+  }
+
+  void playSound(int sound) override
+  {
+    m_audio->playSound(sound);
+  }
+
   int keys[SDL_NUM_SCANCODES] {};
   int m_running = 1;
 
@@ -213,6 +230,9 @@ private:
   bool m_slowMotion = false;
   bool m_paused = false;
   unique_ptr<Audio> m_audio;
+
+  string m_textbox;
+  int m_textboxDelay;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

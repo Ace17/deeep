@@ -29,43 +29,43 @@ map<string, CreationFunc> getRegistry()
   r["upgrade_climb"] =
     [] (EntityArgs &)
     {
-      return makeBonus(4, UPGRADE_CLIMB);
+      return makeBonus(4, UPGRADE_CLIMB, "jump while against wall");
     };
 
   r["upgrade_shoot"] =
     [] (EntityArgs &)
     {
-      return makeBonus(3, UPGRADE_SHOOT);
+      return makeBonus(3, UPGRADE_SHOOT, "press Z");
     };
 
   r["upgrade_dash"] =
     [] (EntityArgs &)
     {
-      return makeBonus(5, UPGRADE_DASH);
+      return makeBonus(5, UPGRADE_DASH, "press C while walking");
     };
 
   r["upgrade_djump"] =
     [] (EntityArgs &)
     {
-      return makeBonus(6, UPGRADE_DJUMP);
+      return makeBonus(6, UPGRADE_DJUMP, "jump while airborne");
     };
 
   r["upgrade_ball"] =
     [] (EntityArgs &)
     {
-      return makeBonus(7, UPGRADE_BALL);
+      return makeBonus(7, UPGRADE_BALL, "press down");
     };
 
   r["upgrade_slide"] =
     [] (EntityArgs &)
     {
-      return makeBonus(8, UPGRADE_SLIDE);
+      return makeBonus(8, UPGRADE_SLIDE, "go against wall while falling");
     };
 
   r["bonus_life"] =
     [] (EntityArgs &)
     {
-      return makeBonus(0, 0);
+      return makeBonus(0, 0, "life up");
     };
 
   r["wheel"] =

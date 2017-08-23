@@ -11,5 +11,5 @@
 #include "game/entity.h"
 #include <memory>
 
-std::unique_ptr<Entity> makeBonus(int action, int upgradeType);
+std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg);
 

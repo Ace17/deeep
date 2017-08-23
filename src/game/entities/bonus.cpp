@@ -19,18 +19,19 @@
 
 struct Bonus : Entity
 {
-  Bonus(int modelAction_, int type_)
+  Bonus(int modelAction_, int type_, char const* msg_)
   {
     modelAction = modelAction_;
     type = type_;
-    size = Size(1, 1);
+    msg = msg_;
+    size = UnitSize;
   }
 
   virtual Actor getActor() const override
   {
     auto s = sin(time * 0.01);
     auto r = Actor(pos, MDL_BONUS);
-    r.scale = Size(1, 1);
+    r.scale = UnitSize;
     r.ratio = max(s, 0.0);
     r.action = modelAction;
 
@@ -51,6 +52,7 @@ struct Bonus : Entity
     {
       player->addUpgrade(type);
       game->playSound(SND_BONUS);
+      game->textBox(msg);
       dead = true;
     }
   }
@@ -58,10 +60,11 @@ struct Bonus : Entity
   int time = 0;
   int modelAction;
   int type;
+  char const* msg;
 };
 
-std::unique_ptr<Entity> makeBonus(int action, int upgradeType)
+std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg)
 {
-  return make_unique<Bonus>(action, upgradeType);
+  return make_unique<Bonus>(action, upgradeType, msg);
 }
 

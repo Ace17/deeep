@@ -29,7 +29,9 @@ array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 
 struct Game : Scene, IGame
 {
-  Game() : m_tiles(Size2i(1, 1))
+  Game(View* view) :
+    m_view(view),
+    m_tiles(Size2i(1, 1))
   {
     m_shouldLoadLevel = true;
     resetPhysics();
@@ -119,16 +121,6 @@ struct Game : Scene, IGame
     return r;
   }
 
-  vector<SOUND> readSounds() override
-  {
-    return std::move(m_sounds);
-  }
-
-  int getMusic() const override
-  {
-    return m_theme;
-  }
-
   void addActorsForTileMap(vector<Actor>& r, Vector cameraPos) const
   {
     auto const model = MDL_TILES_00 + m_theme % 8;
@@ -211,6 +203,7 @@ struct Game : Scene, IGame
     auto level = Graph_loadRoom(levelIdx, this);
     m_tiles = move(level.tiles);
     m_theme = level.theme;
+    m_view->playMusic(level.theme);
     printf("Now in: %s\n", level.name.c_str());
 
     if(!m_player)
@@ -248,7 +241,7 @@ struct Game : Scene, IGame
 
   void playSound(SOUND sound) override
   {
-    m_sounds.push_back(sound);
+    m_view->playSound(sound);
   }
 
   void spawn(Entity* e) override
@@ -277,15 +270,25 @@ struct Game : Scene, IGame
     return m_player->pos;
   }
 
+  void textBox(char const* msg) override
+  {
+    m_view->textBox(msg);
+  }
+
+  void setAmbientLight(float light)
+  {
+    ambientLight = light;
+  }
+
   Player* m_player = nullptr;
   uvector<Entity> m_entities;
   uvector<Entity> m_spawned;
+  View* const m_view;
   unique_ptr<IPhysics> m_physics;
 
   set<IEventSink*> m_listeners;
 
   Matrix2<int> m_tiles;
-  vector<SOUND> m_sounds;
   bool m_debug;
   bool m_debugFirstTime = true;
 
@@ -320,9 +323,9 @@ struct Game : Scene, IGame
   }
 };
 
-Scene* createGame(vector<string> args)
+Scene* createGame(View* view, vector<string> args)
 {
-  auto r = make_unique<Game>();
+  auto r = make_unique<Game>(view);
 
   if(args.size() == 1)
     r->m_level = atoi(args[0].c_str());

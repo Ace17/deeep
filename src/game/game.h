@@ -79,5 +79,7 @@ struct IGame
   virtual void subscribeForEvents(IEventSink*) = 0;
   virtual void unsubscribeForEvents(IEventSink*) = 0;
   virtual Vector getPlayerPosition() = 0;
+  virtual void textBox(char const* msg) = 0;
+  virtual void setAmbientLight(float light) = 0;
 };
 

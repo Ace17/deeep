@@ -53,30 +53,21 @@ struct NullPlayer : Player
 
 struct NullGame : IGame
 {
-  virtual void playSound(SOUND)
-  {
-  }
+  virtual void playSound(SOUND) {}
 
-  virtual void spawn(Entity*)
-  {
-  }
+  virtual void spawn(Entity*) {}
 
-  virtual void postEvent(unique_ptr<Event> )
-  {
-  }
+  virtual void postEvent(unique_ptr<Event> ) {}
 
-  virtual void subscribeForEvents(IEventSink*)
-  {
-  }
+  virtual void subscribeForEvents(IEventSink*) {}
 
-  virtual void unsubscribeForEvents(IEventSink*)
-  {
-  }
+  virtual void unsubscribeForEvents(IEventSink*) {}
 
-  virtual Vector2f getPlayerPosition()
-  {
-    return Vector2f(0, 0);
-  }
+  virtual Vector2f getPlayerPosition() { return Vector2f(0, 0); }
+
+  virtual void textBox(char const*) {}
+
+  virtual void setAmbientLight(float) {}
 };
 
 struct NullPhysicsProbe : IPhysicsProbe
@@ -124,7 +115,7 @@ unittest("Entity: pickup bonus")
   NullPhysicsProbe physics;
   MockPlayer player;
 
-  auto ent = makeBonus(0, 4);
+  auto ent = makeBonus(0, 4, "cool text");
   ent->game = &game;
   ent->physics = &physics;
 
@@ -144,7 +135,7 @@ bool nearlyEquals(float expected, float actual)
 
 unittest("Entity: animate")
 {
-  auto ent = makeBonus(0, 4);
+  auto ent = makeBonus(0, 4, "hello");
 
   float minVal = 10.0f;
   float maxVal = -10.0f;
