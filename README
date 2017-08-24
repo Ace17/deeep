@@ -29,13 +29,13 @@ powerups, bullets, ..) from your I/O code (display, audio, input).
 Directory structure
 -------------------
 
-bin:        output directory for binaries.
-./check:    main check script. Call this to build native and asmjs versions.
-src/engine: I/O code (game-agnostic)
-src/game:   game logic (engine-agnostic)
-src/base:   utilities shared between game logic and I/O code ; scene declaration
-res:        game resources (sounds, sprites, tiles)
-res-src:    "source code" for assets
+bin:            output directory for binaries.
+./check:        main check script. Call this to build native and asmjs versions and to launch the unit tests.
+engine/src:     I/O code (=engine implementation)(game-agnostic)
+engine/include: utilities shared between game logic and I/O code ; scene declaration (=engine interface)
+src:            game logic (agnostic to the engine implementation)
+res-src:        "source code" for assets
+res:            pre-rendered game resources (sounds, sprites, tiles)
 
 
 Build
