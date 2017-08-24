@@ -117,28 +117,25 @@ map<string, CreationFunc> getRegistry()
       return make_unique<CrumbleBlock>();
     };
 
-  r["door(0)"] =
-    [] (EntityArgs &)
+  r["door"] =
+    [] (EntityArgs& args)
     {
-      return makeDoor(0);
+      auto arg = atoi(args[0].c_str());
+      return makeDoor(arg);
     };
 
-  r["switch(0)"] =
-    [] (EntityArgs &)
+  r["switch"] =
+    [] (EntityArgs& args)
     {
-      return makeSwitch(0);
+      auto arg = atoi(args[0].c_str());
+      return makeSwitch(arg);
     };
 
-  r["moving_platform(0)"] =
-    [] (EntityArgs &)
+  r["moving_platform"] =
+    [] (EntityArgs& args)
     {
-      return make_unique<MovingPlatform>(0);
-    };
-
-  r["moving_platform(1)"] =
-    [] (EntityArgs &)
-    {
-      return make_unique<MovingPlatform>(1);
+      auto arg = atoi(args[0].c_str());
+      return make_unique<MovingPlatform>(arg);
     };
 
   r["elevator"] =
@@ -147,7 +144,7 @@ map<string, CreationFunc> getRegistry()
       return make_unique<Elevator>();
     };
 
-  r["conveyor(0)"] =
+  r["conveyor"] =
     [] (EntityArgs &)
     {
       return make_unique<Conveyor>();
