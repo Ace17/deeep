@@ -67,5 +67,5 @@ Run the game
 
 Just run the following command:
 
-$ bin/deeep.exe
+$ bin/rel/deeep.exe
 

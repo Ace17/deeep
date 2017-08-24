@@ -18,6 +18,6 @@ echo "----------------------------------------------------------------"
 echo "Building asmjs version"
 
 BIN=bin/asmjs \
-  scripts/asmjs-make -j`nproc` bin/asmjs/deeep.html
+  scripts/asmjs-make -j`nproc` bin/asmjs/rel/deeep.html
 
 echo Success!
