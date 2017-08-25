@@ -9,7 +9,6 @@
 // Game logic
 
 #include <cmath>
-#include <cstdlib>
 #include <algorithm>
 #include <array>
 #include <set>
@@ -204,7 +203,6 @@ struct Game : Scene, IGame
     m_tiles = move(level.tiles);
     m_theme = level.theme;
     m_view->playMusic(level.theme);
-    printf("Now in: %s\n", level.name.c_str());
 
     if(!m_player)
     {
