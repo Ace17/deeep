@@ -27,6 +27,12 @@ struct Switch : Entity
     size = UnitSize * 0.75;
   }
 
+  void enter() override
+  {
+    auto var = game->getVariable(id);
+    state = var->get();
+  }
+
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_SWITCH);
@@ -79,16 +85,8 @@ struct Door : Entity, IEventSink
     auto onTriggered = [&] (int open)
       {
         state = open;
-
-        if(state)
-        {
-          openingDelay = 1000;
-        }
-        else
-        {
-          openingDelay = 0;
-          solid = true;
-        }
+        delay = 1000;
+        solid = !state;
       };
 
     auto var = game->getVariable(id);
@@ -108,9 +106,9 @@ struct Door : Entity, IEventSink
 
   virtual void tick() override
   {
-    decrement(openingDelay);
+    decrement(delay);
 
-    if(openingDelay == 0 && state)
+    if(delay == 0 && state)
       solid = false;
   }
 
@@ -121,14 +119,14 @@ struct Door : Entity, IEventSink
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_DOOR);
-    r.action = 1;
-    r.ratio = state ? 1 - (openingDelay / 1000.0f) : 0;
+    r.action = solid ? 3 : 1;
+    r.ratio = 1 - (delay / 1000.0f);
     r.scale = size;
     return r;
   }
 
   bool state = false;
-  int openingDelay = 0;
+  int delay = 0;
   const int id;
   unique_ptr<Handle> subscription;
 };
