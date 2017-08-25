@@ -86,7 +86,10 @@ struct Door : Entity, IEventSink
       {
         state = open;
         delay = 1000;
-        solid = !state;
+
+        // in case of closing, immediately prevent traversal
+        if(!open)
+          solid = true;
       };
 
     auto var = game->getVariable(id);
@@ -119,7 +122,7 @@ struct Door : Entity, IEventSink
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_DOOR);
-    r.action = solid ? 3 : 1;
+    r.action = state ? 1 : 3;
     r.ratio = 1 - (delay / 1000.0f);
     r.scale = size;
     return r;
