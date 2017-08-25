@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <memory>
 #include <functional>
 #include "base/geom.h"
 #include "base/scene.h"
