@@ -6,6 +6,8 @@
  * License, or (at your option) any later version.
  */
 
+#include <cmath> // sin
+
 #include "base/scene.h" // Actor
 
 #include "collision_groups.h"

@@ -8,6 +8,7 @@
 
 // Switch and door.
 
+#include <cmath> // sin
 #include <algorithm>
 
 #include "base/util.h"

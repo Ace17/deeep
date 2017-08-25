@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <cmath> // sin
+
 #include "base/util.h"
 #include "base/scene.h"
 

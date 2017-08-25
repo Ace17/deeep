@@ -6,6 +6,8 @@
  * License, or (at your option) any later version.
  */
 
+#include <cmath> // round
+
 #include "body.h"
 #include "base/util.h"
 #include "physics.h"
