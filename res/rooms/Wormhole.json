@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztldEOwyAIRe321P\/\/4b2sSUMQ70WkawcJSRuBg6KwtdY2RaVoNpbezT9bil\/84l\/Pf39VW9e+mfiIf4+fJZKfXYvZvh4R08ORNiOf6PnD8kc5sGyNP1Of1fzzOsrfO2rxLR9pO6oFc2fQO83c\/YjezOa7StBzyJIr+ZF9KJuPvnGUzQoTH7Fj2VE1+hW+p7+t5GcJ2\/v\/nc\/oIS+hDH9mT4xt8Yv\/VP75H33faJ69GcHk6fW34o7iWOfs5WfOLclFajPas\/cesnzPDPHGuIv\/B0CAAmE=",
+         "data":"eJztle0KgDAIRR29\/ztHUBCxtXnUrY8JQj\/Sc2fXlUQkzZw5c+aDsha9ONEa\/s636vgKn+qJ4mv19NJR0jJyD0bx0+W5tbf3+enZ3s63ftun8qmHWjRQz9b4JLa6ZU9aT+PQ\/XY+0eB5\/5AeUXziW8v\/wLLvdH9b+1m09uTn6jR3mQefRgRf4727vhr9JDz52j2ozVhzBvJ+zoMi+lmS+ef8UppFqYbyS361eEjLt8Tdt+vBz\/WL9GtLL+pZeod63r\/nfpTtxae5AiicA0A=",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -19,25 +19,14 @@
          "objects":[
                 {
                  "height":16,
-                 "id":79,
+                 "id":84,
                  "name":"elevator",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":448,
-                 "y":608
-                }, 
-                {
-                 "height":16,
-                 "id":81,
-                 "name":"bonus_life",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":48,
-                 "y":288
+                 "x":176,
+                 "y":480
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -45,7 +34,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":82,
+ "nextobjectid":85,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",

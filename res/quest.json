@@ -148,15 +148,15 @@
                  "y":76
                 }, 
                 {
-                 "height":4,
+                 "height":8,
                  "id":212,
-                 "name":"BottomRoom",
+                 "name":"SwitchableDoor",
                  "rotation":0,
                  "type":"2",
                  "visible":true,
                  "width":8,
                  "x":80,
-                 "y":156
+                 "y":152
                 }, 
                 {
                  "height":16,
@@ -685,6 +685,39 @@
                  "width":8,
                  "x":80,
                  "y":180
+                }, 
+                {
+                 "height":8,
+                 "id":261,
+                 "name":"Link4",
+                 "rotation":0,
+                 "type":"2",
+                 "visible":true,
+                 "width":4,
+                 "x":96,
+                 "y":144
+                }, 
+                {
+                 "height":12,
+                 "id":262,
+                 "name":"Wormhole",
+                 "rotation":0,
+                 "type":"3",
+                 "visible":true,
+                 "width":8,
+                 "x":100,
+                 "y":136
+                }, 
+                {
+                 "height":4,
+                 "id":263,
+                 "name":"Passage",
+                 "rotation":0,
+                 "type":"3",
+                 "visible":true,
+                 "width":4,
+                 "x":96,
+                 "y":136
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -714,13 +747,14 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":261,
+ "nextobjectid":264,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.0.2",
  "tileheight":4,
  "tilesets":[],
  "tilewidth":4,
  "type":"map",
- "version":"1.0.0",
+ "version":1,
  "width":64
 }
