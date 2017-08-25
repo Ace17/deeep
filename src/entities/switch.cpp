@@ -20,11 +20,6 @@
 #include "sounds.h"
 #include "toggle.h"
 
-struct TriggerEvent : Event
-{
-  int idx;
-};
-
 struct Switch : Entity
 {
   Switch(int id_) : id(id_)
@@ -51,16 +46,15 @@ struct Switch : Entity
 
   virtual void onCollide(Entity*) override
   {
-    if(blinking || state)
+    if(blinking)
       return;
 
-    blinking = 1200;
+    blinking = 2000;
     state = !state;
     game->playSound(SND_SWITCH);
 
-    auto evt = make_unique<TriggerEvent>();
-    evt->idx = id;
-    game->postEvent(move(evt));
+    auto var = game->getVariable(id);
+    var->set(state);
   }
 
   bool state = false;
@@ -82,7 +76,29 @@ struct Door : Entity, IEventSink
 
   void enter() override
   {
-    subscription = game->subscribeForEvents(this);
+    auto onTriggered = [&] (int open)
+      {
+        state = open;
+
+        if(state)
+        {
+          openingDelay = 1000;
+        }
+        else
+        {
+          openingDelay = 0;
+          solid = true;
+        }
+      };
+
+    auto var = game->getVariable(id);
+    subscription = var->observe(onTriggered);
+
+    // already open?
+    state = var->get();
+
+    if(state)
+      solid = false;
   }
 
   void leave() override
@@ -98,6 +114,10 @@ struct Door : Entity, IEventSink
       solid = false;
   }
 
+  virtual void notify(const Event*) override
+  {
+  }
+
   virtual Actor getActor() const override
   {
     auto r = Actor(pos, MDL_DOOR);
@@ -105,22 +125,6 @@ struct Door : Entity, IEventSink
     r.ratio = state ? 1 - (openingDelay / 1000.0f) : 0;
     r.scale = size;
     return r;
-  }
-
-  virtual void notify(const Event* evt) override
-  {
-    if(auto trg = evt->as<TriggerEvent>())
-    {
-      if(trg->idx != id)
-        return;
-
-      state = !state;
-
-      if(state)
-        openingDelay = 1000;
-      else
-        solid = true;
-    }
   }
 
   bool state = false;

@@ -77,10 +77,20 @@ struct Handle
   virtual ~Handle() {};
 };
 
+struct IVariable
+{
+  typedef function<void (int newValue)> Observer;
+
+  virtual int get() = 0;
+  virtual void set(int) = 0;
+  virtual unique_ptr<Handle> observe(Observer observer) = 0;
+};
+
 struct IGame
 {
   virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
+  virtual IVariable* getVariable(int name) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;
   virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) = 0;
   virtual Vector getPlayerPosition() = 0;

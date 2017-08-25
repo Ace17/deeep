@@ -57,6 +57,8 @@ struct NullGame : IGame
 
   virtual void spawn(Entity*) {}
 
+  virtual IVariable* getVariable(int) { return nullptr; }
+
   virtual void postEvent(unique_ptr<Event> ) {}
 
   virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) { return nullptr; }

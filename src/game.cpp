@@ -20,6 +20,7 @@
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
 #include "room.h"
+#include "variable.h"
 
 using namespace std;
 
@@ -236,6 +237,8 @@ struct Game : Scene, IGame
   EventDelegator m_levelBoundary;
   unique_ptr<Handle> m_levelBoundarySubscription;
 
+  vector<unique_ptr<IVariable>> m_vars;
+
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
 
@@ -249,6 +252,20 @@ struct Game : Scene, IGame
     m_spawned.push_back(unique(e));
   }
 
+  IVariable* getVariable(int name) override
+  {
+    assert(name >= 0);
+    assert(name < 32768);
+
+    if(name >= (int)m_vars.size())
+      m_vars.resize(name + 1);
+
+    if(!m_vars[name])
+      m_vars[name] = make_unique<Variable>();
+
+    return m_vars[name].get();
+  }
+
   void postEvent(unique_ptr<Event> event) override
   {
     for(auto& listener : m_listeners)
@@ -257,20 +274,11 @@ struct Game : Scene, IGame
 
   unique_ptr<Handle> subscribeForEvents(IEventSink* sink) override
   {
-    struct DestroyableHandle : Handle
-    {
-      DestroyableHandle(function<void(void)> f_) : f(f_) {}
-
-      ~DestroyableHandle() { f(); }
-
-      function<void(void)> f;
-    };
-
     auto it = m_listeners.insert(m_listeners.begin(), sink);
 
     auto unsubscribe = [ = ] () { m_listeners.erase(it); };
 
-    return make_unique<DestroyableHandle>(unsubscribe);
+    return make_unique<HandleWithDeleter>(unsubscribe);
   }
 
   Vector getPlayerPosition() override
