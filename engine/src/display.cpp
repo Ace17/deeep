@@ -8,6 +8,8 @@
 
 // OpenGL stuff
 
+#include "display.h"
+
 #include <cassert>
 #include <sstream>
 #include <fstream>
@@ -454,9 +456,9 @@ void Display_beginDraw()
 
   {
     auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
-    auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
-
     assert(positionLoc >= 0);
+
+    auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
     assert(texCoordLoc >= 0);
 
     // connect the xyz to the "a_position" attribute of the vertex shader
