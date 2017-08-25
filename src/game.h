@@ -71,13 +71,17 @@ EventDelegator makeDelegator(function<void(const EventType*)> handler)
   return r;
 }
 
+struct Handle
+{
+  virtual ~Handle() {};
+};
+
 struct IGame
 {
   virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;
-  virtual void subscribeForEvents(IEventSink*) = 0;
-  virtual void unsubscribeForEvents(IEventSink*) = 0;
+  virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) = 0;
   virtual Vector getPlayerPosition() = 0;
   virtual void textBox(char const* msg) = 0;
   virtual void setAmbientLight(float light) = 0;

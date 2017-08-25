@@ -59,7 +59,7 @@ struct NullGame : IGame
 
   virtual void postEvent(unique_ptr<Event> ) {}
 
-  virtual void subscribeForEvents(IEventSink*) {}
+  virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) { return nullptr; }
 
   virtual void unsubscribeForEvents(IEventSink*) {}
 

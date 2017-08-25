@@ -82,12 +82,12 @@ struct Door : Entity, IEventSink
 
   void enter() override
   {
-    game->subscribeForEvents(this);
+    subscription = game->subscribeForEvents(this);
   }
 
   void leave() override
   {
-    game->unsubscribeForEvents(this);
+    subscription.reset();
   }
 
   virtual void tick() override
@@ -126,6 +126,7 @@ struct Door : Entity, IEventSink
   bool state = false;
   int openingDelay = 0;
   const int id;
+  unique_ptr<Handle> subscription;
 };
 
 unique_ptr<Entity> makeDoor(int id)

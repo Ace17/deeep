@@ -217,7 +217,8 @@ struct Game : Scene, IGame
     {
       auto f = bind(&Game::onTouchLevelBoundary, this, std::placeholders::_1);
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
-      subscribeForEvents(&m_levelBoundary);
+      m_levelBoundarySubscription.reset();
+      m_levelBoundarySubscription = subscribeForEvents(&m_levelBoundary);
     }
   }
 
@@ -235,6 +236,7 @@ struct Game : Scene, IGame
   bool m_shouldLoadLevel = false;
 
   EventDelegator m_levelBoundary;
+  unique_ptr<Handle> m_levelBoundarySubscription;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
@@ -255,14 +257,21 @@ struct Game : Scene, IGame
       listener->notify(event.get());
   }
 
-  void subscribeForEvents(IEventSink* sink) override
+  unique_ptr<Handle> subscribeForEvents(IEventSink* sink) override
   {
-    m_listeners.insert(sink);
-  }
+    auto unsubscribe = [&] () { m_listeners.erase(sink); };
 
-  void unsubscribeForEvents(IEventSink* sink) override
-  {
-    m_listeners.erase(sink);
+    struct DestroyableHandle : Handle
+    {
+      ~DestroyableHandle() { f(); }
+
+      function<void(void)> f;
+    };
+
+    auto r = make_unique<DestroyableHandle>();
+    r->f = unsubscribe;
+    m_listeners.insert(sink);
+    return r;
   }
 
   Vector getPlayerPosition() override
@@ -275,7 +284,7 @@ struct Game : Scene, IGame
     m_view->textBox(msg);
   }
 
-  void setAmbientLight(float light)
+  void setAmbientLight(float light) override
   {
     ambientLight = light;
   }
