@@ -13,21 +13,21 @@
 void addRandomWidgets(Matrix2<int>& tiles)
 {
   auto rect = [&] (Vector2i pos, Size2i size, int tile)
-              {
-                for(int dy = 0; dy < size.height; ++dy)
-                  for(int dx = 0; dx < size.width; ++dx)
-                    tiles.set(dx + pos.x, dy + pos.y, tile);
-              };
+    {
+      for(int dy = 0; dy < size.height; ++dy)
+        for(int dx = 0; dx < size.width; ++dx)
+          tiles.set(dx + pos.x, dy + pos.y, tile);
+    };
 
   auto isFull = [&] (Vector2i pos, Size2i size)
-                {
-                  for(int dy = 0; dy < size.height; ++dy)
-                    for(int dx = 0; dx < size.width; ++dx)
-                      if(tiles.get(dx + pos.x, dy + pos.y) == 0)
-                        return false;
+    {
+      for(int dy = 0; dy < size.height; ++dy)
+        for(int dx = 0; dx < size.width; ++dx)
+          if(tiles.get(dx + pos.x, dy + pos.y) == 0)
+            return false;
 
-                  return true;
-                };
+      return true;
+    };
 
   auto const maxX = tiles.size.width - 4;
   auto const maxY = tiles.size.height - 4;
@@ -81,16 +81,14 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
 
   auto const CELL_SIZE = 16;
 
-  auto addDetector =
-    [&] ()
+  auto addDetector = [&] ()
     {
       auto detector = make_unique<RoomBoundaryDetector>();
       detector->size = Size(1, 1) * CELL_SIZE;
       return detector;
     };
 
-  auto tryToConnectRoom =
-    [&] (Vector2i delta, Vector margin)
+  auto tryToConnectRoom = [&] (Vector2i delta, Vector margin)
     {
       auto const neighboorPos = room.pos + delta;
       auto const neighboorIdx = getRoomAt(quest, neighboorPos);

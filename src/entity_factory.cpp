@@ -21,14 +21,12 @@ vector<string> parseCall(string content)
   content += '\0';
   auto stream = content.c_str();
 
-  auto head =
-    [&] ()
+  auto head = [&] ()
     {
       return *stream;
     };
 
-  auto accept =
-    [&] (char what)
+  auto accept = [&] (char what)
     {
       if(!*stream)
         return false;
@@ -40,15 +38,13 @@ vector<string> parseCall(string content)
       return true;
     };
 
-  auto expect =
-    [&] (char what)
+  auto expect = [&] (char what)
     {
       if(!accept(what))
         throw runtime_error(string("Expected '") + what + "'");
     };
 
-  auto parseString =
-    [&] ()
+  auto parseString = [&] ()
     {
       string r;
 
@@ -62,8 +58,7 @@ vector<string> parseCall(string content)
       return r;
     };
 
-  auto parseIdentifier =
-    [&] ()
+  auto parseIdentifier = [&] ()
     {
       string r;
 
@@ -77,8 +72,7 @@ vector<string> parseCall(string content)
       return r;
     };
 
-  auto parseArgument =
-    [&] ()
+  auto parseArgument = [&] ()
     {
       if(accept('"'))
         return parseString();

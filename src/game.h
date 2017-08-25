@@ -64,10 +64,10 @@ EventDelegator makeDelegator(function<void(const EventType*)> handler)
 {
   EventDelegator r;
   r.m_onNotify = [ = ] (const Event* evt)
-                 {
-                   if(auto event = evt->as<EventType>())
-                     handler(event);
-                 };
+    {
+      if(auto event = evt->as<EventType>())
+        handler(event);
+    };
   return r;
 }
 
