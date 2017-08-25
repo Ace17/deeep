@@ -11,7 +11,7 @@
 #include <cmath>
 #include <algorithm>
 #include <array>
-#include <set>
+#include <list>
 #include "base/scene.h"
 #include "base/util.h"
 #include "entities/player.h"
@@ -195,9 +195,10 @@ struct Game : Scene, IGame
 
     resetPhysics();
 
+    m_levelBoundarySubscription.reset();
     m_entities.clear();
     m_spawned.clear();
-    m_listeners.clear();
+    assert(m_listeners.empty());
 
     auto level = Graph_loadRoom(levelIdx, this);
     m_tiles = move(level.tiles);
@@ -215,7 +216,6 @@ struct Game : Scene, IGame
     {
       auto f = bind(&Game::onTouchLevelBoundary, this, std::placeholders::_1);
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
-      m_levelBoundarySubscription.reset();
       m_levelBoundarySubscription = subscribeForEvents(&m_levelBoundary);
     }
   }
@@ -257,19 +257,20 @@ struct Game : Scene, IGame
 
   unique_ptr<Handle> subscribeForEvents(IEventSink* sink) override
   {
-    auto unsubscribe = [&] () { m_listeners.erase(sink); };
-
     struct DestroyableHandle : Handle
     {
+      DestroyableHandle(function<void(void)> f_) : f(f_) {}
+
       ~DestroyableHandle() { f(); }
 
       function<void(void)> f;
     };
 
-    auto r = make_unique<DestroyableHandle>();
-    r->f = unsubscribe;
-    m_listeners.insert(sink);
-    return r;
+    auto it = m_listeners.insert(m_listeners.begin(), sink);
+
+    auto unsubscribe = [ = ] () { m_listeners.erase(it); };
+
+    return make_unique<DestroyableHandle>(unsubscribe);
   }
 
   Vector getPlayerPosition() override
@@ -293,7 +294,7 @@ struct Game : Scene, IGame
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
 
-  set<IEventSink*> m_listeners;
+  list<IEventSink*> m_listeners;
 
   Matrix2<int> m_tiles;
   bool m_debug;
