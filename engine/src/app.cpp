@@ -42,7 +42,7 @@ public:
   {
     SDL_Init(0);
 
-    Display_init(768, 768);
+    Display_init(Size2i(768, 768));
     m_audio.reset(createAudio());
 
     for(auto sound : getSounds())

@@ -310,7 +310,7 @@ void printOpenGlVersion()
 static SDL_Window* mainWindow;
 static SDL_GLContext mainContext;
 
-void Display_init(int width, int height)
+void Display_init(Size2i resolution)
 {
   if(SDL_InitSubSystem(SDL_INIT_VIDEO))
     throw runtime_error("Can't init SDL");
@@ -320,7 +320,7 @@ void Display_init(int width, int height)
   mainWindow = SDL_CreateWindow(
     "My Game",
     SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    width, height,
+    resolution.width, resolution.height,
     SDL_WINDOW_OPENGL
     );
 
