@@ -22,6 +22,8 @@
 #include "room.h"
 #include "variable.h"
 
+#include <cstdlib> // atoi
+
 using namespace std;
 
 // from smarttiles

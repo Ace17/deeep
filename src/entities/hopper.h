@@ -16,6 +16,8 @@
 #include "sounds.h"
 #include "entities/explosion.h"
 
+#include <cstdlib> // rand
+
 struct Hopper : Entity, Damageable
 {
   Hopper()

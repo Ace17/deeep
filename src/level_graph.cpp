@@ -9,6 +9,7 @@
 #include "room.h"
 #include "entities/detector.h"
 #include "entity_factory.h"
+#include <cstdlib> // rand
 
 void addRandomWidgets(Matrix2<int>& tiles)
 {
