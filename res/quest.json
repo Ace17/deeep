@@ -23,8 +23,8 @@
                  "type":"5",
                  "visible":true,
                  "width":4,
-                 "x":84,
-                 "y":112
+                 "x":72,
+                 "y":108
                 }, 
                 {
                  "height":12,
@@ -718,6 +718,17 @@
                  "width":4,
                  "x":96,
                  "y":136
+                }, 
+                {
+                 "height":8,
+                 "id":264,
+                 "name":"FirstCorridor",
+                 "rotation":0,
+                 "type":"5",
+                 "visible":true,
+                 "width":12,
+                 "x":76,
+                 "y":108
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -747,7 +758,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":264,
+ "nextobjectid":265,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",
