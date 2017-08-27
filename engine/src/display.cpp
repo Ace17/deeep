@@ -353,6 +353,12 @@ void Display_init(Size2i resolution)
   assert(g_colorId >= 0);
 }
 
+void Display_setFullscreen(bool fs)
+{
+  auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+  SDL_SetWindowFullscreen(mainWindow, flags);
+}
+
 void Display_setCaption(const char* caption)
 {
   SDL_SetWindowTitle(mainWindow, caption);
@@ -449,6 +455,13 @@ void Display_drawText(Vector2f pos, char const* text)
 
 void Display_beginDraw()
 {
+  {
+    int w, h;
+    SDL_GL_GetDrawableSize(mainWindow, &w, &h);
+    auto size = min(w, h);
+    SAFE_GL(glViewport((w - size)/2, (h - size)/2, size, size));
+  }
+
   SAFE_GL(glUseProgram(g_ProgramId));
 
   SAFE_GL(glClearColor(0, 0, 0, 1));

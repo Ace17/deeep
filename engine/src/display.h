@@ -3,6 +3,7 @@
 #include "base/geom.h"
 
 void Display_init(Size2i resolution);
+void Display_setFullscreen(bool fs);
 void Display_setCaption(const char* caption);
 void Display_loadModel(int id, const char* imagePath);
 void Display_beginDraw();
