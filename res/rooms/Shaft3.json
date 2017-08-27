@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztk0sOxDAIQ9P7X3q2FSJgsEk0mkHqJnV4Dp9nrfU4nw1PE33M\/Sj+\/Bk+EpP9V\/O9vLf5UY5f4E\/6r7wLfbfaP1rnTM\/WjuV3w\/O289yZzwq\/Oy\/T82+1Sn7mxdNM8b28O37me5Jv\/yv6j\/Lt3Zt8JNR8hacoZ7X\/bJ3Y\/nfnHOG\/zzp8xAPDRzyg2h0re4eCbzUVfuZBxe\/sRJf\/Pj\/J987RuWZ2MOLvciNsJT\/SKPav4h+pj4Id1W\/Hj\/Ssx0k+W4sT\/GweqrVFciAe0DpZvYpv7yPB7kfkocpX7eUpfpQT5e+8IH6m4xa3w2d7VsnTZX\/b\/Q9q\/ANE",
+         "data":"eJztk0sOAzEIQzP3v3S3IwSOAZOoapGySYDn8HnWWo9zrHk+6HTikf35M3zGJvuv5nt5b\/NRjl\/gT+rP\/Cv7b5X+LK+rI4q7ZZ62SHNlPjP86rxMz7\/1VfJ3WjyfKb6XN+LvdE\/y7bui\/yzfxt7kM6bmKzShnNn+d+vU7X91zhn++67CZzR0+IwG1jdi7f6h4FufDH+nQcWv7ESV\/74\/yffu2bnu7CDiR7kZtpKPfBT7l9HP1EfBRvWL+Mi\/q3GS363FCf5uHrK1ZXIwGtg6WX8V38Yz1t0PpCHLV+3lKT7KyfIjLYyeabvFrfC7PcvkqbK\/Lf4DM9ADQQ==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -49,6 +49,17 @@
                  "width":16,
                  "x":432,
                  "y":336
+                }, 
+                {
+                 "height":16,
+                 "id":80,
+                 "name":"fragile_door",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":192
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -56,7 +67,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":80,
+ "nextobjectid":81,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",

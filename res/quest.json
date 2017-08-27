@@ -23,7 +23,7 @@
                  "type":"5",
                  "visible":true,
                  "width":4,
-                 "x":72,
+                 "x":56,
                  "y":108
                 }, 
                 {
@@ -108,11 +108,11 @@
                  "id":208,
                  "name":"Antichamber",
                  "rotation":0,
-                 "type":"0",
+                 "type":"5",
                  "visible":true,
                  "width":16,
-                 "x":20,
-                 "y":68
+                 "x":60,
+                 "y":108
                 }, 
                 {
                  "height":4,
@@ -130,11 +130,11 @@
                  "id":210,
                  "name":"FragileDoor",
                  "rotation":0,
-                 "type":"1",
+                 "type":"5",
                  "visible":true,
                  "width":4,
-                 "x":120,
-                 "y":76
+                 "x":84,
+                 "y":124
                 }, 
                 {
                  "height":8,
@@ -171,17 +171,6 @@
                 }, 
                 {
                  "height":4,
-                 "id":214,
-                 "name":"Antichamber",
-                 "rotation":0,
-                 "type":"0",
-                 "visible":true,
-                 "width":16,
-                 "x":60,
-                 "y":48
-                }, 
-                {
-                 "height":4,
                  "id":215,
                  "name":"Fragile",
                  "rotation":0,
@@ -196,11 +185,11 @@
                  "id":216,
                  "name":"Tunnel",
                  "rotation":0,
-                 "type":"2",
+                 "type":"4",
                  "visible":true,
                  "width":16,
-                 "x":76,
-                 "y":48
+                 "x":72,
+                 "y":128
                 }, 
                 {
                  "height":4,
@@ -346,26 +335,15 @@
                  "y":76
                 }, 
                 {
-                 "height":4,
-                 "id":230,
-                 "name":"Antichamber",
-                 "rotation":0,
-                 "type":"0",
-                 "visible":true,
-                 "width":16,
-                 "x":32,
-                 "y":60
-                }, 
-                {
                  "height":12,
                  "id":231,
                  "name":"Shelter",
                  "rotation":0,
-                 "type":"1",
+                 "type":"4",
                  "visible":true,
                  "width":4,
-                 "x":116,
-                 "y":76
+                 "x":60,
+                 "y":128
                 }, 
                 {
                  "height":4,
@@ -394,11 +372,11 @@
                  "id":234,
                  "name":"Step",
                  "rotation":0,
-                 "type":"1",
+                 "type":"5",
                  "visible":true,
                  "width":8,
-                 "x":68,
-                 "y":56
+                 "x":76,
+                 "y":120
                 }, 
                 {
                  "height":8,
@@ -410,17 +388,6 @@
                  "width":8,
                  "x":124,
                  "y":48
-                }, 
-                {
-                 "height":4,
-                 "id":236,
-                 "name":"Tunnel",
-                 "rotation":0,
-                 "type":"1",
-                 "visible":true,
-                 "width":16,
-                 "x":52,
-                 "y":60
                 }, 
                 {
                  "height":20,
@@ -443,17 +410,6 @@
                  "width":12,
                  "x":64,
                  "y":28
-                }, 
-                {
-                 "height":4,
-                 "id":239,
-                 "name":"Square",
-                 "rotation":0,
-                 "type":"0",
-                 "visible":true,
-                 "width":16,
-                 "x":124,
-                 "y":76
                 }, 
                 {
                  "height":12,
@@ -545,25 +501,14 @@
                 }, 
                 {
                  "height":4,
-                 "id":248,
-                 "name":"Junction",
-                 "rotation":0,
-                 "type":"1",
-                 "visible":true,
-                 "width":8,
-                 "x":40,
-                 "y":68
-                }, 
-                {
-                 "height":4,
                  "id":249,
                  "name":"Junction",
                  "rotation":0,
-                 "type":"1",
+                 "type":"4",
                  "visible":true,
                  "width":8,
-                 "x":100,
-                 "y":84
+                 "x":64,
+                 "y":128
                 }, 
                 {
                  "height":4,
@@ -625,11 +570,11 @@
                  "id":255,
                  "name":"ItemShoot",
                  "rotation":0,
-                 "type":"3",
+                 "type":"4",
                  "visible":true,
                  "width":4,
-                 "x":76,
-                 "y":128
+                 "x":56,
+                 "y":136
                 }, 
                 {
                  "height":4,
@@ -744,13 +689,24 @@
                 {
                  "height":8,
                  "id":266,
-                 "name":"Link4",
+                 "name":"Link3",
                  "rotation":0,
                  "type":"3",
                  "visible":true,
                  "width":4,
                  "x":84,
                  "y":132
+                }, 
+                {
+                 "height":4,
+                 "id":267,
+                 "name":"Antichamber",
+                 "rotation":0,
+                 "type":"5",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -780,7 +736,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":267,
+ "nextobjectid":268,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",

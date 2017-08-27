@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzt0tEOgCAIBVD9\/5\/uqa01QriAiMnmG9yDZW+tdeK8i+rhjmWeq+PH+JKK\/P\/ePpWb7XMZf\/Ct3x\/ZYTSrqYj7z6wV\/a99Iva0+OhZyR\/tgnwv1Kfyd\/eRN57pe1qzfaqq+VzGjr4kR\/v+uL4MX9tz\/Bjf4x1n+Nn3t\/hIjtT36tH4ETtqslF\/ZFfxI96e5A08M5C+mf7du4ovsXfzqTmrj1Zl32N3NEM6V23+At7fA14=",
+         "data":"eJztlEEOxSAIROn9L\/23pIEBkcE2\/ZO4UZiHQnuJyGWsu6wYtHbykf58Dj8jZv+7+ZbvaT7y+AJ\/9\/0rNUS5K2Lcf1JP5Hv1MOpcmb1Kr6vzL0Y8g+\/VIk4sk3+\/82k+Ou\/uv+fPqCHL72AjVsTv6H+kyfuv8jP5UU07\/KyY\/JVvNjt\/KM6bOSYfsSbuj\/jeHpM\/3X\/vXO9HYvD1G1TYb+Cjc71f4e\/GiBOH+J01VryrfNT7k3x9XvXO+iOfaAa0RyVukm\/5neRn\/h+T\/KrvCt\/Ki+aCpafxM99zR+6uRzbvbfk\/LFwDKw==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -15,7 +15,6 @@
         }, 
         {
          "draworder":"topdown",
-         "height":32,
          "name":"things",
          "objects":[
                 {
@@ -109,13 +108,13 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
          "x":0,
          "y":0
         }],
  "nextobjectid":77,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.0.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -123,6 +122,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
+ "type":"map",
  "version":1,
  "width":32
 }
