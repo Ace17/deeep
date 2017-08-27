@@ -2,14 +2,14 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztk0sOxDAIQ9P7X3q2FSJgsEk0mkHqJnV4Dp9nrfU4nw1PE33M\/Sj+\/Bk+EpP9V\/O9vLf5UY5f4E\/6r7wLfbfaP1rnTM\/WjuV3w\/O289yZzwq\/Oy\/T82+1Sn7mxdNM8b28O37me5Jv\/yv6j\/Lt3Zt8JNR8hacoZ7X\/bJ3Y\/nfnHOG\/zzp8xAPDRzyg2h0re4eCbzUVfuZBxe\/sRJf\/Pj\/J987RuWZ2MOLvciNsJT\/SKPav4h+pj4Id1W\/Hj\/Ssx0k+W4sT\/GweqrVFciAe0DpZvYpv7yPB7kfkocpX7eUpfpQT5e+8IH6m4xa3w2d7VsnTZX\/b\/Q9q\/ANE",
+         "data":"eJzdlDEOwDAIA8n\/P92pC6KVk3NBKlKm5EAYkxURC54clFfDze\/m2uVzzxVP9HfNTw3CO+rfeShP9Ojck5zD5ZfTmJw\/4an\/Vc90eYPWdviK8q7do\/yJxmqdaf5pTtU79e\/4w\/6+3X3h26oW5ZVctBeiB9GN6E7m1qnX1LkAKYABcw==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":16,
          "x":0,
          "y":0
         }, 
@@ -19,36 +19,36 @@
          "objects":[
                 {
                  "height":16,
-                 "id":77,
+                 "id":1,
                  "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":16,
+                 "y":368
+                }, 
+                {
+                 "height":16,
+                 "id":2,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":128
+                }, 
+                {
+                 "height":16,
+                 "id":4,
+                 "name":"bonus_life",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":192,
-                 "y":480
-                }, 
-                {
-                 "height":16,
-                 "id":78,
-                 "name":"spider",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":176,
-                 "y":144
-                }, 
-                {
-                 "height":16,
-                 "id":79,
-                 "name":"spider",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":432,
-                 "y":336
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -56,7 +56,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":80,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",
@@ -69,5 +69,5 @@
  "tilewidth":16,
  "type":"map",
  "version":1,
- "width":32
+ "width":16
 }

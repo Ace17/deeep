@@ -185,11 +185,11 @@
                  "id":215,
                  "name":"Fragile",
                  "rotation":0,
-                 "type":"1",
+                 "type":"2",
                  "visible":true,
                  "width":16,
-                 "x":52,
-                 "y":68
+                 "x":60,
+                 "y":156
                 }, 
                 {
                  "height":4,
@@ -458,13 +458,13 @@
                 {
                  "height":12,
                  "id":240,
-                 "name":"Floors",
+                 "name":"SpiderHole",
                  "rotation":0,
-                 "type":"1",
+                 "type":"2",
                  "visible":true,
                  "width":4,
-                 "x":48,
-                 "y":60
+                 "x":56,
+                 "y":156
                 }, 
                 {
                  "height":8,
@@ -581,11 +581,11 @@
                  "id":251,
                  "name":"ItemDoubleJump",
                  "rotation":0,
-                 "type":"0",
+                 "type":"3",
                  "visible":true,
                  "width":4,
-                 "x":56,
-                 "y":48
+                 "x":68,
+                 "y":140
                 }, 
                 {
                  "height":12,
@@ -617,8 +617,8 @@
                  "type":"2",
                  "visible":true,
                  "width":4,
-                 "x":76,
-                 "y":156
+                 "x":52,
+                 "y":164
                 }, 
                 {
                  "height":4,
@@ -628,8 +628,8 @@
                  "type":"3",
                  "visible":true,
                  "width":4,
-                 "x":68,
-                 "y":140
+                 "x":76,
+                 "y":128
                 }, 
                 {
                  "height":4,
@@ -729,6 +729,28 @@
                  "width":12,
                  "x":76,
                  "y":108
+                }, 
+                {
+                 "height":4,
+                 "id":265,
+                 "name":"Passage",
+                 "rotation":0,
+                 "type":"2",
+                 "visible":true,
+                 "width":4,
+                 "x":76,
+                 "y":156
+                }, 
+                {
+                 "height":8,
+                 "id":266,
+                 "name":"Link4",
+                 "rotation":0,
+                 "type":"3",
+                 "visible":true,
+                 "width":4,
+                 "x":84,
+                 "y":132
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -758,7 +780,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":265,
+ "nextobjectid":267,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",

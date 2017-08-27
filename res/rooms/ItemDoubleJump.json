@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYBxGmJkIjE0fOWA46cdmDj3liXUnLrmhop+U9EuP\/AIAgD8AsQ==",
+         "data":"eJxjZGBgYBwkmBAY7PpBmBkJ4zKT0jChp35s5lArTqmdJohVO9D6SUk\/tMYAc88Atg==",
          "encoding":"base64",
          "height":16,
          "name":"tiles",
@@ -15,7 +15,6 @@
         }, 
         {
          "draworder":"topdown",
-         "height":16,
          "name":"things",
          "objects":[
                 {
@@ -28,17 +27,28 @@
                  "width":16,
                  "x":80,
                  "y":208
+                }, 
+                {
+                 "height":16,
+                 "id":3,
+                 "name":"bonus_life",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":16,
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.0.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -46,6 +56,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
+ "type":"map",
  "version":1,
  "width":16
 }
