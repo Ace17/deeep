@@ -12,8 +12,8 @@
                  "type":"5",
                  "visible":true,
                  "width":16,
-                 "x":4,
-                 "y":4
+                 "x":12,
+                 "y":92
                 }, 
                 {
                  "height":4,
@@ -707,6 +707,39 @@
                  "width":16,
                  "x":96,
                  "y":112
+                }, 
+                {
+                 "height":4,
+                 "id":269,
+                 "name":"LongSpikes",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":16,
+                 "x":72,
+                 "y":172
+                }, 
+                {
+                 "height":4,
+                 "id":270,
+                 "name":"LongSpikes2",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":16,
+                 "x":56,
+                 "y":172
+                }, 
+                {
+                 "height":4,
+                 "id":271,
+                 "name":"ItemClimb",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":4,
+                 "x":52,
+                 "y":172
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -736,7 +769,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":268,
+ "nextobjectid":272,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",
