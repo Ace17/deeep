@@ -426,6 +426,7 @@ struct Rockman : Player, Damageable
   {
     game->playSound(SND_DIE);
     ball = false;
+    size = NORMAL_SIZE;
     dieDelay = 1500;
   }
 
