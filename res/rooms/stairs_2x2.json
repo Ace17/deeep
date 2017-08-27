@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlMEKACAIQ+3\/f7p7FGVrLtDBTpXPkdjMrJXLZI\/anc\/uZON7peZ7lJ0\/9oG+v63jmX8mP3L3RHHV\/Iy5V1JmVuaOyv5TXiWfledEyP8w2RF8r15wkRooH50j1t5A6iHc8p07K8sCjg==",
+         "data":"eJztlEEOACEIA\/H\/n967iREotGu0CTdlrCUMMxsHVpUQPtvnyfxZnjx3OTP4VX+d4Uel5kd0O39+B3o\/28cz\/+gZD5+1w5hcNf9G3yspPSt9s7z\/ya+S3+XHIySfTjaDH1UFF+mB8tE56tobSD+E+ypXHzFZAms=",
          "encoding":"base64",
          "height":32,
          "name":"tiles",
@@ -16,16 +16,39 @@
         {
          "draworder":"topdown",
          "name":"things",
-         "objects":[],
+         "objects":[
+                {
+                 "height":16,
+                 "id":62,
+                 "name":"bonus_life",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":144,
+                 "y":80
+                }, 
+                {
+                 "height":16,
+                 "id":63,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":144,
+                 "y":96
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
         }],
- "nextobjectid":62,
+ "nextobjectid":64,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.0.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -34,6 +57,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.0.0",
+ "version":1,
  "width":32
 }
