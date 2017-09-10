@@ -17,16 +17,14 @@
 
 struct Damageable
 {
-  virtual void onDamage(int /*amount*/) = 0;
+  virtual void onDamage(int amount) = 0;
 };
 
 struct Entity : Body
 {
   virtual ~Entity() {}
 
-  virtual void enter()
-  {
-  }
+  virtual void enter() {}
 
   virtual void leave() {}
 
