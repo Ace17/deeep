@@ -40,6 +40,17 @@ struct Registrator
 #define assertEquals(u, v) \
   assertEqualsFunc(u, v, __FILE__, __LINE__)
 
+static inline
+std::ostream & operator << (std::ostream& o, const std::pair<int, int>& p)
+{
+  o << "(";
+  o << p.first;
+  o << ", ";
+  o << p.second;
+  o << ")";
+  return o;
+}
+
 template<typename T>
 std::ostream & operator << (std::ostream& o, const std::vector<T>& v)
 {
@@ -56,17 +67,6 @@ std::ostream & operator << (std::ostream& o, const std::vector<T>& v)
   }
 
   o << "]";
-  return o;
-}
-
-static inline
-std::ostream & operator << (std::ostream& o, const std::pair<int, int>& p)
-{
-  o << "(";
-  o << p.first;
-  o << ", ";
-  o << p.second;
-  o << ")";
   return o;
 }
 
