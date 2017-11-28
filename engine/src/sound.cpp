@@ -169,7 +169,6 @@ private:
   bool m_isDead = true;
   bool m_loop = false;
   Sound* m_sound;
-  Sound* m_baseSound;
   unique_ptr<ISoundPlayer> m_player;
 };
 
