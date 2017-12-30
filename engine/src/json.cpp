@@ -10,15 +10,8 @@
 
 #include "json.h"
 #include "tokenizer.h"
-#include "file.h"
 
 using namespace json;
-
-unique_ptr<Object> json::load(string path)
-{
-  auto const text = read(path);
-  return json::parseObject(text.c_str());
-}
 
 static unique_ptr<Object> parseObject(Tokenizer& tk);
 static unique_ptr<Value> parseValue(Tokenizer& tk);

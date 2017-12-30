@@ -10,6 +10,7 @@
 #include "base/geom.h"
 #include "base/util.h"
 #include "json.h"
+#include "file.h"
 
 extern int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 
@@ -36,8 +37,9 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 
 Model loadModel(string jsonPath)
 {
+  auto data = read(jsonPath);
   Model r;
-  auto obj = json::load(jsonPath);
+  auto obj = json::parseObject(data.c_str());
   auto dir = dirName(jsonPath);
 
   auto type = obj->getMember<json::String>("type")->value;

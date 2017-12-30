@@ -13,6 +13,7 @@
 #include "base/geom.h"
 #include "base/util.h"
 
+#include "engine/src/file.h"
 #include "engine/src/json.h"
 #include "engine/src/base64.h"
 #include "engine/src/decompress.h"
@@ -252,7 +253,8 @@ Room loadAbstractRoom(json::Object* jsonRoom)
 
   if(ifstream(path).is_open())
   {
-    auto jsRoom = json::load(path);
+    auto data = read(path);
+    auto jsRoom = json::parseObject(data.c_str());
     loadConcreteRoom(room, jsRoom.get());
   }
   else
@@ -280,7 +282,8 @@ Room loadAbstractRoom(json::Object* jsonRoom)
 
 Quest loadQuest(string path) // tiled TMX format
 {
-  auto js = json::load(path);
+  auto data = read(path);
+  auto js = json::parseObject(data.c_str());
 
   auto layers = getAllLayers(js.get());
 
