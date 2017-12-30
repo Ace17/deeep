@@ -68,6 +68,7 @@ SRCS:=\
 	engine/src/base64.cpp\
 	engine/src/decompress.cpp\
 	engine/src/display.cpp\
+	engine/src/file.cpp\
 	engine/src/json.cpp\
 	engine/src/main.cpp\
 	engine/src/model.cpp\
@@ -89,6 +90,7 @@ SRCS_TESTS:=\
 	engine/extra/miniz.c\
 	engine/src/base64.cpp\
 	engine/src/decompress.cpp\
+	engine/src/file.cpp\
 	engine/src/json.cpp\
 	engine/tests/base64.cpp\
 	engine/tests/decompress.cpp\
