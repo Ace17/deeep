@@ -235,7 +235,7 @@ private:
   unique_ptr<Audio> m_audio;
 
   string m_textbox;
-  int m_textboxDelay;
+  int m_textboxDelay = 0;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
