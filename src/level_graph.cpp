@@ -156,10 +156,12 @@ void addThings(Room const& room, IGame* game)
   }
 }
 
+#include "quest.h"
+
 Room Graph_loadRoom(int roomIdx, IGame* game)
 {
-  extern vector<Room> loadQuest(string path);
-  auto quest = loadQuest("res/quest.json");
+  auto fullQuest = loadQuest("res/quest.json");
+  auto& quest = fullQuest.rooms;
 
   Room r;
 

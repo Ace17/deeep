@@ -276,7 +276,9 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   return room;
 }
 
-vector<Room> loadQuest(string path) // tiled TMX format
+#include "quest.h"
+
+Quest loadQuest(string path) // tiled TMX format
 {
   auto js = json::load(path);
 
@@ -287,14 +289,14 @@ vector<Room> loadQuest(string path) // tiled TMX format
   if(!layer)
     throw runtime_error("room layer was not found");
 
-  vector<Room> r;
+  Quest r;
 
   for(auto& roomValue : layer->getMember<json::Array>("objects")->elements)
   {
     auto jsonRoom = json::cast<json::Object>(roomValue.get());
 
     auto room = loadAbstractRoom(jsonRoom);
-    r.push_back(move(room));
+    r.rooms.push_back(move(room));
   }
 
   return r;
