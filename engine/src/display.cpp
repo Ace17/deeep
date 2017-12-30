@@ -12,7 +12,6 @@
 
 #include <cassert>
 #include <sstream>
-#include <fstream>
 #include <vector>
 #include <map>
 #include <memory>
@@ -29,6 +28,7 @@ using namespace std;
 #include "base/scene.h"
 #include "base/geom.h"
 #include "model.h"
+#include "file.h"
 
 static GLint g_MVP;
 static GLint g_colorId;
@@ -272,7 +272,7 @@ Model loadAnimation(string path)
   {
     path = setExtension(path, "png");
 
-    if(!ifstream(path).is_open())
+    if(!exists(path))
     {
       printf("tileset '%s' was not found, fallback on default tileset\n", path.c_str());
       path = "res/tiles/default.png";

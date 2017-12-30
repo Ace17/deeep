@@ -11,7 +11,6 @@
 #include <cassert>
 #include <memory>
 #include <vector>
-#include <fstream>
 #include <atomic>
 #include <stdexcept>
 #include <algorithm>
@@ -20,6 +19,7 @@
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
 #include "sound.h"
+#include "file.h"
 
 #include "base/util.h"
 #include "base/span.h"
@@ -103,7 +103,7 @@ struct OggSound : Sound
 {
   OggSound(string filename)
   {
-    if(!ifstream(filename).is_open())
+    if(!exists(filename))
       throw runtime_error("OggSound: file doesn't exist: '" + filename + "'");
 
     m_filename = filename;
@@ -220,7 +220,7 @@ struct SdlAudio : Audio
 
   void loadSound(int id, string path) override
   {
-    if(!ifstream(path).is_open())
+    if(!exists(path))
     {
       printf("sound '%s' was not found, fallback on default sound\n", path.c_str());
       path = "res/sounds/default.ogg";
@@ -255,7 +255,7 @@ struct SdlAudio : Audio
     char path[256];
     sprintf(path, "res/music/music-%02d.ogg", id);
 
-    if(!ifstream(path).is_open())
+    if(!exists(path))
     {
       printf("music '%s' was not found, fallback on default music\n", path);
       strcpy(path, "res/music/default.ogg");

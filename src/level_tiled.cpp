@@ -9,7 +9,6 @@
 #include <cassert>
 #include <map>
 #include <string>
-#include <fstream>
 #include "base/geom.h"
 #include "base/util.h"
 
@@ -251,7 +250,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
 
   auto const path = "res/rooms/" + room.name + ".json";
 
-  if(ifstream(path).is_open())
+  if(exists(path))
   {
     auto data = read(path);
     auto jsRoom = json::parse(data.c_str());

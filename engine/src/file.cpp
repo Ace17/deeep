@@ -35,3 +35,8 @@ string read(string path)
   return r;
 }
 
+bool exists(string path)
+{
+  return ifstream(path).is_open();
+}
+
