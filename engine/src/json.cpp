@@ -6,8 +6,6 @@
  * License, or (at your option) any later version.
  */
 
-#include <sstream>
-
 #include "json.h"
 #include "tokenizer.h"
 
@@ -16,30 +14,7 @@ using namespace json;
 static unique_ptr<Object> parseObject(Tokenizer& tk);
 static unique_ptr<Value> parseValue(Tokenizer& tk);
 static unique_ptr<Value> parseArray(Tokenizer& tk);
-
-static
-string expect(Tokenizer& tk, Token::Type type)
-{
-  auto front = tk.front();
-
-  if(front.type != type)
-  {
-    stringstream msg;
-
-    if(front.type == Token::EOF_)
-      msg << "Unexpected end of file found";
-    else
-      msg << "Unexpected token '" + front.lexem + "'";
-
-    msg << " of type " << front.type;
-    msg << " instead of " << type;
-    throw runtime_error(msg.str());
-  }
-
-  string r = front.lexem;
-  tk.popFront();
-  return r;
-}
+static string expect(Tokenizer& tk, Token::Type type);
 
 unique_ptr<Object> json::parseObject(const char* text)
 {
@@ -116,5 +91,31 @@ unique_ptr<Value> parseArray(Tokenizer& tk)
 
   expect(tk, Token::RBRACKET);
   return unique_ptr<Value>(r.release());
+}
+
+#include <sstream>
+
+static
+string expect(Tokenizer& tk, Token::Type type)
+{
+  auto front = tk.front();
+
+  if(front.type != type)
+  {
+    stringstream msg;
+
+    if(front.type == Token::EOF_)
+      msg << "Unexpected end of file found";
+    else
+      msg << "Unexpected token '" + front.lexem + "'";
+
+    msg << " of type " << front.type;
+    msg << " instead of " << type;
+    throw runtime_error(msg.str());
+  }
+
+  string r = front.lexem;
+  tk.popFront();
+  return r;
 }
 
