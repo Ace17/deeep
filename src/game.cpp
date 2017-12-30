@@ -9,6 +9,7 @@
 // Game logic
 
 #include <cmath>
+#include <cstdlib> // atoi
 #include <algorithm>
 #include <array>
 #include <list>
@@ -21,8 +22,6 @@
 #include "physics.h"
 #include "room.h"
 #include "variable.h"
-
-#include <cstdlib> // atoi
 
 using namespace std;
 
