@@ -254,7 +254,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   if(ifstream(path).is_open())
   {
     auto data = read(path);
-    auto jsRoom = json::parseObject(data.c_str());
+    auto jsRoom = json::parse(data.c_str());
     loadConcreteRoom(room, jsRoom.get());
   }
   else
@@ -283,7 +283,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
 Quest loadQuest(string path) // tiled TMX format
 {
   auto data = read(path);
-  auto js = json::parseObject(data.c_str());
+  auto js = json::parse(data.c_str());
 
   auto layers = getAllLayers(js.get());
 

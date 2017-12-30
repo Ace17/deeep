@@ -16,7 +16,7 @@ static unique_ptr<Value> parseValue(Tokenizer& tk);
 static unique_ptr<Value> parseArray(Tokenizer& tk);
 static string expect(Tokenizer& tk, Token::Type type);
 
-unique_ptr<Object> json::parseObject(const char* text)
+unique_ptr<Object> json::parse(const char* text)
 {
   unique_ptr<Object> r;
   Tokenizer tokenizer(text);
