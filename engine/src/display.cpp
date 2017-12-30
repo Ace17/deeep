@@ -240,7 +240,7 @@ Model boxModel()
 }
 
 static
-Model loadTiledAnimation(string path, int count, int COLS, int SIZE)
+Model loadTiledModel(string path, int count, int COLS, int SIZE)
 {
   auto m = boxModel();
 
@@ -278,7 +278,7 @@ Model loadAnimation(string path)
       path = "res/tiles/default.png";
     }
 
-    return loadTiledAnimation(path, 64 * 2, 8, 16);
+    return loadTiledModel(path, 64 * 2, 8, 16);
   }
   else
   {
@@ -348,7 +348,7 @@ void Display_init(Size2i resolution)
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  g_fontModel = loadTiledAnimation("res/font.png", 256, 16, 8);
+  g_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
 
   g_MVP = glGetUniformLocation(g_ProgramId, "MVP");
   assert(g_MVP >= 0);
