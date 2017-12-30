@@ -1,0 +1,12 @@
+{
+  "type" : "sheet",
+  "sheet" : "splash.png",
+  "width" : 768,
+  "height" : 768,
+  "actions": [
+    {
+      "name": "default",
+      "frames": [ 0 ]
+    }
+  ]
+}

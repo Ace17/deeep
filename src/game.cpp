@@ -22,15 +22,16 @@
 #include "physics.h"
 #include "room.h"
 #include "variable.h"
+#include "state_machine.h"
 
 using namespace std;
 
 // from smarttiles
 array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 
-struct Game : Scene, IGame
+struct GameState : Scene, IGame
 {
-  Game(View* view) :
+  GameState(View* view) :
     m_view(view),
     m_tiles(Size2i(1, 1))
   {
@@ -41,7 +42,7 @@ struct Game : Scene, IGame
   void resetPhysics()
   {
     m_physics = createPhysics();
-    m_physics->setEdifice(bind(&Game::isBoxSolid, this, placeholders::_1));
+    m_physics->setEdifice(bind(&GameState::isBoxSolid, this, placeholders::_1));
   }
 
   ////////////////////////////////////////////////////////////////
@@ -216,7 +217,7 @@ struct Game : Scene, IGame
     spawn(m_player);
 
     {
-      auto f = bind(&Game::onTouchLevelBoundary, this, std::placeholders::_1);
+      auto f = bind(&GameState::onTouchLevelBoundary, this, std::placeholders::_1);
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
       m_levelBoundarySubscription = subscribeForEvents(&m_levelBoundary);
     }
@@ -340,13 +341,64 @@ struct Game : Scene, IGame
   }
 };
 
+#include "toggle.h"
+
+struct SplashState : Scene
+{
+  SplashState(StateMachine* fsm_) : fsm(fsm_)
+  {
+  }
+
+  void tick(Control const& c) override
+  {
+    if(!activated)
+    {
+      if(c.fire || c.jump || c.dash)
+      {
+        activated = true;
+        delay = 1000;
+      }
+    }
+
+    if(activated)
+    {
+      ambientLight = delay / 1000.0 - 1.0;
+
+      if(decrement(delay))
+      {
+        activated = false;
+        fsm->next();
+      }
+    }
+  }
+
+  vector<Actor> getActors() const override
+  {
+    auto splash = Actor(Vector2f(0, 0), MDL_SPLASH);
+    splash.scale = Size2f(16, 16);
+    splash.pos -= Vector2f(8, 8);
+    return vector<Actor>({ splash });
+  }
+
+  StateMachine* const fsm;
+  bool activated = false;
+  int delay = 0;
+};
+
 Scene* createGame(View* view, vector<string> args)
 {
-  auto r = make_unique<Game>(view);
+  auto fsm = make_unique<StateMachine>();
+
+  auto gameState = make_unique<GameState>(view);
 
   if(args.size() == 1)
-    r->m_level = atoi(args[0].c_str());
+    gameState->m_level = atoi(args[0].c_str());
 
-  return r.release();
+  auto splashState = make_unique<SplashState>(fsm.get());
+
+  fsm->states.push_back(move(splashState));
+  fsm->states.push_back(move(gameState));
+
+  return fsm.release();
 }
 
