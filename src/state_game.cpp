@@ -8,15 +8,15 @@
 
 // Game logic
 
-#pragma once
-
 #include <cmath>
 #include <cstdlib> // atoi
 #include <algorithm>
 #include <array>
 #include <list>
+
 #include "base/scene.h"
 #include "base/util.h"
+
 #include "entities/player.h"
 #include "entities/rockman.h"
 #include "game.h"
@@ -342,4 +342,12 @@ struct GameState : Scene, IGame
     return r;
   }
 };
+
+unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level)
+{
+  (void)fsm;
+  auto gameState = make_unique<GameState>(view);
+  gameState->m_level = level;
+  return gameState;
+}
 

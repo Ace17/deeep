@@ -8,10 +8,11 @@
 
 // splash menu
 
-#pragma once
+#include "base/scene.h"
 
 #include "toggle.h"
 #include "models.h" // MDL_SPLASH
+#include "state_machine.h"
 
 struct SplashState : Scene
 {
@@ -59,4 +60,9 @@ private:
   int delay = 0;
 };
 
+unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view)
+{
+  (void)view;
+  return make_unique<SplashState>(fsm);
+}
 

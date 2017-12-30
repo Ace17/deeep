@@ -51,6 +51,8 @@ SRCS_GAME:=\
 	src/entities/switch.cpp\
 	src/entity_factory.cpp\
 	src/game.cpp\
+	src/state_game.cpp\
+	src/state_splash.cpp\
 	src/level_graph.cpp\
 	src/level_tiled.cpp\
 	src/physics.cpp\
