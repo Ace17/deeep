@@ -54,9 +54,9 @@ SRCS_GAME:=\
 	src/state_game.cpp\
 	src/state_splash.cpp\
 	src/level_graph.cpp\
-	src/level_tiled.cpp\
 	src/physics.cpp\
 	src/resources.cpp\
+	src/level_tiled.cpp\
 	src/smarttiles.cpp\
 
 #------------------------------------------------------------------------------
@@ -76,11 +76,11 @@ SRCS:=\
 	engine/src/model.cpp\
 	engine/src/sound.cpp\
 
-$(BIN)/rel/deeep$(EXT): $(SRCS:%.cpp=$(BIN)/%_cpp.o)
+$(BIN)/rel/game$(EXT): $(SRCS:%.cpp=$(BIN)/%_cpp.o)
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
-TARGETS+=$(BIN)/rel/deeep$(EXT)
+TARGETS+=$(BIN)/rel/game$(EXT)
 
 #------------------------------------------------------------------------------
 include res-src/project.mk

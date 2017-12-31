@@ -1,5 +1,4 @@
-Deeep
------
+# Deeep
 
 Author: Sebastien Alaiwan
 
@@ -8,7 +7,9 @@ Demo
 
 An online demo is available here:
 
-http://code.alaiwan.org/deeep/deeep.html
+http://code.alaiwan.org/games/deeep
+
+<p align="center"><img src="doc/screenshot.jpg" width="50%"></p>
 
 Description
 -----------
@@ -29,6 +30,7 @@ powerups, bullets, ..) from your I/O code (display, audio, input).
 Directory structure
 -------------------
 
+```
 bin:            output directory for binaries.
 ./check:        main check script. Call this to build native and asmjs versions and to launch the unit tests.
 engine/src:     I/O code (=engine implementation)(game-agnostic)
@@ -36,36 +38,50 @@ engine/include: utilities shared between game logic and I/O code ; scene declara
 src:            game logic (agnostic to the engine implementation)
 res-src:        "source code" for assets
 res:            pre-rendered game resources (sounds, sprites, tiles)
+```
 
 
 Build
 -----
 
 Requirements:
-* libsdl1.2-dev
-* libsdl-image1.2-dev
+```
+* libsdl2-dev
+* libsdl2-image-dev
 * libogg-dev
 * libvorbis-dev
+```
 
 It can be compiled to native code using your native compiler (gcc or clang):
 
+```
 $ make
+```
 
-The binaries will be generated to a 'bin' directory (This can be overriden
-using the BIN makefile variable).
+The binaries will be generated to a 'bin' directory
+(This can be overriden using the BIN makefile variable).
 
 It can also be compiled to Javascript, using Emscripten.
 In theory, it's as simple as:
 
+```
 $ CXX=emcc make
+```
 
-However, in practise, more options need to be injected to the makefile.
-See how the ./check script works for more information about this.
+However, in practice, more options need to be injected to the makefile,
+like setting EXT (program extension) to ".html", etc.
+There's a make wrapper that does exactly that:
+
+```
+$ ./scripts/asmjs-make
+```
 
 Run the game
 ------------
 
 Just run the following command:
 
-$ bin/rel/deeep.exe
+```
+$ bin/rel/game.exe
+```
 
