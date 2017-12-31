@@ -105,10 +105,6 @@ SRCS_TESTS:=\
 	tests/level_graph.cpp\
 	tests/physics.cpp\
 
-# get rid of those
-SRCS_TESTS+=\
-	src/level_tiled.cpp\
-
 $(BIN)/tests$(EXT): $(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
