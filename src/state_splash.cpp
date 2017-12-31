@@ -16,7 +16,7 @@
 
 struct SplashState : Scene
 {
-  SplashState(StateMachine* fsm_) : fsm(fsm_)
+  SplashState(View* view_, StateMachine* fsm_) : view(view_), fsm(fsm_)
   {
   }
 
@@ -25,6 +25,8 @@ struct SplashState : Scene
 
   void tick(Control const& c) override
   {
+    view->playMusic(6);
+
     if(!activated)
     {
       if(c.fire || c.jump || c.dash)
@@ -55,6 +57,7 @@ struct SplashState : Scene
   }
 
 private:
+  View* const view;
   StateMachine* const fsm;
   bool activated = false;
   int delay = 0;
@@ -62,7 +65,6 @@ private:
 
 unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view)
 {
-  (void)view;
-  return make_unique<SplashState>(fsm);
+  return make_unique<SplashState>(view, fsm);
 }
 
