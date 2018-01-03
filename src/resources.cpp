@@ -10,59 +10,51 @@
 #include "sounds.h"
 #include "models.h"
 
-static const Resource sounds[] =
+static const Resource resources[] =
 {
-  { SND_PAUSE, "res/sounds/pause.ogg" },
-  { SND_CHIRP, "res/sounds/base.ogg" },
-  { SND_FIRE, "res/sounds/fire.ogg" },
-  { SND_JUMP, "res/sounds/jump.ogg" },
-  { SND_BEEP, "res/sounds/beep.ogg" },
-  { SND_LAND, "res/sounds/land.ogg" },
-  { SND_SWITCH, "res/sounds/switch.ogg" },
-  { SND_HURT, "res/sounds/hurt.ogg" },
-  { SND_DIE, "res/sounds/die.ogg" },
-  { SND_BONUS, "res/sounds/bonus.ogg" },
-  { SND_DAMAGE, "res/sounds/damage.ogg" },
-  { SND_TELEPORT, "res/sounds/teleport.ogg" },
-  { SND_EXPLODE, "res/sounds/explode.ogg" },
+  { ResourceType::Sound, SND_PAUSE, "res/sounds/pause.ogg" },
+  { ResourceType::Sound, SND_CHIRP, "res/sounds/base.ogg" },
+  { ResourceType::Sound, SND_FIRE, "res/sounds/fire.ogg" },
+  { ResourceType::Sound, SND_JUMP, "res/sounds/jump.ogg" },
+  { ResourceType::Sound, SND_BEEP, "res/sounds/beep.ogg" },
+  { ResourceType::Sound, SND_LAND, "res/sounds/land.ogg" },
+  { ResourceType::Sound, SND_SWITCH, "res/sounds/switch.ogg" },
+  { ResourceType::Sound, SND_HURT, "res/sounds/hurt.ogg" },
+  { ResourceType::Sound, SND_DIE, "res/sounds/die.ogg" },
+  { ResourceType::Sound, SND_BONUS, "res/sounds/bonus.ogg" },
+  { ResourceType::Sound, SND_DAMAGE, "res/sounds/damage.ogg" },
+  { ResourceType::Sound, SND_TELEPORT, "res/sounds/teleport.ogg" },
+  { ResourceType::Sound, SND_EXPLODE, "res/sounds/explode.ogg" },
+
+  { ResourceType::Model, MDL_TILES_00, "res/tiles/tiles-00.mdl" },
+  { ResourceType::Model, MDL_TILES_01, "res/tiles/tiles-01.mdl" },
+  { ResourceType::Model, MDL_TILES_02, "res/tiles/tiles-02.mdl" },
+  { ResourceType::Model, MDL_TILES_03, "res/tiles/tiles-03.mdl" },
+  { ResourceType::Model, MDL_TILES_04, "res/tiles/tiles-04.mdl" },
+  { ResourceType::Model, MDL_TILES_05, "res/tiles/tiles-05.mdl" },
+  { ResourceType::Model, MDL_TILES_06, "res/tiles/tiles-06.mdl" },
+  { ResourceType::Model, MDL_TILES_07, "res/tiles/tiles-07.mdl" },
+
+  { ResourceType::Model, MDL_DOOR, "res/sprites/door.json" },
+  { ResourceType::Model, MDL_BLOCK, "res/sprites/block.json" },
+  { ResourceType::Model, MDL_SPLASH, "res/splash.json" },
+  { ResourceType::Model, MDL_ELEVATOR, "res/sprites/elevator.json" },
+  { ResourceType::Model, MDL_RECT, "res/sprites/rect.json" },
+  { ResourceType::Model, MDL_SWITCH, "res/sprites/switch.json" },
+  { ResourceType::Model, MDL_SWEEPER, "res/sprites/sweeper.json" },
+  { ResourceType::Model, MDL_SPIDER, "res/sprites/spider.json" },
+  { ResourceType::Model, MDL_ROCKMAN, "res/sprites/rockman.json" },
+  { ResourceType::Model, MDL_WHEEL, "res/sprites/wheel.json" },
+  { ResourceType::Model, MDL_LIFEBAR, "res/sprites/lifebar.json" },
+  { ResourceType::Model, MDL_TELEPORTER, "res/sprites/teleporter.json" },
+  { ResourceType::Model, MDL_BONUS, "res/sprites/bonus.json" },
+  { ResourceType::Model, MDL_BULLET, "res/sprites/bullet.json" },
+  { ResourceType::Model, MDL_EXPLOSION, "res/sprites/explosion.json" },
+  { ResourceType::Model, MDL_SPIKES, "res/sprites/spikes.json" },
 };
 
-static const Resource models[] =
+Span<const Resource> getResources()
 {
-  { MDL_TILES_00, "res/tiles/tiles-00.mdl" },
-  { MDL_TILES_01, "res/tiles/tiles-01.mdl" },
-  { MDL_TILES_02, "res/tiles/tiles-02.mdl" },
-  { MDL_TILES_03, "res/tiles/tiles-03.mdl" },
-  { MDL_TILES_04, "res/tiles/tiles-04.mdl" },
-  { MDL_TILES_05, "res/tiles/tiles-05.mdl" },
-  { MDL_TILES_06, "res/tiles/tiles-06.mdl" },
-  { MDL_TILES_07, "res/tiles/tiles-07.mdl" },
-
-  { MDL_DOOR, "res/sprites/door.json" },
-  { MDL_BLOCK, "res/sprites/block.json" },
-  { MDL_SPLASH, "res/splash.json" },
-  { MDL_ELEVATOR, "res/sprites/elevator.json" },
-  { MDL_RECT, "res/sprites/rect.json" },
-  { MDL_SWITCH, "res/sprites/switch.json" },
-  { MDL_SWEEPER, "res/sprites/sweeper.json" },
-  { MDL_SPIDER, "res/sprites/spider.json" },
-  { MDL_ROCKMAN, "res/sprites/rockman.json" },
-  { MDL_WHEEL, "res/sprites/wheel.json" },
-  { MDL_LIFEBAR, "res/sprites/lifebar.json" },
-  { MDL_TELEPORTER, "res/sprites/teleporter.json" },
-  { MDL_BONUS, "res/sprites/bonus.json" },
-  { MDL_BULLET, "res/sprites/bullet.json" },
-  { MDL_EXPLOSION, "res/sprites/explosion.json" },
-  { MDL_SPIKES, "res/sprites/spikes.json" },
-};
-
-Span<const Resource> getSounds()
-{
-  return makeSpan(sounds);
-}
-
-Span<const Resource> getModels()
-{
-  return makeSpan(models);
+  return makeSpan(resources);
 }
 

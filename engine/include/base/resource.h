@@ -10,12 +10,19 @@
 
 #include "span.h"
 
+enum class ResourceType
+{
+  Sound,
+  Model,
+};
+
 struct Resource
 {
+  ResourceType type;
   int id;
   char const* path;
 };
 
-Span<const Resource> getSounds();
-Span<const Resource> getModels();
+// must be implemented by the game
+Span<const Resource> getResources();
 

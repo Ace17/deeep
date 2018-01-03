@@ -45,11 +45,18 @@ public:
     Display_init(Size2i(768, 768));
     m_audio.reset(createAudio());
 
-    for(auto sound : getSounds())
-      m_audio->loadSound(sound.id, sound.path);
-
-    for(auto model : getModels())
-      Display_loadModel(model.id, model.path);
+    for(auto res : getResources())
+    {
+      switch(res.type)
+      {
+      case ResourceType::Sound:
+        m_audio->loadSound(res.id, res.path);
+        break;
+      case ResourceType::Model:
+        Display_loadModel(res.id, res.path);
+        break;
+      }
+    }
 
     m_lastTime = SDL_GetTicks();
   }
