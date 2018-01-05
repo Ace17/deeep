@@ -196,8 +196,7 @@ private:
         m_display->setFullscreen(m_fullscreen);
       }
     }
-    else
-    if(evt->key.keysym.sym == SDLK_PAUSE || evt->key.keysym.sym == SDLK_RETURN)
+    else if(evt->key.keysym.sym == SDLK_PAUSE || evt->key.keysym.sym == SDLK_RETURN)
     {
       m_audio->playSound(0);
       m_paused = !m_paused;

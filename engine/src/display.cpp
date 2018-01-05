@@ -62,6 +62,7 @@ static
 int compileShader(string code, int type)
 {
   auto shaderId = glCreateShader(type);
+
   if(!shaderId)
     throw runtime_error("Can't create shader");
 
@@ -327,6 +328,7 @@ struct SdlDisplay : Display
 
     // Create our opengl context and attach it to our window
     mainContext = SDL_GL_CreateContext(mainWindow);
+
     if(!mainContext)
       throw runtime_error("Can't create OpenGL context");
 
@@ -464,7 +466,7 @@ struct SdlDisplay : Display
       int w, h;
       SDL_GL_GetDrawableSize(mainWindow, &w, &h);
       auto size = min(w, h);
-      SAFE_GL(glViewport((w - size)/2, (h - size)/2, size, size));
+      SAFE_GL(glViewport((w - size) / 2, (h - size) / 2, size, size));
     }
 
     SAFE_GL(glUseProgram(g_ProgramId));

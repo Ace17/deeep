@@ -5,6 +5,8 @@ echo "----------------------------------------------------------------"
 echo "Reformatting ..."
 scripts/reformat.sh src
 scripts/reformat.sh tests
+scripts/reformat.sh engine/src
+scripts/reformat.sh engine/include
 
 echo "----------------------------------------------------------------"
 echo "Building native version"
