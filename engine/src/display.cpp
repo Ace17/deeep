@@ -304,9 +304,6 @@ void printOpenGlVersion()
   cout << "OpenGL shading version: " << notNull(sLangVersion) << endl;
 }
 
-static SDL_Window* mainWindow;
-static SDL_GLContext mainContext;
-
 struct SdlDisplay : Display
 {
   void init(Size2i resolution)
@@ -495,6 +492,11 @@ struct SdlDisplay : Display
   {
     SDL_GL_SwapWindow(mainWindow);
   }
+
+  // end-of public API
+
+  SDL_Window* mainWindow;
+  SDL_GLContext mainContext;
 };
 
 Display* createDisplay()
