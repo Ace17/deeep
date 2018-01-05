@@ -14,7 +14,6 @@
 #include <sstream>
 #include <vector>
 #include <map>
-#include <memory>
 #include <iostream>
 #include <stdexcept>
 using namespace std;
@@ -43,7 +42,7 @@ static Model g_fontModel;
   do { a; ensureGl(# a, __LINE__); } while(0)
 #endif
 
-inline
+static
 void ensureGl(char const* expr, int line)
 {
   auto const errorCode = glGetError();
@@ -123,6 +122,8 @@ int linkShaders(vector<int> ids)
   return ProgramID;
 }
 
+float g_AmbientLight = 0;
+
 static
 SDL_Surface* getPicture(string path)
 {
@@ -144,6 +145,7 @@ SDL_Surface* getPicture(string path)
   return cache.at(path).get();
 }
 
+// exported to Model
 int loadTexture(string path, Rect2i rect)
 {
   auto surface = getPicture(path);
@@ -153,8 +155,6 @@ int loadTexture(string path, Rect2i rect)
 
   if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->w || rect.pos.y + rect.size.height > surface->h)
     throw runtime_error("Invalid boundaries for '" + path + "'");
-
-  GLuint texture;
 
   auto const bpp = surface->format->BytesPerPixel;
 
@@ -169,6 +169,8 @@ int loadTexture(string path, Rect2i rect)
     src += surface->pitch;
     dst += bpp * rect.size.width;
   }
+
+  GLuint texture;
 
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
@@ -286,14 +288,6 @@ Model loadAnimation(string path)
   }
 }
 
-void Display_loadModel(int id, const char* path)
-{
-  if((int)g_Models.size() <= id)
-    g_Models.resize(id + 1);
-
-  g_Models[id] = loadAnimation(path);
-}
-
 static
 void printOpenGlVersion()
 {
@@ -301,9 +295,9 @@ void printOpenGlVersion()
   auto sLangVersion = (char const*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 
   auto notNull = [] (char const* s) -> string
-                 {
-                   return s ? s : "<null>";
-                 };
+    {
+      return s ? s : "<null>";
+    };
 
   cout << "OpenGL version: " << notNull(sVersion) << endl;
   cout << "OpenGL shading version: " << notNull(sLangVersion) << endl;
@@ -312,184 +306,197 @@ void printOpenGlVersion()
 static SDL_Window* mainWindow;
 static SDL_GLContext mainContext;
 
-void Display_init(Size2i resolution)
+struct SdlDisplay : Display
 {
-  if(SDL_InitSubSystem(SDL_INIT_VIDEO))
-    throw runtime_error("Can't init SDL");
-
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-  mainWindow = SDL_CreateWindow(
-    "My Game",
-    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    resolution.width, resolution.height,
-    SDL_WINDOW_OPENGL
-    );
-
-  if(!mainWindow)
-    throw runtime_error("Can't set video mode");
-
-  // Create our opengl context and attach it to our window
-  mainContext = SDL_GL_CreateContext(mainWindow);
-  if(!mainContext)
-    throw runtime_error("Can't create OpenGL context");
-
-  printOpenGlVersion();
-
-  // This makes our buffer swap syncronized with the monitor's vertical refresh
-  SDL_GL_SetSwapInterval(1);
-
-  GLuint VertexArrayID;
-  SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
-  SAFE_GL(glBindVertexArray(VertexArrayID));
-
-  g_ProgramId = loadShaders();
-
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  g_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
-
-  g_MVP = glGetUniformLocation(g_ProgramId, "MVP");
-  assert(g_MVP >= 0);
-
-  g_colorId = glGetUniformLocation(g_ProgramId, "v_color");
-  assert(g_colorId >= 0);
-}
-
-void Display_setFullscreen(bool fs)
-{
-  auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
-  SDL_SetWindowFullscreen(mainWindow, flags);
-}
-
-void Display_setCaption(const char* caption)
-{
-  SDL_SetWindowTitle(mainWindow, caption);
-}
-
-float g_AmbientLight = 0;
-
-static
-void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, float ratio)
-{
-  float c = g_AmbientLight;
-  SAFE_GL(glUniform4f(g_colorId, c, c, c, 0));
-
-  if(blinking)
+  void init(Size2i resolution)
   {
-    static int blinkCounter;
-    blinkCounter++;
+    if(SDL_InitSubSystem(SDL_INIT_VIDEO))
+      throw runtime_error("Can't init SDL");
 
-    if((blinkCounter / 4) % 2)
-      SAFE_GL(glUniform4f(g_colorId, 0.8, 0.4, 0.4, 0));
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    mainWindow = SDL_CreateWindow(
+        "My Game",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        resolution.width, resolution.height,
+        SDL_WINDOW_OPENGL
+        );
+
+    if(!mainWindow)
+      throw runtime_error("Can't set video mode");
+
+    // Create our opengl context and attach it to our window
+    mainContext = SDL_GL_CreateContext(mainWindow);
+    if(!mainContext)
+      throw runtime_error("Can't create OpenGL context");
+
+    printOpenGlVersion();
+
+    // This makes our buffer swap syncronized with the monitor's vertical refresh
+    SDL_GL_SetSwapInterval(1);
+
+    GLuint VertexArrayID;
+    SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
+    SAFE_GL(glBindVertexArray(VertexArrayID));
+
+    g_ProgramId = loadShaders();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    g_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
+
+    g_MVP = glGetUniformLocation(g_ProgramId, "MVP");
+    assert(g_MVP >= 0);
+
+    g_colorId = glGetUniformLocation(g_ProgramId, "v_color");
+    assert(g_colorId >= 0);
   }
 
-  if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
-    throw runtime_error("invalid action index");
-
-  auto const& action = model.actions[actionIdx];
-
-  if(action.textures.empty())
-    throw runtime_error("action has no textures");
-
-  auto const N = (int)action.textures.size();
-  auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
-  glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-  if(where.size.width < 0)
-    where.pos.x -= where.size.width;
-
-  if(where.size.height < 0)
-    where.pos.y -= where.size.height;
-
-  auto const dx = where.pos.x;
-  auto const dy = where.pos.y;
-
-  auto const sx = where.size.width;
-  auto const sy = where.size.height;
-
-  float mat[16] =
+  void loadModel(int id, const char* path) override
   {
-    sx, 0, 0, 0,
-    0, sy, 0, 0,
-    0, 0, 1, 0,
-    dx, dy, 0, 1,
-  };
+    if((int)g_Models.size() <= id)
+      g_Models.resize(id + 1);
 
-  // scaling
-  {
-    for(auto& val : mat)
-      val *= 0.125;
-
-    mat[15] = 1;
+    g_Models[id] = loadAnimation(path);
   }
 
-  SAFE_GL(glUniformMatrix4fv(g_MVP, 1, GL_FALSE, mat));
-
-  SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-  SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
-
-  SAFE_GL(glDrawElements(GL_TRIANGLES, model.numIndices, GL_UNSIGNED_SHORT, 0));
-}
-
-void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio)
-{
-  auto& model = g_Models.at(modelId);
-  drawModel(where, model, blinking, actionIdx, ratio);
-}
-
-void Display_drawText(Vector2f pos, char const* text)
-{
-  Rect2f rect;
-  rect.size.width = 0.5;
-  rect.size.height = 0.5;
-  rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
-  rect.pos.y = pos.y;
-
-  while(*text)
+  void setFullscreen(bool fs) override
   {
-    drawModel(rect, g_fontModel, false, *text, 0);
-    rect.pos.x += rect.size.width;
-    ++text;
-  }
-}
-
-void Display_beginDraw()
-{
-  {
-    int w, h;
-    SDL_GL_GetDrawableSize(mainWindow, &w, &h);
-    auto size = min(w, h);
-    SAFE_GL(glViewport((w - size)/2, (h - size)/2, size, size));
+    auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+    SDL_SetWindowFullscreen(mainWindow, flags);
   }
 
-  SAFE_GL(glUseProgram(g_ProgramId));
-
-  SAFE_GL(glClearColor(0, 0, 0, 1));
-  SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
-
+  void setCaption(const char* caption) override
   {
-    auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
-    assert(positionLoc >= 0);
-
-    auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
-    assert(texCoordLoc >= 0);
-
-    // connect the xyz to the "a_position" attribute of the vertex shader
-    SAFE_GL(glEnableVertexAttribArray(positionLoc));
-    SAFE_GL(glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
-
-    // connect the uv coords to the "v_texCoord" attribute of the vertex shader
-    SAFE_GL(glEnableVertexAttribArray(texCoordLoc));
-    SAFE_GL(glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
+    SDL_SetWindowTitle(mainWindow, caption);
   }
-}
 
-void Display_endDraw()
+  void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, float ratio)
+  {
+    float c = g_AmbientLight;
+    SAFE_GL(glUniform4f(g_colorId, c, c, c, 0));
+
+    if(blinking)
+    {
+      static int blinkCounter;
+      blinkCounter++;
+
+      if((blinkCounter / 4) % 2)
+        SAFE_GL(glUniform4f(g_colorId, 0.8, 0.4, 0.4, 0));
+    }
+
+    if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
+      throw runtime_error("invalid action index");
+
+    auto const& action = model.actions[actionIdx];
+
+    if(action.textures.empty())
+      throw runtime_error("action has no textures");
+
+    auto const N = (int)action.textures.size();
+    auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
+    glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    if(where.size.width < 0)
+      where.pos.x -= where.size.width;
+
+    if(where.size.height < 0)
+      where.pos.y -= where.size.height;
+
+    auto const dx = where.pos.x;
+    auto const dy = where.pos.y;
+
+    auto const sx = where.size.width;
+    auto const sy = where.size.height;
+
+    float mat[16] =
+    {
+      sx, 0, 0, 0,
+      0, sy, 0, 0,
+      0, 0, 1, 0,
+      dx, dy, 0, 1,
+    };
+
+    // scaling
+    {
+      for(auto& val : mat)
+        val *= 0.125;
+
+      mat[15] = 1;
+    }
+
+    SAFE_GL(glUniformMatrix4fv(g_MVP, 1, GL_FALSE, mat));
+
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
+    SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
+
+    SAFE_GL(glDrawElements(GL_TRIANGLES, model.numIndices, GL_UNSIGNED_SHORT, 0));
+  }
+
+  void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio) override
+  {
+    auto& model = g_Models.at(modelId);
+    drawModel(where, model, blinking, actionIdx, ratio);
+  }
+
+  void drawText(Vector2f pos, char const* text) override
+  {
+    Rect2f rect;
+    rect.size.width = 0.5;
+    rect.size.height = 0.5;
+    rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
+    rect.pos.y = pos.y;
+
+    while(*text)
+    {
+      drawModel(rect, g_fontModel, false, *text, 0);
+      rect.pos.x += rect.size.width;
+      ++text;
+    }
+  }
+
+  void beginDraw() override
+  {
+    {
+      int w, h;
+      SDL_GL_GetDrawableSize(mainWindow, &w, &h);
+      auto size = min(w, h);
+      SAFE_GL(glViewport((w - size)/2, (h - size)/2, size, size));
+    }
+
+    SAFE_GL(glUseProgram(g_ProgramId));
+
+    SAFE_GL(glClearColor(0, 0, 0, 1));
+    SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
+
+    {
+      auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
+      assert(positionLoc >= 0);
+
+      auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
+      assert(texCoordLoc >= 0);
+
+      // connect the xyz to the "a_position" attribute of the vertex shader
+      SAFE_GL(glEnableVertexAttribArray(positionLoc));
+      SAFE_GL(glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
+
+      // connect the uv coords to the "v_texCoord" attribute of the vertex shader
+      SAFE_GL(glEnableVertexAttribArray(texCoordLoc));
+      SAFE_GL(glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
+    }
+  }
+
+  void endDraw() override
+  {
+    SDL_GL_SwapWindow(mainWindow);
+  }
+};
+
+Display* createDisplay()
 {
-  SDL_GL_SwapWindow(mainWindow);
+  return new SdlDisplay;
 }
 

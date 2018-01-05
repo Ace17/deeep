@@ -2,12 +2,17 @@
 
 #include "base/geom.h"
 
-void Display_init(Size2i resolution);
-void Display_setFullscreen(bool fs);
-void Display_setCaption(const char* caption);
-void Display_loadModel(int id, const char* imagePath);
-void Display_beginDraw();
-void Display_endDraw();
-void Display_drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame);
-void Display_drawText(Vector2f pos, char const* text);
+struct Display
+{
+  virtual ~Display() = default;
+
+  virtual void init(Size2i resolution) = 0;
+  virtual void setFullscreen(bool fs) = 0;
+  virtual void setCaption(const char* caption) = 0;
+  virtual void loadModel(int id, const char* imagePath) = 0;
+  virtual void beginDraw() = 0;
+  virtual void endDraw() = 0;
+  virtual void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame) = 0;
+  virtual void drawText(Vector2f pos, char const* text) = 0;
+};
 

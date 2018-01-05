@@ -10,13 +10,12 @@
 // No game-specific code should be here,
 // and no platform-specific code should be here (SDL is OK).
 
-#include <stdexcept>
-#include <iostream>
-#include <cassert>
 #include <vector>
 #include <string>
 #include <memory>
+
 #include "SDL.h"
+
 #include "base/geom.h"
 #include "base/resource.h"
 #include "base/scene.h"
@@ -28,6 +27,7 @@ using namespace std;
 
 auto const TIMESTEP = 1;
 
+Display* createDisplay();
 Audio* createAudio();
 
 Scene* createGame(View* view, vector<string> argv);
@@ -42,7 +42,8 @@ public:
   {
     SDL_Init(0);
 
-    Display_init(Size2i(768, 768));
+    m_display.reset(createDisplay());
+    m_display->init(Size2i(768, 768));
     m_audio.reset(createAudio());
 
     for(auto res : getResources())
@@ -53,7 +54,7 @@ public:
         m_audio->loadSound(res.id, res.path);
         break;
       case ResourceType::Model:
-        Display_loadModel(res.id, res.path);
+        m_display->loadModel(res.id, res.path);
         break;
       }
     }
@@ -138,37 +139,37 @@ private:
     extern float g_AmbientLight;
     g_AmbientLight = m_scene->ambientLight;
 
-    Display_beginDraw();
+    m_display->beginDraw();
 
     auto actors = m_scene->getActors();
 
     for(auto& actor : actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
-      Display_drawActor(where, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
+      m_display->drawActor(where, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
     }
 
     if(m_paused)
-      Display_drawText(Vector2f(0, 0), "PAUSE");
+      m_display->drawText(Vector2f(0, 0), "PAUSE");
     else if(m_slowMotion)
-      Display_drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
+      m_display->drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
     else if(m_control.debug)
-      Display_drawText(Vector2f(0, 0), "DEBUG MODE");
+      m_display->drawText(Vector2f(0, 0), "DEBUG MODE");
 
     if(m_textboxDelay > 0)
     {
-      Display_drawText(Vector2f(0, 2), m_textbox.c_str());
+      m_display->drawText(Vector2f(0, 2), m_textbox.c_str());
       m_textboxDelay--;
     }
 
-    Display_endDraw();
+    m_display->endDraw();
   }
 
   void fpsChanged(int fps)
   {
     char title[128];
     sprintf(title, "Deeep (%d FPS)", fps);
-    Display_setCaption(title);
+    m_display->setCaption(title);
   }
 
   void onQuit()
@@ -192,7 +193,7 @@ private:
       if(evt->key.repeat == 0)
       {
         m_fullscreen = !m_fullscreen;
-        Display_setFullscreen(m_fullscreen);
+        m_display->setFullscreen(m_fullscreen);
       }
     }
     else
@@ -240,6 +241,7 @@ private:
   bool m_fullscreen = false;
   bool m_paused = false;
   unique_ptr<Audio> m_audio;
+  unique_ptr<Display> m_display;
 
   string m_textbox;
   int m_textboxDelay = 0;
