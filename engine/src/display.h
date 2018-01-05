@@ -14,5 +14,6 @@ struct Display
   virtual void endDraw() = 0;
   virtual void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame) = 0;
   virtual void drawText(Vector2f pos, char const* text) = 0;
+  virtual void setAmbientLight(float ambientLight) = 0;
 };
 

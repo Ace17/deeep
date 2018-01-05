@@ -136,8 +136,7 @@ private:
 
   void draw()
   {
-    extern float g_AmbientLight;
-    g_AmbientLight = m_scene->ambientLight;
+    m_display->setAmbientLight(m_scene->ambientLight);
 
     m_display->beginDraw();
 

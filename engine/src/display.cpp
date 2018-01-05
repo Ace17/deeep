@@ -123,8 +123,6 @@ int linkShaders(vector<int> ids)
   return ProgramID;
 }
 
-float g_AmbientLight = 0;
-
 static
 SDL_Surface* getPicture(string path)
 {
@@ -371,9 +369,14 @@ struct SdlDisplay : Display
     SDL_SetWindowTitle(mainWindow, caption);
   }
 
+  void setAmbientLight(float ambientLight_) override
+  {
+    baseAmbientLight = ambientLight_;
+  }
+
   void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, float ratio)
   {
-    float c = g_AmbientLight;
+    float c = baseAmbientLight;
     SAFE_GL(glUniform4f(g_colorId, c, c, c, 0));
 
     if(blinking)
@@ -497,6 +500,8 @@ struct SdlDisplay : Display
 
   SDL_Window* mainWindow;
   SDL_GLContext mainContext;
+
+  float baseAmbientLight = 0;
 };
 
 Display* createDisplay()
