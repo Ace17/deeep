@@ -31,6 +31,8 @@ using namespace std;
 
 static GLint g_MVP;
 static GLint g_colorId;
+static GLint g_positionLoc;
+static GLint g_texCoordLoc;
 static GLuint g_ProgramId;
 static vector<Model> g_Models;
 static Model g_fontModel;
@@ -348,6 +350,13 @@ struct SdlDisplay : Display
 
     g_colorId = glGetUniformLocation(g_ProgramId, "v_color");
     assert(g_colorId >= 0);
+
+    g_positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
+    assert(g_positionLoc >= 0);
+
+    g_texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
+    assert(g_texCoordLoc >= 0);
+
   }
 
   void loadModel(int id, const char* path) override
@@ -475,19 +484,13 @@ struct SdlDisplay : Display
     SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
 
     {
-      auto const positionLoc = glGetAttribLocation(g_ProgramId, "a_position");
-      assert(positionLoc >= 0);
-
-      auto const texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
-      assert(texCoordLoc >= 0);
-
       // connect the xyz to the "a_position" attribute of the vertex shader
-      SAFE_GL(glEnableVertexAttribArray(positionLoc));
-      SAFE_GL(glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
+      SAFE_GL(glEnableVertexAttribArray(g_positionLoc));
+      SAFE_GL(glVertexAttribPointer(g_positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
 
       // connect the uv coords to the "v_texCoord" attribute of the vertex shader
-      SAFE_GL(glEnableVertexAttribArray(texCoordLoc));
-      SAFE_GL(glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
+      SAFE_GL(glEnableVertexAttribArray(g_texCoordLoc));
+      SAFE_GL(glVertexAttribPointer(g_texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
     }
   }
 
