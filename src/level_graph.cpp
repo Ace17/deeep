@@ -6,6 +6,8 @@
  * License, or (at your option) any later version.
  */
 
+// Loader for rooms (levels)
+
 #include "room.h"
 #include "entities/detector.h"
 #include "entity_factory.h"

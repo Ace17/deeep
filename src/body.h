@@ -25,6 +25,10 @@ IntBox roundBox(Box b);
 
 struct Body
 {
+  virtual ~Body()
+  {
+  }; // make type polymorphic
+
   bool solid = false;
   bool pusher = false; // push and crush?
   Vector pos;
@@ -34,9 +38,9 @@ struct Body
   Body* ground = nullptr; // the body we rest on (if any)
 
   // only called if (this->collidesWith & other->collisionGroup)
-  virtual void onCollision(Body* /*other*/)
-  {
-  }
+  function<void(Body*)> onCollision = &nop;
+
+  static void nop(Body*) {}
 
   Box getFBox() const
   {

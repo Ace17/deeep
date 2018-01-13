@@ -356,7 +356,6 @@ struct SdlDisplay : Display
 
     g_texCoordLoc = glGetAttribLocation(g_ProgramId, "a_texCoord");
     assert(g_texCoordLoc >= 0);
-
   }
 
   void loadModel(int id, const char* path) override
