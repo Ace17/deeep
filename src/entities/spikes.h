@@ -22,6 +22,7 @@ struct Spikes : Entity
     solid = 1;
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -33,7 +34,7 @@ struct Spikes : Entity
     return r;
   }
 
-  void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(auto damageable = dynamic_cast<Damageable*>(other))
       damageable->onDamage(1000);

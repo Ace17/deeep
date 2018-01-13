@@ -25,6 +25,7 @@ struct Sweeper : Entity, Damageable
     size = Size(0.8, 0.8);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
 
     vel.x = 0.003;
     vel.y = 0.003;
@@ -61,7 +62,7 @@ struct Sweeper : Entity, Damageable
     decrement(blinking);
   }
 
-  virtual void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(auto damageable = dynamic_cast<Damageable*>(other))
       damageable->onDamage(5);

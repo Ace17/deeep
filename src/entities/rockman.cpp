@@ -40,6 +40,7 @@ struct Bullet : Entity
     size = Size(0.5, 0.4);
     collisionGroup = 0;
     collidesWith = CG_WALLS;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -61,7 +62,7 @@ struct Bullet : Entity
       dead = true;
   }
 
-  void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(auto damageable = dynamic_cast<Damageable*>(other))
       damageable->onDamage(10);

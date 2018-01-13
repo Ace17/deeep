@@ -21,6 +21,7 @@ struct CrumbleBlock : Entity
   {
     size = Size(1, 1);
     collisionGroup = CG_WALLS;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -36,7 +37,7 @@ struct CrumbleBlock : Entity
     return r;
   }
 
-  void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(other->pos.y > pos.y + size.height * 0.9)
       disappearTimer = 1000;

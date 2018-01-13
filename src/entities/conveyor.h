@@ -22,6 +22,7 @@ struct Conveyor : Entity
     collisionGroup = CG_WALLS;
     collidesWith = CG_PLAYER;
     solid = 1;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -33,7 +34,7 @@ struct Conveyor : Entity
     return r;
   }
 
-  void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     // avoid infinite recursion
     // (if the conveyor pushes the player towards the conveyor)

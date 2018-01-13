@@ -36,6 +36,7 @@ struct Detector : Entity
     solid = false;
     collisionGroup = 0; // dont' trigger other detectors
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -50,7 +51,7 @@ struct Detector : Entity
     decrement(touchDelay);
   }
 
-  virtual void onCollide(Entity*) override
+  void onCollide(Body*)
   {
     if(touchDelay)
       return;
@@ -72,6 +73,7 @@ struct RoomBoundaryDetector : Entity
     solid = false;
     collisionGroup = 0;
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -81,7 +83,7 @@ struct RoomBoundaryDetector : Entity
     return r;
   }
 
-  virtual void onCollide(Entity*) override
+  void onCollide(Body*)
   {
     if(touched)
       return;

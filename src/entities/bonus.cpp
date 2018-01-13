@@ -27,6 +27,7 @@ struct Bonus : Entity
     type = type_;
     msg = msg_;
     size = UnitSize;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -45,7 +46,7 @@ struct Bonus : Entity
     ++time;
   }
 
-  virtual void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(dead)
       return;

@@ -24,23 +24,12 @@ struct Entity : Body
 {
   virtual ~Entity() {}
 
-  virtual void enter()
-  {
-    onCollision =
-      [ = ] (Body* otherBody)
-      {
-        auto other = dynamic_cast<Entity*>(otherBody);
-        assert(other);
-        onCollide(other);
-      };
-  }
+  virtual void enter() {}
 
   virtual void leave() {}
 
   virtual Actor getActor() const = 0;
   virtual void tick() {}
-
-  virtual void onCollide(Entity* /*other*/) {}
 
   bool dead = false;
   Vector vel;

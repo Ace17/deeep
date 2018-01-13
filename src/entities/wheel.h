@@ -29,6 +29,7 @@ struct Wheel : Entity, Damageable
     size = Size(1.5, 1.5);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual Actor getActor() const override
@@ -68,7 +69,7 @@ struct Wheel : Entity, Damageable
     decrement(blinking);
   }
 
-  virtual void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(auto damageable = dynamic_cast<Damageable*>(other))
       damageable->onDamage(5);

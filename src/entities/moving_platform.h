@@ -63,6 +63,7 @@ struct Elevator : Entity
     pusher = true;
     size = Size(2, 1);
     collisionGroup = CG_WALLS;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   void enter() override
@@ -85,7 +86,7 @@ struct Elevator : Entity
     return r;
   }
 
-  void onCollide(Entity* other) override
+  void onCollide(Body* other)
   {
     if(other->pos.y > pos.y + size.height / 2)
     {

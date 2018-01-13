@@ -25,6 +25,7 @@ struct Switch : Entity
   Switch(int id_) : id(id_)
   {
     size = UnitSize * 0.75;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   void enter() override
@@ -50,7 +51,7 @@ struct Switch : Entity
     blinking = max(0, blinking - 1);
   }
 
-  virtual void onCollide(Entity*) override
+  void onCollide(Body*)
   {
     if(blinking)
       return;

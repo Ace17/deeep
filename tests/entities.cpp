@@ -124,7 +124,7 @@ unittest("Entity: pickup bonus")
   assert(!ent->dead);
   assertEquals(0, player.upgrades);
 
-  ent->onCollide(&player);
+  ent->onCollision(&player);
 
   assert(ent->dead);
   assertEquals(4, player.upgrades);
