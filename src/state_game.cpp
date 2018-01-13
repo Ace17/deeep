@@ -122,6 +122,13 @@ struct GameState : Scene, IGame
       r.push_back(lifebar);
     }
 
+
+    {
+      Actor background(Actor(Vector(-8, -8), MDL_BACKGROUND));
+      background.scale = Size(16, 16);
+      r.insert(r.begin(), background);
+    }
+
     return r;
   }
 
