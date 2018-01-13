@@ -17,12 +17,18 @@ Scene* createGame(View* view, vector<string> args)
 {
   auto fsm = make_unique<StateMachine>();
 
+  bool showSplash = true;
   int level = 1;
 
   if(args.size() == 1)
+  {
     level = atoi(args[0].c_str());
+    showSplash = false;
+  }
 
-  fsm->states.push_back(createSplashState(fsm.get(), view));
+  if(showSplash)
+    fsm->states.push_back(createSplashState(fsm.get(), view));
+
   fsm->states.push_back(createGameState(fsm.get(), view, level));
 
   return fsm.release();
