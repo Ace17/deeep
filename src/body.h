@@ -6,21 +6,16 @@
  * License, or (at your option) any later version.
  */
 
+// A collidable body inside the physics engine.
+// Bodies are always axis-aligned boxes.
+
 #pragma once
 
 #include <functional>
-#include "base/geom.h"
-
-typedef GenericVector<float> Vector;
-typedef GenericSize<float> Size;
-typedef GenericBox<float> Box;
-typedef GenericBox<int> IntBox;
-
-static auto const UnitSize = Size(1, 1);
+#include "vec.h"
 
 using namespace std;
 
-static auto const PRECISION = 1024;
 IntBox roundBox(Box b);
 
 struct Body
