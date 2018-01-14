@@ -188,7 +188,7 @@ struct SdlAudio : Audio
     desired.freq = 22050;
     desired.format = AUDIO_F32SYS;
     desired.channels = 2;
-    desired.samples = 256;
+    desired.samples = 4096; // workaround slowness on chrome causing dropouts
     desired.callback = &staticMixAudio;
     desired.userdata = this;
 
