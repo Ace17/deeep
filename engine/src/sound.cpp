@@ -192,9 +192,9 @@ struct SdlAudio : Audio
     desired.callback = &staticMixAudio;
     desired.userdata = this;
 
-    ret = SDL_OpenAudio(&desired, &audiospec);
+    audioDevice = SDL_OpenAudioDevice(nullptr, 0, &desired, &audiospec, 0);
 
-    if(ret == -1)
+    if(audioDevice == 0)
       throw runtime_error("Can't open audio");
 
     {
@@ -210,14 +210,14 @@ struct SdlAudio : Audio
 
     mixBuffer.resize(audiospec.samples * audiospec.channels);
 
-    SDL_PauseAudio(0);
+    SDL_PauseAudioDevice(audioDevice, 0);
   }
 
   ~SdlAudio()
   {
-    SDL_PauseAudio(1);
+    SDL_PauseAudioDevice(audioDevice, 1);
 
-    SDL_CloseAudio();
+    SDL_CloseAudioDevice(audioDevice);
     SDL_QuitSubSystem(SDL_INIT_AUDIO);
   }
 
@@ -266,10 +266,10 @@ struct SdlAudio : Audio
 
     music = loadSoundFile(path);
 
-    SDL_LockAudio();
+    SDL_LockAudioDevice(audioDevice);
     voices[0].play(music.get(), true);
     currMusic = id;
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(audioDevice);
   }
 
   static void staticMixAudio(void* userData, Uint8* stream, int iNumBytes)
@@ -283,6 +283,7 @@ struct SdlAudio : Audio
     pThis->mixAudio((float*)stream, iNumBytes / sizeof(float));
   }
 
+  SDL_AudioDeviceID audioDevice;
   SDL_AudioSpec audiospec;
   vector<Voice> voices;
   vector<unique_ptr<Sound>> sounds;
