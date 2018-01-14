@@ -192,7 +192,7 @@ struct SdlAudio : Audio
     desired.callback = &staticMixAudio;
     desired.userdata = this;
 
-    audioDevice = SDL_OpenAudioDevice(nullptr, 0, &desired, &audiospec, 0);
+    audioDevice = SDL_OpenAudioDevice(nullptr, 0, &desired, &audiospec, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
 
     if(audioDevice == 0)
       throw runtime_error("Can't open audio");
