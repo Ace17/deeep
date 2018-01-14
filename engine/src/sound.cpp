@@ -201,6 +201,9 @@ struct SdlAudio : Audio
       int freq = audiospec.freq;
       int channels = audiospec.channels;
       printf("Audio: %d Hz %d channels\n", freq, channels);
+
+      if(audiospec.format != AUDIO_F32SYS)
+        printf("Audio: warning: unsupported format: 0x%4X\n", audiospec.format);
     }
 
     voices.resize(MAX_VOICES);
@@ -273,6 +276,10 @@ struct SdlAudio : Audio
   {
     auto pThis = (SdlAudio*)userData;
     memset(stream, 0, iNumBytes);
+
+    if(pThis->audiospec.format != AUDIO_F32SYS)
+      return; // unsupported format
+
     pThis->mixAudio((float*)stream, iNumBytes / sizeof(float));
   }
 
