@@ -24,6 +24,7 @@ using namespace std;
 class App;
 App* App_create(vector<string> args);
 bool App_tick(App*);
+void App_destroy(App* app);
 
 #ifdef __EMSCRIPTEN__
 extern "C"
@@ -57,14 +58,14 @@ int main(int argc, char* argv[])
 {
   try
   {
-    vector<string> args;
-
-    for(int i = 1; i < argc; ++i)
-      args.push_back(argv[i]);
+    vector<string> args {
+      argv + 1, argv + argc
+    };
 
     auto app = App_create(args);
 
     runMainLoop(app);
+    App_destroy(app);
     return 0;
   }
   catch(exception const& e)

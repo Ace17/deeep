@@ -62,7 +62,7 @@ public:
     m_lastTime = SDL_GetTicks();
   }
 
-  ~App()
+  virtual ~App()
   {
     SDL_Quit();
   }
@@ -250,6 +250,11 @@ private:
 App* App_create(vector<string> argv)
 {
   return new App(argv);
+}
+
+void App_destroy(App* app)
+{
+  delete app;
 }
 
 bool App_tick(App* app)
