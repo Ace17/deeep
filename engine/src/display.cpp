@@ -306,7 +306,7 @@ void printOpenGlVersion()
 
 struct SdlDisplay : Display
 {
-  void init(Size2i resolution)
+  void init(Size2i resolution) override
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
       throw runtime_error("Can't init SDL");
