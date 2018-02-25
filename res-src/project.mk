@@ -7,3 +7,12 @@ res/%.ogg: res-src/%.ogg
 	@echo "Transcode $<"
 	@ffmpeg -loglevel 1 -y -i "$<" -ar 22050 -ac 2 "$@" </dev/null
 
+SPRITES_SRC+=$(wildcard res-src/sprites/*.json)
+TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.json)
+TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.png)
+
+res/%: res-src/%
+	@mkdir -p $(dir $@)
+	@echo "Copy $<"
+	@cp "$<" "$@"
+
