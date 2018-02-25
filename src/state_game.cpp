@@ -225,7 +225,7 @@ struct GameState : Scene, IGame
     spawn(m_player);
 
     {
-      auto f = bind(&GameState::onTouchLevelBoundary, this, std::placeholders::_1);
+      auto f = bind(&GameState::onTouchLevelBoundary, this, placeholders::_1);
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
       m_levelBoundarySubscription = subscribeForEvents(&m_levelBoundary);
     }
