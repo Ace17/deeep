@@ -8,9 +8,6 @@
 
 // Game logic
 
-#include <cmath>
-#include <cstdlib> // atoi
-#include <algorithm>
 #include <array>
 #include <list>
 
