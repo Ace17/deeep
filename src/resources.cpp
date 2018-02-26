@@ -37,7 +37,7 @@ static const Resource resources[] =
 
   { ResourceType::Model, MDL_DOOR, "res/sprites/door.json" },
   { ResourceType::Model, MDL_BLOCK, "res/sprites/block.json" },
-  { ResourceType::Model, MDL_SPLASH, "res/splash.json" },
+  { ResourceType::Model, MDL_SPLASH, "res/sprites/splash.json" },
   { ResourceType::Model, MDL_ELEVATOR, "res/sprites/elevator.json" },
   { ResourceType::Model, MDL_RECT, "res/sprites/rect.json" },
   { ResourceType::Model, MDL_SWITCH, "res/sprites/switch.json" },
