@@ -29,14 +29,6 @@ using namespace std;
 #include "model.h"
 #include "file.h"
 
-static GLint g_MVP;
-static GLint g_colorId;
-static GLint g_positionLoc;
-static GLint g_texCoordLoc;
-static GLuint g_ProgramId;
-static vector<Model> g_Models;
-static Model g_fontModel;
-
 #ifdef NDEBUG
 #define SAFE_GL(a) a
 #else
@@ -543,6 +535,15 @@ struct SdlDisplay : Display
   SDL_GLContext mainContext;
 
   Camera g_camera;
+
+  GLint g_MVP;
+  GLint g_colorId;
+  GLint g_positionLoc;
+  GLint g_texCoordLoc;
+
+  GLuint g_ProgramId;
+  vector<Model> g_Models;
+  Model g_fontModel;
 
   float baseAmbientLight = 0;
 };
