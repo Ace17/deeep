@@ -11,8 +11,17 @@ SPRITES_SRC+=$(wildcard res-src/sprites/*.json)
 TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.json)
 TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.png)
 
+TILES_SRC+=$(wildcard res-src/tiles/*.xcf)
+TARGETS+=$(TILES_SRC:res-src/%.xcf=res/%.png)
+
+res/%.png: res-src/%.xcf
+	@mkdir -p $(dir $@)
+	@echo "Render $<"
+	@xcf2png "$<" -o "$@"
+
+# fallback copy
 res/%: res-src/%
 	@mkdir -p $(dir $@)
-	@echo "Copy $<"
+	#@echo "Copy $<"
 	@cp "$<" "$@"
 
