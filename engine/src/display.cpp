@@ -162,13 +162,16 @@ int loadTexture(string path, Rect2i rect)
   vector<uint8_t> img(rect.size.width* rect.size.height* bpp);
 
   auto src = (Uint8*)surface->pixels + rect.pos.x * bpp + rect.pos.y * surface->pitch;
-  auto dst = (Uint8*)img.data();
+  auto dst = (Uint8*)img.data() + bpp * rect.size.width * rect.size.height;
 
+  // from glTexImage2D doc:
+  // "The first element corresponds to the lower left corner of the texture image",
+  // (e.g (u,v) = (0,0))
   for(int y = 0; y < rect.size.height; ++y)
   {
+    dst -= bpp * rect.size.width;
     memcpy(dst, src, bpp * rect.size.width);
     src += surface->pitch;
-    dst += bpp * rect.size.width;
   }
 
   GLuint texture;
@@ -213,10 +216,10 @@ Model boxModel()
 
   const GLfloat myBox[] =
   {
-    0, h, 0, /* uv */ 0, 0,
-    0, 0, 0, /* uv */ 0, 1,
-    w, 0, 0, /* uv */ 1, 1,
-    w, h, 0, /* uv */ 1, 0,
+    0, h, 0, /* uv */ 0, 1,
+    0, 0, 0, /* uv */ 0, 0,
+    w, 0, 0, /* uv */ 1, 0,
+    w, h, 0, /* uv */ 1, 1,
   };
 
   const GLushort indices[] =
