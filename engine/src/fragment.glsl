@@ -8,7 +8,7 @@ uniform sampler2D s_baseMap;
 void main()
 {
   gl_FragColor = texture2D(s_baseMap, v_texCoord) + v_color;
-  gl_FragColor += vec4(v_position.y, v_position.y, v_position.y, v_position.y) * 0.2;
+  gl_FragColor += vec4(v_position.y, v_position.y, v_position.y, 0) * 0.2;
 }
 
 // vim: syntax=glsl
