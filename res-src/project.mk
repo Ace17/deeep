@@ -22,6 +22,6 @@ res/%.png: res-src/%.xcf
 # fallback copy
 res/%: res-src/%
 	@mkdir -p $(dir $@)
-	#@echo "Copy $<"
+#@echo "Copy $<"
 	@cp "$<" "$@"
 
