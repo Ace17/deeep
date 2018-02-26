@@ -71,44 +71,32 @@ struct GameState : Scene, IGame
       m_debugFirstTime = false;
       m_player->addUpgrade(-1);
     }
+
+    {
+      auto cameraPos = m_player->pos;
+      cameraPos.y += 1.5;
+
+      // prevent camera from going outside the level
+      auto const limit = 8.0f;
+      cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
+      cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
+
+      m_view->setCameraPos(cameraPos);
+    }
   }
 
   vector<Actor> getActors() const override
   {
     vector<Actor> r;
 
-    auto cameraPos = m_player->pos;
-    cameraPos.y += 1.5;
-
-    {
-      // prevent camera from going outside the level
-      auto const limit = 8.0f;
-      cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
-      cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
-    }
-
-    addActorsForTileMap(r, cameraPos);
-
-    Box cameraBox;
-    cameraBox.size.width = 16;
-    cameraBox.size.height = 16;
-    cameraBox.pos.x = cameraPos.x - cameraBox.size.width / 2;
-    cameraBox.pos.y = cameraPos.y - cameraBox.size.height / 2;
+    addActorsForTileMap(r);
 
     for(auto& entity : m_entities)
     {
-      if(!overlaps(entity->getFBox(), cameraBox))
-        continue;
-
       r.push_back(entity->getActor());
 
       if(m_debug)
         r.push_back(getDebugActor(entity.get()));
-    }
-
-    for(auto& actor : r)
-    {
-      actor.pos -= cameraPos;
     }
 
     {
@@ -116,19 +104,21 @@ struct GameState : Scene, IGame
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(0.7, 3);
+      lifebar.useWorldRefFrame = false;
       r.push_back(lifebar);
     }
 
     {
       Actor background(Actor(Vector(-8, -8), MDL_BACKGROUND));
       background.scale = Size(16, 16);
+      background.useWorldRefFrame = false;
       r.insert(r.begin(), background);
     }
 
     return r;
   }
 
-  void addActorsForTileMap(vector<Actor>& r, Vector cameraPos) const
+  void addActorsForTileMap(vector<Actor>& r) const
   {
     auto const model = MDL_TILES_00 + m_theme % 8;
 
@@ -136,12 +126,6 @@ struct GameState : Scene, IGame
       [&] (int x, int y, int tile)
       {
         if(!tile)
-          return;
-
-        if(abs(x - cameraPos.x) > 9)
-          return;
-
-        if(abs(y - cameraPos.y) > 9)
           return;
 
         auto composition = computeTileFor(m_tiles, x, y);

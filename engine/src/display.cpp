@@ -245,6 +245,12 @@ Model boxModel()
   return model;
 }
 
+struct Camera
+{
+  Vector2f pos;
+  bool valid = false;
+};
+
 static
 Model loadTiledModel(string path, int count, int COLS, int SIZE)
 {
@@ -369,6 +375,33 @@ struct SdlDisplay : Display
     g_Models[id] = loadAnimation(path);
   }
 
+  void setCamera(Vector2f pos) override
+  {
+    auto cam = (Camera { pos });
+
+    if(!g_camera.valid)
+    {
+      g_camera = cam;
+      g_camera.valid = true;
+    }
+
+    // avoid big camera jumps
+    {
+      auto delta = g_camera.pos - pos;
+
+      if(abs(delta.x) > 2 || abs(delta.y) > 2)
+        g_camera = cam;
+    }
+
+    auto blend = [] (Vector2f a, Vector2f b)
+      {
+        auto const alpha = 0.3f;
+        return a * (1 - alpha) + b * alpha;
+      };
+
+    g_camera.pos = blend(g_camera.pos, cam.pos);
+  }
+
   void setFullscreen(bool fs) override
   {
     auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
@@ -385,7 +418,7 @@ struct SdlDisplay : Display
     baseAmbientLight = ambientLight_;
   }
 
-  void drawModel(Rect2f where, Model const& model, bool blinking, int actionIdx, float ratio)
+  void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio)
   {
     float c = baseAmbientLight;
     SAFE_GL(glUniform4f(g_colorId, c, c, c, 0));
@@ -419,8 +452,8 @@ struct SdlDisplay : Display
     if(where.size.height < 0)
       where.pos.y -= where.size.height;
 
-    auto const dx = where.pos.x;
-    auto const dy = where.pos.y;
+    auto const dx = where.pos.x - cam.pos.x;
+    auto const dy = where.pos.y - cam.pos.y;
 
     auto const sx = where.size.width;
     auto const sy = where.size.height;
@@ -449,10 +482,11 @@ struct SdlDisplay : Display
     SAFE_GL(glDrawElements(GL_TRIANGLES, model.numIndices, GL_UNSIGNED_SHORT, 0));
   }
 
-  void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float ratio) override
+  void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio) override
   {
     auto& model = g_Models.at(modelId);
-    drawModel(where, model, blinking, actionIdx, ratio);
+    auto cam = useWorldRefFrame ? g_camera : (Camera { Vector2f(0, 0) });
+    drawModel(where, cam, model, blinking, actionIdx, ratio);
   }
 
   void drawText(Vector2f pos, char const* text) override
@@ -463,9 +497,11 @@ struct SdlDisplay : Display
     rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
     rect.pos.y = pos.y;
 
+    auto cam = (Camera { Vector2f(0, 0) });
+
     while(*text)
     {
-      drawModel(rect, g_fontModel, false, *text, 0);
+      drawModel(rect, cam, g_fontModel, false, *text, 0);
       rect.pos.x += rect.size.width;
       ++text;
     }
@@ -505,6 +541,8 @@ struct SdlDisplay : Display
 
   SDL_Window* mainWindow;
   SDL_GLContext mainContext;
+
+  Camera g_camera;
 
   float baseAmbientLight = 0;
 };

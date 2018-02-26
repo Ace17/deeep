@@ -38,6 +38,7 @@ struct Actor
   float ratio = 0; // in [0 .. 1]
   Size2f scale = Size2f(1, 1);
   Effect effect = Effect::Normal;
+  bool useWorldRefFrame = true; // set to 'false' for HUD objects
 };
 
 struct Control
@@ -56,6 +57,7 @@ struct View
   virtual void textBox(char const* msg) = 0;
   virtual void playMusic(int id) = 0;
   virtual void playSound(int id) = 0;
+  virtual void setCameraPos(Vector2f pos) = 0;
 };
 
 // game, seen by the outside world

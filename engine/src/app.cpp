@@ -145,7 +145,7 @@ private:
     for(auto& actor : actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
-      m_display->drawActor(where, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
+      m_display->drawActor(where, actor.useWorldRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
     }
 
     if(m_paused)
@@ -224,6 +224,11 @@ private:
   void playSound(int sound) override
   {
     m_audio->playSound(sound);
+  }
+
+  void setCameraPos(Vector2f pos) override
+  {
+    m_display->setCamera(pos);
   }
 
   int keys[SDL_NUM_SCANCODES] {};

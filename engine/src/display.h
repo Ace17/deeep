@@ -20,8 +20,9 @@ struct Display
   virtual void loadModel(int id, const char* imagePath) = 0;
   virtual void beginDraw() = 0;
   virtual void endDraw() = 0;
-  virtual void drawActor(Rect2f where, int modelId, bool blinking, int actionIdx, float frame) = 0;
+  virtual void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float frame) = 0;
   virtual void drawText(Vector2f pos, char const* text) = 0;
+  virtual void setCamera(Vector2f pos) = 0;
   virtual void setAmbientLight(float ambientLight) = 0;
 };
 
