@@ -39,7 +39,7 @@ struct Actor
   float ratio = 0; // in [0 .. 1]
   Size2f scale = Size2f(1, 1);
   Effect effect = Effect::Normal;
-  bool useWorldRefFrame = true; // set to 'false' for HUD objects
+  bool screenRefFrame = false; // for HUD objects
 };
 
 struct Control

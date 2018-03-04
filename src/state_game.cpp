@@ -104,14 +104,14 @@ struct GameState : Scene, IGame
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(0.7, 3);
-      lifebar.useWorldRefFrame = false;
+      lifebar.screenRefFrame = true;
       r.push_back(lifebar);
     }
 
     {
       Actor background(Actor(Vector(-8, -8), MDL_BACKGROUND));
       background.scale = Size(16, 16);
-      background.useWorldRefFrame = false;
+      background.screenRefFrame = true;
       r.insert(r.begin(), background);
     }
 

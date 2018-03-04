@@ -143,7 +143,7 @@ private:
     for(auto& actor : actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
-      m_display->drawActor(where, actor.useWorldRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
+      m_display->drawActor(where, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
     }
 
     if(m_paused)
