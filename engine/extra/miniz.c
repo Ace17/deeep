@@ -39,10 +39,6 @@
 #define MINIZ_HAS_64BIT_REGISTERS 1
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // ------------------- zlib-style API Definitions.
 
 // For more compatibility with zlib, miniz.c uses unsigned long for some parameters/struct members. Beware: mz_ulong can be either 32 or 64-bits!
@@ -343,13 +339,7 @@ struct tinfl_decompressor_tag
   mz_uint8 m_raw_header[4], m_len_codes[TINFL_MAX_HUFF_SYMBOLS_0 + TINFL_MAX_HUFF_SYMBOLS_1 + 137];
 };
 
-#ifdef __cplusplus
-}
-#endif
-
-// ------------------- End of Header: Implementation follows. (If you only want the header, define MINIZ_HEADER_FILE_ONLY.)
-
-#ifndef MINIZ_HEADER_FILE_ONLY
+// ------------------- End of Header: Implementation follows.
 
 typedef unsigned char mz_validate_uint16[sizeof(mz_uint16)==2 ? 1 : -1];
 typedef unsigned char mz_validate_uint32[sizeof(mz_uint32)==4 ? 1 : -1];
@@ -376,18 +366,6 @@ typedef unsigned char mz_validate_uint64[sizeof(mz_uint64)==8 ? 1 : -1];
 
 #define MZ_READ_LE16(p) ((mz_uint32)(((const mz_uint8 *)(p))[0]) | ((mz_uint32)(((const mz_uint8 *)(p))[1]) << 8U))
 #define MZ_READ_LE32(p) ((mz_uint32)(((const mz_uint8 *)(p))[0]) | ((mz_uint32)(((const mz_uint8 *)(p))[1]) << 8U) | ((mz_uint32)(((const mz_uint8 *)(p))[2]) << 16U) | ((mz_uint32)(((const mz_uint8 *)(p))[3]) << 24U))
-
-#ifdef _MSC_VER
-  #define MZ_FORCEINLINE __forceinline
-#elif defined(__GNUC__)
-  #define MZ_FORCEINLINE inline __attribute__((__always_inline__))
-#else
-  #define MZ_FORCEINLINE inline
-#endif
-
-#ifdef __cplusplus
-  extern "C" {
-#endif
 
 // ------------------- zlib-style API's
 
@@ -1007,9 +985,4 @@ int tinfl_decompress_mem_to_callback(const void *pIn_buf, size_t *pIn_buf_size, 
   return result;
 }
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif // MINIZ_HEADER_FILE_ONLY
 
