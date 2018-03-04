@@ -13,13 +13,13 @@
 
 struct ISoundPlayer
 {
-  virtual ~ISoundPlayer() {};
+  virtual ~ISoundPlayer() = default;
   virtual int mix(Span<float> output) = 0;
 };
 
 struct Sound
 {
-  virtual ~Sound() {};
+  virtual ~Sound() = default;
   virtual std::unique_ptr<ISoundPlayer> createPlayer() = 0;
 };
 

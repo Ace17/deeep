@@ -22,9 +22,8 @@ struct Entity;
 
 struct Event
 {
-  virtual ~Event()
-  {
-  }; // force a vtable so we can dynamic_cast events
+  // force a vtable so we can dynamic_cast events
+  virtual ~Event() = default;
 
   template<typename T>
   const T* as() const
@@ -74,7 +73,7 @@ EventDelegator makeDelegator(function<void(const EventType*)> handler)
 
 struct Handle
 {
-  virtual ~Handle() {};
+  virtual ~Handle() = default;
 };
 
 struct IVariable

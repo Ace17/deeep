@@ -22,7 +22,7 @@ struct Damageable
 
 struct Entity : Body
 {
-  virtual ~Entity() {}
+  virtual ~Entity() = default;
 
   virtual void enter() {}
 
