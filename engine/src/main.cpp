@@ -9,7 +9,7 @@
 // Entry point.
 // This is the only file where emscripten-specific stuff can appear.
 
-#include <iostream>
+#include <cstdio>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
   }
   catch(exception const& e)
   {
-    cerr << "Fatal: " << e.what() << endl;
+    fprintf(stderr, "Fatal: %s\n", e.what());
     return 1;
   }
 }

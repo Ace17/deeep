@@ -8,7 +8,7 @@
 
 // Unit test framework: entry point
 
-#include <iostream>
+#include <cstdio>
 #include "tests.h"
 
 using namespace std;
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
   }
   catch(std::exception const& e)
   {
-    cerr << "Fatal: " << e.what() << endl;
+    fprintf(stderr, "Fatal: %s\n", e.what());
     return 1;
   }
 }

@@ -8,7 +8,7 @@
 
 // Unit test framework: test runner
 
-#include <iostream>
+#include <cstdio>
 #include <cassert>
 #include <stdexcept>
 #include <cstring>
@@ -39,14 +39,14 @@ int RegisterTest(void (* proc)(), const char* testName)
 
 void RunTests(const char* filter)
 {
-  std::cout << "Running tests." << std::endl;
+  printf("Running tests.\n");
 
   for(int i = 0; i < numTests; ++i)
   {
     if(!strstr(tests[i].sName, filter))
       continue;
 
-    std::cout << "[" << i << "] " << tests[i].sName << std::endl;
+    printf("[%d] %s\n", i, tests[i].sName);
     tests[i].run();
   }
 }

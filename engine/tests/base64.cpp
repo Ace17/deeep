@@ -11,7 +11,6 @@
 #include <vector>
 using namespace std;
 
-#include <iostream>
 unittest("Base64: simple")
 {
   assertEquals(vector<uint8_t>({}), decodeBase64(""));
