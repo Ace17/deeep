@@ -447,6 +447,15 @@ struct SdlDisplay : Display
     auto const dx = where.pos.x - cam.pos.x;
     auto const dy = where.pos.y - cam.pos.y;
 
+    {
+      // Don't call opengl if the object isn't visible.
+      // Huge FPS boost.
+      auto const CULL_DIST = 9;
+
+      if(abs(dx) > CULL_DIST || abs(dy) > CULL_DIST)
+        return;
+    }
+
     auto const sx = where.size.width;
     auto const sy = where.size.height;
 
