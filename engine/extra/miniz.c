@@ -31,13 +31,6 @@ typedef void *(*mz_alloc_func)(void *opaque, size_t items, size_t size);
 typedef void (*mz_free_func)(void *opaque, void *address);
 typedef void *(*mz_realloc_func)(void *opaque, void *address, size_t items, size_t size);
 
-#define MZ_VERSION          "9.1.15"
-#define MZ_VERNUM           0x91F0
-#define MZ_VER_MAJOR        9
-#define MZ_VER_MINOR        1
-#define MZ_VER_REVISION     15
-#define MZ_VER_SUBREVISION  0
-
 // Flush values. For typical usage you only need MZ_NO_FLUSH and MZ_FINISH. The other values are for advanced use (refer to the zlib docs).
 enum { MZ_NO_FLUSH = 0, MZ_PARTIAL_FLUSH = 1, MZ_SYNC_FLUSH = 2, MZ_FULL_FLUSH = 3, MZ_FINISH = 4, MZ_BLOCK = 5 };
 
@@ -72,9 +65,6 @@ typedef struct mz_stream_s
 } mz_stream;
 
 typedef mz_stream *mz_streamp;
-
-// Returns the version string of miniz.c.
-const char *mz_version(void);
 
 // Initializes a decompressor.
 int mz_inflateInit(mz_streamp pStream);
@@ -223,11 +213,6 @@ void mz_free(void *p)
 
 static void *def_alloc_func(void *opaque, size_t items, size_t size) { (void)opaque, (void)items, (void)size; return MZ_MALLOC(items * size); }
 static void def_free_func(void *opaque, void *address) { (void)opaque, (void)address; MZ_FREE(address); }
-
-const char *mz_version(void)
-{
-  return MZ_VERSION;
-}
 
 typedef struct
 {
