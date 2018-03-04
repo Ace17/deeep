@@ -20,9 +20,8 @@ IntBox roundBox(Box b);
 
 struct Body
 {
-  virtual ~Body()
-  {
-  }; // make type polymorphic
+  // make type polymorphic
+  virtual ~Body() = default;
 
   bool solid = false;
   bool pusher = false; // push and crush?

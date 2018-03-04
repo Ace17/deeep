@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include <algorithm>
-
 #include "base/util.h"
 #include "base/scene.h"
 
