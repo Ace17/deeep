@@ -30,7 +30,7 @@ string read(string path)
   string line;
 
   while(getline(fp, line))
-    r += line;
+    r += line + "\n";
 
   return r;
 }
