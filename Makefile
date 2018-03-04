@@ -63,7 +63,6 @@ SRCS_GAME:=\
 
 SRCS:=\
 	$(SRCS_GAME)\
-	engine/extra/miniz.c\
 	$(BIN)/fragment.glsl.cpp\
 	$(BIN)/vertex.glsl.cpp\
 	engine/src/app.cpp\
@@ -89,7 +88,6 @@ include res-src/project.mk
 
 SRCS_TESTS:=\
 	$(SRCS_GAME)\
-	engine/extra/miniz.c\
 	engine/src/base64.cpp\
 	engine/src/decompress.cpp\
 	engine/src/file.cpp\

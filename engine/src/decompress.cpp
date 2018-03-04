@@ -8,8 +8,10 @@
 
 #include "decompress.h"
 
-#define MINIZ_HEADER_FILE_ONLY 1
+extern "C"
+{
 #include "../extra/miniz.c"
+}
 
 #include <cstring>
 #include <vector>
