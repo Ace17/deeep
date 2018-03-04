@@ -418,9 +418,6 @@ const char *mz_error(int err)
 
 // ------------------- Low-level Decompression (completely independent from all compression API's)
 
-#define TINFL_MEMCPY(d, s, l) memcpy(d, s, l)
-#define TINFL_MEMSET(p, c, l) memset(p, c, l)
-
 #define TINFL_CR_BEGIN switch(r->m_state) { case 0:
 #define TINFL_CR_RETURN(state_index, result) do { status = result; r->m_state = state_index; goto common_exit; case state_index:; } MZ_MACRO_END
 #define TINFL_CR_RETURN_FOREVER(state_index, result) do { for ( ; ; ) { TINFL_CR_RETURN(state_index, result); } } MZ_MACRO_END
@@ -545,7 +542,7 @@ tinfl_status tinfl_decompress(tinfl_decompressor *r, const uint8_t *pIn_buf_next
           }
         }
         n = MZ_MIN(MZ_MIN((size_t)(pOut_buf_end - pOut_buf_cur), (size_t)(pIn_buf_end - pIn_buf_cur)), counter);
-        TINFL_MEMCPY(pOut_buf_cur, pIn_buf_cur, n); pIn_buf_cur += n; pOut_buf_cur += n; counter -= (mz_uint)n;
+        memcpy(pOut_buf_cur, pIn_buf_cur, n); pIn_buf_cur += n; pOut_buf_cur += n; counter -= (mz_uint)n;
       }
     }
     else if (r->m_type == 3)
@@ -557,7 +554,7 @@ tinfl_status tinfl_decompress(tinfl_decompressor *r, const uint8_t *pIn_buf_next
       if (r->m_type == 1)
       {
         uint8_t *p = r->m_tables[0].m_code_size; mz_uint i;
-        r->m_table_sizes[0] = 288; r->m_table_sizes[1] = 32; TINFL_MEMSET(r->m_tables[1].m_code_size, 5, 32);
+        r->m_table_sizes[0] = 288; r->m_table_sizes[1] = 32; memset(r->m_tables[1].m_code_size, 5, 32);
         for ( i = 0; i <= 143; ++i) *p++ = 8;
         for ( ; i <= 255; ++i) *p++ = 9;
         for ( ; i <= 279; ++i) *p++ = 7;
@@ -604,13 +601,13 @@ tinfl_status tinfl_decompress(tinfl_decompressor *r, const uint8_t *pIn_buf_next
               TINFL_CR_RETURN_FOREVER(17, TINFL_STATUS_FAILED);
             }
             num_extra = "\02\03\07"[dist - 16]; TINFL_GET_BITS(18, s, num_extra); s += "\03\03\013"[dist - 16];
-            TINFL_MEMSET(r->m_len_codes + counter, (dist == 16) ? r->m_len_codes[counter - 1] : 0, s); counter += s;
+            memset(r->m_len_codes + counter, (dist == 16) ? r->m_len_codes[counter - 1] : 0, s); counter += s;
           }
           if ((r->m_table_sizes[0] + r->m_table_sizes[1]) != counter)
           {
             TINFL_CR_RETURN_FOREVER(21, TINFL_STATUS_FAILED);
           }
-          TINFL_MEMCPY(r->m_tables[0].m_code_size, r->m_len_codes, r->m_table_sizes[0]); TINFL_MEMCPY(r->m_tables[1].m_code_size, r->m_len_codes + r->m_table_sizes[0], r->m_table_sizes[1]);
+          memcpy(r->m_tables[0].m_code_size, r->m_len_codes, r->m_table_sizes[0]); memcpy(r->m_tables[1].m_code_size, r->m_len_codes + r->m_table_sizes[0], r->m_table_sizes[1]);
         }
       }
       for ( ; ; )
