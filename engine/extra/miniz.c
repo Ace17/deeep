@@ -26,19 +26,7 @@ typedef unsigned long mz_ulong;
 // mz_free() internally uses the MZ_FREE() macro (which by default calls free() unless you've modified the MZ_MALLOC macro) to release a block allocated from the heap.
 void mz_free(void *p);
 
-#define MZ_ADLER32_INIT (1)
-// mz_adler32() returns the initial adler-32 value to use when called with ptr==NULL.
-mz_ulong mz_adler32(mz_ulong adler, const unsigned char *ptr, size_t buf_len);
-
-#define MZ_CRC32_INIT (0)
-// mz_crc32() returns the initial CRC-32 value to use when called with ptr==NULL.
-mz_ulong mz_crc32(mz_ulong crc, const unsigned char *ptr, size_t buf_len);
-
-// Compression strategies.
-enum { MZ_DEFAULT_STRATEGY = 0, MZ_FILTERED = 1, MZ_HUFFMAN_ONLY = 2, MZ_RLE = 3, MZ_FIXED = 4 };
-
 // Method
-#define MZ_DEFLATED 8
 
 #ifndef MINIZ_NO_ZLIB_APIS
 
@@ -267,32 +255,6 @@ typedef unsigned char mz_validate_uint32[sizeof(uint32_t)==4 ? 1 : -1];
 #define MZ_READ_LE32(p) ((uint32_t)(((const uint8_t *)(p))[0]) | ((uint32_t)(((const uint8_t *)(p))[1]) << 8U) | ((uint32_t)(((const uint8_t *)(p))[2]) << 16U) | ((uint32_t)(((const uint8_t *)(p))[3]) << 24U))
 
 // ------------------- zlib-style API's
-
-mz_ulong mz_adler32(mz_ulong adler, const unsigned char *ptr, size_t buf_len)
-{
-  uint32_t i, s1 = (uint32_t)(adler & 0xffff), s2 = (uint32_t)(adler >> 16); size_t block_len = buf_len % 5552;
-  if (!ptr) return MZ_ADLER32_INIT;
-  while (buf_len) {
-    for (i = 0; i + 7 < block_len; i += 8, ptr += 8) {
-      s1 += ptr[0], s2 += s1; s1 += ptr[1], s2 += s1; s1 += ptr[2], s2 += s1; s1 += ptr[3], s2 += s1;
-      s1 += ptr[4], s2 += s1; s1 += ptr[5], s2 += s1; s1 += ptr[6], s2 += s1; s1 += ptr[7], s2 += s1;
-    }
-    for ( ; i < block_len; ++i) s1 += *ptr++, s2 += s1;
-    s1 %= 65521U, s2 %= 65521U; buf_len -= block_len; block_len = 5552;
-  }
-  return (s2 << 16) + s1;
-}
-
-// Karl Malbrain's compact CRC-32. See "A compact CCITT crc16 and crc32 C implementation that balances processor cache usage against speed": http://www.geocities.com/malbrain/
-mz_ulong mz_crc32(mz_ulong crc, const uint8_t *ptr, size_t buf_len)
-{
-  static const uint32_t s_crc32[16] = { 0, 0x1db71064, 0x3b6e20c8, 0x26d930ac, 0x76dc4190, 0x6b6b51f4, 0x4db26158, 0x5005713c,
-    0xedb88320, 0xf00f9344, 0xd6d6a3e8, 0xcb61b38c, 0x9b64c2b0, 0x86d3d2d4, 0xa00ae278, 0xbdbdf21c };
-  uint32_t crcu32 = (uint32_t)crc;
-  if (!ptr) return MZ_CRC32_INIT;
-  crcu32 = ~crcu32; while (buf_len--) { uint8_t b = *ptr++; crcu32 = (crcu32 >> 4) ^ s_crc32[(crcu32 & 0xF) ^ (b & 0xF)]; crcu32 = (crcu32 >> 4) ^ s_crc32[(crcu32 & 0xF) ^ (b >> 4)]; }
-  return ~crcu32;
-}
 
 void mz_free(void *p)
 {

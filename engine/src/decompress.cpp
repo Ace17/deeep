@@ -8,10 +8,7 @@
 
 #include "decompress.h"
 
-extern "C"
-{
 #include "../extra/miniz.c"
-}
 
 #include <cstring>
 #include <vector>
