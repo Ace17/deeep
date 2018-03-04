@@ -38,10 +38,7 @@ struct Body
 
   Box getFBox() const
   {
-    Box r;
-    r.pos = pos;
-    r.size = size;
-    return r;
+    return Box { pos, size };
   }
 
   IntBox getBox() const

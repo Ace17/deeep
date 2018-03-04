@@ -67,17 +67,9 @@ struct GenericVector
 {
   typedef GenericVector<T> MyType;
 
-  GenericVector() : x(0), y(0)
-  {
-  }
-
-  GenericVector(T x_, T y_) : x(x_), y(y_)
-  {
-  }
-
-  GenericVector(GenericSize<T> size) : x(size.width), y(size.height)
-  {
-  }
+  GenericVector() : x(0), y(0) {}
+  GenericVector(T x_, T y_) : x(x_), y(y_) {}
+  GenericVector(GenericSize<T> size) : x(size.width), y(size.height) {}
 
   MyType operator += (MyType const& other)
   {
@@ -139,10 +131,8 @@ template<typename T>
 struct GenericBox
 {
   GenericBox() = default;
-
-  GenericBox(T x, T y, T w, T h) : pos(x, y), size(w, h)
-  {
-  }
+  GenericBox(T x, T y, T w, T h) : pos(x, y), size(w, h) {}
+  GenericBox(GenericVector<T> pos_, GenericSize<T> size_) : pos(pos_), size(size_) {}
 
   GenericVector<T> pos;
   GenericSize<T> size;
