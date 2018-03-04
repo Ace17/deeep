@@ -6,7 +6,9 @@
  * License, or (at your option) any later version.
  */
 
-// Audio stuff
+// Audio output
+
+#include "audio.h"
 
 #include <cassert>
 #include <memory>
@@ -18,7 +20,6 @@
 #include <SDL.h>
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
-#include "sound.h"
 #include "file.h"
 
 #include "base/util.h"

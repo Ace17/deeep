@@ -20,7 +20,7 @@
 #include "base/resource.h"
 #include "base/scene.h"
 #include "ratecounter.h"
-#include "sound.h"
+#include "audio.h"
 #include "display.h"
 
 using namespace std;

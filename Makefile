@@ -73,7 +73,7 @@ SRCS:=\
 	engine/src/json.cpp\
 	engine/src/main.cpp\
 	engine/src/model.cpp\
-	engine/src/sound.cpp\
+	engine/src/audio.cpp\
 
 $(BIN)/rel/game$(EXT): $(SRCS:%.cpp=$(BIN)/%_cpp.o)
 	@mkdir -p $(dir $@)
