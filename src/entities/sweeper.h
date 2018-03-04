@@ -88,5 +88,6 @@ struct Sweeper : Entity, Damageable
 
   int life = 30;
   int time = 0;
+  Vector vel;
 };
 

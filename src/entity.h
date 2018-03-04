@@ -32,7 +32,6 @@ struct Entity : Body
   virtual void tick() {}
 
   bool dead = false;
-  Vector vel;
   int blinking = 0;
   IGame* game = nullptr;
   IPhysicsProbe* physics = nullptr;

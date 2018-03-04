@@ -71,6 +71,7 @@ struct Bullet : Entity
   }
 
   int life = 1000;
+  Vector vel;
 };
 
 static auto const NORMAL_SIZE = Size(0.7, 1.9);
@@ -456,6 +457,7 @@ struct Rockman : Player, Damageable
   bool sliding = false;
   Control control {};
   Vector respawnPosition;
+  Vector vel;
 
   int upgrades = 0;
 };

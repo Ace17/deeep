@@ -22,6 +22,7 @@ struct Hopper : Entity, Damageable
 {
   Hopper()
   {
+    vel = Vector2f(0, 0);
     dir = -1.0f;
     size = Size(1, 0.5);
     collisionGroup = CG_WALLS;
@@ -107,5 +108,6 @@ struct Hopper : Entity, Damageable
   int time = 0;
   bool ground = false;
   float dir;
+  Vector vel;
 };
 

@@ -25,6 +25,7 @@ struct Wheel : Entity, Damageable
 {
   Wheel()
   {
+    vel = Vector2f(0, 0);
     dir = -1.0f;
     size = Size(1.5, 1.5);
     collisionGroup = CG_WALLS;
@@ -96,5 +97,6 @@ struct Wheel : Entity, Damageable
   int life = 30;
   int time = 0;
   float dir;
+  Vector vel;
 };
 
