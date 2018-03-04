@@ -16,7 +16,6 @@ struct StateMachine : Scene
   {
     auto current = states[currIdx].get();
     current->tick(c);
-    ambientLight = current->ambientLight;
   }
 
   vector<Actor> getActors() const override

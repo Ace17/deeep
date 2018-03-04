@@ -136,8 +136,6 @@ private:
 
   void draw()
   {
-    m_display->setAmbientLight(m_scene->ambientLight);
-
     m_display->beginDraw();
 
     auto actors = m_scene->getActors();
@@ -229,6 +227,11 @@ private:
   void setCameraPos(Vector2f pos) override
   {
     m_display->setCamera(pos);
+  }
+
+  void setAmbientLight(float amount) override
+  {
+    m_display->setAmbientLight(amount);
   }
 
   int keys[SDL_NUM_SCANCODES] {};

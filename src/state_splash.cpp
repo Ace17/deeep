@@ -38,7 +38,7 @@ struct SplashState : Scene
 
     if(activated)
     {
-      ambientLight = delay / 1000.0 - 1.0;
+      view->setAmbientLight(delay / 1000.0 - 1.0);
 
       if(decrement(delay))
       {

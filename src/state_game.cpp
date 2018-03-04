@@ -284,7 +284,7 @@ struct GameState : Scene, IGame
 
   void setAmbientLight(float light) override
   {
-    ambientLight = light;
+    m_view->setAmbientLight(light);
   }
 
   Player* m_player = nullptr;
