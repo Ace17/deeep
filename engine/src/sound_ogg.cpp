@@ -7,6 +7,8 @@
  */
 
 #include "sound.h"
+#include <cassert>
+#include <string.h> // memcpy
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
 #include "file.h"
@@ -15,25 +17,28 @@ using namespace std;
 
 struct OggSoundPlayer : ISoundPlayer
 {
-  OggSoundPlayer(string filename)
+  OggSoundPlayer(Span<uint8_t> data) : m_data(data)
   {
-    auto fp = fopen(filename.c_str(), "rb");
+    ov_callbacks cbs =
+    {
+      &read_func,
+      &seek_func,
+      &close_func,
+      &tell_func,
+    };
 
-    if(!fp)
-      throw runtime_error("ogg: can't open '" + filename + "'");
-
-    auto stream = ov_open(fp, &m_ogg, nullptr, 0);
+    auto stream = ov_open_callbacks(this, &m_ogg, nullptr, 0, cbs);
 
     if(stream < 0)
-      throw runtime_error("ogg: can't parse '" + filename + "'");
+      throw runtime_error("ogg: can't parse");
 
     vorbis_info* info = ov_info(&m_ogg, -1);
 
     if(info->channels != 2)
-      throw runtime_error("ogg: non-stereo files are not supported ('" + filename + "')");
+      throw runtime_error("ogg: non-stereo files are not supported");
 
     if(info->rate != 22050)
-      throw runtime_error("ogg: sampling rates other than 22050 Hz are not supported ('" + filename + "')");
+      throw runtime_error("ogg: only 22050 Hz sampling rate is supported");
   }
 
   ~OggSoundPlayer()
@@ -70,6 +75,44 @@ struct OggSoundPlayer : ISoundPlayer
   }
 
   OggVorbis_File m_ogg;
+  const Span<uint8_t> m_data;
+  int m_dataReadPointer = 0;
+
+  static size_t read_func(void* ptr, size_t size, size_t nmemb, void* datasource)
+  {
+    auto pThis = (OggSoundPlayer*)datasource;
+    auto const remainingSize = pThis->m_data.len - pThis->m_dataReadPointer;
+    auto const totalSize = min<int>(remainingSize, size * nmemb);
+    memcpy(ptr, pThis->m_data.data + pThis->m_dataReadPointer, totalSize);
+    pThis->m_dataReadPointer += totalSize;
+    return totalSize;
+  }
+
+  static int seek_func(void* datasource, ogg_int64_t offset, int whence)
+  {
+    auto pThis = (OggSoundPlayer*)datasource;
+    switch(whence)
+    {
+    case SEEK_SET: pThis->m_dataReadPointer = (int)offset;
+      break;
+    case SEEK_CUR: pThis->m_dataReadPointer += (int)offset;
+      break;
+    default: return -1;
+    }
+
+    return 0;
+  }
+
+  static int close_func(void*)
+  {
+    return 0;
+  }
+
+  static long tell_func(void* datasource)
+  {
+    auto pThis = (OggSoundPlayer*)datasource;
+    return pThis->m_dataReadPointer;
+  }
 };
 
 struct OggSound : Sound
@@ -79,15 +122,15 @@ struct OggSound : Sound
     if(!exists(filename))
       throw runtime_error("OggSound: file doesn't exist: '" + filename + "'");
 
-    m_filename = filename;
+    m_data = read(filename);
   }
 
   unique_ptr<ISoundPlayer> createPlayer()
   {
-    return make_unique<OggSoundPlayer>(m_filename);
+    return make_unique<OggSoundPlayer>(Span<uint8_t> { (uint8_t*)m_data.data(), (int)m_data.size() });
   }
 
-  string m_filename;
+  string m_data;
 };
 
 unique_ptr<Sound> loadSoundFile(string filename)
