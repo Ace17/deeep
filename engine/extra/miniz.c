@@ -65,8 +65,7 @@ typedef struct mz_stream_s
   unsigned int avail_out;           // number of bytes that can be written to next_out
   mz_ulong total_out;               // total number of bytes produced so far
 
-  char *msg;                        // error msg (unused)
-  struct mz_internal_state *state;  // internal state, allocated by zalloc/zfree
+  mz_internal_state *state;         // internal state, allocated by zalloc/zfree
 
   mz_alloc_func zalloc;             // optional heap allocation function (defaults to malloc)
   mz_free_func zfree;               // optional heap free function (defaults to free)
@@ -166,8 +165,7 @@ size_t tinfl_decompress_mem_to_mem(void *pOut_buf, size_t out_buf_len, const voi
 typedef int (*tinfl_put_buf_func_ptr)(const void* pBuf, int len, void *pUser);
 int tinfl_decompress_mem_to_callback(const void *pIn_buf, size_t *pIn_buf_size, tinfl_put_buf_func_ptr pPut_buf_func, void *pPut_buf_user, int flags);
 
-struct tinfl_decompressor_tag;
-typedef struct tinfl_decompressor_tag tinfl_decompressor;
+struct tinfl_decompressor;
 
 // Max size of LZ dictionary.
 #define TINFL_LZ_DICT_SIZE 32768
@@ -216,7 +214,7 @@ typedef struct
   #define TINFL_BITBUF_SIZE (32)
 #endif
 
-struct tinfl_decompressor_tag
+struct tinfl_decompressor
 {
   uint32_t m_state, m_num_bits, m_zhdr0, m_zhdr1, m_z_adler32, m_final, m_type, m_check_adler32, m_dist, m_counter, m_num_extra, m_table_sizes[TINFL_MAX_HUFF_TABLES];
   tinfl_bit_buf_t m_bit_buf;
@@ -284,7 +282,6 @@ int mz_inflateInit2(mz_streamp pStream, int window_bits)
 
   pStream->data_type = 0;
   pStream->adler = 0;
-  pStream->msg = NULL;
   pStream->total_in = 0;
   pStream->total_out = 0;
   pStream->reserved = 0;
