@@ -4,12 +4,6 @@
 // Defines to completely disable specific portions of miniz.c:
 // If all macros here are defined the only functionality remaining will be CRC-32, adler-32, tinfl.
 
-// Define MINIZ_NO_MALLOC to disable all calls to malloc, free, and realloc.
-// Note if MINIZ_NO_MALLOC is defined then the user must always provide custom user alloc/free/realloc
-// callbacks to the zlib and archive API's, and a few stand-alone helper API's which don't provide custom user
-// functions won't work.
-//#define MINIZ_NO_MALLOC
-
 #if defined(_M_X64) || defined(_WIN64) || defined(__MINGW64__) || defined(_LP64) || defined(__LP64__) || defined(__ia64__) || defined(__x86_64__)
 // Set MINIZ_HAS_64BIT_REGISTERS to 1 if operations on 64-bit integers are reasonably fast (and don't involve compiler generated calls to helper functions).
 #define MINIZ_HAS_64BIT_REGISTERS 1
@@ -19,9 +13,6 @@
 
 // For more compatibility with zlib, miniz.c uses unsigned long for some parameters/struct members. Beware: mz_ulong can be either 32 or 64-bits!
 typedef unsigned long mz_ulong;
-
-// mz_free() internally uses the MZ_FREE() macro (which by default calls free() unless you've modified the MZ_MALLOC macro) to release a block allocated from the heap.
-void mz_free(void *p);
 
 // Method
 
@@ -67,11 +58,9 @@ typedef struct mz_stream_s
 typedef mz_stream *mz_streamp;
 
 // Initializes a decompressor.
-int mz_inflateInit(mz_streamp pStream);
-
-// mz_inflateInit2() is like mz_inflateInit() with an additional option that controls the window size and whether or not the stream has been wrapped with a zlib header/footer:
+// window_bits: option that controls the window size and whether or not the stream has been wrapped with a zlib header/footer:
 // window_bits must be MZ_DEFAULT_WINDOW_BITS (to parse zlib header/footer) or -MZ_DEFAULT_WINDOW_BITS (raw deflate).
-int mz_inflateInit2(mz_streamp pStream, int window_bits);
+int mz_inflateInit(mz_streamp pStream, int window_bits = MZ_DEFAULT_WINDOW_BITS);
 
 // Decompresses the input stream to the output, consuming only as much of the input as needed, and writing as much to the output as possible.
 // Parameters:
@@ -91,10 +80,6 @@ int mz_inflate(mz_streamp pStream, int flush);
 
 // Deinitializes a decompressor.
 int mz_inflateEnd(mz_streamp pStream);
-
-// Single-call decompression.
-// Returns MZ_OK on success, or one of the error codes from mz_inflate() on failure.
-int mz_uncompress(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char *pSource, mz_ulong source_len);
 
 // Returns a string description of the specified error code, or NULL if the error code is invalid.
 const char *mz_error(int err);
@@ -185,18 +170,6 @@ typedef unsigned char mz_validate_uint32[sizeof(uint32_t)==4 ? 1 : -1];
 #include <string.h>
 #include <assert.h>
 
-#define MZ_ASSERT(x) assert(x)
-
-#ifdef MINIZ_NO_MALLOC
-  #define MZ_MALLOC(x) NULL
-  #define MZ_FREE(x) (void)x, ((void)0)
-  #define MZ_REALLOC(p, x) NULL
-#else
-  #define MZ_MALLOC(x) malloc(x)
-  #define MZ_FREE(x) free(x)
-  #define MZ_REALLOC(p, x) realloc(p, x)
-#endif
-
 #define MZ_MAX(a,b) (((a)>(b))?(a):(b))
 #define MZ_MIN(a,b) (((a)<(b))?(a):(b))
 #define MZ_CLEAR_OBJ(obj) memset(&(obj), 0, sizeof(obj))
@@ -206,23 +179,18 @@ typedef unsigned char mz_validate_uint32[sizeof(uint32_t)==4 ? 1 : -1];
 
 // ------------------- zlib-style API's
 
-void mz_free(void *p)
-{
-  MZ_FREE(p);
-}
+static void *def_alloc_func(void *opaque, size_t items, size_t size) { (void)opaque, (void)items, (void)size; return malloc(items * size); }
+static void def_free_func(void *opaque, void *address) { (void)opaque, (void)address; free(address); }
 
-static void *def_alloc_func(void *opaque, size_t items, size_t size) { (void)opaque, (void)items, (void)size; return MZ_MALLOC(items * size); }
-static void def_free_func(void *opaque, void *address) { (void)opaque, (void)address; MZ_FREE(address); }
-
-typedef struct
+struct inflate_state
 {
   tinfl_decompressor m_decomp;
   mz_uint m_dict_ofs, m_dict_avail, m_first_call, m_has_flushed; int m_window_bits;
   uint8_t m_dict[TINFL_LZ_DICT_SIZE];
   tinfl_status m_last_status;
-} inflate_state;
+};
 
-int mz_inflateInit2(mz_streamp pStream, int window_bits)
+int mz_inflateInit(mz_streamp pStream, int window_bits)
 {
   if (!pStream) return MZ_STREAM_ERROR;
   if ((window_bits != MZ_DEFAULT_WINDOW_BITS) && (-window_bits != MZ_DEFAULT_WINDOW_BITS)) return MZ_PARAM_ERROR;
@@ -249,11 +217,6 @@ int mz_inflateInit2(mz_streamp pStream, int window_bits)
   pDecomp->m_window_bits = window_bits;
 
   return MZ_OK;
-}
-
-int mz_inflateInit(mz_streamp pStream)
-{
-   return mz_inflateInit2(pStream, MZ_DEFAULT_WINDOW_BITS);
 }
 
 int mz_inflate(mz_streamp pStream, int flush)
@@ -357,35 +320,6 @@ int mz_inflateEnd(mz_streamp pStream)
     pStream->state = NULL;
   }
   return MZ_OK;
-}
-
-int mz_uncompress(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char *pSource, mz_ulong source_len)
-{
-  mz_stream stream;
-  int status;
-  memset(&stream, 0, sizeof(stream));
-
-  // In case mz_ulong is 64-bits (argh I hate longs).
-  if ((source_len | *pDest_len) > 0xFFFFFFFFU) return MZ_PARAM_ERROR;
-
-  stream.next_in = pSource;
-  stream.avail_in = (uint32_t)source_len;
-  stream.next_out = pDest;
-  stream.avail_out = (uint32_t)*pDest_len;
-
-  status = mz_inflateInit(&stream);
-  if (status != MZ_OK)
-    return status;
-
-  status = mz_inflate(&stream, MZ_FINISH);
-  if (status != MZ_STREAM_END)
-  {
-    mz_inflateEnd(&stream);
-    return ((status == MZ_BUF_ERROR) && (!stream.avail_in)) ? MZ_DATA_ERROR : status;
-  }
-  *pDest_len = stream.total_out;
-
-  return mz_inflateEnd(&stream);
 }
 
 const char *mz_error(int err)
