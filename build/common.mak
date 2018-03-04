@@ -1,11 +1,12 @@
-#
-# @file Common
-# @brief
-# @author Sebastien Alaiwan
-# @date 2013-12-05
-#
-
 .PHONY: all true_all depend clean show_targets
+.DELETE_ON_ERROR:
+
+V?=0
+ifeq ($(V),1)
+Q:=
+else
+Q:=@
+endif
 
 ifneq ($(COMMON_HEAD_HEADER_VERSION),1)
   $(error common makefile header version mismatch)
@@ -42,42 +43,56 @@ endif
 show_targets:
 	echo $(TARGETS)
 
-LINK?=gdc
+DC?=gdc
+
+CROSS_COMPILE?=
+ifneq (,$(CROSS_COMPILE))
+CXX:=$(CROSS_COMPILE)g++
+CC:=$(CROSS_COMPILE)gcc
+DC:=$(CROSS_COMPILE)gdc
+endif
+
+LINK?=$(DC)
 
 $(BIN)/%.exe:
 	@echo "$(CLR_INFO)Linking $@$(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(LINK) $^ -o $@ -g $(DLIBS) $(LDFLAGS)
+	$(Q)$(LINK) $^ -o $@ -g $(DLIBS) $(LDFLAGS)
 
 $(BIN)/%.dll:
 	@echo "$(CLR_INFO)Linking $@$(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(LINK) $^ -shared -o $@ -g $(DLIBS) $(LDFLAGS)
+	$(Q)$(LINK) $^ -shared -o $@ -g $(DLIBS) $(LDFLAGS)
 
 $(BIN)/%.a:
 	@echo "$(CLR_INFO)Archiving $@$(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	ar cru "$@" $^
+	$(Q)ar cr "$@" $^
 
 # Compiling
 #
 $(BIN)/%_d.o: %.d
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	@gdc -fdeps="$(BIN)/$*_d.fdeps" -c "$<" -o "$@" $(DINCS) $(DFLAGS)
+	$(Q)$(DC) -fdeps="$(BIN)/$*_d.fdeps" -c "$<" -o "$@" $(DINCS) $(DFLAGS)
 	@$(THIS)/convert_deps "$(BIN)/$*_d.fdeps" "$(BIN)/$*_d.deps" "$@"
+	@rm "$(BIN)/$*_d.fdeps"
 
 $(BIN)/%_cpp.o: %.cpp
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(CXX) -c "$<" -o "$@" $(DINCS) $(CXXFLAGS)
+	$(Q)$(CXX) -c "$<" -o "$@" $(DINCS) $(CXXFLAGS)
 	@$(CXX) -MM "$<" -MT "$@" -o "$(BIN)/$*_cpp.deps" $(DINCS) $(CXXFLAGS)
 
 $(BIN)/%_c.o: %.c
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^)  $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(CC) -c  "$<" -o  "$@" $(DINCS) $(CXXFLAGS)
+	$(Q)$(CC) -c  "$<" -o  "$@" $(DINCS) $(CXXFLAGS)
 	@$(CC) -MM "$<" -MT "$@" -o "$(BIN)/$*_c.deps" $(DINCS) $(CXXFLAGS)
+
+# Dependency generation
+
+include $(shell test -d $(BIN) && find $(BIN) -name "*.deps")
 
 # Inclusion
 
@@ -93,7 +108,5 @@ clean:
 	@echo "exclude /*" > $(BIN)/.rsync-filter
 
 REPO_URL?=http://bazaar.mooo.com/~alaiwans/bzr
-
--include $(shell test -d $(BIN) && find $(BIN) -name "*.deps")
 
 true_all: $(TARGETS)
