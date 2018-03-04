@@ -87,13 +87,16 @@ struct IVariable
 
 struct IGame
 {
+  // visual
+  virtual void textBox(char const* msg) = 0;
   virtual void playSound(SOUND id) = 0;
+  virtual void setAmbientLight(float amount) = 0;
+
+  // logic
   virtual void spawn(Entity* e) = 0;
   virtual IVariable* getVariable(int name) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;
   virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) = 0;
   virtual Vector getPlayerPosition() = 0;
-  virtual void textBox(char const* msg) = 0;
-  virtual void setAmbientLight(float light) = 0;
 };
 

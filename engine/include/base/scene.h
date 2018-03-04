@@ -17,6 +17,7 @@
 using namespace std;
 
 typedef int SOUND;
+typedef int MUSIC;
 typedef int MODEL;
 
 enum class Effect
@@ -55,8 +56,8 @@ struct Control
 struct View
 {
   virtual void textBox(char const* msg) = 0;
-  virtual void playMusic(int id) = 0;
-  virtual void playSound(int id) = 0;
+  virtual void playMusic(MUSIC id) = 0;
+  virtual void playSound(SOUND id) = 0;
   virtual void setCameraPos(Vector2f pos) = 0;
   virtual void setAmbientLight(float amount) = 0;
 };
