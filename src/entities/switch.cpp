@@ -73,7 +73,7 @@ unique_ptr<Entity> makeSwitch(int id)
   return make_unique<Switch>(id);
 }
 
-struct Door : Entity, IEventSink
+struct Door : Entity
 {
   Door(int id_) : id(id_)
   {
@@ -114,10 +114,6 @@ struct Door : Entity, IEventSink
 
     if(delay == 0 && state)
       solid = false;
-  }
-
-  virtual void notify(const Event*) override
-  {
   }
 
   virtual Actor getActor() const override
