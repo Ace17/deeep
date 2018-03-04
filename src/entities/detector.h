@@ -17,54 +17,6 @@
 #include "toggle.h"
 #include "collision_groups.h"
 
-struct TouchDetectorEvent : Event
-{
-  TouchDetectorEvent(int whichOne_)
-  {
-    whichOne = whichOne_;
-  }
-
-  int whichOne;
-};
-
-struct Detector : Entity
-{
-  Detector(int id_)
-  {
-    id = id_;
-    size = Size(0.1, 3);
-    solid = false;
-    collisionGroup = 0; // dont' trigger other detectors
-    collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
-    Body::onCollision = [this] (Body* other) { onCollide(other); };
-  }
-
-  virtual Actor getActor() const override
-  {
-    auto r = Actor(pos, MDL_RECT);
-    r.scale = size;
-    return r;
-  }
-
-  virtual void tick() override
-  {
-    decrement(touchDelay);
-  }
-
-  void onCollide(Body*)
-  {
-    if(touchDelay)
-      return;
-
-    game->playSound(SND_SWITCH);
-    game->postEvent(make_unique<TouchDetectorEvent>(id));
-    touchDelay = 1000;
-  }
-
-  int id = 0;
-  int touchDelay = 0;
-};
-
 struct RoomBoundaryDetector : Entity
 {
   RoomBoundaryDetector()
