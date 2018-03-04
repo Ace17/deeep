@@ -25,11 +25,10 @@ struct Entity : Body
   virtual ~Entity() = default;
 
   virtual void enter() {}
-
   virtual void leave() {}
+  virtual void tick() {}
 
   virtual Actor getActor() const = 0;
-  virtual void tick() {}
 
   bool dead = false;
   int blinking = 0;
