@@ -4,9 +4,6 @@
 // Defines to completely disable specific portions of miniz.c:
 // If all macros here are defined the only functionality remaining will be CRC-32, adler-32, tinfl.
 
-// Define MINIZ_NO_ZLIB_APIS to remove all ZLIB-style compression/decompression API's.
-//#define MINIZ_NO_ZLIB_APIS
-
 // Define MINIZ_NO_MALLOC to disable all calls to malloc, free, and realloc.
 // Note if MINIZ_NO_MALLOC is defined then the user must always provide custom user alloc/free/realloc
 // callbacks to the zlib and archive API's, and a few stand-alone helper API's which don't provide custom user
@@ -27,8 +24,6 @@ typedef unsigned long mz_ulong;
 void mz_free(void *p);
 
 // Method
-
-#ifndef MINIZ_NO_ZLIB_APIS
 
 // Heap allocation callbacks.
 // Note that mz_alloc_func parameter types purpsosely differ from zlib's: items/size is size_t, not unsigned long.
@@ -114,21 +109,11 @@ int mz_uncompress(unsigned char *pDest, mz_ulong *pDest_len, const unsigned char
 // Returns a string description of the specified error code, or NULL if the error code is invalid.
 const char *mz_error(int err);
 
-#endif // MINIZ_NO_ZLIB_APIS
-
 // ------------------- Types and macros
 
 typedef unsigned int mz_uint;
 
-// An attempt to work around MSVC's spammy "warning C4127: conditional expression is constant" message.
-#ifdef _MSC_VER
-   #define MZ_MACRO_END while (0, 0)
-#else
-   #define MZ_MACRO_END while (0)
-#endif
-
-// ------------------- ZIP archive reading/writing
-
+#define MZ_MACRO_END while (0)
 
 // ------------------- Low-level Decompression API Definitions
 
@@ -236,8 +221,6 @@ void mz_free(void *p)
   MZ_FREE(p);
 }
 
-#ifndef MINIZ_NO_ZLIB_APIS
-
 static void *def_alloc_func(void *opaque, size_t items, size_t size) { (void)opaque, (void)items, (void)size; return MZ_MALLOC(items * size); }
 static void def_free_func(void *opaque, void *address) { (void)opaque, (void)address; MZ_FREE(address); }
 
@@ -256,7 +239,6 @@ typedef struct
 
 int mz_inflateInit2(mz_streamp pStream, int window_bits)
 {
-  inflate_state *pDecomp;
   if (!pStream) return MZ_STREAM_ERROR;
   if ((window_bits != MZ_DEFAULT_WINDOW_BITS) && (-window_bits != MZ_DEFAULT_WINDOW_BITS)) return MZ_PARAM_ERROR;
 
@@ -268,7 +250,7 @@ int mz_inflateInit2(mz_streamp pStream, int window_bits)
   if (!pStream->zalloc) pStream->zalloc = def_alloc_func;
   if (!pStream->zfree) pStream->zfree = def_free_func;
 
-  pDecomp = (inflate_state*)pStream->zalloc(pStream->opaque, 1, sizeof(inflate_state));
+  auto pDecomp = (inflate_state*)pStream->zalloc(pStream->opaque, 1, sizeof(inflate_state));
   if (!pDecomp) return MZ_MEM_ERROR;
 
   pStream->state = (struct mz_internal_state *)pDecomp;
@@ -431,8 +413,6 @@ const char *mz_error(int err)
   mz_uint i; for (i = 0; i < sizeof(s_error_descs) / sizeof(s_error_descs[0]); ++i) if (s_error_descs[i].m_err == err) return s_error_descs[i].m_pDesc;
   return NULL;
 }
-
-#endif //MINIZ_NO_ZLIB_APIS
 
 // ------------------- Low-level Decompression (completely independent from all compression API's)
 
