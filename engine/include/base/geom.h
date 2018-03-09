@@ -143,12 +143,12 @@ typedef GenericBox<float> Rect2f;
 template<typename T>
 bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
 {
-  auto swap = [](T& a, T& b)
-  {
-    auto t = a;
-    a = b;
-    b = t;
-  };
+  auto swap = [] (T& a, T& b)
+    {
+      auto t = a;
+      a = b;
+      b = t;
+    };
 
   if(a_left > b_left)
   {
