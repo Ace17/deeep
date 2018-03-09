@@ -146,12 +146,7 @@ struct tinfl_decompressor
   uint8_t m_raw_header[4], m_len_codes[TINFL_MAX_HUFF_SYMBOLS_0 + TINFL_MAX_HUFF_SYMBOLS_1 + 137];
 };
 
-// ------------------- End of Header: Implementation follows.
-
-typedef unsigned char mz_validate_uint32[sizeof(uint32_t) == 4 ? 1 : -1];
-
 #include <string.h>
-#include <assert.h>
 
 #define MZ_MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MZ_MIN(a, b) (((a) < (b)) ? (a) : (b))
