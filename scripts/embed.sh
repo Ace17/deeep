@@ -10,11 +10,12 @@ function main
 {
   echo "// generated file"
   echo "#include <stdlib.h>"
-  echo "unsigned char $name[] = "
+  echo "#include \"base/span.h\""
+  echo "unsigned char ${name}_data[] = "
   echo "{"
   cat $input | xxd -i
   echo "};"
-  echo "size_t ${name}_size = sizeof($name);"
+  echo "extern auto const $name = makeSpan(${name}_data);"
 }
 
 main > $output

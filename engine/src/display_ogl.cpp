@@ -26,6 +26,7 @@ using namespace std;
 #include "base/util.h"
 #include "base/scene.h"
 #include "base/geom.h"
+#include "base/span.h"
 #include "model.h"
 #include "file.h"
 
@@ -53,7 +54,7 @@ void ensureGl(char const* expr, int line)
 }
 
 static
-int compileShader(string code, int type)
+int compileShader(Span<unsigned char> code, int type)
 {
   auto shaderId = glCreateShader(type);
 
@@ -61,7 +62,7 @@ int compileShader(string code, int type)
     throw runtime_error("Can't create shader");
 
   printf("Compiling %s shader ...", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
-  auto srcPtr = code.c_str();
+  auto srcPtr = (const char*)code.data;
   SAFE_GL(glShaderSource(shaderId, 1, &srcPtr, nullptr));
   SAFE_GL(glCompileShader(shaderId));
 
@@ -179,18 +180,14 @@ int loadTexture(string path, Rect2i rect)
   return texture;
 }
 
-extern char VertexShaderCode[];
-extern size_t VertexShaderCode_size;
-extern char FragmentShaderCode[];
-extern size_t FragmentShaderCode_size;
+extern const Span<unsigned char> VertexShaderCode;
+extern const Span<unsigned char> FragmentShaderCode;
 
 static
 GLuint loadShaders()
 {
-  auto const vsCode = string(VertexShaderCode, VertexShaderCode + VertexShaderCode_size);
-  auto const fsCode = string(FragmentShaderCode, FragmentShaderCode + FragmentShaderCode_size);
-  auto const vertexId = compileShader(vsCode, GL_VERTEX_SHADER);
-  auto const fragmentId = compileShader(fsCode, GL_FRAGMENT_SHADER);
+  auto const vertexId = compileShader(VertexShaderCode, GL_VERTEX_SHADER);
+  auto const fragmentId = compileShader(FragmentShaderCode, GL_FRAGMENT_SHADER);
 
   auto const progId = linkShaders(vector<int>({ vertexId, fragmentId }));
 
