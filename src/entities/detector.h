@@ -28,11 +28,11 @@ struct RoomBoundaryDetector : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
-    return r;
+    actors.push_back(r);
   }
 
   void onCollide(Body*)
@@ -59,12 +59,12 @@ struct RoomBoundaryBlocker : Entity
     collidesWith = groupsToBlock;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
     r.effect = Effect::Blinking;
-    return r;
+    actors.push_back(r);
   }
 };
 

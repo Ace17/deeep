@@ -30,7 +30,7 @@ struct Bonus : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto s = sin(time * 0.01);
     auto r = Actor(pos, MDL_BONUS);
@@ -38,7 +38,7 @@ struct Bonus : Entity
     r.ratio = max(s, 0.0);
     r.action = modelAction;
 
-    return r;
+    actors.push_back(r);
   }
 
   virtual void tick() override

@@ -28,7 +28,7 @@ struct Entity : Body
   virtual void leave() {}
   virtual void tick() {}
 
-  virtual Actor getActor() const = 0;
+  virtual void addActors(vector<Actor>& actors) const = 0;
 
   bool dead = false;
   int blinking = 0;

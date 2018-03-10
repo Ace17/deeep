@@ -33,7 +33,7 @@ struct Wheel : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_WHEEL);
 
@@ -49,7 +49,7 @@ struct Wheel : Entity, Damageable
     if(dir > 0)
       r.scale.width = -r.scale.width;
 
-    return r;
+    actors.push_back(r);
   }
 
   virtual void tick() override

@@ -36,7 +36,7 @@ struct Explosion : Entity
     }
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_EXPLOSION);
 
@@ -44,7 +44,7 @@ struct Explosion : Entity
     r.scale = Size(3, 3);
     r.pos += Vector(-r.scale.width * 0.5, -r.scale.height * 0.5);
 
-    return r;
+    actors.push_back(r);
   }
 
   int time = 0;

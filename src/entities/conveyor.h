@@ -25,13 +25,13 @@ struct Conveyor : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_RECT);
     r.action = 2;
     r.scale = size;
     r.scale.width *= -1;
-    return r;
+    actors.push_back(r);
   }
 
   void onCollide(Body* other)

@@ -43,14 +43,14 @@ struct Bullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_BULLET);
     r.scale = size;
     r.action = 0;
     r.ratio = 0;
 
-    return r;
+    actors.push_back(r);
   }
 
   void tick() override
@@ -83,7 +83,7 @@ struct Rockman : Player, Damageable
     size = NORMAL_SIZE;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_ROCKMAN);
     r.scale = Size(3, 3);
@@ -161,7 +161,7 @@ struct Rockman : Player, Damageable
     if(blinking)
       r.effect = Effect::Blinking;
 
-    return r;
+    actors.push_back(r);
   }
 
   void think(Control const& c) override

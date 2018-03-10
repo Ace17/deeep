@@ -30,12 +30,12 @@ struct MovingPlatform : Entity
     dir = dir_;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_RECT);
     r.scale = size;
 
-    return r;
+    actors.push_back(r);
   }
 
   void tick() override
@@ -73,7 +73,7 @@ struct Elevator : Entity
     initialPos = pos;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_ELEVATOR);
     r.scale = size;
@@ -83,7 +83,7 @@ struct Elevator : Entity
     if(liftTimer > 0)
       r.effect = Effect::Blinking;
 
-    return r;
+    actors.push_back(r);
   }
 
   void onCollide(Body* other)

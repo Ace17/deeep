@@ -34,7 +34,7 @@ struct Switch : Entity
     state = var->get();
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_SWITCH);
     r.scale = size;
@@ -43,7 +43,8 @@ struct Switch : Entity
       r.effect = Effect::Blinking;
 
     r.action = state ? 1 : 0;
-    return r;
+
+    actors.push_back(r);
   }
 
   virtual void tick() override
@@ -116,13 +117,13 @@ struct Door : Entity
       solid = false;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_DOOR);
     r.action = state ? 1 : 3;
     r.ratio = 1 - (delay / 1000.0f);
     r.scale = size;
-    return r;
+    actors.push_back(r);
   }
 
   bool state = false;
@@ -149,7 +150,7 @@ struct BreakableDoor : Entity, Damageable
     collisionGroup = CG_WALLS;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_DOOR);
     r.scale = size;
@@ -157,7 +158,7 @@ struct BreakableDoor : Entity, Damageable
     if(blinking)
       r.effect = Effect::Blinking;
 
-    return r;
+    actors.push_back(r);
   }
 
   virtual void tick() override

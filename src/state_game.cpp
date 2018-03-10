@@ -93,7 +93,7 @@ struct GameState : Scene, IGame
 
     for(auto& entity : m_entities)
     {
-      r.push_back(entity->getActor());
+      entity->addActors(r);
 
       if(m_debug)
         r.push_back(getDebugActor(entity.get()));

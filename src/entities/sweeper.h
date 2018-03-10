@@ -29,7 +29,7 @@ struct Sweeper : Entity, Damageable
     vel.y = 0.003;
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor(pos, MDL_SWEEPER);
 
@@ -42,7 +42,7 @@ struct Sweeper : Entity, Damageable
     r.action = 0;
     r.ratio = (time % 800) / 800.0f;
 
-    return r;
+    actors.push_back(r);
   }
 
   virtual void tick() override

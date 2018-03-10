@@ -14,18 +14,27 @@
 
 #include "engine/tests/tests.h"
 
+template<typename T>
+Actor getActor(T& ent)
+{
+  vector<Actor> actors;
+  actors.clear();
+  ent->addActors(actors);
+  return actors[0];
+}
+
 unittest("Entity: explosion")
 {
   auto explosion = makeExplosion();
 
   assert(!explosion->dead);
-  assertEquals(0, explosion->getActor().ratio);
+  assertEquals(0, getActor(explosion).ratio);
 
   for(int i = 0; i < 10000; ++i)
     explosion->tick();
 
   assert(explosion->dead);
-  assertEquals(100, int(explosion->getActor().ratio * 100));
+  assertEquals(100, int(getActor(explosion).ratio * 100));
 }
 
 #include "entities/player.h"
@@ -45,9 +54,8 @@ struct NullPlayer : Player
   {
   }
 
-  virtual Actor getActor() const override
+  virtual void addActors(vector<Actor> &) const override
   {
-    return Actor(pos, 0);
   }
 };
 
@@ -144,7 +152,7 @@ unittest("Entity: animate")
 
   for(int i = 0; i < 1000; ++i)
   {
-    auto actor = ent->getActor();
+    auto actor = getActor(ent);
     minVal = min(minVal, actor.ratio);
     maxVal = max(maxVal, actor.ratio);
     ent->tick();
@@ -166,7 +174,7 @@ unittest("Entity: rockman falls")
   player->pos.y = 10;
   player->tick();
 
-  assertEquals(ACTION_FALL, player->getActor().action);
+  assertEquals(ACTION_FALL, getActor(player).action);
 }
 
 unittest("Entity: rockman stands on ground, then walks")
@@ -182,7 +190,7 @@ unittest("Entity: rockman stands on ground, then walks")
   for(int i = 0; i < 10; ++i)
     player->tick();
 
-  assertEquals(ACTION_STAND, player->getActor().action);
+  assertEquals(ACTION_STAND, getActor(player).action);
 
   {
     Control cmd {};
@@ -192,8 +200,8 @@ unittest("Entity: rockman stands on ground, then walks")
 
   player->tick();
 
-  assertEquals(ACTION_WALK, player->getActor().action);
-  assert(player->getActor().scale.width > 0);
+  assertEquals(ACTION_WALK, getActor(player).action);
+  assert(getActor(player).scale.width > 0);
 
   {
     Control cmd {};
@@ -203,7 +211,7 @@ unittest("Entity: rockman stands on ground, then walks")
 
   player->tick();
 
-  assertEquals(ACTION_WALK, player->getActor().action);
-  assert(player->getActor().scale.width < 0);
+  assertEquals(ACTION_WALK, getActor(player).action);
+  assert(getActor(player).scale.width < 0);
 }
 
