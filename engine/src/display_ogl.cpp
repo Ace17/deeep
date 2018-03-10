@@ -311,20 +311,20 @@ struct SdlDisplay : Display
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    mainWindow = SDL_CreateWindow(
+    m_window = SDL_CreateWindow(
         "My Game",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         resolution.width, resolution.height,
         SDL_WINDOW_OPENGL
         );
 
-    if(!mainWindow)
+    if(!m_window)
       throw runtime_error("Can't set video mode");
 
     // Create our opengl context and attach it to our window
-    mainContext = SDL_GL_CreateContext(mainWindow);
+    m_context = SDL_GL_CreateContext(m_window);
 
-    if(!mainContext)
+    if(!m_context)
       throw runtime_error("Can't create OpenGL context");
 
     printOpenGlVersion();
@@ -394,12 +394,12 @@ struct SdlDisplay : Display
   void setFullscreen(bool fs) override
   {
     auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
-    SDL_SetWindowFullscreen(mainWindow, flags);
+    SDL_SetWindowFullscreen(m_window, flags);
   }
 
   void setCaption(const char* caption) override
   {
-    SDL_SetWindowTitle(mainWindow, caption);
+    SDL_SetWindowTitle(m_window, caption);
   }
 
   void setAmbientLight(float ambientLight) override
@@ -509,7 +509,7 @@ struct SdlDisplay : Display
   {
     {
       int w, h;
-      SDL_GL_GetDrawableSize(mainWindow, &w, &h);
+      SDL_GL_GetDrawableSize(m_window, &w, &h);
       auto size = min(w, h);
       SAFE_GL(glViewport((w - size) / 2, (h - size) / 2, size, size));
     }
@@ -532,13 +532,13 @@ struct SdlDisplay : Display
 
   void endDraw() override
   {
-    SDL_GL_SwapWindow(mainWindow);
+    SDL_GL_SwapWindow(m_window);
   }
 
   // end-of public API
 
-  SDL_Window* mainWindow;
-  SDL_GLContext mainContext;
+  SDL_Window* m_window;
+  SDL_GLContext m_context;
 
   Camera m_camera;
 
