@@ -12,11 +12,10 @@ SRCS_ENGINE:=\
 	$(ENGINE_ROOT)/src/sound_ogg.cpp\
 	$(ENGINE_ROOT)/src/main.cpp\
 
-$(BIN)/$(ENGINE_ROOT)/src/vertex.glsl.cpp: $(ENGINE_ROOT)/src/vertex.glsl
-	@mkdir -p $(dir $@)
-	scripts/embed.sh "$<" "$@" "VertexShaderCode"
+$(BIN)/$(ENGINE_ROOT)/src/vertex.glsl.cpp: NAME=VertexShaderCode
+$(BIN)/$(ENGINE_ROOT)/src/fragment.glsl.cpp: NAME=FragmentShaderCode
 
-$(BIN)/$(ENGINE_ROOT)/src/fragment.glsl.cpp: $(ENGINE_ROOT)/src/fragment.glsl
+$(BIN)/%.glsl.cpp: %.glsl
 	@mkdir -p $(dir $@)
-	scripts/embed.sh "$<" "$@" "FragmentShaderCode"
+	scripts/embed.sh "$<" "$@" "$(NAME)"
 
