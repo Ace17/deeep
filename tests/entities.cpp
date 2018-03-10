@@ -41,42 +41,22 @@ unittest("Entity: explosion")
 
 struct NullPlayer : Player
 {
-  virtual void think(Control const &)
-  {
-  }
-
-  virtual float health()
-  {
-    return 0;
-  }
-
-  virtual void addUpgrade(int)
-  {
-  }
-
-  virtual void addActors(vector<Actor> &) const override
-  {
-  }
+  virtual void think(Control const &) {}
+  virtual float health() { return 0; }
+  virtual void addUpgrade(int) {}
+  virtual void addActors(vector<Actor> &) const override {}
 };
 
 struct NullGame : IGame
 {
   virtual void playSound(SOUND) {}
-
   virtual void spawn(Entity*) {}
-
   virtual IVariable* getVariable(int) { return nullptr; }
-
   virtual void postEvent(unique_ptr<Event> ) {}
-
   virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) { return nullptr; }
-
   virtual void unsubscribeForEvents(IEventSink*) {}
-
   virtual Vector2f getPlayerPosition() { return Vector2f(0, 0); }
-
   virtual void textBox(char const*) {}
-
   virtual void setAmbientLight(float) {}
 };
 
