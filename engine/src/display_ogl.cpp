@@ -447,7 +447,7 @@ struct SdlDisplay : Display
     {
       // Don't call opengl if the object isn't visible.
       // Huge FPS boost.
-      auto const CULL_DIST = 9;
+      auto const CULL_DIST = 12;
 
       if(abs(dx) > CULL_DIST || abs(dy) > CULL_DIST)
         return;
