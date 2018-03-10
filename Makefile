@@ -42,6 +42,11 @@ LDFLAGS+=$(DBGFLAGS)
 
 #------------------------------------------------------------------------------
 
+ENGINE_ROOT:=engine
+include $(ENGINE_ROOT)/project.mk
+
+#------------------------------------------------------------------------------
+
 SRCS_GAME:=\
 	src/entities/all.cpp\
 	src/entities/bonus.cpp\
@@ -63,18 +68,7 @@ SRCS_GAME:=\
 
 SRCS:=\
 	$(SRCS_GAME)\
-	$(BIN)/fragment.glsl.cpp\
-	$(BIN)/vertex.glsl.cpp\
-	engine/src/app.cpp\
-	engine/src/base64.cpp\
-	engine/src/decompress.cpp\
-	engine/src/file.cpp\
-	engine/src/json.cpp\
-	engine/src/main.cpp\
-	engine/src/model.cpp\
-	engine/src/display_ogl.cpp\
-	engine/src/audio_sdl.cpp\
-	engine/src/sound_ogg.cpp\
+	$(SRCS_ENGINE)\
 
 $(BIN)/rel/game$(EXT): $(SRCS:%.cpp=$(BIN)/%_cpp.o)
 	@mkdir -p $(dir $@)
@@ -89,10 +83,7 @@ include res-src/project.mk
 
 SRCS_TESTS:=\
 	$(SRCS_GAME)\
-	engine/src/base64.cpp\
-	engine/src/decompress.cpp\
-	engine/src/file.cpp\
-	engine/src/json.cpp\
+	$(filter-out $(ENGINE_ROOT)/src/main.cpp, $(SRCS_ENGINE))\
 	engine/tests/base64.cpp\
 	engine/tests/decompress.cpp\
 	engine/tests/json.cpp\
@@ -109,13 +100,5 @@ $(BIN)/tests$(EXT): $(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
 TARGETS+=$(BIN)/tests$(EXT)
-
-$(BIN)/vertex.glsl.cpp: engine/src/vertex.glsl
-	@mkdir -p $(dir $@)
-	scripts/embed.sh "$<" "$@" "VertexShaderCode"
-
-$(BIN)/fragment.glsl.cpp: engine/src/fragment.glsl
-	@mkdir -p $(dir $@)
-	scripts/embed.sh "$<" "$@" "FragmentShaderCode"
 
 include build/common.mak
