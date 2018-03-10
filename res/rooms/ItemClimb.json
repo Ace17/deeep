@@ -1,10 +1,10 @@
-{ "height":16,
+{ "height":64,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYByEGBsgVx8x5pADaK1\/pMujqyNVjlj9zDjkmNHciM0ccvSjY2Y8mNb5DAAl1wCi",
+         "data":"eJzt0ksKACAIBFDF+9+5bQsjP5AaI8zyDRHDRMQNo13UWXoiB1\/r946s1zosG4t463Ynee3g53itp9pX\/AP8f97TVe1vffDwmQ1GfebN8HYrBy8P\/Sne7SL9swBYRQLH",
          "encoding":"base64",
-         "height":16,
+         "height":64,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
@@ -25,8 +25,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":208
+                 "x":112,
+                 "y":880
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -37,7 +37,7 @@
  "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "tiledversion":"1.0.3",
  "tileheight":16,
  "tilesets":[
         {
