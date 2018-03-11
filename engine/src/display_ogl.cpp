@@ -61,7 +61,8 @@ int compileShader(Span<unsigned char> code, int type)
 
   printf("Compiling %s shader ...", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
   auto srcPtr = (const char*)code.data;
-  SAFE_GL(glShaderSource(shaderId, 1, &srcPtr, nullptr));
+  auto length = (GLint)code.len;
+  SAFE_GL(glShaderSource(shaderId, 1, &srcPtr, &length));
   SAFE_GL(glCompileShader(shaderId));
 
   // Check compile result
