@@ -19,6 +19,7 @@
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
 #include "file.h"
+#include "voice.h"
 
 #include "base/util.h"
 #include "base/span.h"
@@ -26,59 +27,6 @@
 using namespace std;
 
 auto const MAX_VOICES = 16;
-
-struct Voice
-{
-  bool isDead() const
-  {
-    return m_isDead;
-  }
-
-  void play(Sound* sound, bool loop = false)
-  {
-    m_sound = sound;
-    m_player = sound->createPlayer();
-    m_isDead = false;
-    m_loop = loop;
-  }
-
-  void mix(Span<float> output)
-  {
-    while(output.len > 0)
-    {
-      auto const n = m_player->mix(output);
-      output.data += n;
-      output.len -= n;
-
-      if(output.len == 0)
-        break;
-
-      m_sound = nextSound();
-
-      if(!m_sound)
-      {
-        m_isDead = true;
-        break;
-      }
-
-      m_player = m_sound->createPlayer();
-    }
-  }
-
-private:
-  Sound* nextSound()
-  {
-    if(m_loop)
-      return m_sound;
-
-    return nullptr;
-  }
-
-  bool m_isDead = true;
-  bool m_loop = false;
-  Sound* m_sound;
-  unique_ptr<ISoundPlayer> m_player;
-};
 
 struct SdlAudio : Audio
 {
@@ -152,9 +100,6 @@ struct SdlAudio : Audio
 
   void playMusic(int id) override
   {
-    if(id == currMusic)
-      return;
-
     char path[256];
     sprintf(path, "res/music/music-%02d.ogg", id);
 
@@ -162,12 +107,16 @@ struct SdlAudio : Audio
     {
       printf("music '%s' was not found, fallback on default music\n", path);
       strcpy(path, "res/music/default.ogg");
+      id = 0;
     }
+
+    if(id == currMusic)
+      return;
 
     music = loadSoundFile(path);
 
     SDL_LockAudioDevice(audioDevice);
-    voices[0].play(music.get(), true);
+    voices[0].play(music.get(), 0.999, true);
     currMusic = id;
     SDL_UnlockAudioDevice(audioDevice);
   }
@@ -202,9 +151,18 @@ struct SdlAudio : Audio
       mixBuffer.data(), sampleCount / ratio
     };
 
-    for(auto& voice : voices)
-      if(!voice.isDead())
-        voice.mix(buff);
+    while(buff.len > 0)
+    {
+      auto chunk = buff;
+      chunk.len = min(CHUNK_PERIOD, chunk.len);
+
+      for(auto& voice : voices)
+        if(!voice.isDead())
+          voice.mix(chunk);
+
+      buff.data += chunk.len;
+      buff.len -= chunk.len;
+    }
 
     for(int i = 0; i < sampleCount; ++i)
       stream[i] = mixBuffer[i / ratio];

@@ -16,7 +16,7 @@
 
 using namespace std;
 
-struct OggSoundPlayer : ISoundPlayer
+struct OggSoundPlayer : IAudioSource
 {
   OggSoundPlayer(Span<uint8_t> data) : m_data(data)
   {
@@ -126,7 +126,7 @@ struct OggSound : Sound
     m_data = read(filename);
   }
 
-  unique_ptr<ISoundPlayer> createPlayer()
+  unique_ptr<IAudioSource> createSource()
   {
     return make_unique<OggSoundPlayer>(Span<uint8_t> { (uint8_t*)m_data.data(), (int)m_data.size() });
   }

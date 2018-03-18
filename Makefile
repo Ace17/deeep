@@ -84,6 +84,7 @@ include res-src/project.mk
 SRCS_TESTS:=\
 	$(SRCS_GAME)\
 	$(filter-out $(ENGINE_ROOT)/src/main.cpp, $(SRCS_ENGINE))\
+	engine/tests/audio.cpp\
 	engine/tests/base64.cpp\
 	engine/tests/decompress.cpp\
 	engine/tests/json.cpp\

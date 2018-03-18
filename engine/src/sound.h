@@ -9,16 +9,18 @@
 #include <memory>
 #include "base/span.h"
 
-struct ISoundPlayer
+// A sound being played (holds the current sound position)
+struct IAudioSource
 {
-  virtual ~ISoundPlayer() = default;
+  virtual ~IAudioSource() = default;
   virtual int mix(Span<float> output) = 0;
 };
 
+// A chunk of audio
 struct Sound
 {
   virtual ~Sound() = default;
-  virtual std::unique_ptr<ISoundPlayer> createPlayer() = 0;
+  virtual std::unique_ptr<IAudioSource> createSource() = 0;
 };
 
 std::unique_ptr<Sound> loadSoundFile(std::string filename);
