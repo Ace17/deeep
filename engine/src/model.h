@@ -22,8 +22,7 @@ struct Action
 struct Model
 {
   uint32_t buffer = 0;
-  uint32_t indices = 0;
-  int numIndices = 0;
+  int vertexCount = 0;
   int size = 0;
   vector<Action> actions;
 };

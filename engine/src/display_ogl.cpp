@@ -27,6 +27,7 @@ using namespace std;
 #include "base/span.h"
 #include "model.h"
 #include "file.h"
+#include "matrix3.h"
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
@@ -175,6 +176,8 @@ int loadTexture(string path, Rect2i rect)
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
   return texture;
 }
@@ -204,16 +207,13 @@ Model boxModel()
 
   const GLfloat myBox[] =
   {
-    0, h, 0, /* uv */ 0, 1,
-    0, 0, 0, /* uv */ 0, 0,
-    w, 0, 0, /* uv */ 1, 0,
-    w, h, 0, /* uv */ 1, 1,
-  };
+    0, h, /* uv */ 0, 1,
+    0, 0, /* uv */ 0, 0,
+    w, 0, /* uv */ 1, 0,
 
-  const GLushort indices[] =
-  {
-    0, 1, 2,
-    2, 3, 0,
+    w, 0, /* uv */ 1, 0,
+    w, h, /* uv */ 1, 1,
+    0, h, /* uv */ 0, 1,
   };
 
   Model model;
@@ -224,11 +224,7 @@ Model boxModel()
   SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
   SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(myBox), myBox, GL_STATIC_DRAW));
 
-  SAFE_GL(glGenBuffers(1, &model.indices));
-  SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
-  SAFE_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW));
-
-  model.numIndices = sizeof(indices) / sizeof(*indices);
+  model.vertexCount = 6;
 
   return model;
 }
@@ -236,6 +232,7 @@ Model boxModel()
 struct Camera
 {
   Vector2f pos;
+  float angle = 0;
   bool valid = false;
 };
 
@@ -299,6 +296,49 @@ void printOpenGlVersion()
 
   printf("OpenGL version: %s\n", notNull(sVersion));
   printf("OpenGL shading version: %s\n", notNull(sLangVersion));
+}
+
+static
+void setOpenglMatrix4f(GLint matrixId, Matrix3f const& mat)
+{
+  float mvp[4][4] = { 0 };
+
+  // opengl expects a column-major matrix
+  // (i.e columns are contiguous in memory)
+  // So the indexing is:
+  // mvp[col][row] = mat[row][col]
+
+  // row #0
+  mvp[0][0] = mat[0][0];
+  mvp[1][0] = mat[0][1];
+  mvp[2][0] = 0;
+  mvp[3][0] = mat[0][2];
+
+  // row #1
+  mvp[0][1] = mat[1][0];
+  mvp[1][1] = mat[1][1];
+  mvp[2][1] = 0;
+  mvp[3][1] = mat[1][2];
+
+  // row #2
+  mvp[0][2] = 0;
+  mvp[1][2] = 0;
+  mvp[2][2] = 1;
+  mvp[3][2] = 0;
+
+  // row #3
+  mvp[0][3] = mat[2][0];
+  mvp[1][3] = mat[2][1];
+  mvp[2][3] = 0;
+  mvp[3][3] = mat[2][2];
+
+  SAFE_GL(glUniformMatrix4fv(matrixId, 1, GL_FALSE, mvp[0]));
+};
+
+template<typename T>
+T blend(T a, T b, float alpha)
+{
+  return a * (1 - alpha) + b * alpha;
 }
 
 struct SdlDisplay : Display
@@ -365,7 +405,7 @@ struct SdlDisplay : Display
 
   void setCamera(Vector2f pos) override
   {
-    auto cam = (Camera { pos });
+    auto cam = (Camera { pos, 0 });
 
     if(!m_camera.valid)
     {
@@ -381,13 +421,8 @@ struct SdlDisplay : Display
         m_camera = cam;
     }
 
-    auto blend = [] (Vector2f a, Vector2f b)
-      {
-        auto const alpha = 0.3f;
-        return a * (1 - alpha) + b * alpha;
-      };
-
-    m_camera.pos = blend(m_camera.pos, cam.pos);
+    m_camera.pos = blend(m_camera.pos, cam.pos, 0.3f);
+    m_camera.angle = cam.angle;
   }
 
   void setFullscreen(bool fs) override
@@ -406,20 +441,10 @@ struct SdlDisplay : Display
     m_ambientLight = ambientLight;
   }
 
+  int m_blinkCounter = 0;
+
   void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio)
-  {
-    float c = m_ambientLight;
-    SAFE_GL(glUniform4f(m_colorId, c, c, c, 0));
-
-    if(blinking)
     {
-      static int blinkCounter;
-      blinkCounter++;
-
-      if((blinkCounter / 4) % 2)
-        SAFE_GL(glUniform4f(m_colorId, 0.8, 0.4, 0.4, 0));
-    }
-
     if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
       throw runtime_error("invalid action index");
 
@@ -431,8 +456,6 @@ struct SdlDisplay : Display
     auto const N = (int)action.textures.size();
     auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
     glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     if(where.size.width < 0)
       where.pos.x -= where.size.width;
@@ -440,43 +463,43 @@ struct SdlDisplay : Display
     if(where.size.height < 0)
       where.pos.y -= where.size.height;
 
-    auto const dx = where.pos.x - cam.pos.x;
-    auto const dy = where.pos.y - cam.pos.y;
+    auto const relPos = where.pos - cam.pos;
 
     {
       // Don't call opengl if the object isn't visible.
       // Huge FPS boost.
       auto const CULL_DIST = 12;
 
-      if(abs(dx) > CULL_DIST || abs(dy) > CULL_DIST)
+      if(abs(relPos.x) > CULL_DIST || abs(relPos.y) > CULL_DIST)
         return;
     }
 
     auto const sx = where.size.width;
     auto const sy = where.size.height;
 
-    float mat[16] =
-    {
-      sx, 0, 0, 0,
-      0, sy, 0, 0,
-      0, 0, 1, 0,
-      dx, dy, 0, 1,
-    };
+    auto mat = scale(Vector2f(sx, sy));
+    mat = translate(relPos) * mat;
+    mat = rotate(m_camera.angle) * mat;
 
-    // scaling
-    {
-      for(auto& val : mat)
-        val *= 0.125;
+    auto shrink = scale(0.125 * Vector2f(1, 1));
+    mat = shrink * mat;
 
-      mat[15] = 1;
+    setOpenglMatrix4f(m_MVP, mat);
+
+    // lighting
+    {
+      float c = m_ambientLight;
+      SAFE_GL(glUniform4f(m_colorId, c, c, c, 0));
+
+      if(blinking)
+      {
+        if((m_blinkCounter / 4) % 2)
+          SAFE_GL(glUniform4f(m_colorId, 0.8, 0.4, 0.4, 0));
+      }
     }
 
-    SAFE_GL(glUniformMatrix4fv(m_MVP, 1, GL_FALSE, mat));
-
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-    SAFE_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.indices));
-
-    SAFE_GL(glDrawElements(GL_TRIANGLES, model.numIndices, GL_UNSIGNED_SHORT, 0));
+    SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, model.vertexCount));
   }
 
   void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio) override
@@ -506,6 +529,8 @@ struct SdlDisplay : Display
 
   void beginDraw() override
   {
+    m_blinkCounter++;
+
     {
       int w, h;
       SDL_GL_GetDrawableSize(m_window, &w, &h);
@@ -521,11 +546,11 @@ struct SdlDisplay : Display
     {
       // connect the xyz to the "a_position" attribute of the vertex shader
       SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
-      SAFE_GL(glVertexAttribPointer(m_positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr));
+      SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr));
 
       // connect the uv coords to the "v_texCoord" attribute of the vertex shader
       SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
-      SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(GLfloat), (const GLvoid*)(3 * sizeof(GLfloat))));
+      SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_TRUE, 4 * sizeof(GLfloat), (const GLvoid*)(2 * sizeof(GLfloat))));
     }
   }
 
