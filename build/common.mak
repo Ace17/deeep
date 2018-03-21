@@ -82,13 +82,13 @@ $(BIN)/%_cpp.o: %.cpp
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
 	$(Q)$(CXX) -c "$<" -o "$@" $(DINCS) $(CXXFLAGS)
-	@$(CXX) -MM "$<" -MT "$@" -o "$(BIN)/$*_cpp.deps" $(DINCS) $(CXXFLAGS)
+	@$(CXX) -MP -MM "$<" -MT "$@" -o "$(BIN)/$*_cpp.deps" $(DINCS) $(CXXFLAGS)
 
 $(BIN)/%_c.o: %.c
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^)  $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
 	$(Q)$(CC) -c  "$<" -o  "$@" $(DINCS) $(CXXFLAGS)
-	@$(CC) -MM "$<" -MT "$@" -o "$(BIN)/$*_c.deps" $(DINCS) $(CXXFLAGS)
+	@$(CC) -MP -MM "$<" -MT "$@" -o "$(BIN)/$*_c.deps" $(DINCS) $(CXXFLAGS)
 
 # Dependency generation
 

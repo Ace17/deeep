@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+readonly url=$1
+readonly rev=$2
+readonly dst=$3
+
+if [ -d ${dst} ] ; then
+  bzr update $dst -q -r $rev
+else
+  rm -rf ${dst} ${dst}.locked
+  bzr checkout $url --lightweight -q -r $rev ${dst}.locked
+  mv ${dst}.locked ${dst}
+fi
+
