@@ -13,7 +13,7 @@
 struct IAudioSource
 {
   virtual ~IAudioSource() = default;
-  virtual int mix(Span<float> output) = 0;
+  virtual int read(Span<float> output) = 0;
 };
 
 // A chunk of audio

@@ -13,7 +13,7 @@ struct DummyPlayer : IAudioSource
   {
   }
 
-  virtual int mix(Span<float> output)
+  virtual int read(Span<float> output)
   {
     const auto N = min(output.len, m_length - m_state);
     for(auto i =0;i < N;++i)

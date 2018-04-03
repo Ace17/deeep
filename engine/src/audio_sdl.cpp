@@ -113,11 +113,13 @@ struct SdlAudio : Audio
     if(id == currMusic)
       return;
 
-    music = loadSoundFile(path);
+    currMusic = id;
+
+    auto nextMusic = loadSoundFile(path);
 
     SDL_LockAudioDevice(audioDevice);
-    voices[0].play(music.get(), 0.999, true);
-    currMusic = id;
+    voices[0].fadeOut();
+    m_nextMusic = move(nextMusic);
     SDL_UnlockAudioDevice(audioDevice);
   }
 
@@ -128,27 +130,36 @@ struct SdlAudio : Audio
     pThis->mixAudio((float*)stream, iNumBytes / sizeof(float));
   }
 
+  int currMusic = -1;
+  vector<unique_ptr<Sound>> sounds;
   SDL_AudioDeviceID audioDevice;
+
+  // accessed by the audio thread
   SDL_AudioSpec audiospec;
   vector<Voice> voices;
-  vector<unique_ptr<Sound>> sounds;
-  unique_ptr<Sound> music;
+  unique_ptr<Sound> m_music;
+  unique_ptr<Sound> m_nextMusic;
   vector<float> mixBuffer;
-  int currMusic = -1;
 
   void mixAudio(float* stream, int sampleCount)
   {
-    int ratio = 1;
+    if(m_nextMusic && voices[0].isDead())
+    {
+      m_music = move(m_nextMusic);
+      voices[0].play(m_music.get(), 4, true);
+    }
+
+    int shift = 0;
 
     // HACK: poor man's resampling
     if(audiospec.freq > 22050)
-      ratio = 2;
+      shift = 1;
 
     for(auto& val : mixBuffer)
       val = 0;
 
     Span<float> buff {
-      mixBuffer.data(), sampleCount / ratio
+      mixBuffer.data(), sampleCount >> shift
     };
 
     while(buff.len > 0)
@@ -165,7 +176,7 @@ struct SdlAudio : Audio
     }
 
     for(int i = 0; i < sampleCount; ++i)
-      stream[i] = mixBuffer[i / ratio];
+      stream[i] = mixBuffer[i >> shift];
   }
 
   Voice* allocVoice()

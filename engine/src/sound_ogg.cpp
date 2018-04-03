@@ -8,11 +8,10 @@
 // Uses libogg/libvorbis.
 
 #include "sound.h"
-#include <cassert>
 #include <string.h> // memcpy
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
-#include "file.h"
+#include "file.h" // read
 
 using namespace std;
 
@@ -47,7 +46,7 @@ struct OggSoundPlayer : IAudioSource
     ov_clear(&m_ogg);
   }
 
-  int mix(Span<float> output)
+  int read(Span<float> output)
   {
     int r = 0;
 
@@ -69,7 +68,7 @@ struct OggSoundPlayer : IAudioSource
       sampleCount -= gotSamples;
 
       for(int i = 0; i < gotSamples; ++i)
-        *output.data++ += (m_buff[i] / 32768.0);
+        *output.data++ = (m_buff[i] / 32768.0);
     }
 
     return r;
@@ -128,7 +127,8 @@ struct OggSound : Sound
 
   unique_ptr<IAudioSource> createSource()
   {
-    return make_unique<OggSoundPlayer>(Span<uint8_t> { (uint8_t*)m_data.data(), (int)m_data.size() });
+    auto data = Span<uint8_t> { (uint8_t*)m_data.data(), (int)m_data.size() };
+    return make_unique<OggSoundPlayer>(data);
   }
 
   string m_data;

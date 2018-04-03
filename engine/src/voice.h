@@ -19,7 +19,7 @@ struct LoopingSource : IAudioSource
 {
   LoopingSource(Sound* sound_) : sound(sound_) {}
 
-  virtual int mix(Span<float> dst)
+  virtual int read(Span<float> dst)
   {
     auto output = dst;
 
@@ -28,7 +28,7 @@ struct LoopingSource : IAudioSource
       if(!src)
         src = sound->createSource();
 
-      auto const N = src->mix(output);
+      auto const N = src->read(output);
       output.len -= N;
       output.data += N;
 
@@ -56,13 +56,13 @@ struct Voice
     m_isDead = false;
 
     if(loop)
-      m_player = make_unique<LoopingSource>(sound);
+      m_source = make_unique<LoopingSource>(sound);
     else
-      m_player = sound->createSource();
+      m_source = sound->createSource();
 
-    m_alpha = fadeInInertia;
     m_volume = 0;
     m_targetVolume = 1;
+    m_volumeIncrement = (m_targetVolume - m_volume) / (200 * fadeInInertia);
   }
 
   void mix(Span<float> output)
@@ -71,14 +71,14 @@ struct Voice
 
     while(output.len > 0)
     {
-      if(!m_player)
+      if(!m_source)
         break;
 
       float chunkData[CHUNK_PERIOD] = { 0 };
       auto chunk = makeSpan(chunkData);
       chunk.len = output.len;
 
-      auto const N = m_player->mix(chunk);
+      auto const N = m_source->read(chunk);
 
       for(int i = 0; i < chunk.len; ++i)
         output.data[i] += chunk.data[i] * m_volume;
@@ -88,23 +88,48 @@ struct Voice
 
       // finished playing?
       if(N == 0)
-        m_player.reset();
+        m_source.reset();
     }
 
-    if(!m_player)
+    if(!m_source)
       m_isDead = true;
   }
 
   void startChunk()
   {
-    m_volume = m_alpha * m_volume + (1 - m_alpha) * m_targetVolume;
+    m_volume += m_volumeIncrement;
+
+    if(m_volumeIncrement > 0)
+    {
+      if(m_volume > m_targetVolume)
+        m_volume = m_targetVolume;
+    }
+    else
+    {
+      if(m_volume < m_targetVolume)
+        m_volume = m_targetVolume;
+    }
+
+    if(m_fadingOut && m_volume == 0)
+      m_isDead = true;
   }
+
+  void fadeOut()
+  {
+    auto const fadeOutInertia = 10;
+    m_fadingOut = true;
+    m_targetVolume = 0.0;
+    m_volumeIncrement = (m_targetVolume - m_volume) / (200 * fadeOutInertia);
+  }
+
+  static const int FADE_CHUNKS = 1000;
 
 private:
   float m_volume = 0.0;
-  float m_alpha = 0.5;
+  float m_volumeIncrement = 0.0;
   float m_targetVolume = 1.0;
+  bool m_fadingOut = false;
   bool m_isDead = true;
-  unique_ptr<IAudioSource> m_player;
+  unique_ptr<IAudioSource> m_source;
 };
 
