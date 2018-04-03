@@ -350,6 +350,15 @@ struct OpenglDisplay : Display
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+    // require OpenGL 2.0, ES or Core. No compatibility mode.
+    {
+      // SDL_GL_CONTEXT_PROFILE_ES: works in browser, not in native
+      // SDL_GL_CONTEXT_PROFILE_CORE: works in native, not in browser
+      SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE | SDL_GL_CONTEXT_PROFILE_ES);
+      SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+      SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    }
+
     m_window = SDL_CreateWindow(
         "My Game",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
