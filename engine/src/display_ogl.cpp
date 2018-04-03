@@ -445,6 +445,9 @@ struct OpenglDisplay : Display
 
   void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio)
   {
+    if(model.actions.empty())
+      throw runtime_error("model has no actions");
+
     if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
       throw runtime_error("invalid action index");
 
