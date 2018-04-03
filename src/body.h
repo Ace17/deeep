@@ -26,15 +26,19 @@ struct Body
   bool solid = false;
   bool pusher = false; // push and crush?
   Vector pos;
+
+  // shape used for collision detection
   Size size = UnitSize;
+
+  // collision masks
   int collisionGroup = 1;
   int collidesWith = 0xFFFF;
-  Body* ground = nullptr; // the body we rest on (if any)
+
+  // the body we rest on (if any)
+  Body* ground = nullptr;
 
   // only called if (this->collidesWith & other->collisionGroup)
-  function<void(Body*)> onCollision = &nop;
-
-  static void nop(Body*) {}
+  function<void(Body*)> onCollision = [] (Body*) {};
 
   Box getFBox() const
   {
