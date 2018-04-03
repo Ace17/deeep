@@ -444,7 +444,7 @@ struct SdlDisplay : Display
   int m_blinkCounter = 0;
 
   void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio)
-    {
+  {
     if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
       throw runtime_error("invalid action index");
 
