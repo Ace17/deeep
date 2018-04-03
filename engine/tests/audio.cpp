@@ -48,19 +48,19 @@ bool buffEquals(float (&expected)[N], float (&actual)[N])
   }
 
   if(mismatch)
-    {
-      fprintf(stderr, "Expected: ");
-      for(auto& val : expected)
-        fprintf(stderr, "%.0f ", val);
-      fprintf(stderr, "\n");
+  {
+    fprintf(stderr, "Expected: ");
+    for(auto& val : expected)
+      fprintf(stderr, "%.0f ", val);
+    fprintf(stderr, "\n");
 
-      fprintf(stderr, "     Got: ");
-      for(auto& val : actual)
-        fprintf(stderr, "%.0f ", val);
-      fprintf(stderr, "\n");
+    fprintf(stderr, "     Got: ");
+    for(auto& val : actual)
+      fprintf(stderr, "%.0f ", val);
+    fprintf(stderr, "\n");
 
-      return false;
-    }
+    return false;
+  }
 
   return true;
 }
