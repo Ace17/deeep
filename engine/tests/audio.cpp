@@ -89,7 +89,7 @@ unittest("Audio: play voice until end")
 
   v.mix(result);
 
-  float expected[32] = { 
+  float expected[32] = {
     1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2,
     // sound ends, then only silence
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

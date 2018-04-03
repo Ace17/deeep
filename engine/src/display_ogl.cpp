@@ -341,7 +341,7 @@ T blend(T a, T b, float alpha)
   return a * (1 - alpha) + b * alpha;
 }
 
-struct SdlDisplay : Display
+struct OpenglDisplay : Display
 {
   void init(Size2i resolution) override
   {
@@ -580,6 +580,6 @@ struct SdlDisplay : Display
 
 Display* createDisplay()
 {
-  return new SdlDisplay;
+  return new OpenglDisplay;
 }
 
