@@ -231,7 +231,7 @@ Model boxModel()
 
 struct Camera
 {
-  Vector2f pos;
+  Vector2f pos = Vector2f(0, 0);
   float angle = 0;
   bool valid = false;
 };
@@ -505,7 +505,7 @@ struct SdlDisplay : Display
   void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio) override
   {
     auto& model = m_Models.at(modelId);
-    auto cam = useWorldRefFrame ? m_camera : (Camera { Vector2f(0, 0) });
+    auto cam = useWorldRefFrame ? m_camera : Camera();
     drawModel(where, cam, model, blinking, actionIdx, ratio);
   }
 
@@ -517,7 +517,7 @@ struct SdlDisplay : Display
     rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
     rect.pos.y = pos.y;
 
-    auto cam = (Camera { Vector2f(0, 0) });
+    auto cam = Camera();
 
     while(*text)
     {
