@@ -40,9 +40,14 @@ struct DummySound : Sound
 template<size_t N>
 bool buffEquals(float (&expected)[N], float (&actual)[N])
 {
+  bool mismatch = false;
   for(int i=0;i < (int)N;++i)
   {
     if(expected[i] != actual[i])
+      mismatch = true;
+  }
+
+  if(mismatch)
     {
       fprintf(stderr, "Expected: ");
       for(auto& val : expected)
@@ -56,7 +61,7 @@ bool buffEquals(float (&expected)[N], float (&actual)[N])
 
       return false;
     }
-  }
+
   return true;
 }
 
