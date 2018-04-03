@@ -9,6 +9,7 @@
 // splash menu
 
 #include "base/scene.h"
+#include "base/view.h"
 
 #include "toggle.h"
 #include "models.h" // MDL_SPLASH

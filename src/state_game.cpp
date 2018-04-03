@@ -12,6 +12,7 @@
 #include <list>
 
 #include "base/scene.h"
+#include "base/view.h"
 #include "base/util.h"
 
 #include "entities/player.h"

@@ -9,6 +9,7 @@
 // main FSM: dispatching between various game states
 
 #include "state_machine.h"
+#include "base/view.h"
 
 unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view);
 unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level);

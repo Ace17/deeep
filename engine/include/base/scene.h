@@ -16,8 +16,6 @@
 
 using namespace std;
 
-typedef int SOUND;
-typedef int MUSIC;
 typedef int MODEL;
 
 enum class Effect
@@ -50,16 +48,6 @@ struct Control
   bool dash;
 
   bool debug;
-};
-
-// outside world, seen by the game
-struct View
-{
-  virtual void textBox(char const* msg) = 0;
-  virtual void playMusic(MUSIC id) = 0;
-  virtual void playSound(SOUND id) = 0;
-  virtual void setCameraPos(Vector2f pos) = 0;
-  virtual void setAmbientLight(float amount) = 0;
 };
 
 // game, seen by the outside world
