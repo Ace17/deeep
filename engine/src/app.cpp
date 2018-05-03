@@ -26,7 +26,7 @@ using namespace std;
 
 auto const TIMESTEP = 1;
 
-Display* createDisplay();
+Display* createDisplay(Size2i resolution);
 Audio* createAudio();
 
 Scene* createGame(View* view, vector<string> argv);
@@ -41,8 +41,7 @@ public:
   {
     SDL_Init(0);
 
-    m_display.reset(createDisplay());
-    m_display->init(Size2i(768, 768));
+    m_display.reset(createDisplay(Size2i(768, 768)));
     m_audio.reset(createAudio());
 
     for(auto res : getResources())

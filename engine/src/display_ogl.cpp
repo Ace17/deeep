@@ -343,7 +343,7 @@ T blend(T a, T b, float alpha)
 
 struct OpenglDisplay : Display
 {
-  void init(Size2i resolution) override
+  OpenglDisplay(Size2i resolution)
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
       throw runtime_error("Can't init SDL");
@@ -601,8 +601,8 @@ struct OpenglDisplay : Display
   float m_ambientLight = 0;
 };
 
-Display* createDisplay()
+Display* createDisplay(Size2i resolution)
 {
-  return new OpenglDisplay;
+  return new OpenglDisplay(resolution);
 }
 
