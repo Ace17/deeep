@@ -60,7 +60,7 @@ int compileShader(Span<unsigned char> code, int type)
   if(!shaderId)
     throw runtime_error("Can't create shader");
 
-  printf("Compiling %s shader ...", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
+  printf("[display] compiling %s shader ... ", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
   auto srcPtr = (const char*)code.data;
   auto length = (GLint)code.len;
   SAFE_GL(glShaderSource(shaderId, 1, &srcPtr, &length));
@@ -90,7 +90,7 @@ static
 int linkShaders(vector<int> ids)
 {
   // Link the program
-  printf("Linking shaders ... ");
+  printf("[display] Linking shaders ... ");
   auto ProgramID = glCreateProgram();
 
   for(auto id : ids)
@@ -271,7 +271,7 @@ Model loadAnimation(string path)
 
     if(!exists(path))
     {
-      printf("tileset '%s' was not found, fallback on default tileset\n", path.c_str());
+      printf("[display] tileset '%s' was not found, fallback on default tileset\n", path.c_str());
       path = "res/tiles/default.png";
     }
 
@@ -294,8 +294,8 @@ void printOpenGlVersion()
       return s ? s : "<null>";
     };
 
-  printf("OpenGL version: %s\n", notNull(sVersion));
-  printf("OpenGL shading version: %s\n", notNull(sLangVersion));
+  printf("[display] OpenGL version: %s\n", notNull(sVersion));
+  printf("[display] OpenGL shading version: %s\n", notNull(sLangVersion));
 }
 
 static
@@ -402,6 +402,8 @@ struct OpenglDisplay : Display
 
     m_texCoordLoc = glGetAttribLocation(m_programId, "a_texCoord");
     assert(m_texCoordLoc >= 0);
+
+    printf("[display] init OK\n");
   }
 
   void loadModel(int id, const char* path) override

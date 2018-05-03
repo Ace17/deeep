@@ -53,7 +53,7 @@ struct SdlAudio : Audio
     {
       int freq = audiospec.freq;
       int channels = audiospec.channels;
-      printf("Audio: %d Hz %d channels\n", freq, channels);
+      printf("[audio] %d Hz %d channels\n", freq, channels);
     }
 
     voices.resize(MAX_VOICES);
@@ -61,6 +61,7 @@ struct SdlAudio : Audio
     mixBuffer.resize(audiospec.samples * audiospec.channels);
 
     SDL_PauseAudioDevice(audioDevice, 0);
+    printf("[audio] init OK\n");
   }
 
   ~SdlAudio()
@@ -69,13 +70,14 @@ struct SdlAudio : Audio
 
     SDL_CloseAudioDevice(audioDevice);
     SDL_QuitSubSystem(SDL_INIT_AUDIO);
+    printf("[audio] shutdown OK\n");
   }
 
   void loadSound(int id, string path) override
   {
     if(!exists(path))
     {
-      printf("sound '%s' was not found, fallback on default sound\n", path.c_str());
+      printf("[audio] sound '%s' was not found, fallback on default sound\n", path.c_str());
       path = "res/sounds/default.ogg";
     }
 
