@@ -406,6 +406,15 @@ struct OpenglDisplay : Display
     printf("[display] init OK\n");
   }
 
+  ~OpenglDisplay()
+  {
+    SDL_GL_DeleteContext(m_context);
+    SDL_DestroyWindow(m_window);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+
+    printf("[display] shutdown OK\n");
+  }
+
   void loadModel(int id, const char* path) override
   {
     if((int)m_Models.size() <= id)
