@@ -502,7 +502,7 @@ struct OpenglDisplay : Display
 
     auto mat = scale(Vector2f(sx, sy));
     mat = translate(relPos) * mat;
-    mat = rotate(m_camera.angle) * mat;
+    mat = rotate(cam.angle) * mat;
 
     auto shrink = scale(0.125 * Vector2f(1, 1));
     mat = shrink * mat;
