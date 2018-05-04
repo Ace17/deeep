@@ -47,24 +47,22 @@ struct Physics : IPhysics
 
   bool moveBody(Body* body, Vector delta)
   {
-    auto newPos = body->pos + delta;
-
     auto frect = body->getFBox();
-    frect.pos = newPos;
+    frect.pos += delta;
 
-    auto rect = roundBox(frect);
+    auto const irect = roundBox(frect);
 
-    auto const blocked = isSolid(body, rect);
+    auto const blocked = isSolid(body, irect);
 
     if(blocked)
     {
-      if(auto blocker = getSolidBodyInBox(rect, body))
+      if(auto blocker = getSolidBodyInBox(irect, body))
         collideBodies(*body, *blocker);
     }
     else
     {
       if(body->pusher)
-        pushOthers(body, rect, delta);
+        pushOthers(body, irect, delta);
 
       body->pos = frect.pos;
       // assert(!getSolidBodyInBox(body->getBox(), body));
