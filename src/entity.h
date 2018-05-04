@@ -14,6 +14,7 @@
 #include "base/geom.h"
 #include "game.h"
 #include "body.h"
+#include "physics_probe.h"
 
 struct Damageable
 {

@@ -51,10 +51,3 @@ struct Body
   }
 };
 
-struct IPhysicsProbe
-{
-  virtual bool moveBody(Body* body, Vector delta) = 0;
-  virtual bool isSolid(const Body* body, IntBox) const = 0;
-  virtual Body* getBodiesInBox(IntBox myBox, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
-};
-
