@@ -8,6 +8,7 @@
 
 #include "entity_factory.h"
 #include <map>
+#include <functional>
 #include <stdexcept>
 
 using namespace std;

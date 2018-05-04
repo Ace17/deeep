@@ -9,7 +9,6 @@
 #pragma once
 
 #include "entity.h"
-#include <functional>
 #include <memory>
 #include <map>
 
