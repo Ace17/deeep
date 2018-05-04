@@ -293,7 +293,9 @@ Quest loadQuest(string path) // tiled TMX format
 
   Quest r;
 
-  for(auto& roomValue : layer->getMember<json::Array>("objects")->elements)
+  auto& rooms = layer->getMember<json::Array>("objects")->elements;
+
+  for(auto& roomValue : rooms)
   {
     auto jsonRoom = json::cast<json::Object>(roomValue.get());
 
