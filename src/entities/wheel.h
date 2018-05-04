@@ -25,7 +25,7 @@ struct Wheel : Entity, Damageable
 {
   Wheel()
   {
-    vel = Vector2f(0, 0);
+    vel = NullVector;
     dir = -1.0f;
     size = Size(1.5, 1.5);
     collisionGroup = CG_WALLS;
