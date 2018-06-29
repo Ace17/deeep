@@ -35,9 +35,7 @@ class App : View
 {
 public:
   App(vector<string> argv)
-    :
-    m_args(argv),
-    m_scene(createGame(this, m_args))
+    : m_args(argv)
   {
     SDL_Init(0);
 
@@ -56,6 +54,8 @@ public:
         break;
       }
     }
+
+    m_scene.reset(createGame(this, m_args));
 
     m_lastTime = SDL_GetTicks();
   }
