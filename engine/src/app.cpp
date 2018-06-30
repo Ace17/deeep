@@ -42,19 +42,6 @@ public:
     m_display.reset(createDisplay(Size2i(768, 768)));
     m_audio.reset(createAudio());
 
-    for(auto res : getResources())
-    {
-      switch(res.type)
-      {
-      case ResourceType::Sound:
-        m_audio->loadSound(res.id, res.path);
-        break;
-      case ResourceType::Model:
-        m_display->loadModel(res.id, res.path);
-        break;
-      }
-    }
-
     m_scene.reset(createGame(this, m_args));
 
     m_lastTime = SDL_GetTicks();
@@ -206,6 +193,19 @@ private:
   }
 
   // View implementation
+  void preload(Resource res) override
+  {
+    switch(res.type)
+    {
+    case ResourceType::Sound:
+      m_audio->loadSound(res.id, res.path);
+      break;
+    case ResourceType::Model:
+      m_display->loadModel(res.id, res.path);
+      break;
+    }
+  }
+
   void textBox(char const* msg) override
   {
     m_textbox = msg;

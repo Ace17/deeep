@@ -7,6 +7,7 @@
  */
 
 #include "base/resource.h"
+#include "base/span.h"
 #include "sounds.h"
 #include "models.h"
 

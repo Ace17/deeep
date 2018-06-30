@@ -10,12 +10,22 @@
 
 #include "state_machine.h"
 #include "base/view.h"
+#include "base/span.h"
 
 unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view);
 unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level);
 
+Span<const Resource> getResources();
+
+void preloadResources(View* view)
+{
+  for(auto res : getResources())
+    view->preload(res);
+}
+
 Scene* createGame(View* view, vector<string> args)
 {
+  preloadResources(view);
   auto fsm = make_unique<StateMachine>();
 
   bool showSplash = true;

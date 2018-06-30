@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "span.h"
-
 enum class ResourceType
 {
   Sound,
@@ -20,7 +18,4 @@ struct Resource
   int id;
   char const* path;
 };
-
-// must be implemented by the game
-Span<const Resource> getResources();
 
