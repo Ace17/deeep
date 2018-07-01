@@ -7,6 +7,7 @@ scripts/reformat.sh src
 scripts/reformat.sh tests
 scripts/reformat.sh engine/src
 scripts/reformat.sh engine/include
+scripts/reformat.sh engine/tests
 
 echo "----------------------------------------------------------------"
 echo "Building native version"

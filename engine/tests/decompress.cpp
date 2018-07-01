@@ -15,14 +15,14 @@ using namespace std;
 unittest("Decompress: simple")
 {
   auto toString = [] (vector<uint8_t> s)
-                  {
-                    string r;
+    {
+      string r;
 
-                    for(auto c : s)
-                      r.push_back(c);
+      for(auto c : s)
+        r.push_back(c);
 
-                    return r;
-                  };
+      return r;
+    };
 
   const uint8_t input[] =
   {

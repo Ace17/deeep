@@ -16,11 +16,13 @@ struct DummyPlayer : IAudioSource
   virtual int read(Span<float> output)
   {
     const auto N = min(output.len, m_length - m_state);
-    for(auto i =0;i < N;++i)
+
+    for(auto i = 0; i < N; ++i)
     {
       output.data[i] = m_state % 10 == 0 ? 1 : 2;
       m_state++;
     }
+
     return N;
   }
 
@@ -38,10 +40,11 @@ struct DummySound : Sound
 };
 
 template<size_t N>
-bool buffEquals(float (&expected)[N], float (&actual)[N])
+bool buffEquals(float(&expected)[N], float(&actual)[N])
 {
   bool mismatch = false;
-  for(int i=0;i < (int)N;++i)
+
+  for(int i = 0; i < (int)N; ++i)
   {
     if(expected[i] != actual[i])
       mismatch = true;
@@ -50,13 +53,17 @@ bool buffEquals(float (&expected)[N], float (&actual)[N])
   if(mismatch)
   {
     fprintf(stderr, "Expected: ");
+
     for(auto& val : expected)
       fprintf(stderr, "%.0f ", val);
+
     fprintf(stderr, "\n");
 
     fprintf(stderr, "     Got: ");
+
     for(auto& val : actual)
       fprintf(stderr, "%.0f ", val);
+
     fprintf(stderr, "\n");
 
     return false;
@@ -72,7 +79,7 @@ unittest("Audio: play voice")
   Voice v;
   v.play(&sound);
 
-  float buffer[32] = {0};
+  float buffer[32] = { 0 };
   auto result = makeSpan(buffer);
 
   v.mix(result);
@@ -89,15 +96,17 @@ unittest("Audio: play voice until end")
   Voice v;
   v.play(&sound);
 
-  float buffer[32] = {0};
+  float buffer[32] = { 0 };
   auto result = makeSpan(buffer);
 
   v.mix(result);
 
-  float expected[32] = {
+  float expected[32] =
+  {
     1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2,
     // sound ends, then only silence
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  };
   assert(buffEquals(expected, buffer));
 }
 
@@ -109,17 +118,19 @@ unittest("Audio: play voice until end, loop")
   Voice v;
   v.play(&sound, 0, true);
 
-  float buffer[32] = {0};
+  float buffer[32] = { 0 };
   auto result = makeSpan(buffer);
 
   v.mix(result);
 
-  float expected[32] = {
+  float expected[32] =
+  {
     1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2,
     // sound loops
     1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2,
     // sound loops
-    1, 2, 2, 2 };
+    1, 2, 2, 2
+  };
   assert(buffEquals(expected, buffer));
 }
 

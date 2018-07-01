@@ -34,7 +34,7 @@ struct Registrator
 
 #define unittest3(prefix, line, name) \
   static void prefix ## line(); \
-  static Registrator g_Registrator ## line(&prefix ## line, name); \
+  static Registrator g_Registrator ## line( & prefix ## line, name); \
   static void prefix ## line()
 
 #define assertEquals(u, v) \
