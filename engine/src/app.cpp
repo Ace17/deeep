@@ -112,8 +112,8 @@ private:
     m_control.up = keys[SDL_SCANCODE_UP];
     m_control.down = keys[SDL_SCANCODE_DOWN];
 
-    m_control.fire = keys[SDL_SCANCODE_Z];
-    m_control.jump = keys[SDL_SCANCODE_X];
+    m_control.fire = keys[SDL_SCANCODE_Z] || keys[SDL_SCANCODE_RETURN];
+    m_control.jump = keys[SDL_SCANCODE_X] || keys[SDL_SCANCODE_SPACE];
     m_control.dash = keys[SDL_SCANCODE_C];
 
     m_control.debug = keys[SDL_SCANCODE_SCROLLLOCK];
@@ -178,7 +178,7 @@ private:
         m_display->setFullscreen(m_fullscreen);
       }
     }
-    else if(evt->key.keysym.sym == SDLK_PAUSE || evt->key.keysym.sym == SDLK_RETURN)
+    else if(evt->key.keysym.sym == SDLK_PAUSE)
     {
       m_audio->playSound(0);
       m_paused = !m_paused;
