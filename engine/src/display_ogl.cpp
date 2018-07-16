@@ -478,7 +478,6 @@ struct OpenglDisplay : Display
 
     auto const N = (int)action.textures.size();
     auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
-    glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
 
     if(where.size.width < 0)
       where.pos.x -= where.size.width;
@@ -509,6 +508,9 @@ struct OpenglDisplay : Display
 
     setOpenglMatrix4f(m_MVP, mat);
 
+    // Bind our diffuse texture in Texture Unit 0
+    SAFE_GL(glActiveTexture(GL_TEXTURE0));
+    SAFE_GL(glBindTexture(GL_TEXTURE_2D, action.textures[idx]));
     // lighting
     {
       float c = m_ambientLight;
