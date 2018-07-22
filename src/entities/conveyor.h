@@ -18,7 +18,7 @@ struct Conveyor : Entity
 {
   Conveyor()
   {
-    size = Size(1, 1);
+    size = UnitSize;
     collisionGroup = CG_WALLS;
     collidesWith = CG_PLAYER;
     solid = 1;

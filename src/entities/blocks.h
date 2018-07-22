@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "vec.h"
 #include "base/util.h"
 #include "base/scene.h"
 
@@ -19,7 +20,7 @@ struct CrumbleBlock : Entity
 {
   CrumbleBlock()
   {
-    size = Size(1, 1);
+    size = UnitSize;
     collisionGroup = CG_WALLS;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
@@ -68,7 +69,7 @@ struct FragileBlock : Entity, Damageable
 {
   FragileBlock()
   {
-    size = Size(1, 1);
+    size = UnitSize;
     reappear();
   }
 

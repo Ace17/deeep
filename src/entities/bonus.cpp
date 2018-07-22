@@ -6,7 +6,7 @@
  * License, or (at your option) any later version.
  */
 
-// Switch and door.
+// Bonus entity
 
 #include <cmath> // sin
 #include <algorithm>

@@ -22,7 +22,7 @@ struct Explosion : Entity
 {
   Explosion()
   {
-    size = Size(0.1, 0.1);
+    size = UnitSize * 0.1;
   }
 
   virtual void tick() override
