@@ -160,9 +160,9 @@ struct SdlAudio : Audio
     for(auto& val : mixBuffer)
       val = 0;
 
-    Span<float> buff {
+    Span<float> buff(
       mixBuffer.data(), sampleCount >> shift
-    };
+      );
 
     while(buff.len > 0)
     {
