@@ -57,6 +57,6 @@ static const Resource resources[] =
 
 Span<const Resource> getResources()
 {
-  return makeSpan(resources);
+  return resources;
 }
 

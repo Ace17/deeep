@@ -80,7 +80,7 @@ unittest("Audio: play voice")
   v.play(&sound);
 
   float buffer[32] = { 0 };
-  auto result = makeSpan(buffer);
+  auto result = Span<float>(buffer);
 
   v.mix(result);
 
@@ -97,7 +97,7 @@ unittest("Audio: play voice until end")
   v.play(&sound);
 
   float buffer[32] = { 0 };
-  auto result = makeSpan(buffer);
+  auto result = Span<float>(buffer);
 
   v.mix(result);
 
@@ -119,7 +119,7 @@ unittest("Audio: play voice until end, loop")
   v.play(&sound, 0, true);
 
   float buffer[32] = { 0 };
-  auto result = makeSpan(buffer);
+  auto result = Span<float>(buffer);
 
   v.mix(result);
 

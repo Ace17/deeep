@@ -31,7 +31,7 @@ unittest("Decompress: simple")
     0x1B, 0xD4, 0x04, 0x69,
   };
   assertEquals("Hello, world",
-               toString(decompress(makeSpan(input))));
+               toString(decompress(input)));
 }
 
 unittest("Decompress: big")
@@ -43,7 +43,7 @@ unittest("Decompress: big")
     0x00, 0x3E, 0x54, 0x20, 0xB7,
   };
 
-  auto const output = decompress(makeSpan(input));
+  auto const output = decompress(input);
   assertEquals(128u, output.size());
   assertEquals('[', output[0]);
   assertEquals('A', output[1]);

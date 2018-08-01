@@ -15,7 +15,7 @@ function main
   echo "{"
   cat $input | xxd -i
   echo "};"
-  echo "extern auto const $name = makeSpan(${name}_data);"
+  echo "extern auto const $name = Span<unsigned char>(${name}_data);"
 }
 
 main > $output

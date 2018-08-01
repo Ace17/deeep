@@ -75,7 +75,7 @@ struct Voice
         break;
 
       float chunkData[CHUNK_PERIOD] = { 0 };
-      auto chunk = makeSpan(chunkData);
+      auto chunk = Span<float>(chunkData);
       chunk.len = output.len;
 
       auto const N = m_source->read(chunk);
