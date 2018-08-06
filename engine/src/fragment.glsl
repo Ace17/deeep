@@ -15,7 +15,7 @@ uniform sampler2D s_baseMap;
 
 void main()
 {
-  color = texture2D(s_baseMap, v_texCoord) + v_color;
+  color = texture(s_baseMap, v_texCoord) + v_color;
   color += vec4(v_position.y, v_position.y, v_position.y, 0) * 0.2;
 }
 
