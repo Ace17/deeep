@@ -79,6 +79,8 @@ struct Handle
 
 struct IVariable
 {
+  virtual ~IVariable() = default;
+
   typedef function<void (int newValue)> Observer;
 
   virtual int get() = 0;
