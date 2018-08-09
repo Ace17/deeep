@@ -226,9 +226,6 @@ struct GameState : Scene, IGame
   Vector m_transform;
   bool m_shouldLoadLevel = false;
 
-  EventDelegator m_levelBoundary;
-  unique_ptr<Handle> m_levelBoundarySubscription;
-
   vector<unique_ptr<IVariable>> m_vars;
 
   ////////////////////////////////////////////////////////////////
@@ -289,16 +286,20 @@ struct GameState : Scene, IGame
   }
 
   Player* m_player = nullptr;
-  uvector<Entity> m_entities;
-  uvector<Entity> m_spawned;
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
 
   list<IEventSink*> m_listeners;
 
+  EventDelegator m_levelBoundary;
+  unique_ptr<Handle> m_levelBoundarySubscription;
+
   Matrix2<int> m_tiles;
   bool m_debug;
   bool m_debugFirstTime = true;
+
+  uvector<Entity> m_entities;
+  uvector<Entity> m_spawned;
 
   bool isBoxSolid(IntBox box)
   {
