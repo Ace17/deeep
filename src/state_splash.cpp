@@ -11,6 +11,7 @@
 #include "base/scene.h"
 #include "base/view.h"
 
+#include "vec.h"
 #include "toggle.h"
 #include "models.h" // MDL_SPLASH
 #include "state_machine.h"
@@ -30,17 +31,16 @@ struct SplashState : Scene
 
     if(!activated)
     {
+      delay = 1000;
+
       if(c.fire || c.jump || c.dash)
-      {
         activated = true;
-        delay = 1000;
-      }
     }
+
+    view->setAmbientLight(delay / 1000.0 - 1.0);
 
     if(activated)
     {
-      view->setAmbientLight(delay / 1000.0 - 1.0);
-
       if(decrement(delay))
       {
         activated = false;
@@ -51,7 +51,7 @@ struct SplashState : Scene
 
   vector<Actor> getActors() const override
   {
-    auto splash = Actor(Vector2f(0, 0), MDL_SPLASH);
+    auto splash = Actor(NullVector, MDL_SPLASH);
     splash.scale = Size2f(16, 16);
     splash.pos -= Vector2f(8, 8);
     return vector<Actor>({ splash });
