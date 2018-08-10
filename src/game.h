@@ -90,6 +90,8 @@ struct IVariable
 
 struct IGame
 {
+  virtual ~IGame() = default;
+
   // visual
   virtual void textBox(char const* msg) = 0;
   virtual void playSound(SOUND id) = 0;
