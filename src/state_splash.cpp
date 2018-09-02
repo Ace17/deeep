@@ -1,10 +1,8 @@
-/*
- * Copyright (C) 2017 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- */
+// Copyright (C) 2018 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
 
 // splash menu
 
@@ -32,18 +30,21 @@ struct SplashState : Scene
 
   void tick(Control const& c) override
   {
+    auto const FADE_TIME = 1000;
+
     view->playMusic(6);
 
     if(!activated)
     {
-      delay = 1000;
-
       if(c.fire || c.jump || c.dash)
+      {
         activated = true;
+        delay = FADE_TIME;
+      }
     }
 
     view->setCameraPos(NullVector);
-    view->setAmbientLight(delay / 1000.0 - 1.0);
+    view->setAmbientLight(delay / float(FADE_TIME) - 1.0);
 
     if(activated)
     {
