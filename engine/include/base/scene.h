@@ -53,6 +53,7 @@ struct Control
 struct Scene
 {
   virtual ~Scene() = default;
+  virtual void init() {};
   virtual void tick(Control const& c) = 0;
   virtual vector<Actor> getActors() const = 0;
 };

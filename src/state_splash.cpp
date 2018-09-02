@@ -25,6 +25,11 @@ struct SplashState : Scene
   ////////////////////////////////////////////////////////////////
   // Scene: Game, seen by the engine
 
+  void init() override
+  {
+    activated = false;
+  }
+
   void tick(Control const& c) override
   {
     view->playMusic(6);
@@ -43,10 +48,7 @@ struct SplashState : Scene
     if(activated)
     {
       if(decrement(delay))
-      {
-        activated = false;
         fsm->next();
-      }
     }
   }
 

@@ -9,6 +9,8 @@ struct StateMachine : Scene
   void next()
   {
     currIdx = (currIdx + 1) % states.size();
+    auto current = states[currIdx].get();
+    current->init();
     tick(Control {});
   }
 
