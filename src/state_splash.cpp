@@ -37,6 +37,7 @@ struct SplashState : Scene
         activated = true;
     }
 
+    view->setCameraPos(NullVector);
     view->setAmbientLight(delay / 1000.0 - 1.0);
 
     if(activated)
