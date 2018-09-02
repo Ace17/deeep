@@ -89,12 +89,13 @@
 
     <div class="emscripten" id="status">Downloading...</div>
 
-    <span id='controls'>
-      <span><input type="checkbox" id="resize">Resize canvas</span>
-      <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
-      <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"> </span>
-      <span><input type="button" value="Play"> </span> <!-- dummy button so the user gets focus -->
-    </span>
+    <!--
+      <span id='controls'>
+        <span><input type="checkbox" id="resize">Resize canvas</span>
+        <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
+        <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"> </span>
+      </span>
+    -->
 
     <div class="emscripten">
       <progress value="0" max="100" id="progress" hidden=1></progress>
@@ -106,11 +107,20 @@
 
     <div class="spinner" id='spinner'></div>
 
+    <div>
+      <center>
+        <font color="#ffffff" size="2">
+        Made by Sebastien Alaiwan <br>
+        <a href="https://github.com/Ace17/deeep"> Go To Github Page </a> <br>
+        (press Right-Control key to toggle mouse capture)
+        </font>
+      </center>
+    </div>
+
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
       var progressElement = document.getElementById('progress');
       var spinnerElement = document.getElementById('spinner');
-          
 
       var Module = {
         preRun: [],
@@ -150,7 +160,7 @@
         totalDependencies: 0,
         monitorRunDependencies: function(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'Starting ...');
         }
       };
       Module.setStatus('Downloading...');

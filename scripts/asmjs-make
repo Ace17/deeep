@@ -24,7 +24,7 @@ export CXX=emcc
 export EXT=".html"
 export DBGFLAGS=""
 export CXXFLAGS="-O3 -g0 -DNDEBUG"
-export LDFLAGS="-O3 -g0 --use-preload-plugins --preload-file res -s USE_WEBGL2=1 -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=$((64 * 1024 * 1024)) -s PRECISE_F32=1 -s WASM=0"
+export LDFLAGS="-O3 -g0 --use-preload-plugins --pre-js \"my-pre.js\" --preload-file res -s USE_WEBGL2=1 -s USE_OGG=1 -s USE_VORBIS=1 -s TOTAL_MEMORY=$((64 * 1024 * 1024)) -s PRECISE_F32=1 -s WASM=0"
 
 make "$@"
 
