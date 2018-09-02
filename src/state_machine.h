@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base/scene.h"
-#include <map>
+#include <vector>
 #include <memory>
 
 struct StateMachine : Scene
