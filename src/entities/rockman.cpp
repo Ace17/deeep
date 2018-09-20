@@ -294,7 +294,7 @@ struct Rockman : Player, Damageable
       control = Control {};
 
     // 'dying' animation
-    if(life <= 0)
+    if(life <= 0 || control.restart)
     {
       decrement(dieDelay);
 

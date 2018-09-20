@@ -45,6 +45,7 @@ struct Control
   bool jump;
   bool dash;
 
+  bool restart;
   bool debug;
 };
 
