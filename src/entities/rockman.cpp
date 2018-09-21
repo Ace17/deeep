@@ -334,25 +334,7 @@ struct Rockman : Player, Damageable
 
     handleShooting();
 
-    if(control.down && !ball && (upgrades & UPGRADE_BALL))
-    {
-      ball = true;
-      size = Size(NORMAL_SIZE.width, 0.9);
-    }
-
-    if(control.up && ball)
-    {
-      Box box;
-      box.size = NORMAL_SIZE;
-      box.pos = pos;
-
-      if(!physics->isSolid(this, roundBox(box)))
-      {
-        ball = false;
-        size = NORMAL_SIZE;
-      }
-    }
-
+    handleBall();
     collisionGroup = CG_PLAYER;
 
     if(!blinking)
@@ -441,6 +423,28 @@ struct Rockman : Player, Damageable
         game->spawn(b.release());
         game->playSound(SND_FIRE);
         shootDelay = 300;
+      }
+    }
+  }
+
+  void handleBall()
+  {
+    if(control.down && !ball && (upgrades & UPGRADE_BALL))
+    {
+      ball = true;
+      size = Size(NORMAL_SIZE.width, 0.9);
+    }
+
+    if(control.up && ball)
+    {
+      Box box;
+      box.size = NORMAL_SIZE;
+      box.pos = pos;
+
+      if(!physics->isSolid(this, roundBox(box)))
+      {
+        ball = false;
+        size = NORMAL_SIZE;
       }
     }
   }
