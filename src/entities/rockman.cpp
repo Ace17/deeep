@@ -332,29 +332,7 @@ struct Rockman : Player, Damageable
     decrement(climbDelay);
     decrement(shootDelay);
 
-    if(upgrades & UPGRADE_SHOOT && !ball)
-    {
-      if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 150))
-      {
-        auto b = make_unique<Bullet>();
-        auto sign = (dir == LEFT ? -1 : 1);
-        auto offsetV = vel.x ? Vector(0, 1) : Vector(0, 0.9);
-        auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);
-
-        if(sliding)
-        {
-          sign = -sign;
-        }
-        else if(!ground)
-          offsetV.y += 0.25;
-
-        b->pos = pos + offsetV + offsetH * sign;
-        b->vel = Vector(0.025, 0) * sign;
-        game->spawn(b.release());
-        game->playSound(SND_FIRE);
-        shootDelay = 300;
-      }
-    }
+    handleShooting();
 
     if(control.down && !ball && (upgrades & UPGRADE_BALL))
     {
@@ -438,6 +416,33 @@ struct Rockman : Player, Damageable
     blinking = 2000;
     life = 31;
     pos = respawnPosition;
+  }
+
+  void handleShooting()
+  {
+    if(upgrades & UPGRADE_SHOOT && !ball)
+    {
+      if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 150))
+      {
+        auto b = make_unique<Bullet>();
+        auto sign = (dir == LEFT ? -1 : 1);
+        auto offsetV = vel.x ? Vector(0, 1) : Vector(0, 0.9);
+        auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);
+
+        if(sliding)
+        {
+          sign = -sign;
+        }
+        else if(!ground)
+          offsetV.y += 0.25;
+
+        b->pos = pos + offsetV + offsetH * sign;
+        b->vel = Vector(0.025, 0) * sign;
+        game->spawn(b.release());
+        game->playSound(SND_FIRE);
+        shootDelay = 300;
+      }
+    }
   }
 
   int debounceFire = 0;
