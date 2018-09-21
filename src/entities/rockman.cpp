@@ -26,6 +26,7 @@ auto const MAX_HORZ_SPEED = 0.02f;
 auto const MAX_FALL_SPEED = 0.02f;
 auto const CLIMB_DELAY = 100;
 auto const HURT_DELAY = 500;
+auto const JUMP_VEL = 0.015;
 
 enum ORIENTATION
 {
@@ -219,7 +220,7 @@ struct Rockman : Player, Damageable
       if(ground)
       {
         game->playSound(SND_JUMP);
-        vel.y = 0.015;
+        vel.y = JUMP_VEL;
         doubleJumped = false;
       }
       else if(facingWall() && (upgrades & UPGRADE_CLIMB))
@@ -227,7 +228,7 @@ struct Rockman : Player, Damageable
         game->playSound(SND_JUMP);
         // wall climbing
         vel.x = dir == RIGHT ? -0.04 : 0.04;
-        vel.y = 0.015;
+        vel.y = JUMP_VEL;
         climbDelay = CLIMB_DELAY;
         doubleJumped = false;
         dashDelay = 0;
@@ -235,7 +236,7 @@ struct Rockman : Player, Damageable
       else if((upgrades & UPGRADE_DJUMP) && !doubleJumped)
       {
         game->playSound(SND_JUMP);
-        vel.y = 0.015;
+        vel.y = JUMP_VEL;
         doubleJumped = true;
       }
     }
