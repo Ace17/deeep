@@ -27,7 +27,7 @@ struct Conveyor : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor { pos, MDL_RECT };
     r.action = 2;
     r.scale = size;
     r.scale.width *= -1;

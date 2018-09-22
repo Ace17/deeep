@@ -30,7 +30,7 @@ struct CrumbleBlock : Entity
     if(!solid)
       return;
 
-    auto r = Actor(pos, MDL_BLOCK);
+    auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 0;
     r.action = 1;
@@ -75,7 +75,7 @@ struct FragileBlock : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_BLOCK);
+    auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 0;
     r.action = solid ? 2 : 0;

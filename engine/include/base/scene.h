@@ -25,10 +25,6 @@ enum class Effect
 // a game object, as seen by the user-interface, i.e a displayable object.
 struct Actor
 {
-  Actor(Vector2f pos_ = Vector2f(0, 0), MODEL model_ = 0) : pos(pos_), model(model_)
-  {
-  }
-
   Vector2f pos = Vector2f(0, 0);
   MODEL model = 0;
   int action = 0;

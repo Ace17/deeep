@@ -101,7 +101,7 @@ struct GameState : Scene, IGame
     }
 
     {
-      Actor lifebar(Vector(-5.5, 1), MDL_LIFEBAR);
+      Actor lifebar { Vector(-5.5, 1), MDL_LIFEBAR };
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(0.7, 3);
@@ -110,7 +110,7 @@ struct GameState : Scene, IGame
     }
 
     {
-      Actor background(Actor(Vector(-8, -8), MDL_BACKGROUND));
+      Actor background = { Vector(-8, -8), MDL_BACKGROUND };
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
       r.insert(r.begin(), background);
@@ -136,7 +136,7 @@ struct GameState : Scene, IGame
           auto const ts = 1.0;
           auto const posX = (x + (subTile % 2) * 0.5) * ts;
           auto const posY = (y + (subTile / 2) * 0.5) * ts;
-          auto actor = Actor(Vector(posX, posY), model);
+          auto actor = Actor { Vector(posX, posY), model };
           actor.action = composition[subTile];
           actor.scale = Size(0.5, 0.5);
           r.push_back(actor);
@@ -326,7 +326,7 @@ struct GameState : Scene, IGame
   static Actor getDebugActor(Entity* entity)
   {
     auto box = entity->getFBox();
-    auto r = Actor(box.pos, MDL_RECT);
+    auto r = Actor { box.pos, MDL_RECT };
     r.scale = box.size;
     return r;
   }

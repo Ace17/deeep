@@ -30,7 +30,7 @@ struct RoomBoundaryDetector : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor { pos, MDL_RECT };
     r.scale = size;
     actors.push_back(r);
   }
@@ -61,7 +61,7 @@ struct RoomBoundaryBlocker : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor { pos, MDL_RECT };
     r.scale = size;
     r.effect = Effect::Blinking;
     actors.push_back(r);

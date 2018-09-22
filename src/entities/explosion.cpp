@@ -38,7 +38,7 @@ struct Explosion : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_EXPLOSION);
+    auto r = Actor { pos, MDL_EXPLOSION };
 
     r.ratio = time / (float)DURATION;
     r.scale = Size(3, 3);

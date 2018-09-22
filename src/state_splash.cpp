@@ -54,7 +54,7 @@ struct SplashState : Scene
 
   vector<Actor> getActors() const override
   {
-    auto splash = Actor(NullVector, MDL_SPLASH);
+    auto splash = Actor { NullVector, MDL_SPLASH };
     splash.scale = Size2f(16, 16);
     splash.pos -= Vector2f(8, 8);
     return vector<Actor>({ splash });

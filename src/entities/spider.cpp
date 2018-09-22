@@ -30,7 +30,7 @@ struct SpiderBullet : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_RECT);
+    auto r = Actor { pos, MDL_RECT };
     r.scale = size;
     r.action = 0;
     r.ratio = 0;
@@ -72,7 +72,7 @@ struct Spider : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_SPIDER);
+    auto r = Actor { pos, MDL_SPIDER };
 
     r.scale = Size(1, 1);
 

@@ -46,7 +46,7 @@ struct Bullet : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_BULLET);
+    auto r = Actor { pos, MDL_BULLET };
     r.scale = size;
     r.action = 0;
     r.ratio = 0;
@@ -86,7 +86,7 @@ struct Rockman : Player, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor(pos, MDL_ROCKMAN);
+    auto r = Actor { pos, MDL_ROCKMAN };
     r.scale = Size(3, 3);
 
     // re-center
