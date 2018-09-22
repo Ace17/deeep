@@ -69,7 +69,7 @@ SRCS:=\
 	$(SRCS_GAME)\
 	$(SRCS_ENGINE)\
 
-$(BIN)/rel/game$(EXT): $(SRCS:%.cpp=$(BIN)/%_cpp.o)
+$(BIN)/rel/game$(EXT): $(SRCS:%=$(BIN)/%.o)
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
@@ -95,7 +95,7 @@ SRCS_TESTS:=\
 	tests/level_graph.cpp\
 	tests/physics.cpp\
 
-$(BIN)/tests$(EXT): $(SRCS_TESTS:%.cpp=$(BIN)/%_cpp.o)
+$(BIN)/tests$(EXT): $(SRCS_TESTS:%=$(BIN)/%.o)
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 

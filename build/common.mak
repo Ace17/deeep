@@ -71,24 +71,24 @@ $(BIN)/%.a:
 
 # Compiling
 #
-$(BIN)/%_d.o: %.d
+$(BIN)/%.d.o: %.d
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(Q)$(DC) -fdeps="$(BIN)/$*_d.fdeps" -c "$<" -o "$@" $(DINCS) $(DFLAGS)
-	@$(THIS)/convert_deps "$(BIN)/$*_d.fdeps" "$(BIN)/$*_d.deps" "$@"
-	@rm "$(BIN)/$*_d.fdeps"
+	$(Q)$(DC) -fdeps="$@.fdeps" -c "$<" -o "$@" $(DINCS) $(DFLAGS)
+	@$(THIS)/convert_deps "$@.fdeps" "$@.deps" "$@"
+	@rm "$@.fdeps"
 
-$(BIN)/%_cpp.o: %.cpp
+$(BIN)/%.cpp.o: %.cpp
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
 	$(Q)$(CXX) -c "$<" -o "$@" $(DINCS) $(CXXFLAGS)
-	@$(CXX) -MP -MM "$<" -MT "$@" -o "$(BIN)/$*_cpp.deps" $(DINCS) $(CXXFLAGS)
+	@$(CXX) -MP -MM "$<" -MT "$@" -o "$@.deps" $(DINCS) $(CXXFLAGS)
 
-$(BIN)/%_c.o: %.c
+$(BIN)/%.c.o: %.c
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^)  $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
 	$(Q)$(CC) -c  "$<" -o  "$@" $(DINCS) $(CXXFLAGS)
-	@$(CC) -MP -MM "$<" -MT "$@" -o "$(BIN)/$*_c.deps" $(DINCS) $(CXXFLAGS)
+	@$(CC) -MP -MM "$<" -MT "$@" -o "$@.deps" $(DINCS) $(CXXFLAGS)
 
 # Dependency generation
 
