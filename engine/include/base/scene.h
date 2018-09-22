@@ -58,7 +58,7 @@ struct Scene
   virtual void init() {};
 
   // advance the scene simulation to the next frame
-  virtual void tick(Control const& c) = 0;
+  virtual void tick(Control c) = 0;
 
   // return a list of displayable objects for the current frame
   virtual vector<Actor> getActors() const = 0;

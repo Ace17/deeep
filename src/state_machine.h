@@ -14,7 +14,7 @@ struct StateMachine : Scene
     tick(Control {});
   }
 
-  void tick(Control const& c) override
+  void tick(Control c) override
   {
     auto current = states[currIdx].get();
     current->tick(c);

@@ -48,7 +48,7 @@ struct GameState : Scene, IGame
   ////////////////////////////////////////////////////////////////
   // Scene: Game, seen by the engine
 
-  void tick(Control const& c) override
+  void tick(Control c) override
   {
     if(m_shouldLoadLevel)
     {

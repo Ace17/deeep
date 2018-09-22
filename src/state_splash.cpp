@@ -28,7 +28,7 @@ struct SplashState : Scene
     activated = false;
   }
 
-  void tick(Control const& c) override
+  void tick(Control c) override
   {
     auto const FADE_TIME = 1000;
 
