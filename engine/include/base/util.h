@@ -15,18 +15,9 @@
 using namespace std;
 
 template<typename T>
-class uptr : public unique_ptr<T>
+unique_ptr<T> unique(T* p)
 {
-public:
-  uptr(T* p) : unique_ptr<T>(p)
-  {
-  }
-};
-
-template<typename T>
-uptr<T> unique(T* p)
-{
-  return uptr<T>(p);
+  return unique_ptr<T>(p);
 }
 
 inline bool endsWith(string const& value, string const& ending)
