@@ -104,7 +104,8 @@ struct HuffmanTree
   }
 
   int decode(bool& decoded, unsigned long& result, size_t& treepos, unsigned long bit) const
-  { // Decodes a symbol from the tree
+  {
+    // Decodes a symbol from the tree
     unsigned long numcodes = (unsigned long)tree2d.size() / 2;
 
     if(treepos >= numcodes)
@@ -116,7 +117,8 @@ struct HuffmanTree
     return 0;
   }
 
-  std::vector<unsigned long> tree2d; // 2D representation of a huffman tree: The one dimension is "0" or "1", the other contains all nodes and leaves of the tree.
+  // 2D representation of a huffman tree: The one dimension is "0" or "1", the other contains all nodes and leaves of the tree.
+  std::vector<unsigned long> tree2d;
 };
 
 struct Inflator

@@ -133,13 +133,10 @@ shared_ptr<SDL_Surface> loadPng(string path)
   const Uint32 amask = 0xff000000;
 #endif
 
-  std::vector<uint8_t> pixels;
-  unsigned long width, height;
-  auto pngData = read(path);
-  auto ret = decodePNG(pixels, width, height, (uint8_t*)pngData.data(), pngData.size());
-
-  if(ret != 0)
-    throw runtime_error("can't load PNG file: " + path);
+  int width, height;
+  auto pngDataBuf = read(path);
+  auto pngData = Span<const uint8_t>((uint8_t*)pngDataBuf.data(), (int)pngDataBuf.size());
+  auto pixels = decodePng(pngData, width, height);
 
   auto surface = shared_ptr<SDL_Surface>(
       SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask),
