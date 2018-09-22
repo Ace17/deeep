@@ -171,12 +171,6 @@ inline auto rasterScan(int cx, int cy)
   return Iterable({ cx, cx * cy });
 }
 
-template<typename T>
-std::vector<T> makeVector(std::initializer_list<T> list)
-{
-  return std::vector<T>(list);
-}
-
 // Remove an element from a vector. Might change the ordering.
 template<typename T, typename Lambda>
 void unstableRemove(vector<T>& container, Lambda predicate)
