@@ -6,6 +6,7 @@ SRCS_ENGINE:=\
 	$(ENGINE_ROOT)/src/decompress.cpp\
 	$(ENGINE_ROOT)/src/file.cpp\
 	$(ENGINE_ROOT)/src/json.cpp\
+	$(ENGINE_ROOT)/src/png.cpp\
 	$(ENGINE_ROOT)/src/model.cpp\
 	$(ENGINE_ROOT)/src/display_ogl.cpp\
 	$(ENGINE_ROOT)/src/audio_sdl.cpp\

@@ -15,7 +15,7 @@ Description
 -----------
 
 This is a demo of a platform-independent C++14 game project.
-It uses SDL2, SDL2_image, and the OpenGL core profile.
+It uses SDL2, and the OpenGL core profile.
 
 It's meant as an example of a platformer/metroidvania game
 which can be compiled to native code, or, using Emscripten, to Javascript,
@@ -47,7 +47,6 @@ Build
 Requirements:
 ```
 * libsdl2-dev
-* libsdl2-image-dev
 * libogg-dev
 * libvorbis-dev
 ```

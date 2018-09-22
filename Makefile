@@ -12,7 +12,6 @@ all: true_all
 PKGS:=\
 	gl\
 	sdl2\
-	SDL2_image\
 	ogg \
 	vorbisfile \
 
