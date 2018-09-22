@@ -31,13 +31,13 @@ Directory structure
 -------------------
 
 ```
-bin:            output directory for binaries.
+bin:            output directory for architecture-specific executable binaries.
+res:            output directory for game resources (e.g. sounds, music, sprites, tilesets).
+res-src:        source files for game resources.
+src:            source files for the game logic (agnostic to the engine implementation).
+engine/src:     I/O code (=engine), mostly game-agnostic.
+engine/include: interfaces for communication between the game logic and the I/O code. Also contains shared low-level utilities (e.g Vector2f, Span, etc.).
 ./check:        main check script. Call this to build native and asmjs versions and to launch the unit tests.
-engine/src:     I/O code (=engine implementation)(game-agnostic)
-engine/include: utilities shared between game logic and I/O code ; scene declaration (=engine interface)
-src:            game logic (agnostic to the engine implementation)
-res-src:        "source code" for assets
-res:            pre-rendered game resources (sounds, sprites, tiles)
 ```
 
 
