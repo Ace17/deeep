@@ -298,8 +298,8 @@ struct GameState : Scene, IGame
   bool m_debug;
   bool m_debugFirstTime = true;
 
-  uvector<Entity> m_entities;
-  uvector<Entity> m_spawned;
+  vector<unique_ptr<Entity>> m_entities;
+  vector<unique_ptr<Entity>> m_spawned;
 
   bool isBoxSolid(IntBox box)
   {

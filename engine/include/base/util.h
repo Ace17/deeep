@@ -15,11 +15,6 @@
 using namespace std;
 
 template<typename T>
-class uvector : public vector<unique_ptr<T>>
-{
-};
-
-template<typename T>
 class uptr : public unique_ptr<T>
 {
 public:
