@@ -23,6 +23,7 @@ void preloadResources(View* view)
 
 Scene* createGame(View* view, vector<string> args)
 {
+  view->setTitle("Deeep");
   preloadResources(view);
   auto fsm = make_unique<StateMachine>();
 

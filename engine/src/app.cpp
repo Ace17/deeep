@@ -151,7 +151,7 @@ private:
   void fpsChanged(int fps)
   {
     char title[128];
-    sprintf(title, "Deeep (%d FPS)", fps);
+    sprintf(title, "%s (%d FPS)", m_title.c_str(), fps);
     m_display->setCaption(title);
   }
 
@@ -194,6 +194,11 @@ private:
   }
 
   // View implementation
+  void setTitle(char const* gameTitle) override
+  {
+    m_title = gameTitle;
+  }
+
   void preload(Resource res) override
   {
     switch(res.type)
@@ -248,6 +253,7 @@ private:
   unique_ptr<Audio> m_audio;
   unique_ptr<Display> m_display;
 
+  string m_title;
   string m_textbox;
   int m_textboxDelay = 0;
 };
