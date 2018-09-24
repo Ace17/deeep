@@ -36,21 +36,12 @@ struct PNG // functions for PNG decoding
     std::vector<uint8_t> palette;
   } info {};
 
-  int error;
   void decode(std::vector<uint8_t>& out, const uint8_t* in, size_t size, bool convert_to_rgba32)
   {
-    error = 0;
-
     if(size == 0 || in == 0)
-    {
-      error = 48;
-      return;
-    } // the given data is empty
+      throw std::runtime_error("empty PNG data");
 
     readPngHeader(&in[0], size);
-
-    if(error)
-      return;
 
     size_t pos = 33; // first byte of the first chunk after the header
     std::vector<uint8_t> idat; // the data from idat chunks
@@ -60,25 +51,16 @@ struct PNG // functions for PNG decoding
     while(!IEND) // loop through the chunks, ignoring unknown chunks and stopping at IEND chunk. IDAT data is put at the start of the in buffer
     {
       if(pos + 8 >= size)
-      {
-        error = 30;
-        return;
-      } // error: size of the in buffer too small to contain next chunk
+        throw std::runtime_error("truncated chunk header");
 
       size_t chunkLength = read32bitInt(&in[pos]);
       pos += 4;
 
       if(chunkLength > 2147483647)
-      {
-        error = 63;
-        return;
-      }
+        throw std::runtime_error("chunk too big");
 
       if(pos + chunkLength >= size)
-      {
-        error = 35;
-        return;
-      } // error: size of the in buffer too small to contain next chunk
+        throw std::runtime_error("truncated chunk data");
 
       if(in[pos + 0] == 'I' && in[pos + 1] == 'D' && in[pos + 2] == 'A' && in[pos + 3] == 'T') // IDAT chunk, containing compressed image data
       {
@@ -96,11 +78,7 @@ struct PNG // functions for PNG decoding
         info.palette.resize(4 * (chunkLength / 3));
 
         if(info.palette.size() > (4 * 256))
-        {
-          // error: palette too big
-          error = 38;
-          return;
-        }
+          throw std::runtime_error("palette too big");
 
         for(size_t i = 0; i < info.palette.size(); i += 4)
         {
@@ -117,10 +95,7 @@ struct PNG // functions for PNG decoding
         if(info.colorType == 3)
         {
           if(4 * chunkLength > info.palette.size())
-          {
-            error = 39;
-            return;
-          } // error: more alpha values given than there are palette entries
+            throw std::runtime_error("truncated palette entries: alpha");
 
           for(size_t i = 0; i < chunkLength; i++)
             info.palette[4 * i + 3] = in[pos++];
@@ -128,10 +103,7 @@ struct PNG // functions for PNG decoding
         else if(info.colorType == 0)
         {
           if(chunkLength != 2)
-          {
-            error = 40;
-            return;
-          } // error: this chunk must be 2 bytes for greyscale image
+            throw std::runtime_error("this chunk must be 2 bytes for greyscale image");
 
           info.key_defined = 1;
           info.key_r = info.key_g = info.key_b = 256 * in[pos] + in[pos + 1];
@@ -140,10 +112,7 @@ struct PNG // functions for PNG decoding
         else if(info.colorType == 2)
         {
           if(chunkLength != 6)
-          {
-            error = 41;
-            return;
-          } // error: this chunk must be 6 bytes for RGB image
+            throw std::runtime_error("this chunk must be 6 bytes for RGB image");
 
           info.key_defined = 1;
           info.key_r = 256 * in[pos] + in[pos + 1];
@@ -155,17 +124,15 @@ struct PNG // functions for PNG decoding
         }
         else
         {
-          error = 42;
-          return;
-        } // error: tRNS chunk not allowed for other color models
+          throw std::runtime_error("tRNS chunk not allowed for other color models");
+        }
       }
       else // it's not an implemented chunk type, so ignore it: skip over the data
       {
         if(!(in[pos + 0] & 32))
         {
-          error = 69;
-          return;
-        } // error: unknown critical chunk (5th bit of first byte of chunk type is 0)
+          throw std::runtime_error("unknown critical chunk (5th bit of first byte of chunk type is 0");
+        }
 
         pos += (chunkLength + 4); // skip 4 letters and uninterpreted data of unimplemented chunk
       }
@@ -176,9 +143,6 @@ struct PNG // functions for PNG decoding
     unsigned long bpp = getBpp(info);
     std::vector<uint8_t> scanlines(((info.width * (info.height* bpp + 7)) / 8) + info.height); // now the out buffer will be filled
     scanlines = ::decompress(Span<const uint8_t> { idat.data(), (int)idat.size() });
-
-    if(error)
-      return; // stop if the zlib decompressor returned an error
 
     size_t bytewidth = (bpp + 7) / 8, outlength = (info.height * info.width * bpp + 7) / 8;
     out.resize(outlength); // time to fill the out buffer
@@ -195,9 +159,6 @@ struct PNG // functions for PNG decoding
           const uint8_t* prevline = (y == 0) ? 0 : &out_[(y - 1) * info.width * bytewidth];
           unFilterScanline(&out_[linestart - y], &scanlines[linestart + 1], prevline, bytewidth, filterType, linelength);
 
-          if(error)
-            return;
-
           linestart += (1 + linelength); // go to start of next scanline
         }
 
@@ -210,9 +171,6 @@ struct PNG // functions for PNG decoding
           unsigned long filterType = scanlines[linestart];
           const uint8_t* prevline = (y == 0) ? 0 : &out_[(y - 1) * info.width * bytewidth];
           unFilterScanline(&templine[0], &scanlines[linestart + 1], prevline, bytewidth, filterType, linelength);
-
-          if(error)
-            return;
 
           for(size_t bp = 0; bp < info.width * bpp;)
             setBitOfReversedStream(obp, out_, readBitFromReversedStream(bp, &templine[0]));
@@ -240,59 +198,43 @@ struct PNG // functions for PNG decoding
     if(convert_to_rgba32 && (info.colorType != 6 || info.bitDepth != 8)) // conversion needed
     {
       std::vector<uint8_t> data = out;
-      error = convert(out, &data[0], info, info.width, info.height);
+      convert(out, &data[0], info, info.width, info.height);
     }
   }
 
   void readPngHeader(const uint8_t* in, size_t inlength) // read the information from the header and store it in the Info
   {
     if(inlength < 29)
-    {
-      error = 27;
-      return;
-    } // error: the data length is smaller than the length of the header
+      throw std::runtime_error("no PNG header");
 
     if(in[0] != 137 || in[1] != 80 || in[2] != 78 || in[3] != 71 || in[4] != 13 || in[5] != 10 || in[6] != 26 || in[7] != 10)
-    {
-      error = 28;
-      return;
-    } // no PNG signature
+      throw std::runtime_error("no PNG signature");
 
     if(in[12] != 'I' || in[13] != 'H' || in[14] != 'D' || in[15] != 'R')
-    {
-      error = 29;
-      return;
-    } // error: it doesn't start with a IHDR chunk!
+      throw std::runtime_error("no IDHR chunk");
 
     info.width = read32bitInt(&in[16]);
     info.height = read32bitInt(&in[20]);
     info.bitDepth = in[24];
     info.colorType = in[25];
+
+    if(checkColorValidity(info.colorType, info.bitDepth))
+      throw std::runtime_error("invalid combination of colorType and bitDepth");
+
     info.compressionMethod = in[26];
 
     if(in[26] != 0)
-    {
-      error = 32;
-      return;
-    } // error: only compression method 0 is allowed in the specification
+      throw std::runtime_error("unexpected compression method");
 
     info.filterMethod = in[27];
 
     if(in[27] != 0)
-    {
-      error = 33;
-      return;
-    } // error: only filter method 0 is allowed in the specification
+      throw std::runtime_error("unexpected filter method");
 
     info.interlaceMethod = in[28];
 
     if(in[28] > 1)
-    {
-      error = 34;
-      return;
-    } // error: only interlace methods 0 and 1 exist in the specification
-
-    error = checkColorValidity(info.colorType, info.bitDepth);
+      throw std::runtime_error("unexpected interlace method");
   }
 
   void unFilterScanline(uint8_t* recon, const uint8_t* scanline, const uint8_t* precon, size_t bytewidth, unsigned long filterType, size_t length)
@@ -365,8 +307,8 @@ struct PNG // functions for PNG decoding
       }
 
       break;
-    default: error = 36;
-      return; // error: unexisting filter type given
+    default:
+      throw std::runtime_error("unexisting filter type given");
     }
   }
 
@@ -381,9 +323,6 @@ struct PNG // functions for PNG decoding
     {
       uint8_t filterType = in[y * linelength], * prevline = (y == 0) ? 0 : lineo;
       unFilterScanline(linen, &in[y * linelength + 1], prevline, bytewidth, filterType, (w * bpp + 7) / 8);
-
-      if(error)
-        return;
 
       if(bpp >= 8)
         for(size_t i = 0; i < passw; i++)
@@ -470,7 +409,7 @@ struct PNG // functions for PNG decoding
       return info.bitDepth;
   }
 
-  int convert(std::vector<uint8_t>& out, const uint8_t* in, Info& infoIn, unsigned long w, unsigned long h)
+  void convert(std::vector<uint8_t>& out, const uint8_t* in, Info& infoIn, unsigned long w, unsigned long h)
   {
     // converts from any color type to 32-bit. return value = LodePNG error code
     size_t numpixels = w * h, bp = 0;
@@ -497,7 +436,7 @@ struct PNG // functions for PNG decoding
       for(size_t i = 0; i < numpixels; i++)
       {
         if(4U * in[i] >= infoIn.palette.size())
-          return 46;
+          throw std::runtime_error("conversion error");
 
         for(size_t c = 0; c < 4; c++)
           out_[4 * i + c] = infoIn.palette[4 * in[i] + c]; // get rgb colors from the palette
@@ -559,13 +498,11 @@ struct PNG // functions for PNG decoding
         unsigned long value = readBitsFromReversedStream(bp, in, infoIn.bitDepth);
 
         if(4 * value >= infoIn.palette.size())
-          return 47;
+          throw std::runtime_error("conversion error");
 
         for(int c = 0; c < 4; c++)
           out_[4 * i + c] = infoIn.palette[4 * value + c]; // get rgb colors from the palette
       }
-
-    return 0;
   }
 
   uint8_t paethPredictor(short a, short b, short c) // Paeth predicter, used by PNG filter type 4
@@ -584,9 +521,6 @@ std::vector<uint8_t> decodePng(Span<const uint8_t> pngData, int& width, int& hei
   decoder.decode(r, pngData.data, pngData.len, true);
   width = decoder.info.width;
   height = decoder.info.height;
-
-  if(decoder.error)
-    throw std::runtime_error("invalid PNG data");
 
   return r;
 }
