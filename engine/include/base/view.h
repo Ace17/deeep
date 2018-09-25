@@ -18,6 +18,7 @@ typedef int MUSIC;
 // It should provide no way to query anything about the outside world.
 struct View
 {
+  virtual ~View() = default;
   virtual void setTitle(char const* gameTitle) = 0;
   virtual void preload(Resource res) = 0;
   virtual void textBox(char const* msg) = 0;

@@ -244,7 +244,7 @@ private:
   int m_lastTime;
   int m_lastFps = 0;
   RateCounter m_fps;
-  Control m_control;
+  Control m_control {};
   vector<string> m_args;
   unique_ptr<Scene> m_scene;
   bool m_slowMotion = false;
