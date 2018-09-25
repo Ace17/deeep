@@ -55,13 +55,13 @@ SRCS_GAME:=\
 	src/entities/switch.cpp\
 	src/entity_factory.cpp\
 	src/game.cpp\
-	src/state_game.cpp\
-	src/state_splash.cpp\
 	src/level_graph.cpp\
 	src/physics.cpp\
+	src/quest_loader.cpp\
 	src/resources.cpp\
-	src/level_tiled.cpp\
 	src/smarttiles.cpp\
+	src/state_game.cpp\
+	src/state_splash.cpp\
 
 #------------------------------------------------------------------------------
 
