@@ -1,8 +1,4 @@
 /bin
 /tags
-/res/music
-/res/sounds
-/res/sprites
-/res/tiles
-/res/rooms
+/res
 session.vim
