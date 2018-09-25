@@ -15,9 +15,9 @@
 #include "base/geom.h"
 #include "base/scene.h"
 #include "base/view.h"
+#include "vec.h"
 
 typedef Matrix2<int> Matrix;
-typedef Vector2f Vector;
 
 struct Entity;
 

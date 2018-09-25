@@ -8,7 +8,14 @@
 
 #pragma once
 
-#include "game.h"
+#include <string>
+#include <vector>
+#include "base/geom.h"
+#include "vec.h"
+
+using namespace std;
+
+struct IGame;
 
 struct Room
 {
