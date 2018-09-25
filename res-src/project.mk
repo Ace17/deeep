@@ -11,6 +11,14 @@ SPRITES_SRC+=$(wildcard res-src/sprites/*.json)
 TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.json)
 TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.png)
 
+ROOMS_SRC+=$(wildcard res-src/rooms/*.json)
+TARGETS+=$(ROOMS_SRC:res-src/%=res/%)
+
+TARGETS+=res/quest.json
+TARGETS+=res/test_quest.json
+
+TARGETS+=res/font.png
+
 TILES_SRC+=$(wildcard res-src/tiles/*.xcf)
 TARGETS+=$(TILES_SRC:res-src/%.xcf=res/%.png)
 
