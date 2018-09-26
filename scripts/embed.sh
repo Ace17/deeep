@@ -9,9 +9,9 @@ readonly name=$3
 function main
 {
   echo "// generated file"
-  echo "#include <stdlib.h>"
+  echo "#include <stdint.h>"
   echo "#include \"base/span.h\""
-  echo "unsigned char ${name}_data[] = "
+  echo "uint8_t ${name}_data[] = "
   echo "{"
   cat $input | xxd -i
   echo "};"

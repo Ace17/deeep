@@ -53,7 +53,7 @@ void ensureGl(char const* expr, int line)
 }
 
 static
-int compileShader(Span<unsigned char> code, int type)
+int compileShader(Span<uint8_t> code, int type)
 {
   auto shaderId = glCreateShader(type);
 
@@ -214,8 +214,8 @@ int loadTexture(string path, Rect2i rect)
   return texture;
 }
 
-extern const Span<unsigned char> VertexShaderCode;
-extern const Span<unsigned char> FragmentShaderCode;
+extern const Span<uint8_t> VertexShaderCode;
+extern const Span<uint8_t> FragmentShaderCode;
 
 static
 GLuint loadShaders()
