@@ -99,7 +99,11 @@ struct Rockman : Player, Damageable
     }
     else if(sliding)
     {
-      r.action = ACTION_SLIDE;
+      if(shootDelay == 0)
+        r.action = ACTION_SLIDE;
+      else
+        r.action = ACTION_SLIDE_SHOOT;
+
       r.ratio = (time % 300) / 300.0f;
     }
     else if(hurtDelay || life < 0)
