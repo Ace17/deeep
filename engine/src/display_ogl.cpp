@@ -265,7 +265,6 @@ struct Camera
 {
   Vector2f pos = Vector2f(0, 0);
   float angle = 0;
-  bool valid = false;
 };
 
 static
@@ -459,10 +458,10 @@ struct OpenglDisplay : Display
   {
     auto cam = (Camera { pos, 0 });
 
-    if(!m_camera.valid)
+    if(!m_cameraValid)
     {
       m_camera = cam;
-      m_camera.valid = true;
+      m_cameraValid = true;
     }
 
     // avoid big camera jumps
@@ -622,6 +621,7 @@ struct OpenglDisplay : Display
   SDL_GLContext m_context;
 
   Camera m_camera;
+  bool m_cameraValid = false;
 
   GLint m_MVP;
   GLint m_colorId;
