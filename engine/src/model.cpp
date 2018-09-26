@@ -27,7 +27,7 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 
     auto const col = idx % 16;
     auto const row = idx / 16;
-    r.addTexture(sheetPath, Rect2i(col * cell.width, row * cell.height, cell.width, cell.height));
+    addTexture(r, sheetPath, Rect2i(col * cell.width, row * cell.height, cell.width, cell.height));
   }
 
   return r;
@@ -58,8 +58,8 @@ Model loadModel(string jsonPath)
   return r;
 }
 
-void Action::addTexture(string path, Rect2i rect)
+void addTexture(Action& action, string path, Rect2i rect)
 {
-  textures.push_back(loadTexture(path, rect));
+  action.textures.push_back(loadTexture(path, rect));
 }
 

@@ -16,7 +16,6 @@ using namespace std;
 struct Action
 {
   vector<int> textures;
-  void addTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 };
 
 struct Model
@@ -28,4 +27,5 @@ struct Model
 };
 
 Model loadModel(string jsonPath);
+void addTexture(Action& action, string path, Rect2i rect = Rect2i(0, 0, 0, 0));
 

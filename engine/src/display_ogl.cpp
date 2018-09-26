@@ -278,7 +278,7 @@ Model loadTiledModel(string path, int count, int COLS, int SIZE)
     auto row = i / COLS;
 
     Action action;
-    action.addTexture(path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
+    addTexture(action, path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
     m.actions.push_back(action);
   }
 
