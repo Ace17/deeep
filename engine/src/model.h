@@ -21,9 +21,15 @@ struct Action
 struct Model
 {
   uint32_t buffer = 0;
-  int vertexCount = 0;
-  int size = 0;
   vector<Action> actions;
+
+  // mesh data
+  struct Vertex
+  {
+    float x, y, u, v;
+  };
+
+  vector<Vertex> vertices;
 };
 
 Model loadModel(string jsonPath);

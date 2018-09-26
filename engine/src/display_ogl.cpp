@@ -234,29 +234,18 @@ GLuint loadShaders()
 static
 Model boxModel()
 {
-  float w = 1;
-  float h = 1;
-
-  const GLfloat myBox[] =
-  {
-    0, h, /* uv */ 0, 1,
-    0, 0, /* uv */ 0, 0,
-    w, 0, /* uv */ 1, 0,
-
-    w, 0, /* uv */ 1, 0,
-    w, h, /* uv */ 1, 1,
-    0, h, /* uv */ 0, 1,
-  };
+  const float w = 1;
+  const float h = 1;
 
   Model model;
 
-  model.size = 4;
+  model.vertices.push_back({ 0, h, /* uv */ 0, 1 });
+  model.vertices.push_back({ 0, 0, /* uv */ 0, 0 });
+  model.vertices.push_back({ w, 0, /* uv */ 1, 0 });
 
-  SAFE_GL(glGenBuffers(1, &model.buffer));
-  SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-  SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(myBox), myBox, GL_STATIC_DRAW));
-
-  model.vertexCount = 6;
+  model.vertices.push_back({ w, 0, /* uv */ 1, 0 });
+  model.vertices.push_back({ w, h, /* uv */ 1, 1 });
+  model.vertices.push_back({ 0, h, /* uv */ 0, 1 });
 
   return model;
 }
@@ -421,6 +410,7 @@ struct OpenglDisplay : Display
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
+    sendToOpengl(m_fontModel);
 
     m_MVP = glGetUniformLocation(m_programId, "MVP");
     assert(m_MVP >= 0);
@@ -452,6 +442,16 @@ struct OpenglDisplay : Display
       m_Models.resize(id + 1);
 
     m_Models[id] = loadAnimation(path);
+    sendToOpengl(m_Models[id]);
+  }
+
+  void sendToOpengl(Model& model)
+  {
+    SAFE_GL(glGenBuffers(1, &model.buffer));
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
+    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(model.vertices[0]) * model.vertices.size(), model.vertices.data(), GL_STATIC_DRAW));
+
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
   }
 
   void setCamera(Vector2f pos) override
@@ -555,7 +555,14 @@ struct OpenglDisplay : Display
     }
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-    SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, model.vertexCount));
+
+    // connect the xyz to the "a_position" attribute of the vertex shader
+    SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr));
+
+    // connect the uv coords to the "v_texCoord" attribute of the vertex shader
+    SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_TRUE, 4 * sizeof(GLfloat), (const GLvoid*)(2 * sizeof(GLfloat))));
+
+    SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, model.vertices.size()));
   }
 
   void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio) override
@@ -600,13 +607,8 @@ struct OpenglDisplay : Display
     SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
 
     {
-      // connect the xyz to the "a_position" attribute of the vertex shader
       SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
-      SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr));
-
-      // connect the uv coords to the "v_texCoord" attribute of the vertex shader
       SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
-      SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_TRUE, 4 * sizeof(GLfloat), (const GLvoid*)(2 * sizeof(GLfloat))));
     }
   }
 
