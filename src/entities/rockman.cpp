@@ -166,6 +166,8 @@ struct Rockman : Player, Damageable
     if(blinking)
       r.effect = Effect::Blinking;
 
+    r.zOrder = 1;
+
     actors.push_back(r);
   }
 
