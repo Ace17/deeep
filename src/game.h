@@ -17,6 +17,8 @@
 #include "base/view.h"
 #include "vec.h"
 
+using namespace std;
+
 typedef Matrix2<int> Matrix;
 
 struct Entity;

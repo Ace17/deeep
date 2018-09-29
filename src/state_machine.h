@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+using namespace std;
+
 struct StateMachine : Scene
 {
   void next()
@@ -18,12 +20,6 @@ struct StateMachine : Scene
   {
     auto current = states[currIdx].get();
     current->tick(c);
-  }
-
-  vector<Actor> getActors() const override
-  {
-    auto current = states[currIdx].get();
-    return current->getActors();
   }
 
   vector<unique_ptr<Scene>> states;

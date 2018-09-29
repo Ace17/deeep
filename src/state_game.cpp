@@ -84,13 +84,15 @@ struct GameState : Scene, IGame
 
       m_view->setCameraPos(cameraPos);
     }
+
+    sendActors();
   }
 
-  vector<Actor> getActors() const override
+  void sendActors()
   {
-    vector<Actor> r;
+    sendActorsForTileMap();
 
-    addActorsForTileMap(r);
+    vector<Actor> r;
 
     for(auto& entity : m_entities)
     {
@@ -118,10 +120,11 @@ struct GameState : Scene, IGame
       r.insert(r.begin(), background);
     }
 
-    return r;
+    for(auto& actor : r)
+      m_view->sendActor(actor);
   }
 
-  void addActorsForTileMap(vector<Actor>& r) const
+  void sendActorsForTileMap() const
   {
     auto const model = MDL_TILES_00 + m_theme % 8;
 
@@ -142,7 +145,7 @@ struct GameState : Scene, IGame
           actor.action = composition[subTile];
           actor.scale = Size(0.5, 0.5);
           actor.zOrder = -1;
-          r.push_back(actor);
+          m_view->sendActor(actor);
         }
       };
 

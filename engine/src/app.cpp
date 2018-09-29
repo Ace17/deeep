@@ -65,7 +65,10 @@ public:
       m_lastTime += m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
 
       if(!m_paused)
+      {
+        m_actors.clear();
         m_scene->tick(m_control);
+      }
 
       dirty = true;
     }
@@ -125,16 +128,14 @@ private:
   {
     m_display->beginDraw();
 
-    auto actors = m_scene->getActors();
-
     auto byZOrder = [] (Actor const& a, Actor const& b)
       {
         return a.zOrder < b.zOrder;
       };
 
-    std::sort(actors.begin(), actors.end(), byZOrder);
+    std::sort(m_actors.begin(), m_actors.end(), byZOrder);
 
-    for(auto& actor : actors)
+    for(auto& actor : m_actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
       m_display->drawActor(where, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
@@ -246,6 +247,11 @@ private:
     m_display->setAmbientLight(amount);
   }
 
+  void sendActor(Actor const& actor) override
+  {
+    m_actors.push_back(actor);
+  }
+
   int keys[SDL_NUM_SCANCODES] {};
   int m_running = 1;
 
@@ -260,6 +266,7 @@ private:
   bool m_paused = false;
   unique_ptr<Audio> m_audio;
   unique_ptr<Display> m_display;
+  vector<Actor> m_actors;
 
   string m_title;
   string m_textbox;

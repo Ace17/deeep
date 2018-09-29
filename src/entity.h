@@ -10,11 +10,14 @@
 
 #pragma once
 
+#include <vector>
 #include "base/scene.h"
 #include "base/geom.h"
 #include "game.h"
 #include "body.h"
 #include "physics_probe.h"
+
+using namespace std;
 
 struct Damageable
 {
