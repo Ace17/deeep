@@ -29,7 +29,7 @@ using namespace std;
 // from smarttiles
 array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 
-struct GameState : Scene, IGame
+struct GameState : Scene, private IGame
 {
   GameState(View* view) :
     m_view(view),
@@ -92,14 +92,18 @@ struct GameState : Scene, IGame
   {
     sendActorsForTileMap();
 
-    vector<Actor> r;
+    vector<Actor> actors;
 
     for(auto& entity : m_entities)
     {
-      entity->addActors(r);
+      actors.clear();
+      entity->addActors(actors);
+
+      for(auto actor : actors)
+        m_view->sendActor(actor);
 
       if(m_debug)
-        r.push_back(getDebugActor(entity.get()));
+        m_view->sendActor(getDebugActor(entity.get()));
     }
 
     {
@@ -109,7 +113,7 @@ struct GameState : Scene, IGame
       lifebar.scale = Size(0.7, 3);
       lifebar.screenRefFrame = true;
       lifebar.zOrder = 10;
-      r.push_back(lifebar);
+      m_view->sendActor(lifebar);
     }
 
     {
@@ -117,11 +121,8 @@ struct GameState : Scene, IGame
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
       background.zOrder = -2;
-      r.insert(r.begin(), background);
+      m_view->sendActor(background);
     }
-
-    for(auto& actor : r)
-      m_view->sendActor(actor);
   }
 
   void sendActorsForTileMap() const
@@ -334,6 +335,7 @@ struct GameState : Scene, IGame
     auto box = entity->getFBox();
     auto r = Actor { box.pos, MDL_RECT };
     r.scale = box.size;
+    r.zOrder = 1;
     return r;
   }
 };
