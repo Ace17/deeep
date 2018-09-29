@@ -90,10 +90,10 @@ struct Elevator : Entity
   {
     if(other->pos.y > pos.y + size.height / 2)
     {
-      if(triggeredTime == 0)
+      if(debounceTrigger == 0)
         trigger();
 
-      triggeredTime = 100;
+      debounceTrigger = 100;
     }
   }
 
@@ -109,21 +109,39 @@ struct Elevator : Entity
   void tick() override
   {
     decrement(liftTimer);
-    decrement(triggeredTime);
+    decrement(debounceTrigger);
 
-    if(liftTimer > 500 && liftTimer < 4500)
+    auto liftVel = Vector(0, 0.00466);
+
+    if(liftTimer >= 4500)
     {
-      auto sign = liftTimer > 2500 ? 1 : -1;
-      physics->moveBody(this, Vector(0, sign * 0.004));
+      // initial pause
     }
-    else
+    else if(liftTimer >= 3000)
     {
+      // go up
+      physics->moveBody(this, liftVel);
+    }
+    else if(liftTimer >= 2000)
+    {
+      // pause in top position
+      auto topPos = initialPos + Vector(0, 7);
+      physics->moveBody(this, topPos - pos);
+    }
+    else if(liftTimer > 500)
+    {
+      // go down
+      physics->moveBody(this, -1.0 * liftVel);
+    }
+    else if(liftTimer < 500)
+    {
+      // stuck in initial position
       physics->moveBody(this, initialPos - pos);
     }
   }
 
   int liftTimer = 0;
-  int triggeredTime = 0;
+  int debounceTrigger = 0;
 
   Vector initialPos;
 };
