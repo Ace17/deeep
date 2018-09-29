@@ -7,8 +7,7 @@
 #pragma once
 
 #include <memory>
-#include <vector>
-#include <string>
+#include "base/span.h"
 
 using namespace std;
 
@@ -18,5 +17,5 @@ struct IApp
   virtual bool tick() = 0;
 };
 
-unique_ptr<IApp> createApp(vector<string> args);
+unique_ptr<IApp> createApp(Span<char*> args);
 

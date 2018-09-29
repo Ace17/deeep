@@ -8,9 +8,7 @@
 // This is the only file where emscripten-specific stuff can appear.
 
 #include <cstdio>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <exception>
 
 #include "app.h"
 
@@ -52,11 +50,7 @@ int main(int argc, char* argv[])
 {
   try
   {
-    vector<string> args {
-      argv + 1, argv + argc
-    };
-
-    auto app = createApp(args);
+    auto app = createApp({ argv + 1, argc - 1 });
     runMainLoop(app.get());
     return 0;
   }

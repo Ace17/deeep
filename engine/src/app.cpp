@@ -36,8 +36,8 @@ Scene* createGame(View* view, vector<string> argv);
 class App : View, public IApp
 {
 public:
-  App(vector<string> argv)
-    : m_args(argv)
+  App(Span<char*> args)
+    : m_args({ args.data, args.data + args.len })
   {
     SDL_Init(0);
 
@@ -276,8 +276,8 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-unique_ptr<IApp> createApp(vector<string> argv)
+unique_ptr<IApp> createApp(Span<char*> args)
 {
-  return make_unique<App>(argv);
+  return make_unique<App>(args);
 }
 
