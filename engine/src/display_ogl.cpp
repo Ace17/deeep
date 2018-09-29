@@ -120,8 +120,8 @@ int linkShaders(vector<int> ids)
 
 struct Picture
 {
-  int w, h;
-  int pitch;
+  int width, height;
+  int stride;
   vector<uint8_t> pixels;
 };
 
@@ -131,8 +131,8 @@ Picture loadPng(string path)
   Picture pic;
   auto pngDataBuf = read(path);
   auto pngData = Span<const uint8_t>((uint8_t*)pngDataBuf.data(), (int)pngDataBuf.size());
-  pic.pixels = decodePng(pngData, pic.w, pic.h);
-  pic.pitch = pic.w * 4;
+  pic.pixels = decodePng(pngData, pic.width, pic.height);
+  pic.stride = pic.width * 4;
 
   return pic;
 }
@@ -154,16 +154,16 @@ int loadTexture(string path, Rect2i rect)
   auto surface = getPicture(path);
 
   if(rect.size.width == 0 && rect.size.height == 0)
-    rect = Rect2i(0, 0, surface->w, surface->h);
+    rect = Rect2i(0, 0, surface->width, surface->height);
 
-  if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->w || rect.pos.y + rect.size.height > surface->h)
+  if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->width || rect.pos.y + rect.size.height > surface->height)
     throw runtime_error("Invalid boundaries for '" + path + "'");
 
   auto const bpp = 4;
 
   vector<uint8_t> img(rect.size.width* rect.size.height* bpp);
 
-  auto src = (Uint8*)surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->pitch;
+  auto src = (Uint8*)surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->stride;
   auto dst = (Uint8*)img.data() + bpp * rect.size.width * rect.size.height;
 
   // from glTexImage2D doc:
@@ -173,7 +173,7 @@ int loadTexture(string path, Rect2i rect)
   {
     dst -= bpp * rect.size.width;
     memcpy(dst, src, bpp * rect.size.width);
-    src += surface->pitch;
+    src += surface->stride;
   }
 
   GLuint texture;
