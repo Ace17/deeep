@@ -12,15 +12,12 @@
 #include <string>
 #include <vector>
 
+#include "app.h"
+
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
 
 using namespace std;
-
-class App;
-App* App_create(vector<string> args);
-bool App_tick(App*);
-void App_destroy(App* app);
 
 #ifdef __EMSCRIPTEN__
 extern "C"
@@ -28,24 +25,25 @@ extern "C"
 void emscripten_set_main_loop(void (* f)(), int, int);
 }
 
-static App* g_pApp;
-static void voidTick()
+static IApp* g_theApp;
+
+static void tickTheApp()
 {
-  App_tick(g_pApp);
+  g_theApp->tick();
 }
 
-void runMainLoop(App* app)
+void runMainLoop(IApp* app)
 {
-  g_pApp = app;
-  emscripten_set_main_loop(&voidTick, 0, 10);
+  g_theApp = app.get();
+  emscripten_set_main_loop(&tickTheApp, 0, 10);
 }
 
 #else
 
-void runMainLoop(App* app)
+void runMainLoop(IApp* app)
 {
-  while(App_tick(app))
-    SDL_Delay(10);
+  while(app->tick())
+    SDL_Delay(1);
 }
 
 #endif
@@ -58,10 +56,8 @@ int main(int argc, char* argv[])
       argv + 1, argv + argc
     };
 
-    auto app = App_create(args);
-
-    runMainLoop(app);
-    App_destroy(app);
+    auto app = createApp(args);
+    runMainLoop(app.get());
     return 0;
   }
   catch(exception const& e)

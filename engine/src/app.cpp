@@ -19,6 +19,7 @@
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
+#include "app.h"
 #include "ratecounter.h"
 #include "audio.h"
 #include "display.h"
@@ -32,7 +33,7 @@ Audio* createAudio();
 
 Scene* createGame(View* view, vector<string> argv);
 
-class App : View
+class App : View, public IApp
 {
 public:
   App(vector<string> argv)
@@ -275,18 +276,8 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-App* App_create(vector<string> argv)
+unique_ptr<IApp> createApp(vector<string> argv)
 {
-  return new App(argv);
-}
-
-void App_destroy(App* app)
-{
-  delete app;
-}
-
-bool App_tick(App* app)
-{
-  return app->tick();
+  return make_unique<App>(argv);
 }
 
