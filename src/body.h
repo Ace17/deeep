@@ -40,14 +40,7 @@ struct Body
   // only called if (this->collidesWith & other->collisionGroup)
   function<void(Body*)> onCollision = [] (Body*) {};
 
-  Box getFBox() const
-  {
-    return Box { pos, size };
-  }
-
-  IntBox getBox() const
-  {
-    return roundBox(getFBox());
-  }
+  Box getFBox() const { return Box { pos, size }; }
+  IntBox getBox() const { return roundBox(getFBox()); }
 };
 

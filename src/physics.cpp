@@ -7,12 +7,11 @@
  */
 
 #include <cmath> // round
+#include <vector>
 
 #include "body.h"
 #include "base/util.h"
 #include "physics.h"
-#include <vector>
-#include <memory>
 
 using namespace std;
 
