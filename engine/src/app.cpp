@@ -9,6 +9,7 @@
 // and no platform-specific code should be here (SDL is OK).
 
 #include <vector>
+#include <algorithm> // sort
 #include <string>
 #include <memory>
 
@@ -125,6 +126,13 @@ private:
     m_display->beginDraw();
 
     auto actors = m_scene->getActors();
+
+    auto byZOrder = [] (Actor const& a, Actor const& b)
+      {
+        return a.zOrder < b.zOrder;
+      };
+
+    std::sort(actors.begin(), actors.end(), byZOrder);
 
     for(auto& actor : actors)
     {

@@ -32,6 +32,7 @@ struct Actor
   Size2f scale = Size2f(1, 1); // sprite size
   Effect effect = Effect::Normal;
   bool screenRefFrame = false; // if true, 'pos' is expressed relative to the camera (used for HUD objects).
+  int zOrder = 0; // actors with higher value are drawn over the others
 };
 
 struct Control

@@ -106,6 +106,7 @@ struct GameState : Scene, IGame
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(0.7, 3);
       lifebar.screenRefFrame = true;
+      lifebar.zOrder = 10;
       r.push_back(lifebar);
     }
 
@@ -113,6 +114,7 @@ struct GameState : Scene, IGame
       Actor background = { Vector(-8, -8), MDL_BACKGROUND };
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
+      background.zOrder = -2;
       r.insert(r.begin(), background);
     }
 
@@ -139,6 +141,7 @@ struct GameState : Scene, IGame
           auto actor = Actor { Vector(posX, posY), model };
           actor.action = composition[subTile];
           actor.scale = Size(0.5, 0.5);
+          actor.zOrder = -1;
           r.push_back(actor);
         }
       };
