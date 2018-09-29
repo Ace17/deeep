@@ -48,7 +48,7 @@ struct View
   virtual void setCameraPos(Vector2f pos) = 0;
   virtual void setAmbientLight(float amount) = 0;
 
-  // adds a dusplayable object to the current frame
+  // adds a displayable object to the current frame
   virtual void sendActor(Actor const& actor) = 0;
 };
 
