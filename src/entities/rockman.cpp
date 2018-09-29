@@ -149,7 +149,7 @@ struct Rockman : Player, Damageable
       {
         if(shootDelay == 0)
         {
-          r.ratio = (time % 1000) / 1000.0f;
+          r.ratio = (time % 3000) / 3000.0f;
           r.action = ACTION_STAND;
         }
         else
