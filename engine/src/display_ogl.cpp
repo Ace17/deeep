@@ -118,57 +118,34 @@ int linkShaders(vector<int> ids)
   return ProgramID;
 }
 
-static
-shared_ptr<SDL_Surface> loadPng(string path)
+struct Picture
 {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  const Uint32 rmask = 0xff000000;
-  const Uint32 gmask = 0x00ff0000;
-  const Uint32 bmask = 0x0000ff00;
-  const Uint32 amask = 0x000000ff;
-#else
-  const Uint32 rmask = 0x000000ff;
-  const Uint32 gmask = 0x0000ff00;
-  const Uint32 bmask = 0x00ff0000;
-  const Uint32 amask = 0xff000000;
-#endif
+  int w, h;
+  int pitch;
+  vector<uint8_t> pixels;
+};
 
-  int width, height;
+static
+Picture loadPng(string path)
+{
+  Picture pic;
   auto pngDataBuf = read(path);
   auto pngData = Span<const uint8_t>((uint8_t*)pngDataBuf.data(), (int)pngDataBuf.size());
-  auto pixels = decodePng(pngData, width, height);
+  pic.pixels = decodePng(pngData, pic.w, pic.h);
+  pic.pitch = pic.w * 4;
 
-  auto surface = shared_ptr<SDL_Surface>(
-      SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask),
-      &SDL_FreeSurface);
-
-  if(!surface)
-    throw runtime_error(string("Can't create SDL surface for texture: ") + SDL_GetError());
-
-  Uint8* pSrc = (Uint8*)pixels.data();
-  Uint8* pDst = (Uint8*)surface->pixels;
-
-  for(int rows = 0; rows < (int)height; ++rows)
-  {
-    memcpy(pDst, pSrc, width * surface->format->BytesPerPixel);
-    pSrc += 4 * width;
-    pDst += surface->pitch;
-  }
-
-  return surface;
+  return pic;
 }
 
 static
-SDL_Surface* getPicture(string path)
+Picture* getPicture(string path)
 {
-  static map<string, shared_ptr<SDL_Surface>> cache;
+  static map<string, Picture> cache;
 
   if(cache.find(path) == cache.end())
-  {
     cache[path] = loadPng(path);
-  }
 
-  return cache.at(path).get();
+  return &cache.at(path);
 }
 
 // exported to Model
@@ -182,11 +159,11 @@ int loadTexture(string path, Rect2i rect)
   if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->w || rect.pos.y + rect.size.height > surface->h)
     throw runtime_error("Invalid boundaries for '" + path + "'");
 
-  auto const bpp = surface->format->BytesPerPixel;
+  auto const bpp = 4;
 
   vector<uint8_t> img(rect.size.width* rect.size.height* bpp);
 
-  auto src = (Uint8*)surface->pixels + rect.pos.x * bpp + rect.pos.y * surface->pitch;
+  auto src = (Uint8*)surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->pitch;
   auto dst = (Uint8*)img.data() + bpp * rect.size.width * rect.size.height;
 
   // from glTexImage2D doc:
