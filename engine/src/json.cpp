@@ -268,8 +268,6 @@ unique_ptr<Value> parseArray(Tokenizer& tk)
   return unique_ptr<Value>(r.release());
 }
 
-#include <sstream>
-
 static
 string expect(Tokenizer& tk, Token::Type type)
 {
@@ -277,16 +275,16 @@ string expect(Tokenizer& tk, Token::Type type)
 
   if(front.type != type)
   {
-    stringstream msg;
+    string msg;
 
     if(front.type == Token::EOF_)
-      msg << "Unexpected end of file found";
+      msg += "Unexpected end of file found";
     else
-      msg << "Unexpected token '" + front.lexem + "'";
+      msg += "Unexpected token '" + front.lexem + "'";
 
-    msg << " of type " << front.type;
-    msg << " instead of " << type;
-    throw runtime_error(msg.str());
+    msg += " of type " + to_string(front.type);
+    msg += " instead of " + to_string(type);
+    throw runtime_error(msg);
   }
 
   string r = front.lexem;
