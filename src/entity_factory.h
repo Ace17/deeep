@@ -8,9 +8,15 @@
 
 #pragma once
 
-#include "entity.h"
+struct Entity;
+
+#include <functional>
+#include <string>
+#include <vector>
 #include <memory>
 #include <map>
+
+using namespace std;
 
 // e.g:
 // createEntity("spider");
