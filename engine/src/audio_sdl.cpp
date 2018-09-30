@@ -50,11 +50,9 @@ struct SdlAudio : Audio
     if(audioDevice == 0)
       throw runtime_error("Can't open audio");
 
-    {
-      int freq = audiospec.freq;
-      int channels = audiospec.channels;
-      printf("[audio] %d Hz %d channels\n", freq, channels);
-    }
+    printf("[audio] %d Hz %d channels\n",
+           audiospec.freq,
+           audiospec.channels);
 
     voices.resize(MAX_VOICES);
 
@@ -90,14 +88,15 @@ struct SdlAudio : Audio
 
   void playSound(int id) override
   {
-    auto sound = sounds[id].get();
-
     auto voice = allocVoice();
 
     if(!voice)
+    {
+      printf("[audio] no voice available\n");
       return;
+    }
 
-    voice->play(sound);
+    voice->play(sounds[id].get());
   }
 
   void playMusic(int id) override
