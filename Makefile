@@ -89,7 +89,6 @@ SRCS_TESTS:=\
 	engine/tests/json.cpp\
 	engine/tests/tests.cpp\
 	engine/tests/tests_main.cpp\
-	engine/tests/tokenizer.cpp\
 	engine/tests/util.cpp\
 	tests/entities.cpp\
 	tests/level_graph.cpp\
