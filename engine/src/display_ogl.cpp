@@ -10,7 +10,6 @@
 
 #include <cassert>
 #include <cstdio>
-#include <sstream>
 #include <vector>
 #include <map>
 #include <stdexcept>
@@ -44,12 +43,12 @@ void ensureGl(char const* expr, int line)
   if(errorCode == GL_NO_ERROR)
     return;
 
-  stringstream ss;
-  ss << "OpenGL error" << endl;
-  ss << "Expr: " << expr << endl;
-  ss << "Line: " << line << endl;
-  ss << "Code: 0x" << std::hex << errorCode;
-  throw runtime_error(ss.str());
+  string ss;
+  ss += "OpenGL error\n";
+  ss += "Expr: " + string(expr) + "\n";
+  ss += "Line: " + to_string(line) + "\n";
+  ss += "Code: " + to_string(errorCode) + "\n";
+  throw runtime_error(ss);
 }
 
 static

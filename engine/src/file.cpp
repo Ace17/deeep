@@ -7,7 +7,6 @@
 #include "file.h"
 
 #include <fstream>
-#include <sstream>
 
 inline
 ifstream openInput(string path)
