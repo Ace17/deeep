@@ -30,7 +30,7 @@
 
 namespace
 {
-struct PNG // functions for PNG decoding
+struct PNG
 {
   struct Info
   {
@@ -38,15 +38,13 @@ struct PNG // functions for PNG decoding
     bool key_defined = false; // is a transparent color key given?
     std::vector<uint8_t> palette;
   };
-
-  Info info {};
-
-  void decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
+  static
+  Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
   {
     if(in.len == 0 || in.data == nullptr)
       throw std::runtime_error("empty PNG data");
 
-    info = readPngHeader(in);
+    auto info = readPngHeader(in);
 
     size_t pos = 33; // first byte of the first chunk after the header
     std::vector<uint8_t> idat; // the data from idat chunks
@@ -204,9 +202,12 @@ struct PNG // functions for PNG decoding
       std::vector<uint8_t> data = out;
       convert(out, &data[0], info, info.width, info.height);
     }
+
+    return info;
   }
 
-  static Info readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
+  static
+  Info readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
   {
     Info info;
 
@@ -245,6 +246,40 @@ struct PNG // functions for PNG decoding
     return info;
   }
 
+  static
+  void adam7Pass(uint8_t* out, uint8_t* linen, uint8_t* lineo, const uint8_t* in, unsigned long w, size_t passleft, size_t passtop, size_t spacex, size_t spacey, size_t passw, size_t passh, unsigned long bpp)
+  { // filter and reposition the pixels into the output when the image is Adam7 interlaced. This function can only do it after the full image is already decoded. The out buffer must have the correct allocated memory size already.
+    if(passw == 0)
+      return;
+
+    size_t bytewidth = (bpp + 7) / 8, linelength = 1 + ((bpp * passw + 7) / 8);
+
+    for(unsigned long y = 0; y < passh; y++)
+    {
+      uint8_t filterType = in[y * linelength], * prevline = (y == 0) ? 0 : lineo;
+      unFilterScanline(linen, &in[y * linelength + 1], prevline, bytewidth, filterType, (w * bpp + 7) / 8);
+
+      if(bpp >= 8)
+        for(size_t i = 0; i < passw; i++)
+          for(size_t b = 0; b < bytewidth; b++) // b = current byte of this pixel
+            out[bytewidth * w * (passtop + spacey * y) + bytewidth * (passleft + spacex * i) + b] = linen[bytewidth * i + b];
+
+      else
+        for(size_t i = 0; i < passw; i++)
+        {
+          size_t obp = bpp * w * (passtop + spacey * y) + bpp * (passleft + spacex * i), bp = i * bpp;
+
+          for(size_t b = 0; b < bpp; b++)
+            setBitOfReversedStream(obp, out, readBitFromReversedStream(bp, &linen[0]));
+        }
+
+      uint8_t* temp = linen;
+      linen = lineo;
+      lineo = temp; // swap the two buffer pointers "line old" and "line new"
+    }
+  }
+
+  static
   void unFilterScanline(uint8_t* recon, const uint8_t* scanline, const uint8_t* precon, size_t bytewidth, unsigned long filterType, size_t length)
   {
     switch(filterType)
@@ -320,46 +355,16 @@ struct PNG // functions for PNG decoding
     }
   }
 
-  void adam7Pass(uint8_t* out, uint8_t* linen, uint8_t* lineo, const uint8_t* in, unsigned long w, size_t passleft, size_t passtop, size_t spacex, size_t spacey, size_t passw, size_t passh, unsigned long bpp)
-  { // filter and reposition the pixels into the output when the image is Adam7 interlaced. This function can only do it after the full image is already decoded. The out buffer must have the correct allocated memory size already.
-    if(passw == 0)
-      return;
-
-    size_t bytewidth = (bpp + 7) / 8, linelength = 1 + ((bpp * passw + 7) / 8);
-
-    for(unsigned long y = 0; y < passh; y++)
-    {
-      uint8_t filterType = in[y * linelength], * prevline = (y == 0) ? 0 : lineo;
-      unFilterScanline(linen, &in[y * linelength + 1], prevline, bytewidth, filterType, (w * bpp + 7) / 8);
-
-      if(bpp >= 8)
-        for(size_t i = 0; i < passw; i++)
-          for(size_t b = 0; b < bytewidth; b++) // b = current byte of this pixel
-            out[bytewidth * w * (passtop + spacey * y) + bytewidth * (passleft + spacex * i) + b] = linen[bytewidth * i + b];
-
-      else
-        for(size_t i = 0; i < passw; i++)
-        {
-          size_t obp = bpp * w * (passtop + spacey * y) + bpp * (passleft + spacex * i), bp = i * bpp;
-
-          for(size_t b = 0; b < bpp; b++)
-            setBitOfReversedStream(obp, out, readBitFromReversedStream(bp, &linen[0]));
-        }
-
-      uint8_t* temp = linen;
-      linen = lineo;
-      lineo = temp; // swap the two buffer pointers "line old" and "line new"
-    }
-  }
-
-  static unsigned long readBitFromReversedStream(size_t& bitp, const uint8_t* bits)
+  static
+  unsigned long readBitFromReversedStream(size_t& bitp, const uint8_t* bits)
   {
     unsigned long result = (bits[bitp >> 3] >> (7 - (bitp & 0x7))) & 1;
     bitp++;
     return result;
   }
 
-  static unsigned long readBitsFromReversedStream(size_t& bitp, const uint8_t* bits, unsigned long nbits)
+  static
+  unsigned long readBitsFromReversedStream(size_t& bitp, const uint8_t* bits, unsigned long nbits)
   {
     unsigned long result = 0;
 
@@ -369,6 +374,7 @@ struct PNG // functions for PNG decoding
     return result;
   }
 
+  static
   void setBitOfReversedStream(size_t& bitp, uint8_t* bits, unsigned long bit)
   {
     bits[bitp >> 3] |= (bit << (7 - (bitp & 0x7)));
@@ -517,6 +523,7 @@ struct PNG // functions for PNG decoding
       }
   }
 
+  static
   uint8_t paethPredictor(short a, short b, short c) // Paeth predicter, used by PNG filter type 4
   {
     short p = a + b - c, pa = p > a ? (p - a) : (a - p), pb = p > b ? (p - b) : (b - p), pc = p > c ? (p - c) : (c - p);
@@ -529,10 +536,9 @@ std::vector<uint8_t> decodePng(Span<const uint8_t> pngData, int& width, int& hei
 {
   std::vector<uint8_t> r;
 
-  PNG decoder;
-  decoder.decode(r, pngData);
-  width = decoder.info.width;
-  height = decoder.info.height;
+  auto info = PNG::decode(r, pngData);
+  width = info.width;
+  height = info.height;
 
   return r;
 }
