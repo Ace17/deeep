@@ -1,4 +1,5 @@
 { "height":32,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
@@ -38,6 +39,39 @@
                  "width":16,
                  "x":144,
                  "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":64,
+                 "name":"hopper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":432
+                }, 
+                {
+                 "height":16,
+                 "id":65,
+                 "name":"hopper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":144,
+                 "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":66,
+                 "name":"hopper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":352,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -45,10 +79,10 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":64,
+ "nextobjectid":67,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {

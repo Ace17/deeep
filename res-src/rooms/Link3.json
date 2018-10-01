@@ -1,8 +1,9 @@
 { "height":32,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYBzFo3iQYFLBUNBPDf9TGo7UiofB4g5SzRpo\/djMojR\/DJRebPpJAaTGMzFmDbR+YsygZ3onFgMAVeIBYw==",
+         "data":"eJxjZGBgYBzFo3iQYFLBUNBPqf+pEY7UiofB4g5SzRpo\/djMobf+gbKb0nDDB4aC\/sGMAYXCAY8=",
          "encoding":"base64",
          "height":32,
          "name":"tiles",
@@ -26,7 +27,7 @@
  "nextobjectid":85,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {

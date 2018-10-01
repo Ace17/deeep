@@ -1,8 +1,9 @@
 { "height":48,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztlsEOxCAIRPXY\/\/\/hnrywVJkBlE0kMdtUmTcBtm1vrXVlydDOzNa\/5cuzWn5krPxmx+Vf\/uXP97VrRN+TfyIqzMEuD8i7w6Jl1WbfXzMm6zmSj3rw1EDuV+GPe4+yGP7sO0beW2nv4DM6iIcvvYz5R\/lsHZk1YswWM8cRfHaGLv9XAw1L3zP5TL0q8T19RfnW57+Vj\/T+y8OqTp7\/h6UPFfnPYt\/r13Ke1ZsFwkdqkMFHa8D6Y\/JO8xk9hq89r6LD21umThFML9\/qKSO6+N3Nlz5O8tHeemejav4LsXMDOQ==",
+         "data":"eJztlksOxCAMQ2HZ+1+4KzZMANsJJSNhCU3VkjxPkn5qKaUaq5e1Z7b+Lb7fa8VHauV3ty7\/8i9\/ft06ZvJ74k8owxx85YF5dyC50Nzq+8vKO+KjniP5rIeIGmTjt3OPsRT+6Dtk9b3C5InkK3lYD8j\/RxTNV+uorKY2W945VvnqDF3+bw5WSN938pV6ZeJ7+sry0ec\/ymd6P\/KwqpPn\/kD6kJH\/LK57\/SL71XwzMXymBjv4bA1Uf0rcab6ST+Fbz6toeXur1CmC6eWjnnaodr9f83sfJ\/lsb72zkTX+BRXaAz8=",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -81,7 +82,7 @@
  "nextobjectid":84,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {

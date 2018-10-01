@@ -1,8 +1,9 @@
 { "height":64,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzt0ksKACAIBFDF+9+5bQsjP5AaI8zyDRHDRMQNo13UWXoiB1\/r946s1zosG4t463Ynee3g53itp9pX\/AP8f97TVe1vffDwmQ1GfebN8HYrBy8P\/Sne7SL9swBYRQLH",
+         "data":"eJzt0jEKACAMA8CK\/\/+zq0O1NQGtkELGiw5pZtYKxjvUZXqQk3\/r5w7Wex2ZjSE+u92fvHfynD\/pYN+Ptv3CIz3y8rtjfdTBvh\/1ycszG0Y982f5vO0L3y\/6VU63q9TPAEcRAsU=",
          "encoding":"base64",
          "height":64,
          "name":"tiles",
@@ -27,6 +28,28 @@
                  "width":16,
                  "x":112,
                  "y":880
+                }, 
+                {
+                 "height":16,
+                 "id":3,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":352
+                }, 
+                {
+                 "height":16,
+                 "id":4,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":576
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -34,10 +57,10 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.3",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {

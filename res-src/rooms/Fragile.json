@@ -1,4 +1,5 @@
 { "height":16,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
@@ -313,6 +314,28 @@
                  "width":16,
                  "x":848,
                  "y":160
+                }, 
+                {
+                 "height":16,
+                 "id":32,
+                 "name":"wheel",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":464,
+                 "y":208
+                }, 
+                {
+                 "height":16,
+                 "id":33,
+                 "name":"wheel",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":656,
+                 "y":208
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -320,10 +343,10 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":32,
+ "nextobjectid":34,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {

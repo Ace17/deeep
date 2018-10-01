@@ -1,4 +1,5 @@
 { "height":48,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
@@ -148,6 +149,17 @@
                  "width":16,
                  "x":64,
                  "y":640
+                }, 
+                {
+                 "height":16,
+                 "id":75,
+                 "name":"hopper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":304,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -155,9 +167,10 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":75,
+ "nextobjectid":76,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {
@@ -166,6 +179,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.0.0",
+ "version":1,
  "width":32
 }

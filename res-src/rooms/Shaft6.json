@@ -1,8 +1,9 @@
 { "height":48,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztl0sOwzAIRJ1l73\/hKotuLMDDmI+jBolFIsMbOwbaa4xxCT6btMbyp8XPa6V41JD4k\/kV9u\/8WUcX9xS+VQPa3bXeIfGd312zbk3VfLR\/V3HR2bK6r7vzCtFvPSPxLB+dWRl8q1+wedjfG9L6j+Jofo8GZq1nX9aZomeN8hEmw1\/pWumzYjP4CCeiP3r4u7Uu8bz8iDPfzYvUH8rZ2Zen\/rW4jHP1WCQf6WnM\/VvxGJ2a5gpj+ZHfieEj+Sr5O3Mrgm\/lQ7VU8qP738vHtXTwETuF32VMjUbOuer9e+9fxt5v\/\/0fy8r\/NP8CFrMCTA==",
+         "data":"eJztl8EOxCAIRPW4\/\/\/DPZlsGoQZRLC7ncSktcLDAjbtrbUujLukNdp47Z9nn6l\/50txVHFP5PfJ9betNofYV+VcU3VMJ9RBRm7Y8\/Qel1Wvq+c1Er92j9h7+Ei\/VvG9fiK+l2PuMxkIX7pm+dZaq6aZOkbk4Vu+I84Hi68xMvkRvXYCH6kltua9WuFb\/YdwpGdRfDTGlfyzkuwj+ex78+Rf4rGK4ntV3X8sH\/FXwZfWsO9nJ9\/TMzv52vqX769\/Kz6Wn6lT+FXaybfOuSy+NmflX9sDsr+Zn\/E\/5vX\/a+MCeCQC3Q==",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -126,6 +127,39 @@
                  "width":16,
                  "x":400,
                  "y":704
+                }, 
+                {
+                 "height":16,
+                 "id":90,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":32,
+                 "y":304
+                }, 
+                {
+                 "height":16,
+                 "id":91,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":32,
+                 "y":624
+                }, 
+                {
+                 "height":16,
+                 "id":92,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":32,
+                 "y":464
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -133,10 +167,10 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":90,
+ "nextobjectid":93,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "tiledversion":"1.1.5",
  "tileheight":16,
  "tilesets":[
         {
