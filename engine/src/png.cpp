@@ -36,12 +36,12 @@ struct PNG // functions for PNG decoding
     std::vector<uint8_t> palette;
   } info {};
 
-  void decode(std::vector<uint8_t>& out, const uint8_t* in, size_t size, bool convert_to_rgba32)
+  void decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
   {
-    if(size == 0 || in == 0)
+    if(in.len == 0 || in.data == nullptr)
       throw std::runtime_error("empty PNG data");
 
-    readPngHeader(&in[0], size);
+    readPngHeader(in);
 
     size_t pos = 33; // first byte of the first chunk after the header
     std::vector<uint8_t> idat; // the data from idat chunks
@@ -50,7 +50,7 @@ struct PNG // functions for PNG decoding
 
     while(!IEND) // loop through the chunks, ignoring unknown chunks and stopping at IEND chunk. IDAT data is put at the start of the in buffer
     {
-      if(pos + 8 >= size)
+      if(pos + 8 >= (size_t)in.len)
         throw std::runtime_error("truncated chunk header");
 
       size_t chunkLength = read32bitInt(&in[pos]);
@@ -59,7 +59,7 @@ struct PNG // functions for PNG decoding
       if(chunkLength > 2147483647)
         throw std::runtime_error("chunk too big");
 
-      if(pos + chunkLength >= size)
+      if(pos + chunkLength >= (size_t)in.len)
         throw std::runtime_error("truncated chunk data");
 
       if(in[pos + 0] == 'I' && in[pos + 1] == 'D' && in[pos + 2] == 'A' && in[pos + 3] == 'T') // IDAT chunk, containing compressed image data
@@ -195,16 +195,16 @@ struct PNG // functions for PNG decoding
         adam7Pass(&out_[0], &scanlinen[0], &scanlineo[0], &scanlines[passstart[i]], info.width, pattern[i], pattern[i + 7], pattern[i + 14], pattern[i + 21], passw[i], passh[i], bpp);
     }
 
-    if(convert_to_rgba32 && (info.colorType != 6 || info.bitDepth != 8)) // conversion needed
+    if(info.colorType != 6 || info.bitDepth != 8) // conversion needed
     {
       std::vector<uint8_t> data = out;
       convert(out, &data[0], info, info.width, info.height);
     }
   }
 
-  void readPngHeader(const uint8_t* in, size_t inlength) // read the information from the header and store it in the Info
+  void readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
   {
-    if(inlength < 29)
+    if(in.len < 29)
       throw std::runtime_error("no PNG header");
 
     if(in[0] != 137 || in[1] != 80 || in[2] != 78 || in[3] != 71 || in[4] != 13 || in[5] != 10 || in[6] != 26 || in[7] != 10)
@@ -518,7 +518,7 @@ std::vector<uint8_t> decodePng(Span<const uint8_t> pngData, int& width, int& hei
   std::vector<uint8_t> r;
 
   PNG decoder;
-  decoder.decode(r, pngData.data, pngData.len, true);
+  decoder.decode(r, pngData);
   width = decoder.info.width;
   height = decoder.info.height;
 

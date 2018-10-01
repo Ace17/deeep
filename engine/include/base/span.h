@@ -22,5 +22,6 @@ struct Span
 
   T* begin() const { return data; }
   T* end() const { return data + len; }
+  T & operator [] (int i) { return data[i]; }
 };
 
