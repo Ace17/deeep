@@ -19,9 +19,12 @@
 
 // *This is a modified version of picoPNG*
 
+#include "png.h"
+
+#include <climits>
+#include <cstdint>
 #include <vector>
 #include <stdexcept>
-#include <stdint.h>
 #include "base/span.h"
 #include "decompress.h"
 
@@ -56,7 +59,7 @@ struct PNG // functions for PNG decoding
       size_t chunkLength = read32bitInt(&in[pos]);
       pos += 4;
 
-      if(chunkLength > 2147483647)
+      if(chunkLength > INT_MAX)
         throw std::runtime_error("chunk too big");
 
       if(pos + chunkLength >= (size_t)in.len)
