@@ -35,21 +35,22 @@ struct PNG // functions for PNG decoding
   struct Info
   {
     unsigned long width, height, colorType, bitDepth, compressionMethod, filterMethod, interlaceMethod, key_r, key_g, key_b;
-    bool key_defined; // is a transparent color key given?
+    bool key_defined = false; // is a transparent color key given?
     std::vector<uint8_t> palette;
-  } info {};
+  };
+
+  Info info {};
 
   void decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
   {
     if(in.len == 0 || in.data == nullptr)
       throw std::runtime_error("empty PNG data");
 
-    readPngHeader(in);
+    info = readPngHeader(in);
 
     size_t pos = 33; // first byte of the first chunk after the header
     std::vector<uint8_t> idat; // the data from idat chunks
     bool IEND = false;
-    info.key_defined = false;
 
     while(!IEND) // loop through the chunks, ignoring unknown chunks and stopping at IEND chunk. IDAT data is put at the start of the in buffer
     {
@@ -205,8 +206,10 @@ struct PNG // functions for PNG decoding
     }
   }
 
-  void readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
+  static Info readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
   {
+    Info info;
+
     if(in.len < 29)
       throw std::runtime_error("no PNG header");
 
@@ -238,6 +241,8 @@ struct PNG // functions for PNG decoding
 
     if(in[28] > 1)
       throw std::runtime_error("unexpected interlace method");
+
+    return info;
   }
 
   void unFilterScanline(uint8_t* recon, const uint8_t* scanline, const uint8_t* precon, size_t bytewidth, unsigned long filterType, size_t length)
@@ -370,11 +375,13 @@ struct PNG // functions for PNG decoding
     bitp++;
   }
 
+  static
   unsigned long read32bitInt(const uint8_t* buffer)
   {
     return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
   }
 
+  static
   int checkColorValidity(unsigned long colorType, unsigned long bd) // return type is a LodePNG error code
   {
     if((colorType == 2 || colorType == 4 || colorType == 6))
@@ -402,6 +409,7 @@ struct PNG // functions for PNG decoding
       return 31; // unexisting color type
   }
 
+  static
   unsigned long getBpp(const Info& info)
   {
     if(info.colorType == 2)
@@ -412,6 +420,7 @@ struct PNG // functions for PNG decoding
       return info.bitDepth;
   }
 
+  static
   void convert(std::vector<uint8_t>& out, const uint8_t* in, Info& infoIn, unsigned long w, unsigned long h)
   {
     // converts from any color type to 32-bit. return value = LodePNG error code
