@@ -231,10 +231,15 @@ unsigned long getBpp(const Info& info)
     return info.bitDepth;
 }
 
+void enforce(bool condition, const char* msg)
+{
+  if(!condition)
+    throw runtime_error(msg);
+}
+
 Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
 {
-  if(in.len == 0 || in.data == nullptr)
-    throw std::runtime_error("empty PNG data");
+  enforce(in.len > 0 && in.data, "empty PNG data");
 
   auto info = readPngHeader(in);
 
@@ -244,17 +249,13 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
 
   while(!IEND) // loop through the chunks, ignoring unknown chunks and stopping at IEND chunk. IDAT data is put at the start of the in buffer
   {
-    if(pos + 8 >= (size_t)in.len)
-      throw std::runtime_error("truncated chunk header");
+    enforce(pos + 8 < (size_t)in.len, "truncated chunk header");
 
     size_t chunkLength = read32bitInt(&in[pos]);
     pos += 4;
 
-    if(chunkLength > INT_MAX)
-      throw std::runtime_error("chunk too big");
-
-    if(pos + chunkLength >= (size_t)in.len)
-      throw std::runtime_error("truncated chunk data");
+    enforce(chunkLength <= INT_MAX, "chunk too big");
+    enforce(pos + chunkLength < (size_t)in.len, "truncated chunk data");
 
     if(in[pos + 0] == 'I' && in[pos + 1] == 'D' && in[pos + 2] == 'A' && in[pos + 3] == 'T') // IDAT chunk, containing compressed image data
     {
@@ -271,8 +272,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
       pos += 4; // go after the 4 letters
       info.palette.resize(4 * (chunkLength / 3));
 
-      if(info.palette.size() > (4 * 256))
-        throw std::runtime_error("palette too big");
+      enforce(info.palette.size() <= (4 * 256), "palette too big");
 
       for(size_t i = 0; i < info.palette.size(); i += 4)
       {
@@ -288,16 +288,14 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
 
       if(info.colorType == 3)
       {
-        if(4 * chunkLength > info.palette.size())
-          throw std::runtime_error("truncated palette entries: alpha");
+        enforce(4 * chunkLength <= info.palette.size(), "truncated palette entries: alpha");
 
         for(size_t i = 0; i < chunkLength; i++)
           info.palette[4 * i + 3] = in[pos++];
       }
       else if(info.colorType == 0)
       {
-        if(chunkLength != 2)
-          throw std::runtime_error("this chunk must be 2 bytes for greyscale image");
+        enforce(chunkLength == 2, "this chunk must be 2 bytes for greyscale image");
 
         info.key_defined = 1;
         info.key_r = info.key_g = info.key_b = 256 * in[pos] + in[pos + 1];
@@ -305,8 +303,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
       }
       else if(info.colorType == 2)
       {
-        if(chunkLength != 6)
-          throw std::runtime_error("this chunk must be 6 bytes for RGB image");
+        enforce(chunkLength == 6, "this chunk must be 6 bytes for RGB image");
 
         info.key_defined = 1;
         info.key_r = 256 * in[pos] + in[pos + 1];
@@ -323,11 +320,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
     }
     else // it's not an implemented chunk type, so ignore it: skip over the data
     {
-      if(!(in[pos + 0] & 32))
-      {
-        throw std::runtime_error("unknown critical chunk (5th bit of first byte of chunk type is 0");
-      }
-
+      enforce(in[pos + 0] & 32, "unknown critical chunk (5th bit of first byte of chunk type is 0");
       pos += (chunkLength + 4); // skip 4 letters and uninterpreted data of unimplemented chunk
     }
 
@@ -388,8 +381,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
       adam7Pass(&out_[0], &scanlinen[0], &scanlineo[0], &scanlines[passstart[i]], info.width, pattern[i], pattern[i + 7], pattern[i + 14], pattern[i + 21], passw[i], passh[i], bpp);
   }
 
-  if(info.colorType != 6 || info.bitDepth != 8) // conversion needed
-    throw runtime_error("unsupported color type");
+  enforce(info.colorType == 6 && info.bitDepth == 8, "unsupported colorType/bitdepth");
 
   return info;
 }
