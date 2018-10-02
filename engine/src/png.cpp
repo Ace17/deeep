@@ -42,31 +42,18 @@ unsigned long read32bitInt(const uint8_t* buffer)
   return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
 }
 
-int checkColorValidity(unsigned long colorType, unsigned long bd) // return type is a LodePNG error code
+bool isColorValid(unsigned long colorType, unsigned long bd) // return type is a LodePNG error code
 {
   if((colorType == 2 || colorType == 4 || colorType == 6))
-  {
-    if(!(bd == 8 || bd == 16))
-      return 37;
-    else
-      return 0;
-  }
-  else if(colorType == 0)
-  {
-    if(!(bd == 1 || bd == 2 || bd == 4 || bd == 8 || bd == 16))
-      return 37;
-    else
-      return 0;
-  }
-  else if(colorType == 3)
-  {
-    if(!(bd == 1 || bd == 2 || bd == 4 || bd == 8))
-      return 37;
-    else
-      return 0;
-  }
-  else
-    return 31; // unexisting color type
+    return bd == 8 || bd == 16;
+
+  if(colorType == 0)
+    return bd == 1 || bd == 2 || bd == 4 || bd == 8 || bd == 16;
+
+  if(colorType == 3)
+    return bd == 1 || bd == 2 || bd == 4 || bd == 8;
+
+  return false; // unexisting color type
 }
 
 Info readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
@@ -87,7 +74,7 @@ Info readPngHeader(Span<const uint8_t> in) // read the information from the head
   info.bitDepth = in[24];
   info.colorType = in[25];
 
-  if(checkColorValidity(info.colorType, info.bitDepth))
+  if(!isColorValid(info.colorType, info.bitDepth))
     throw std::runtime_error("invalid combination of colorType and bitDepth");
 
   info.compressionMethod = in[26];
