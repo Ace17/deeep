@@ -37,6 +37,12 @@ struct Info
   std::vector<uint8_t> palette;
 };
 
+void enforce(bool condition, const char* msg)
+{
+  if(!condition)
+    throw runtime_error(msg);
+}
+
 unsigned long read32bitInt(const uint8_t* buffer)
 {
   return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
@@ -58,17 +64,11 @@ bool isColorValid(unsigned long colorType, unsigned long bd) // return type is a
 
 Info readPngHeader(Span<const uint8_t> in) // read the information from the header and store it in the Info
 {
+  enforce(in.len >= 29, "no PNG header");
+  enforce(in[0] == 137 && in[1] == 80 && in[2] == 78 && in[3] == 71 && in[4] == 13 && in[5] == 10 && in[6] == 26 && in[7] == 10, "no PNG signature");
+  enforce(in[12] == 'I' && in[13] == 'H' && in[14] == 'D' && in[15] == 'R', "no IDHR chunk");
+
   Info info;
-
-  if(in.len < 29)
-    throw std::runtime_error("no PNG header");
-
-  if(in[0] != 137 || in[1] != 80 || in[2] != 78 || in[3] != 71 || in[4] != 13 || in[5] != 10 || in[6] != 26 || in[7] != 10)
-    throw std::runtime_error("no PNG signature");
-
-  if(in[12] != 'I' || in[13] != 'H' || in[14] != 'D' || in[15] != 'R')
-    throw std::runtime_error("no IDHR chunk");
-
   info.width = read32bitInt(&in[16]);
   info.height = read32bitInt(&in[20]);
   info.bitDepth = in[24];
@@ -77,25 +77,19 @@ Info readPngHeader(Span<const uint8_t> in) // read the information from the head
   if(!isColorValid(info.colorType, info.bitDepth))
     throw std::runtime_error("invalid combination of colorType and bitDepth");
 
+  enforce(in[26] == 0, "unexpected compression method");
   info.compressionMethod = in[26];
 
-  if(in[26] != 0)
-    throw std::runtime_error("unexpected compression method");
-
+  enforce(in[27] == 0, "unexpected filter method");
   info.filterMethod = in[27];
 
-  if(in[27] != 0)
-    throw std::runtime_error("unexpected filter method");
-
+  enforce(in[28] <= 1, "unexpected interlace method");
   info.interlaceMethod = in[28];
-
-  if(in[28] > 1)
-    throw std::runtime_error("unexpected interlace method");
 
   return info;
 }
 
-uint8_t paethPredictor(short a, short b, short c) // Paeth predicter, used by PNG filter type 4
+uint8_t paethPredictor(short a, short b, short c) // used by filter type 4
 {
   short p = a + b - c, pa = p > a ? (p - a) : (a - p), pb = p > b ? (p - b) : (b - p), pc = p > c ? (p - c) : (c - p);
   return (uint8_t)((pa <= pb && pa <= pc) ? a : pb <= pc ? b : c);
@@ -229,12 +223,6 @@ unsigned long getBpp(const Info& info)
     return (info.colorType - 2) * info.bitDepth;
   else
     return info.bitDepth;
-}
-
-void enforce(bool condition, const char* msg)
-{
-  if(!condition)
-    throw runtime_error(msg);
 }
 
 Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
