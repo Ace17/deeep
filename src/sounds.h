@@ -22,6 +22,7 @@ enum
   SND_BONUS,
   SND_DAMAGE,
   SND_TELEPORT,
+  SND_HATCH,
   SND_EXPLODE,
 };
 

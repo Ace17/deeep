@@ -24,6 +24,7 @@ static const Resource resources[] =
   { ResourceType::Sound, SND_DIE, "res/sounds/die.ogg" },
   { ResourceType::Sound, SND_BONUS, "res/sounds/bonus.ogg" },
   { ResourceType::Sound, SND_DAMAGE, "res/sounds/damage.ogg" },
+  { ResourceType::Sound, SND_HATCH, "res/sounds/hatch.ogg" },
   { ResourceType::Sound, SND_TELEPORT, "res/sounds/teleport.ogg" },
   { ResourceType::Sound, SND_EXPLODE, "res/sounds/explode.ogg" },
 

@@ -27,13 +27,10 @@ struct CrumbleBlock : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    if(!solid)
-      return;
-
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
-    r.ratio = 0;
-    r.action = 1;
+    r.ratio = (1000 - disappearTimer)/1000.0;
+    r.action = solid ? 1 : 2;
 
     actors.push_back(r);
   }
@@ -41,7 +38,10 @@ struct CrumbleBlock : Entity
   void onCollide(Body* other)
   {
     if(other->pos.y > pos.y + size.height * 0.9)
+    {
       disappearTimer = 1000;
+      game->playSound(SND_HATCH);
+    }
   }
 
   void tick() override
@@ -75,10 +75,12 @@ struct FragileBlock : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
+    if(!solid)
+      return;
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 0;
-    r.action = solid ? 2 : 0;
+    r.action = 3;
 
     actors.push_back(r);
   }
