@@ -231,124 +231,6 @@ unsigned long getBpp(const Info& info)
     return info.bitDepth;
 }
 
-unsigned long readBitsFromReversedStream(size_t& bitp, const uint8_t* bits, unsigned long nbits)
-{
-  unsigned long result = 0;
-
-  for(size_t i = nbits - 1; i < nbits; i--)
-    result += ((readBitFromReversedStream(bitp, bits)) << i);
-
-  return result;
-}
-
-void convert(std::vector<uint8_t>& out, const uint8_t* in, Info& infoIn, unsigned long w, unsigned long h)
-{
-  // converts from any color type to 32-bit. return value = LodePNG error code
-  size_t numpixels = w * h, bp = 0;
-  out.resize(numpixels * 4);
-  uint8_t* out_ = out.empty() ? 0 : &out[0]; // faster if compiled without optimization
-
-  if(infoIn.bitDepth == 8 && infoIn.colorType == 0) // greyscale
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      out_[4 * i + 0] = out_[4 * i + 1] = out_[4 * i + 2] = in[i];
-      out_[4 * i + 3] = (infoIn.key_defined && in[i] == infoIn.key_r) ? 0 : 255;
-    }
-  }
-  else if(infoIn.bitDepth == 8 && infoIn.colorType == 2) // RGB color
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      for(size_t c = 0; c < 3; c++)
-        out_[4 * i + c] = in[3 * i + c];
-
-      out_[4 * i + 3] = (infoIn.key_defined == 1 && in[3 * i + 0] == infoIn.key_r && in[3 * i + 1] == infoIn.key_g && in[3 * i + 2] == infoIn.key_b) ? 0 : 255;
-    }
-  }
-  else if(infoIn.bitDepth == 8 && infoIn.colorType == 3) // indexed color (palette)
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      if(4U * in[i] >= infoIn.palette.size())
-        throw std::runtime_error("conversion error");
-
-      for(size_t c = 0; c < 4; c++)
-        out_[4 * i + c] = infoIn.palette[4 * in[i] + c]; // get rgb colors from the palette
-    }
-  }
-  else if(infoIn.bitDepth == 8 && infoIn.colorType == 4) // greyscale with alpha
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      out_[4 * i + 0] = out_[4 * i + 1] = out_[4 * i + 2] = in[2 * i + 0];
-      out_[4 * i + 3] = in[2 * i + 1];
-    }
-  }
-  else if(infoIn.bitDepth == 8 && infoIn.colorType == 6)
-  {
-    for(size_t i = 0; i < numpixels; i++)
-      for(size_t c = 0; c < 4; c++)
-        out_[4 * i + c] = in[4 * i + c];
-  }
-  // RGB with alpha
-  else if(infoIn.bitDepth == 16 && infoIn.colorType == 0) // greyscale
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      out_[4 * i + 0] = out_[4 * i + 1] = out_[4 * i + 2] = in[2 * i];
-      out_[4 * i + 3] = (infoIn.key_defined && 256U * in[i] + in[i + 1] == infoIn.key_r) ? 0 : 255;
-    }
-  }
-  else if(infoIn.bitDepth == 16 && infoIn.colorType == 2) // RGB color
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      for(size_t c = 0; c < 3; c++)
-        out_[4 * i + c] = in[6 * i + 2 * c];
-
-      out_[4 * i + 3] = (infoIn.key_defined && 256U * in[6 * i + 0] + in[6 * i + 1] == infoIn.key_r && 256U * in[6 * i + 2] + in[6 * i + 3] == infoIn.key_g && 256U * in[6 * i + 4] + in[6 * i + 5] == infoIn.key_b) ? 0 : 255;
-    }
-  }
-  else if(infoIn.bitDepth == 16 && infoIn.colorType == 4) // greyscale with alpha
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      out_[4 * i + 0] = out_[4 * i + 1] = out_[4 * i + 2] = in[4 * i]; // most significant byte
-      out_[4 * i + 3] = in[4 * i + 2];
-    }
-  }
-  else if(infoIn.bitDepth == 16 && infoIn.colorType == 6)
-  {
-    for(size_t i = 0; i < numpixels; i++)
-      for(size_t c = 0; c < 4; c++)
-        out_[4 * i + c] = in[8 * i + 2 * c];
-  }
-  // RGB with alpha
-  else if(infoIn.bitDepth < 8 && infoIn.colorType == 0) // greyscale
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      unsigned long value = (readBitsFromReversedStream(bp, in, infoIn.bitDepth) * 255) / ((1 << infoIn.bitDepth) - 1); // scale value from 0 to 255
-      out_[4 * i + 0] = out_[4 * i + 1] = out_[4 * i + 2] = (uint8_t)(value);
-      out_[4 * i + 3] = (infoIn.key_defined && value && ((1U << infoIn.bitDepth) - 1U) == infoIn.key_r && ((1U << infoIn.bitDepth) - 1U)) ? 0 : 255;
-    }
-  }
-  else if(infoIn.bitDepth < 8 && infoIn.colorType == 3) // palette
-  {
-    for(size_t i = 0; i < numpixels; i++)
-    {
-      unsigned long value = readBitsFromReversedStream(bp, in, infoIn.bitDepth);
-
-      if(4 * value >= infoIn.palette.size())
-        throw std::runtime_error("conversion error");
-
-      for(int c = 0; c < 4; c++)
-        out_[4 * i + c] = infoIn.palette[4 * value + c]; // get rgb colors from the palette
-    }
-  }
-}
-
 Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
 {
   if(in.len == 0 || in.data == nullptr)
@@ -508,10 +390,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
   }
 
   if(info.colorType != 6 || info.bitDepth != 8) // conversion needed
-  {
-    std::vector<uint8_t> data = out;
-    convert(out, &data[0], info, info.width, info.height);
-  }
+    throw runtime_error("unsupported color type");
 
   return info;
 }
