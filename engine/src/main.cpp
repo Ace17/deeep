@@ -32,7 +32,7 @@ static void tickTheApp()
 
 void runMainLoop(IApp* app)
 {
-  g_theApp = app.get();
+  g_theApp = app;
   emscripten_set_main_loop(&tickTheApp, 0, 10);
 }
 
