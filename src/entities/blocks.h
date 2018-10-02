@@ -29,7 +29,7 @@ struct CrumbleBlock : Entity
   {
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
-    r.ratio = (1000 - disappearTimer)/1000.0;
+    r.ratio = (1000 - disappearTimer) / 1000.0;
     r.action = solid ? 1 : 2;
 
     actors.push_back(r);
@@ -77,6 +77,7 @@ struct FragileBlock : Entity, Damageable
   {
     if(!solid)
       return;
+
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 0;
