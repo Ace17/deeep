@@ -335,8 +335,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
   }
 
   unsigned long bpp = getBpp(info);
-  std::vector<uint8_t> scanlines(((info.width * (info.height* bpp + 7)) / 8) + info.height); // now the out buffer will be filled
-  scanlines = ::decompress(Span<const uint8_t> { idat.data(), (int)idat.size() });
+  auto scanlines = ::decompress(Span<const uint8_t> { idat.data(), (int)idat.size() });
 
   size_t bytewidth = (bpp + 7) / 8, outlength = (info.height * info.width * bpp + 7) / 8;
   out.resize(outlength); // time to fill the out buffer
