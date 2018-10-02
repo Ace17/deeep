@@ -16,55 +16,6 @@
 #include "entity.h"
 #include "models.h"
 
-struct CrumbleBlock : Entity
-{
-  CrumbleBlock()
-  {
-    size = UnitSize;
-    collisionGroup = CG_WALLS;
-    Body::onCollision = [this] (Body* other) { onCollide(other); };
-  }
-
-  virtual void addActors(vector<Actor>& actors) const override
-  {
-    auto r = Actor { pos, MDL_BLOCK };
-    r.scale = size;
-    r.ratio = (1000 - disappearTimer) / 1000.0;
-    r.action = solid ? 1 : 2;
-
-    actors.push_back(r);
-  }
-
-  void onCollide(Body* other)
-  {
-    if(other->pos.y > pos.y + size.height * 0.9)
-    {
-      disappearTimer = 1000;
-      game->playSound(SND_HATCH);
-    }
-  }
-
-  void tick() override
-  {
-    decrement(disappearTimer);
-
-    if(disappearTimer > 0)
-    {
-      collidesWith = 0;
-
-      if(disappearTimer < 900)
-        solid = 0;
-    }
-    else if(!physics->getBodiesInBox(getBox(), CG_PLAYER, false, this))
-    {
-      collidesWith = CG_PLAYER;
-      solid = 1;
-    }
-  }
-
-  int disappearTimer = 0;
-};
-
 struct FragileBlock : Entity, Damageable
 {
   FragileBlock()

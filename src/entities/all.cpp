@@ -17,6 +17,7 @@
 #include "entities/player.h"
 #include "entities/spikes.h"
 #include "entities/blocks.h"
+#include "entities/hatch.h"
 #include "entities/moving_platform.h"
 #include "entities/conveyor.h"
 
@@ -111,10 +112,16 @@ map<string, CreationFunc> getRegistry()
       return make_unique<FragileBlock>();
     };
 
+  r["hatch"] =
+    [] (EntityArgs &)
+    {
+      return make_unique<Hatch>();
+    };
+
   r["crumble_block"] =
     [] (EntityArgs &)
     {
-      return make_unique<CrumbleBlock>();
+      return make_unique<Hatch>();
     };
 
   r["door"] =
