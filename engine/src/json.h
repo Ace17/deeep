@@ -30,9 +30,7 @@ To* cast(From* from)
 
 struct Value
 {
-  virtual ~Value()
-  {
-  }
+  virtual ~Value() = default;
 };
 
 struct Object : Value
