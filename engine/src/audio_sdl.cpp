@@ -79,11 +79,8 @@ struct SdlAudio : Audio
       path = "res/sounds/default.ogg";
     }
 
-    auto snd = loadSoundFile(path);
-
     sounds.resize(max(id + 1, (int)sounds.size()));
-
-    sounds[id] = move(snd);
+    sounds[id] = loadSoundFile(path);
   }
 
   void playSound(int id) override
