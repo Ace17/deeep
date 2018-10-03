@@ -26,7 +26,7 @@
 
 using namespace std;
 
-auto const MAX_VOICES = 16;
+auto const MAX_CHANNELS = 16;
 
 struct SdlAudio : Audio
 {
@@ -54,7 +54,7 @@ struct SdlAudio : Audio
            audiospec.freq,
            audiospec.channels);
 
-    voices.resize(MAX_VOICES);
+    m_channels.resize(MAX_CHANNELS);
 
     mixBuffer.resize(audiospec.samples * audiospec.channels);
 
@@ -85,15 +85,15 @@ struct SdlAudio : Audio
 
   void playSound(int id) override
   {
-    auto voice = allocChannel();
+    auto channel = allocChannel();
 
-    if(!voice)
+    if(!channel)
     {
-      printf("[audio] no voice available\n");
+      printf("[audio] no channel available\n");
       return;
     }
 
-    voice->play(sounds[id].get());
+    channel->play(sounds[id].get());
   }
 
   void playMusic(int id) override
@@ -116,7 +116,7 @@ struct SdlAudio : Audio
     auto nextMusic = loadSoundFile(path);
 
     SDL_LockAudioDevice(audioDevice);
-    voices[0].fadeOut();
+    m_channels[0].fadeOut();
     m_nextMusic = move(nextMusic);
     SDL_UnlockAudioDevice(audioDevice);
   }
@@ -134,17 +134,17 @@ struct SdlAudio : Audio
 
   // accessed by the audio thread
   SDL_AudioSpec audiospec;
-  vector<AudioChannel> voices;
+  vector<AudioChannel> m_channels;
   unique_ptr<Sound> m_music;
   unique_ptr<Sound> m_nextMusic;
   vector<float> mixBuffer;
 
   void mixAudio(float* stream, int sampleCount)
   {
-    if(m_nextMusic && voices[0].isDead())
+    if(m_nextMusic && m_channels[0].isDead())
     {
       m_music = move(m_nextMusic);
-      voices[0].play(m_music.get(), 4, true);
+      m_channels[0].play(m_music.get(), 4, true);
     }
 
     int shift = 0;
@@ -165,9 +165,9 @@ struct SdlAudio : Audio
       auto chunk = buff;
       chunk.len = min(CHUNK_PERIOD, chunk.len);
 
-      for(auto& voice : voices)
-        if(!voice.isDead())
-          voice.mix(chunk);
+      for(auto& channel : m_channels)
+        if(!channel.isDead())
+          channel.mix(chunk);
 
       buff.data += chunk.len;
       buff.len -= chunk.len;
@@ -179,9 +179,9 @@ struct SdlAudio : Audio
 
   AudioChannel* allocChannel()
   {
-    for(int k = 1; k < MAX_VOICES; ++k)
-      if(voices[k].isDead())
-        return &voices[k];
+    for(int k = 1; k < MAX_CHANNELS; ++k)
+      if(m_channels[k].isDead())
+        return &m_channels[k];
 
     return nullptr;
   }
