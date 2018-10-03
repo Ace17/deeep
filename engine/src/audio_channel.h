@@ -122,8 +122,6 @@ struct AudioChannel
     m_volumeIncrement = (m_targetVolume - m_volume) / (200 * fadeOutInertia);
   }
 
-  static const int FADE_CHUNKS = 1000;
-
 private:
   float m_volume = 0.0;
   float m_volumeIncrement = 0.0;
