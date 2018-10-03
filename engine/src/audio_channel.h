@@ -4,7 +4,7 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// An audio voice
+// An audio channel
 
 #pragma once
 
@@ -44,7 +44,7 @@ private:
   unique_ptr<IAudioSource> src;
 };
 
-struct Voice
+struct AudioChannel
 {
   bool isDead() const
   {

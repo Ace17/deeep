@@ -19,7 +19,7 @@
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
 #include "file.h"
-#include "voice.h"
+#include "audio_channel.h"
 
 #include "base/util.h"
 #include "base/span.h"
@@ -88,7 +88,7 @@ struct SdlAudio : Audio
 
   void playSound(int id) override
   {
-    auto voice = allocVoice();
+    auto voice = allocChannel();
 
     if(!voice)
     {
@@ -137,7 +137,7 @@ struct SdlAudio : Audio
 
   // accessed by the audio thread
   SDL_AudioSpec audiospec;
-  vector<Voice> voices;
+  vector<AudioChannel> voices;
   unique_ptr<Sound> m_music;
   unique_ptr<Sound> m_nextMusic;
   vector<float> mixBuffer;
@@ -180,7 +180,7 @@ struct SdlAudio : Audio
       stream[i] = mixBuffer[i >> shift];
   }
 
-  Voice* allocVoice()
+  AudioChannel* allocChannel()
   {
     for(int k = 1; k < MAX_VOICES; ++k)
       if(voices[k].isDead())

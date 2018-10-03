@@ -5,11 +5,11 @@
 // License, or (at your option) any later version.
 
 #include "engine/tests/tests.h"
-#include "engine/src/voice.h"
+#include "engine/src/audio_channel.h"
 
-struct DummyPlayer : IAudioSource
+struct DummySource : IAudioSource
 {
-  DummyPlayer(int length) : m_length(length)
+  DummySource(int length) : m_length(length)
   {
   }
 
@@ -33,9 +33,9 @@ struct DummyPlayer : IAudioSource
 struct DummySound : Sound
 {
   int length = 100;
-  virtual std::unique_ptr<IAudioSource> createSource()
+  std::unique_ptr<IAudioSource> createSource() override
   {
-    return make_unique<DummyPlayer>(length);
+    return make_unique<DummySource>(length);
   }
 };
 
@@ -72,11 +72,11 @@ bool buffEquals(float(&expected)[N], float(&actual)[N])
   return true;
 }
 
-unittest("Audio: play voice")
+unittest("Audio: play channel")
 {
   DummySound sound;
 
-  Voice v;
+  AudioChannel v;
   v.play(&sound);
 
   float buffer[32] = { 0 };
@@ -88,12 +88,12 @@ unittest("Audio: play voice")
   assert(buffEquals(expected, buffer));
 }
 
-unittest("Audio: play voice until end")
+unittest("Audio: play channel until end")
 {
   DummySound sound;
   sound.length = 14;
 
-  Voice v;
+  AudioChannel v;
   v.play(&sound);
 
   float buffer[32] = { 0 };
@@ -110,12 +110,12 @@ unittest("Audio: play voice until end")
   assert(buffEquals(expected, buffer));
 }
 
-unittest("Audio: play voice until end, loop")
+unittest("Audio: play channel until end, loop")
 {
   DummySound sound;
   sound.length = 14;
 
-  Voice v;
+  AudioChannel v;
   v.play(&sound, 0, true);
 
   float buffer[32] = { 0 };
