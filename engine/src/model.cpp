@@ -37,7 +37,7 @@ Model loadModel(string jsonPath)
 {
   auto data = read(jsonPath);
   Model r;
-  auto obj = json::parse(data.c_str());
+  auto obj = json::parse(data.c_str(), data.size());
   auto dir = dirName(jsonPath);
 
   auto type = obj->getMember<json::String>("type")->value;

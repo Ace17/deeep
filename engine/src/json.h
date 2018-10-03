@@ -72,6 +72,6 @@ struct Boolean : Value
   bool value;
 };
 
-unique_ptr<Object> parse(const char* text);
+unique_ptr<Object> parse(const char* text, size_t len);
 }
 

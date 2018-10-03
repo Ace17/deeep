@@ -31,9 +31,10 @@ struct Token
 class Tokenizer
 {
 public:
-  Tokenizer(const char* text_)
+  Tokenizer(const char* text_, size_t len)
   {
     text = text_;
+    textEnd = text_ + len;
     decodeToken();
   }
 
@@ -55,11 +56,11 @@ public:
 private:
   void decodeToken()
   {
-    while(whitespace(*text))
+    while(whitespace(frontChar()))
       ++text;
 
     curr.lexem = "";
-    switch(*text)
+    switch(frontChar())
     {
     case '\0':
       curr.type = Token::EOF_;
@@ -91,9 +92,9 @@ private:
     case '"':
       accept();
 
-      while(*text != '"' && *text != '\0')
+      while(frontChar() != '"' && frontChar() != '\0')
       {
-        if(*text == '\\')
+        if(frontChar() == '\\')
         {
           accept();
           curr.lexem.pop_back();
@@ -143,10 +144,10 @@ private:
       {
         curr.type = Token::NUMBER;
 
-        if(*text == '-')
+        if(frontChar() == '-')
           accept();
 
-        while(isdigit(*text))
+        while(isdigit(frontChar()))
           accept();
 
         break;
@@ -154,7 +155,7 @@ private:
     default:
       {
         string msg = "Unknown char '";
-        msg += *text;
+        msg += frontChar();
         msg += "'";
         throw runtime_error(msg);
       }
@@ -163,7 +164,7 @@ private:
 
   void expect(char c)
   {
-    if(*text != c)
+    if(frontChar() != c)
       throw runtime_error("Unexpected character");
 
     accept();
@@ -171,8 +172,16 @@ private:
 
   void accept()
   {
-    curr.lexem += *text;
+    curr.lexem += frontChar();
     ++text;
+  }
+
+  char frontChar() const
+  {
+    if(text >= textEnd)
+      return 0;
+
+    return *text;
   }
 
   static bool whitespace(char c)
@@ -181,6 +190,7 @@ private:
   }
 
   const char* text;
+  const char* textEnd;
   Token curr;
 };
 
@@ -191,10 +201,10 @@ static unique_ptr<Value> parseValue(Tokenizer& tk);
 static unique_ptr<Value> parseArray(Tokenizer& tk);
 static string expect(Tokenizer& tk, Token::Type type);
 
-unique_ptr<Object> json::parse(const char* text)
+unique_ptr<Object> json::parse(const char* text, size_t len)
 {
   unique_ptr<Object> r;
-  Tokenizer tokenizer(text);
+  Tokenizer tokenizer(text, len);
   return parseObject(tokenizer);
 }
 
@@ -280,10 +290,12 @@ string expect(Tokenizer& tk, Token::Type type)
     if(front.type == Token::EOF_)
       msg += "Unexpected end of file found";
     else
+    {
       msg += "Unexpected token '" + front.lexem + "'";
+      msg += " of type " + to_string(front.type);
+      msg += " instead of " + to_string(type);
+    }
 
-    msg += " of type " + to_string(front.type);
-    msg += " instead of " + to_string(type);
     throw runtime_error(msg);
   }
 
