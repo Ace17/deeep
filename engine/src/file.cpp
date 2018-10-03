@@ -11,7 +11,7 @@
 inline
 ifstream openInput(string path)
 {
-  ifstream fp(path);
+  ifstream fp(path, ios::binary);
 
   if(!fp.is_open())
     throw runtime_error("Can't open file '" + path + "'");
@@ -23,11 +23,13 @@ string read(string path)
 {
   auto fp = openInput(path);
 
-  string r;
-  string line;
+  fp.seekg(0, ios::end);
+  auto size = fp.tellg();
+  fp.seekg(0, ios::beg);
 
-  while(getline(fp, line))
-    r += line + "\n";
+  string r;
+  r.resize(size);
+  fp.read(&r[0], r.size());
 
   return r;
 }
