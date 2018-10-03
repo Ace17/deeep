@@ -8,18 +8,15 @@
 
 #include "audio.h"
 #include "sound.h"
+#include "file.h" // exists
+#include "audio_channel.h"
 
 #include <memory>
 #include <vector>
-#include <atomic>
 #include <stdexcept>
 #include <algorithm>
 #include <string>
 #include <SDL.h>
-#include <ogg/ogg.h>
-#include <vorbis/vorbisfile.h>
-#include "file.h"
-#include "audio_channel.h"
 
 #include "base/util.h"
 #include "base/span.h"
