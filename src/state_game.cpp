@@ -107,7 +107,7 @@ struct GameState : Scene, private IGame
     }
 
     {
-      Actor lifebar { Vector(-5.5, 1), MDL_LIFEBAR };
+      Actor lifebar { Vector(-7, 3.5), MDL_LIFEBAR };
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(0.7, 3);
