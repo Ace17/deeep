@@ -84,3 +84,9 @@ Just run the following command:
 $ bin/rel/game.exe
 ```
 
+
+Thanks to:
+----------
+
+- llexandro from DevianArt (Textures)
+

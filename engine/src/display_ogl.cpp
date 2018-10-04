@@ -257,6 +257,12 @@ Model loadAnimation(string path)
   {
     auto m = boxModel();
 
+    if(!exists(path))
+    {
+      printf("[display] model '%s' doesn't exist, fallback on default model\n", path.c_str());
+      path = "res/sprites/rect.json";
+    }
+
     auto m2 = loadModel(path);
     m.actions = move(m2.actions);
     return m;

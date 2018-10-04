@@ -205,6 +205,18 @@ struct GameState : Scene, private IGame
     m_theme = level.theme;
     m_view->playMusic(level.theme);
 
+    // load new background
+    {
+      int bgIndex = level.theme;
+
+      if(bgIndex != 3 && bgIndex != 5)
+        bgIndex = 5;
+
+      char buffer[256];
+      sprintf(buffer, "res/sprites/background-%02d.json", bgIndex);
+      m_view->preload({ ResourceType::Model, MDL_BACKGROUND, buffer });
+    }
+
     if(!m_player)
     {
       m_player = makeRockman().release();
