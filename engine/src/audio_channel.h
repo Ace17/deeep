@@ -116,7 +116,7 @@ struct AudioChannel
 
   void fadeOut()
   {
-    auto const fadeOutInertia = 10;
+    auto const fadeOutInertia = 4;
     m_fadingOut = true;
     m_targetVolume = 0.0;
     m_volumeIncrement = (m_targetVolume - m_volume) / (200 * fadeOutInertia);

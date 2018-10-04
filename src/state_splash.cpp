@@ -39,7 +39,10 @@ struct SplashState : Scene
       delay = FADE_TIME;
 
       if(c.fire || c.jump || c.dash)
+      {
+        view->stopMusic();
         activated = true;
+      }
     }
 
     view->setCameraPos(NullVector);

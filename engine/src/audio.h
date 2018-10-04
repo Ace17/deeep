@@ -15,5 +15,6 @@ struct Audio
   virtual void loadSound(int id, std::string path) = 0;
   virtual void playSound(int id) = 0;
   virtual void playMusic(int id) = 0;
+  virtual void stopMusic() = 0;
 };
 

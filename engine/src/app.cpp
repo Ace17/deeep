@@ -233,6 +233,11 @@ private:
     m_audio->playMusic(id);
   }
 
+  void stopMusic() override
+  {
+    m_audio->stopMusic();
+  }
+
   void playSound(SOUND sound) override
   {
     m_audio->playSound(sound);

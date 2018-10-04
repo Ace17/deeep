@@ -113,8 +113,18 @@ struct SdlAudio : Audio
     auto nextMusic = loadSoundFile(path);
 
     SDL_LockAudioDevice(audioDevice);
-    m_channels[0].fadeOut();
+
+    if(!m_channels[0].isDead())
+      m_channels[0].fadeOut();
+
     m_nextMusic = move(nextMusic);
+    SDL_UnlockAudioDevice(audioDevice);
+  }
+
+  void stopMusic() override
+  {
+    SDL_LockAudioDevice(audioDevice);
+    m_channels[0].fadeOut();
     SDL_UnlockAudioDevice(audioDevice);
   }
 
@@ -141,7 +151,7 @@ struct SdlAudio : Audio
     if(m_nextMusic && m_channels[0].isDead())
     {
       m_music = move(m_nextMusic);
-      m_channels[0].play(m_music.get(), 4, true);
+      m_channels[0].play(m_music.get(), 2, true);
     }
 
     int shift = 0;
