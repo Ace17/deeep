@@ -128,13 +128,6 @@ struct SdlAudio : Audio
     SDL_UnlockAudioDevice(audioDevice);
   }
 
-  static void staticMixAudio(void* userData, Uint8* stream, int iNumBytes)
-  {
-    auto pThis = (SdlAudio*)userData;
-    memset(stream, 0, iNumBytes);
-    pThis->mixAudio((float*)stream, iNumBytes / sizeof(float));
-  }
-
   int currMusic = -1;
   vector<unique_ptr<Sound>> sounds;
   SDL_AudioDeviceID audioDevice;
@@ -145,6 +138,13 @@ struct SdlAudio : Audio
   unique_ptr<Sound> m_music;
   unique_ptr<Sound> m_nextMusic;
   vector<float> mixBuffer;
+
+  static void staticMixAudio(void* userData, Uint8* stream, int iNumBytes)
+  {
+    auto pThis = (SdlAudio*)userData;
+    memset(stream, 0, iNumBytes);
+    pThis->mixAudio((float*)stream, iNumBytes / sizeof(float));
+  }
 
   void mixAudio(float* stream, int sampleCount)
   {
