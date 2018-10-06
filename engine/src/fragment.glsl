@@ -3,20 +3,20 @@
 precision mediump float;
 
 // Interpolated values from the vertex shader
-in vec2 v_texCoord;
-in vec4 v_position;
+in vec2 UV;
+in vec4 vertexPos_world;
 
 // Ouput data
 out vec4 color;
 
 // Values that stay constant for the whole mesh
-uniform vec4 v_color;
-uniform sampler2D s_baseMap;
+uniform vec4 fragOffset;
+uniform sampler2D DiffuseTextureSampler;
 
 void main()
 {
-  color = texture(s_baseMap, v_texCoord) + v_color;
-  color += vec4(v_position.y, v_position.y, v_position.y, 0) * 0.2;
+  color = texture(DiffuseTextureSampler, UV) + fragOffset;
+  color += vec4(vertexPos_world.y, vertexPos_world.y, vertexPos_world.y, 0) * 0.2;
 }
 
 // vim: syntax=glsl
