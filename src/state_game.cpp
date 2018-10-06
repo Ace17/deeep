@@ -207,13 +207,8 @@ struct GameState : Scene, private IGame
 
     // load new background
     {
-      int bgIndex = level.theme;
-
-      if(bgIndex != 3 && bgIndex != 5)
-        bgIndex = 5;
-
       char buffer[256];
-      sprintf(buffer, "res/sprites/background-%02d.model", bgIndex);
+      sprintf(buffer, "res/sprites/background-%02d.model", level.theme);
       m_view->preload({ ResourceType::Model, MDL_BACKGROUND, buffer });
     }
 

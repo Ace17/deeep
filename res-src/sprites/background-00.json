@@ -1,0 +1,12 @@
+{
+  "type" : "sheet",
+  "sheet" : "background-00.png",
+  "width" : 512,
+  "height" : 512,
+  "actions": [
+    {
+      "name": "default",
+      "frames": [ 0 ]
+    }
+  ]
+}
