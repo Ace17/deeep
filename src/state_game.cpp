@@ -213,7 +213,7 @@ struct GameState : Scene, private IGame
         bgIndex = 5;
 
       char buffer[256];
-      sprintf(buffer, "res/sprites/background-%02d.json", bgIndex);
+      sprintf(buffer, "res/sprites/background-%02d.model", bgIndex);
       m_view->preload({ ResourceType::Model, MDL_BACKGROUND, buffer });
     }
 

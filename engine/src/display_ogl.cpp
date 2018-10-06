@@ -253,21 +253,21 @@ Model loadTiledModel(string path, int count, int COLS, int SIZE)
 static
 Model loadAnimation(string path)
 {
-  if(endsWith(path, ".json"))
+  if(endsWith(path, ".model"))
   {
     auto m = boxModel();
 
     if(!exists(path))
     {
       printf("[display] model '%s' doesn't exist, fallback on default model\n", path.c_str());
-      path = "res/sprites/rect.json";
+      path = "res/sprites/rect.model";
     }
 
     auto m2 = loadModel(path);
     m.actions = move(m2.actions);
     return m;
   }
-  else if(endsWith(path, ".mdl"))
+  else if(endsWith(path, ".tiles"))
   {
     path = setExtension(path, "png");
 
