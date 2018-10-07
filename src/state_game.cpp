@@ -50,45 +50,17 @@ struct GameState : Scene, private IGame
 
   void tick(Control c) override
   {
-    if(m_shouldLoadLevel)
-    {
-      loadLevel(m_level);
-      m_player->pos += m_transform;
-      m_shouldLoadLevel = false;
-    }
+    loadLevelIfNeeded();
 
     m_player->think(c);
+    updateEntities();
+    updateCamera();
 
-    for(auto& e : m_entities)
-      e->tick();
-
-    m_physics->checkForOverlaps();
-    removeDeadThings();
-
-    m_debug = c.debug;
-
-    if(c.debug && m_debugFirstTime)
-    {
-      m_debugFirstTime = false;
-      m_player->addUpgrade(-1);
-    }
-
-    {
-      auto cameraPos = m_player->pos;
-      cameraPos.y += 1.5;
-
-      // prevent camera from going outside the level
-      auto const limit = 8.0f;
-      cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
-      cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
-
-      m_view->setCameraPos(cameraPos);
-    }
-
+    updateDebugFlag(c.debug);
     sendActors();
   }
 
-  void sendActors()
+  void sendActors() const
   {
     sendActorsForTileMap();
 
@@ -123,6 +95,52 @@ struct GameState : Scene, private IGame
       background.zOrder = -2;
       m_view->sendActor(background);
     }
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // internals
+
+  void loadLevelIfNeeded()
+  {
+    if(m_shouldLoadLevel)
+    {
+      loadLevel(m_level);
+      m_player->pos += m_transform;
+      m_shouldLoadLevel = false;
+    }
+  }
+
+  void updateDebugFlag(float debugFlag)
+  {
+    m_debug = debugFlag;
+
+    if(debugFlag && m_debugFirstTime)
+    {
+      m_debugFirstTime = false;
+      m_player->addUpgrade(-1);
+    }
+  }
+
+  void updateEntities()
+  {
+    for(auto& e : m_entities)
+      e->tick();
+
+    m_physics->checkForOverlaps();
+    removeDeadThings();
+  }
+
+  void updateCamera()
+  {
+    auto cameraPos = m_player->pos;
+    cameraPos.y += 1.5;
+
+    // prevent camera from going outside the level
+    auto const limit = 8.0f;
+    cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
+    cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
+
+    m_view->setCameraPos(cameraPos);
   }
 
   void sendActorsForTileMap() const
@@ -229,7 +247,6 @@ struct GameState : Scene, private IGame
 
   void onTouchLevelBoundary(const TouchLevelBoundary* event)
   {
-    (void)event;
     m_shouldLoadLevel = true;
     m_transform = event->transform;
     m_level = event->targetLevel;
