@@ -9,6 +9,7 @@
 
 #include "sound.h"
 #include <string.h> // memcpy
+#include <cassert>
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
 #include "file.h" // read
@@ -22,9 +23,9 @@ struct OggSoundPlayer : IAudioSource
     ov_callbacks cbs =
     {
       &read_func,
-      &seek_func,
-      &close_func,
-      &tell_func,
+      nullptr,
+      nullptr,
+      nullptr,
     };
 
     auto stream = ov_open_callbacks(this, &m_ogg, nullptr, 0, cbs);
@@ -57,6 +58,7 @@ struct OggSoundPlayer : IAudioSource
     while(sampleCount > 0)
     {
       auto const N = min(sampleCount, 256);
+      assert(m_ogg.datasource != nullptr);
       auto const read = ov_read(&m_ogg, (char*)m_buff, N * 2, 0, 2, 1, nullptr);
 
       if(read <= 0)
@@ -81,37 +83,12 @@ struct OggSoundPlayer : IAudioSource
   static size_t read_func(void* ptr, size_t size, size_t nmemb, void* datasource)
   {
     auto pThis = (OggSoundPlayer*)datasource;
+    auto const wantedSize = int(size * nmemb);
     auto const remainingSize = pThis->m_data.len - pThis->m_dataReadPointer;
-    auto const totalSize = min<int>(remainingSize, size * nmemb);
+    auto const totalSize = min<int>(remainingSize, wantedSize);
     memcpy(ptr, pThis->m_data.data + pThis->m_dataReadPointer, totalSize);
     pThis->m_dataReadPointer += totalSize;
     return totalSize;
-  }
-
-  static int seek_func(void* datasource, ogg_int64_t offset, int whence)
-  {
-    auto pThis = (OggSoundPlayer*)datasource;
-    switch(whence)
-    {
-    case SEEK_SET: pThis->m_dataReadPointer = (int)offset;
-      break;
-    case SEEK_CUR: pThis->m_dataReadPointer += (int)offset;
-      break;
-    default: return -1;
-    }
-
-    return 0;
-  }
-
-  static int close_func(void*)
-  {
-    return 0;
-  }
-
-  static long tell_func(void* datasource)
-  {
-    auto pThis = (OggSoundPlayer*)datasource;
-    return pThis->m_dataReadPointer;
   }
 };
 
