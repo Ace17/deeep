@@ -15,8 +15,6 @@ ROOMS_SRC+=$(wildcard res-src/rooms/*.json)
 TARGETS+=$(ROOMS_SRC:res-src/%=res/%)
 
 TARGETS+=res/quest.json
-TARGETS+=res/test_quest.json
-
 TARGETS+=res/font.png
 
 TILES_SRC+=$(wildcard res-src/tiles/*.xcf)
