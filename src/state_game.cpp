@@ -32,8 +32,7 @@ array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 struct GameState : Scene, private IGame
 {
   GameState(View* view) :
-    m_view(view),
-    m_tiles(Size2i(1, 1))
+    m_view(view)
   {
     m_shouldLoadLevel = true;
     resetPhysics();
