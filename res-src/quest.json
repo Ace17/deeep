@@ -1,4 +1,5 @@
 { "height":64,
+ "infinite":false,
  "layers":[
         {
          "draworder":"topdown",
@@ -60,14 +61,14 @@
                  "y":136
                 }, 
                 {
-                 "height":12,
+                 "height":4,
                  "id":133,
-                 "name":"Shaft4",
+                 "name":"savepoint",
                  "rotation":0,
                  "type":"2",
                  "visible":true,
-                 "width":8,
-                 "x":88,
+                 "width":4,
+                 "x":84,
                  "y":148
                 }, 
                 {
@@ -748,8 +749,74 @@
                  "rotation":0,
                  "type":"5",
                  "visible":true,
-                 "width":36,
-                 "x":40,
+                 "width":12,
+                 "x":64,
+                 "y":120
+                }, 
+                {
+                 "height":4,
+                 "id":273,
+                 "name":"savepoint",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":4,
+                 "x":76,
+                 "y":180
+                }, 
+                {
+                 "height":4,
+                 "id":274,
+                 "name":"savepoint",
+                 "rotation":0,
+                 "type":"1",
+                 "visible":true,
+                 "width":4,
+                 "x":84,
+                 "y":168
+                }, 
+                {
+                 "height":4,
+                 "id":275,
+                 "name":"savepoint",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":4,
+                 "x":48,
+                 "y":172
+                }, 
+                {
+                 "height":12,
+                 "id":276,
+                 "name":"Shaft4",
+                 "rotation":0,
+                 "type":"2",
+                 "visible":true,
+                 "width":8,
+                 "x":88,
+                 "y":148
+                }, 
+                {
+                 "height":4,
+                 "id":277,
+                 "name":"savepoint",
+                 "rotation":0,
+                 "type":"3",
+                 "visible":true,
+                 "width":4,
+                 "x":80,
+                 "y":132
+                }, 
+                {
+                 "height":4,
+                 "id":278,
+                 "name":"savepoint",
+                 "rotation":0,
+                 "type":"5",
+                 "visible":true,
+                 "width":4,
+                 "x":60,
                  "y":120
                 }],
          "opacity":1,
@@ -780,10 +847,10 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":273,
+ "nextobjectid":279,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.0.3",
+ "tiledversion":"1.1.5",
  "tileheight":4,
  "tilesets":[],
  "tilewidth":4,

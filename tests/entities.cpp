@@ -58,6 +58,8 @@ struct NullGame : IGame
   virtual Vector2f getPlayerPosition() { return Vector2f(0, 0); }
   virtual void textBox(char const*) {}
   virtual void setAmbientLight(float) {}
+  virtual void savepoint() {};
+  virtual void respawn() {};
 };
 
 struct NullPhysicsProbe : IPhysicsProbe

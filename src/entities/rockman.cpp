@@ -388,7 +388,6 @@ struct Rockman : Player, Damageable
   void enter() override
   {
     game->setAmbientLight(0);
-    respawnPosition = pos;
   }
 
   void die()
@@ -401,10 +400,11 @@ struct Rockman : Player, Damageable
 
   void respawn()
   {
+    game->respawn();
     game->setAmbientLight(0);
     blinking = 2000;
+    vel = NullVector;
     life = 31;
-    pos = respawnPosition;
   }
 
   void handleShooting()
@@ -472,7 +472,6 @@ struct Rockman : Player, Damageable
   bool ball = false;
   bool sliding = false;
   Control control {};
-  Vector respawnPosition;
   Vector vel;
 
   int upgrades = 0;

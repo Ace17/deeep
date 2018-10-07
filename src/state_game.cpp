@@ -233,6 +233,7 @@ struct GameState : Scene, private IGame
     {
       m_player = makeRockman().release();
       m_player->pos = Vector(level.start.x, level.start.y);
+      savepoint();
     }
 
     spawn(m_player);
@@ -303,6 +304,23 @@ struct GameState : Scene, private IGame
   Vector getPlayerPosition() override
   {
     return m_player->pos;
+  }
+
+  int m_savedLevel = 0;
+  Vector m_savedPos = NullVector;
+
+  void savepoint() override
+  {
+    m_savedLevel = m_level;
+    m_savedPos = m_player->pos;
+  }
+
+  void respawn() override
+  {
+    printf("Respawning!\n");
+    m_level = m_savedLevel;
+    m_transform = m_savedPos - m_player->pos + Vector(0, 0.01);
+    m_shouldLoadLevel = true;
   }
 
   void textBox(char const* msg) override

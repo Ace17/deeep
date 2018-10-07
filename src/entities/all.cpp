@@ -18,6 +18,7 @@
 #include "entities/spikes.h"
 #include "entities/blocks.h"
 #include "entities/hatch.h"
+#include "entities/savepoint.h"
 #include "entities/moving_platform.h"
 #include "entities/conveyor.h"
 
@@ -116,6 +117,12 @@ map<string, CreationFunc> getRegistry()
     [] (EntityArgs &)
     {
       return make_unique<Hatch>();
+    };
+
+  r["savepoint"] =
+    [] (EntityArgs &)
+    {
+      return make_unique<SavePoint>();
     };
 
   r["crumble_block"] =
