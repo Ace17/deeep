@@ -19,8 +19,9 @@ using namespace std;
 #include "GL/gl.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 #include "png.h"
+#include "util.h"
 
-#include "base/util.h"
+#include "base/util.h" // clamp
 #include "base/scene.h"
 #include "base/geom.h"
 #include "base/span.h"

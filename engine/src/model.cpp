@@ -6,7 +6,7 @@
 
 #include "model.h"
 #include "base/geom.h"
-#include "base/util.h"
+#include "util.h"
 #include "json.h"
 #include "file.h"
 
