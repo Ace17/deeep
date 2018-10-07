@@ -61,9 +61,11 @@ public:
     auto const now = (int)SDL_GetTicks();
     bool dirty = false;
 
-    while(m_lastTime < now)
+    auto timestep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+
+    while(m_lastTime + timestep < now)
     {
-      m_lastTime += m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+      m_lastTime += timestep;
 
       if(!m_paused)
       {
