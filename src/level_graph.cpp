@@ -79,14 +79,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
 {
   auto const CELL_SIZE = 16;
 
-  auto addDetector = [&] ()
-    {
-      auto detector = make_unique<RoomBoundaryDetector>();
-      detector->size = Size(1, 1) * CELL_SIZE;
-      return detector;
-    };
-
-  auto tryToConnectRoom = [&] (Vector2i delta, Vector margin)
+  auto tryToConnectRoom = [&] (Vector2i delta, Vector2i margin)
     {
       auto const neighboorPos = room.pos + delta;
       auto const neighboorIdx = getRoomAt(quest, neighboorPos);
@@ -100,11 +93,10 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
 
       auto& otherRoom = quest[neighboorIdx];
 
-      auto detector = addDetector();
+      auto transform = (room.pos - otherRoom.pos) * CELL_SIZE + margin;
+      auto detector = make_unique<RoomBoundaryDetector>(neighboorIdx, toVector(transform));
+      to_string(neighboorIdx);
       detector->pos = toVector(delta * CELL_SIZE);
-      detector->targetLevel = neighboorIdx;
-      detector->transform = toVector(room.pos - otherRoom.pos) * CELL_SIZE;
-      detector->transform += margin;
       game->spawn(detector.release());
     };
 
@@ -112,7 +104,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
   for(int row = 0; row < room.size.height; ++row)
   {
     auto const delta = Vector2i(-1, row);
-    auto const margin = Vector(-1, 0);
+    auto const margin = Vector2i(-1, 0);
     tryToConnectRoom(delta, margin);
   }
 
@@ -120,7 +112,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
   for(int row = 0; row < room.size.height; ++row)
   {
     auto const delta = Vector2i(room.size.width, row);
-    auto const margin = Vector(1, 0);
+    auto const margin = Vector2i(1, 0);
     tryToConnectRoom(delta, margin);
   }
 
@@ -128,7 +120,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
   for(int col = 0; col < room.size.width; ++col)
   {
     auto const delta = Vector2i(col, -1);
-    auto const margin = Vector(0, -2);
+    auto const margin = Vector2i(0, -2);
     tryToConnectRoom(delta, margin);
   }
 
@@ -136,7 +128,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
   for(int col = 0; col < room.size.width; ++col)
   {
     auto const delta = Vector2i(col, room.size.height);
-    auto const margin = Vector(0, 2);
+    auto const margin = Vector2i(0, 2);
     tryToConnectRoom(delta, margin);
   }
 }

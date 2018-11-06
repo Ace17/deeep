@@ -17,9 +17,11 @@
 
 struct RoomBoundaryDetector : Entity
 {
-  RoomBoundaryDetector()
+  RoomBoundaryDetector(int targetLevel_, Vector transform_)
   {
-    size = Size(1, 1);
+    targetLevel = targetLevel_;
+    transform = transform_;
+    size = UnitSize * 16;
     solid = false;
     collisionGroup = 0;
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
