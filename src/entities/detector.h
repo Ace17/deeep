@@ -51,7 +51,7 @@ struct RoomBoundaryBlocker : Entity
 {
   RoomBoundaryBlocker(int groupsToBlock)
   {
-    size = Size(1, 1);
+    size = UnitSize * 16;
     solid = true;
     collisionGroup = CG_WALLS;
     collidesWith = groupsToBlock;

@@ -75,10 +75,8 @@ Vector toVector(Vector2i v)
   return Vector(v.x, v.y);
 }
 
-void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
+void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
 {
-  auto const& room = quest[roomIdx];
-
   auto const CELL_SIZE = 16;
 
   auto addDetector = [&] ()
@@ -95,10 +93,8 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
 
       if(neighboorIdx < 0)
       {
-        auto blocker = make_unique<RoomBoundaryBlocker>(-1);
-        blocker->pos = toVector(delta * CELL_SIZE);
-        blocker->size = Size(1, 1) * CELL_SIZE;
-        game->spawn(blocker.release());
+        auto pos = toVector(delta * CELL_SIZE);
+        room.spawners.push_back({ pos, "blocker" });
         return;
       }
 
@@ -159,9 +155,8 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
   r = move(quest[roomIdx]);
 
-  addBoundaryDetectors(quest, roomIdx, game);
-
   addRandomWidgets(r.tiles);
+  addBoundaryDetectors(r, quest, game);
 
   return r;
 }

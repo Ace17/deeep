@@ -50,6 +50,7 @@ map<string, CreationFunc> getRegistry()
   r["moving_platform"] = [] (EntityArgs& args) { auto arg = atoi(args[0].c_str()); return make_unique<MovingPlatform>(arg); };
   r["elevator"] = [] (EntityArgs &) { return make_unique<Elevator>(); };
   r["conveyor"] = [] (EntityArgs &) { return make_unique<Conveyor>(); };
+  r["blocker"] = [] (EntityArgs &) { return make_unique<RoomBoundaryBlocker>(-1); };
 
   return r;
 }
