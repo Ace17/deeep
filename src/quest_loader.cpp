@@ -187,9 +187,9 @@ void generateConcreteRoom(Room& room)
 }
 
 static
-vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
+vector<Room::Spawner> parseThingLayer(json::Object* objectLayer, int height)
 {
-  vector<Room::Thing> r;
+  vector<Room::Spawner> r;
   auto objects = objectLayer->getMember<json::Array>("objects");
 
   for(auto& jsonObj : objects->elements)
@@ -200,7 +200,7 @@ vector<Room::Thing> parseThingLayer(json::Object* objectLayer, int height)
     auto const name = obj->getMember<json::String>("name")->value;
     auto const pos = Vector(objRect.pos.x, objRect.pos.y);
 
-    r.push_back(Room::Thing { pos, name });
+    r.push_back(Room::Spawner { pos, name });
   }
 
   return r;
@@ -214,7 +214,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
   room.tiles = parseTileLayer(layers["tiles"]);
 
   if(exists(layers, "things"))
-    room.things = parseThingLayer(layers["things"], room.size.height * 16);
+    room.spawners = parseThingLayer(layers["things"], room.size.height * 16);
 
   // add spikes
   for(auto pos : rasterScan(room.tiles.size.width, room.tiles.size.height))
@@ -225,7 +225,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
     if(room.tiles.get(x, y) >= 8)
     {
       auto const pos = Vector(x, y);
-      room.things.push_back(Room::Thing { pos, "spikes" });
+      room.spawners.push_back({ pos, "spikes" });
       room.tiles.set(x, y, 0);
     }
   }

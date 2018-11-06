@@ -26,13 +26,13 @@ struct Room
   Vector2i start;
   std::string name;
 
-  struct Thing
+  struct Spawner
   {
     Vector pos;
     std::string name;
   };
 
-  vector<Thing> things;
+  vector<Spawner> spawners;
 };
 
 Room Graph_loadRoom(int levelIdx, IGame* game);

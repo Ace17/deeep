@@ -150,7 +150,7 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
 
 void addThings(Room const& room, IGame* game)
 {
-  for(auto const& thing : room.things)
+  for(auto const& thing : room.spawners)
   {
     auto entity = createEntity(thing.name);
     entity->pos = thing.pos;
