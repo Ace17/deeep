@@ -177,9 +177,6 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
   addRandomWidgets(r.tiles);
 
-  if(r.name == "")
-    r.name = "unknown room";
-
   return r;
 }
 
