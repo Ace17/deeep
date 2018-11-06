@@ -1,10 +1,8 @@
-/*
- * Copyright (C) 2017 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- */
+// Copyright (C) 2018 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
 
 // Game logic
 
@@ -15,6 +13,7 @@
 #include "base/view.h"
 #include "base/util.h"
 
+#include "entity_factory.h"
 #include "entities/player.h"
 #include "entities/rockman.h"
 #include "game.h"
@@ -28,6 +27,17 @@ using namespace std;
 
 // from smarttiles
 array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
+
+static
+void spawnEntities(Room const& room, IGame* game)
+{
+  for(auto& spawner : room.spawners)
+  {
+    auto entity = createEntity(spawner.name);
+    entity->pos = spawner.pos;
+    game->spawn(entity.release());
+  }
+}
 
 struct GameState : Scene, private IGame
 {
@@ -218,6 +228,7 @@ struct GameState : Scene, private IGame
     assert(m_listeners.empty());
 
     auto level = Graph_loadRoom(levelIdx, this);
+    spawnEntities(level, this);
     m_tiles = move(level.tiles);
     m_theme = level.theme;
     m_view->playMusic(level.theme);

@@ -1,16 +1,13 @@
-/*
- * Copyright (C) 2017 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- */
+// Copyright (C) 2018 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
 
 // Loader for rooms (levels)
 
 #include "room.h"
 #include "entities/detector.h"
-#include "entity_factory.h"
 #include <cstdlib> // rand
 
 void addRandomWidgets(Matrix2<int>& tiles)
@@ -148,16 +145,6 @@ void addBoundaryDetectors(vector<Room>& quest, int roomIdx, IGame* game)
   }
 }
 
-void addThings(Room const& room, IGame* game)
-{
-  for(auto const& thing : room.spawners)
-  {
-    auto entity = createEntity(thing.name);
-    entity->pos = thing.pos;
-    game->spawn(entity.release());
-  }
-}
-
 #include "quest.h"
 
 Room Graph_loadRoom(int roomIdx, IGame* game)
@@ -172,7 +159,6 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
 
   r = move(quest[roomIdx]);
 
-  addThings(r, game);
   addBoundaryDetectors(quest, roomIdx, game);
 
   addRandomWidgets(r.tiles);
