@@ -7,8 +7,8 @@
 // Loader for rooms (levels)
 
 #include "room.h"
-#include "entities/detector.h"
 #include <cstdlib> // rand
+#include <stdexcept> // runtime_error
 
 void addRandomWidgets(Matrix2<int>& tiles)
 {
@@ -75,7 +75,7 @@ Vector toVector(Vector2i v)
   return Vector(v.x, v.y);
 }
 
-void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
+void addBoundaryDetectors(Room& room, vector<Room>& quest)
 {
   auto const CELL_SIZE = 16;
 
@@ -94,10 +94,17 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
       auto& otherRoom = quest[neighboorIdx];
 
       auto transform = (room.pos - otherRoom.pos) * CELL_SIZE + margin;
-      auto detector = make_unique<RoomBoundaryDetector>(neighboorIdx, toVector(transform));
-      to_string(neighboorIdx);
-      detector->pos = toVector(delta * CELL_SIZE);
-      game->spawn(detector.release());
+
+      Room::Spawner s;
+      s.name = "room_boundary_detector(";
+      s.name += to_string(neighboorIdx);
+      s.name += ",";
+      s.name += to_string(transform.x);
+      s.name += ",";
+      s.name += to_string(transform.y);
+      s.name += ")";
+      s.pos = toVector(delta * CELL_SIZE);
+      room.spawners.push_back(s);
     };
 
   // left
@@ -135,7 +142,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest, IGame* game)
 
 #include "quest.h"
 
-Room Graph_loadRoom(int roomIdx, IGame* game)
+Room Graph_loadRoom(int roomIdx)
 {
   auto fullQuest = loadQuest("res/quest.json");
   auto& quest = fullQuest.rooms;
@@ -148,7 +155,7 @@ Room Graph_loadRoom(int roomIdx, IGame* game)
   r = move(quest[roomIdx]);
 
   addRandomWidgets(r.tiles);
-  addBoundaryDetectors(r, quest, game);
+  addBoundaryDetectors(r, quest);
 
   return r;
 }

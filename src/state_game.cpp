@@ -227,7 +227,7 @@ struct GameState : Scene, private IGame
     m_spawned.clear();
     assert(m_listeners.empty());
 
-    auto level = Graph_loadRoom(levelIdx, this);
+    auto level = Graph_loadRoom(levelIdx);
     spawnEntities(level, this);
     m_tiles = move(level.tiles);
     m_theme = level.theme;

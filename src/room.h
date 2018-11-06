@@ -15,8 +15,6 @@
 
 using namespace std;
 
-struct IGame;
-
 struct Room
 {
   Vector2i pos;
@@ -35,5 +33,5 @@ struct Room
   vector<Spawner> spawners;
 };
 
-Room Graph_loadRoom(int levelIdx, IGame* game);
+Room Graph_loadRoom(int levelIdx);
 

@@ -51,6 +51,7 @@ map<string, CreationFunc> getRegistry()
   r["elevator"] = [] (EntityArgs &) { return make_unique<Elevator>(); };
   r["conveyor"] = [] (EntityArgs &) { return make_unique<Conveyor>(); };
   r["blocker"] = [] (EntityArgs &) { return make_unique<RoomBoundaryBlocker>(-1); };
+  r["room_boundary_detector"] = [] (EntityArgs& args) { int targetLevel = atoi(args[0].c_str()); Vector transform; transform.x = atoi(args[1].c_str()); transform.y = atoi(args[2].c_str()); return make_unique<RoomBoundaryDetector>(targetLevel, transform); };
 
   return r;
 }
