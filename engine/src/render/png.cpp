@@ -1,4 +1,4 @@
-// Copyright (C) 2018 - Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
+// Copyright (C) 2018 - Sebastien Alaiwan
 // Copyright (c) 2005-2010 Lode Vandevenne
 //
 // This software is provided 'as-is', without any express or implied
