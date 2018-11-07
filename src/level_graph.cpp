@@ -75,7 +75,7 @@ Vector toVector(Vector2i v)
   return Vector(v.x, v.y);
 }
 
-void addBoundaryDetectors(Room& room, vector<Room>& quest)
+void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 {
   auto const CELL_SIZE = 16;
 
@@ -140,7 +140,7 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest)
   }
 }
 
-void preprocessRoom(Room& room, vector<Room>& quest)
+void preprocessRoom(Room& room, vector<Room> const& quest)
 {
   addRandomWidgets(room.tiles);
   addBoundaryDetectors(room, quest);
