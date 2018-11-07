@@ -18,16 +18,16 @@ using namespace std;
 #define GL_GLEXT_PROTOTYPES 1
 #include "GL/gl.h"
 #include "SDL.h" // SDL_INIT_VIDEO
-#include "png.h"
-#include "util.h"
 
 #include "base/util.h" // clamp
 #include "base/scene.h"
 #include "base/geom.h"
 #include "base/span.h"
+#include "misc/file.h"
+#include "misc/util.h"
 #include "model.h"
-#include "file.h"
 #include "matrix3.h"
+#include "png.h"
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a

@@ -8,7 +8,7 @@
 
 #include "audio.h"
 #include "sound.h"
-#include "file.h" // exists
+#include "misc/file.h" // exists
 #include "audio_channel.h"
 
 #include <memory>
@@ -45,7 +45,10 @@ struct SdlAudio : Audio
     audioDevice = SDL_OpenAudioDevice(nullptr, 0, &desired, &audiospec, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
 
     if(audioDevice == 0)
+    {
+      printf("[audio] %s\n", SDL_GetError());
       throw runtime_error("Can't open audio");
+    }
 
     printf("[audio] %d Hz %d channels\n",
            audiospec.freq,

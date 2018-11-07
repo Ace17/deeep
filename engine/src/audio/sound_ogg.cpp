@@ -12,7 +12,7 @@
 #include <cassert>
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
-#include "file.h" // read
+#include "misc/file.h" // read
 
 using namespace std;
 

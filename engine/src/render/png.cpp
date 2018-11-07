@@ -26,7 +26,7 @@
 #include <vector>
 #include <stdexcept>
 #include "base/span.h"
-#include "decompress.h"
+#include "misc/decompress.h"
 
 namespace
 {

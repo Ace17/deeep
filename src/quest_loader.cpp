@@ -12,10 +12,10 @@
 #include "base/geom.h"
 #include "base/util.h"
 
-#include "engine/src/file.h"
-#include "engine/src/json.h"
-#include "engine/src/base64.h"
-#include "engine/src/decompress.h"
+#include "engine/src/misc/file.h"
+#include "engine/src/misc/json.h"
+#include "engine/src/misc/base64.h"
+#include "engine/src/misc/decompress.h"
 
 #include "room.h"
 
