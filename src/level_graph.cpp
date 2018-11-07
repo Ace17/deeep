@@ -140,22 +140,24 @@ void addBoundaryDetectors(Room& room, vector<Room>& quest)
   }
 }
 
+void preprocessRoom(Room& room, vector<Room>& quest)
+{
+  addRandomWidgets(room.tiles);
+  addBoundaryDetectors(room, quest);
+}
+
 #include "quest.h"
 
 Room Graph_loadRoom(int roomIdx)
 {
-  auto fullQuest = loadQuest("res/quest.json");
-  auto& quest = fullQuest.rooms;
+  auto quest = loadQuest("res/quest.json");
 
-  Room r;
-
-  if(roomIdx < 0 || roomIdx >= (int)quest.size())
+  if(roomIdx < 0 || roomIdx >= (int)quest.rooms.size())
     throw runtime_error("No such level");
 
-  r = move(quest[roomIdx]);
+  auto r = move(quest.rooms[roomIdx]);
 
-  addRandomWidgets(r.tiles);
-  addBoundaryDetectors(r, quest);
+  preprocessRoom(r, quest.rooms);
 
   return r;
 }

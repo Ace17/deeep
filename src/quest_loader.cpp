@@ -4,6 +4,8 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+// Loader for the quest file and room files.
+// (using the TMX JSON+gzip format)
 #include <cassert>
 #include <map>
 #include <string>
