@@ -10,6 +10,10 @@ mkdir -p $tmpDir
 make clean
 ./check
 
+# build asmjs version
+BIN=bin/asmjs \
+  scripts/asmjs-make -j`nproc` bin/asmjs/rel/game.html
+
 #------------------------------------------------------------------------------
 # create game directory
 #------------------------------------------------------------------------------

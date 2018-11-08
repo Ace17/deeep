@@ -15,10 +15,4 @@ BIN=bin/native \
 
 ./bin/native/tests.exe
 
-echo "----------------------------------------------------------------"
-echo "Building asmjs version"
-
-BIN=bin/asmjs \
-  scripts/asmjs-make -j`nproc` bin/asmjs/rel/game.html
-
-echo Success!
+echo OK
