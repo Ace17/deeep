@@ -10,6 +10,7 @@
 
 #include <memory>
 #include "sound.h"
+#include <cassert>
 
 using namespace std;
 
@@ -67,6 +68,7 @@ struct AudioChannel
 
   void mix(Span<float> output)
   {
+    assert(output.len <= CHUNK_PERIOD);
     startChunk();
 
     while(output.len > 0)
