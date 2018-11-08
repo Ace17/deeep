@@ -6,15 +6,14 @@
 
 // SDL audio output
 
-#include "audio.h"
+#include "audio_backend.h"
+
 #include "sound.h"
-#include "misc/file.h" // exists
 #include "audio_channel.h"
 
 #include <memory>
 #include <vector>
 #include <stdexcept>
-#include <algorithm>
 #include <string>
 #include <SDL.h>
 
@@ -24,68 +23,6 @@
 using namespace std;
 
 auto const MAX_CHANNELS = 16;
-
-struct IAudioBackend
-{
-  virtual ~IAudioBackend() = default;
-
-  virtual void playSound(Sound* sound) = 0;
-  virtual void playMusic(const char* path) = 0;
-  virtual void stopMusic() = 0;
-};
-
-struct HighLevelAudio : Audio
-{
-  HighLevelAudio(unique_ptr<IAudioBackend> backend) : m_backend(move(backend))
-  {
-  }
-
-  void loadSound(int id, const char* path) override
-  {
-    if(!exists(path))
-    {
-      printf("[audio] sound '%s' was not found, fallback on default sound\n", path);
-      path = "res/sounds/default.ogg";
-    }
-
-    sounds.resize(max(id + 1, (int)sounds.size()));
-    sounds[id] = loadSoundFile(path);
-  }
-
-  void playSound(int id) override
-  {
-    m_backend->playSound(sounds[id].get());
-  }
-
-  void playMusic(int id) override
-  {
-    char path[256];
-    sprintf(path, "res/music/music-%02d.ogg", id);
-
-    if(!exists(path))
-    {
-      printf("music '%s' was not found, fallback on default music\n", path);
-      strcpy(path, "res/music/default.ogg");
-      id = 0;
-    }
-
-    if(id == currMusic)
-      return;
-
-    currMusic = id;
-
-    m_backend->playMusic(path);
-  }
-
-  void stopMusic() override
-  {
-    m_backend->stopMusic();
-  }
-
-  int currMusic = -1;
-  const unique_ptr<IAudioBackend> m_backend;
-  vector<unique_ptr<Sound>> sounds;
-};
 
 struct SdlAudioBackend : IAudioBackend
 {
@@ -229,8 +166,8 @@ struct SdlAudioBackend : IAudioBackend
   }
 };
 
-Audio* createAudio()
+IAudioBackend* createAudioBackend()
 {
-  return new HighLevelAudio(make_unique<SdlAudioBackend>());
+  return new SdlAudioBackend;
 }
 

@@ -3,6 +3,7 @@ SRCS_ENGINE:=\
 	$(BIN)/$(ENGINE_ROOT)/src/render/vertex.glsl.cpp\
 	$(ENGINE_ROOT)/src/app.cpp\
 	$(ENGINE_ROOT)/src/main.cpp\
+	$(ENGINE_ROOT)/src/audio/audio.cpp\
 	$(ENGINE_ROOT)/src/audio/audio_sdl.cpp\
 	$(ENGINE_ROOT)/src/audio/sound_ogg.cpp\
 	$(ENGINE_ROOT)/src/misc/base64.cpp\
