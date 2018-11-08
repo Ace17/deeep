@@ -85,8 +85,7 @@ struct AudioChannel
       for(int i = 0; i < chunk.len; ++i)
         output.data[i] += chunk.data[i] * m_volume;
 
-      output.len -= N;
-      output.data += N;
+      output += N;
 
       // finished playing?
       if(N == 0)
