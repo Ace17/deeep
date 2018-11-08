@@ -475,8 +475,6 @@ struct OpenglDisplay : Display
     m_ambientLight = ambientLight;
   }
 
-  int m_blinkCounter = 0;
-
   void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio)
   {
     if(model.actions.empty())
@@ -532,18 +530,20 @@ struct OpenglDisplay : Display
 
       if(blinking)
       {
-        if((m_blinkCounter / 4) % 2)
+        if((m_frameCount / 4) % 2)
           SAFE_GL(glUniform4f(m_colorId, 0.8, 0.4, 0.4, 0));
       }
     }
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
 
-    // connect the xyz to the "a_position" attribute of the vertex shader
-    SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr));
+#define OFFSET(a) \
+  ((GLvoid*)(&((Model::Vertex*)nullptr)->a))
 
-    // connect the uv coords to the "v_texCoord" attribute of the vertex shader
-    SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_TRUE, 4 * sizeof(GLfloat), (const GLvoid*)(2 * sizeof(GLfloat))));
+    SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
+    SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
+
+#undef OFFSET
 
     SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, model.vertices.size()));
   }
@@ -575,7 +575,7 @@ struct OpenglDisplay : Display
 
   void beginDraw() override
   {
-    m_blinkCounter++;
+    m_frameCount++;
 
     {
       int w, h;
@@ -589,10 +589,8 @@ struct OpenglDisplay : Display
     SAFE_GL(glClearColor(0, 0, 0, 1));
     SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
 
-    {
-      SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
-      SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
-    }
+    SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
+    SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
   }
 
   void endDraw() override
@@ -618,6 +616,7 @@ struct OpenglDisplay : Display
   Model m_fontModel;
 
   float m_ambientLight = 0;
+  int m_frameCount = 0;
 };
 
 Display* createDisplay(Size2i resolution)
