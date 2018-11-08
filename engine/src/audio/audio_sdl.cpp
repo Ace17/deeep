@@ -40,11 +40,11 @@ struct HighLevelAudio : Audio
   {
   }
 
-  void loadSound(int id, string path) override
+  void loadSound(int id, const char* path) override
   {
     if(!exists(path))
     {
-      printf("[audio] sound '%s' was not found, fallback on default sound\n", path.c_str());
+      printf("[audio] sound '%s' was not found, fallback on default sound\n", path);
       path = "res/sounds/default.ogg";
     }
 
