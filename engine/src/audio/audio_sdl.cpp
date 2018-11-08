@@ -25,9 +25,71 @@ using namespace std;
 
 auto const MAX_CHANNELS = 16;
 
-struct SdlAudio : Audio
+struct IAudioBackend
 {
-  SdlAudio()
+  virtual ~IAudioBackend() = default;
+
+  virtual void playSound(Sound* sound) = 0;
+  virtual void playMusic(const char* path) = 0;
+  virtual void stopMusic() = 0;
+};
+
+struct HighLevelAudio : Audio
+{
+  HighLevelAudio(unique_ptr<IAudioBackend> backend) : m_backend(move(backend))
+  {
+  }
+
+  void loadSound(int id, string path) override
+  {
+    if(!exists(path))
+    {
+      printf("[audio] sound '%s' was not found, fallback on default sound\n", path.c_str());
+      path = "res/sounds/default.ogg";
+    }
+
+    sounds.resize(max(id + 1, (int)sounds.size()));
+    sounds[id] = loadSoundFile(path);
+  }
+
+  void playSound(int id) override
+  {
+    m_backend->playSound(sounds[id].get());
+  }
+
+  void playMusic(int id) override
+  {
+    char path[256];
+    sprintf(path, "res/music/music-%02d.ogg", id);
+
+    if(!exists(path))
+    {
+      printf("music '%s' was not found, fallback on default music\n", path);
+      strcpy(path, "res/music/default.ogg");
+      id = 0;
+    }
+
+    if(id == currMusic)
+      return;
+
+    currMusic = id;
+
+    m_backend->playMusic(path);
+  }
+
+  void stopMusic() override
+  {
+    m_backend->stopMusic();
+  }
+
+  int currMusic = -1;
+  const unique_ptr<IAudioBackend> m_backend;
+  vector<unique_ptr<Sound>> sounds;
+};
+
+struct SdlAudioBackend : IAudioBackend
+{
+  SdlAudioBackend()
   {
     auto ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
 
@@ -62,7 +124,7 @@ struct SdlAudio : Audio
     printf("[audio] init OK\n");
   }
 
-  ~SdlAudio()
+  ~SdlAudioBackend()
   {
     SDL_PauseAudioDevice(audioDevice, 1);
 
@@ -71,19 +133,7 @@ struct SdlAudio : Audio
     printf("[audio] shutdown OK\n");
   }
 
-  void loadSound(int id, string path) override
-  {
-    if(!exists(path))
-    {
-      printf("[audio] sound '%s' was not found, fallback on default sound\n", path.c_str());
-      path = "res/sounds/default.ogg";
-    }
-
-    sounds.resize(max(id + 1, (int)sounds.size()));
-    sounds[id] = loadSoundFile(path);
-  }
-
-  void playSound(int id) override
+  void playSound(Sound* sound) override
   {
     auto channel = allocChannel();
 
@@ -93,26 +143,11 @@ struct SdlAudio : Audio
       return;
     }
 
-    channel->play(sounds[id].get());
+    channel->play(sound);
   }
 
-  void playMusic(int id) override
+  void playMusic(const char* path) override
   {
-    char path[256];
-    sprintf(path, "res/music/music-%02d.ogg", id);
-
-    if(!exists(path))
-    {
-      printf("music '%s' was not found, fallback on default music\n", path);
-      strcpy(path, "res/music/default.ogg");
-      id = 0;
-    }
-
-    if(id == currMusic)
-      return;
-
-    currMusic = id;
-
     auto nextMusic = loadSoundFile(path);
 
     SDL_LockAudioDevice(audioDevice);
@@ -131,8 +166,6 @@ struct SdlAudio : Audio
     SDL_UnlockAudioDevice(audioDevice);
   }
 
-  int currMusic = -1;
-  vector<unique_ptr<Sound>> sounds;
   SDL_AudioDeviceID audioDevice;
 
   // accessed by the audio thread
@@ -144,7 +177,7 @@ struct SdlAudio : Audio
 
   static void staticMixAudio(void* userData, Uint8* stream, int iNumBytes)
   {
-    auto pThis = (SdlAudio*)userData;
+    auto pThis = (SdlAudioBackend*)userData;
     memset(stream, 0, iNumBytes);
     pThis->mixAudio((float*)stream, iNumBytes / sizeof(float));
   }
@@ -198,6 +231,6 @@ struct SdlAudio : Audio
 
 Audio* createAudio()
 {
-  return new SdlAudio;
+  return new HighLevelAudio(make_unique<SdlAudioBackend>());
 }
 
