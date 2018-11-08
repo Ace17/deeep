@@ -179,8 +179,7 @@ struct SdlAudio : Audio
         if(!channel.isDead())
           channel.mix(chunk);
 
-      buff.data += chunk.len;
-      buff.len -= chunk.len;
+      buff += chunk.len;
     }
 
     for(int i = 0; i < sampleCount; ++i)
