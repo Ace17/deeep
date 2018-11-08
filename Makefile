@@ -82,13 +82,14 @@ include res-src/project.mk
 SRCS_TESTS:=\
 	$(SRCS_GAME)\
 	$(filter-out $(ENGINE_ROOT)/src/main.cpp, $(SRCS_ENGINE))\
+	engine/tests/tests.cpp\
+	engine/tests/tests_main.cpp\
 	engine/tests/audio.cpp\
 	engine/tests/base64.cpp\
 	engine/tests/decompress.cpp\
 	engine/tests/json.cpp\
-	engine/tests/tests.cpp\
-	engine/tests/tests_main.cpp\
 	engine/tests/util.cpp\
+	engine/tests/png.cpp\
 	tests/entities.cpp\
 	tests/level_graph.cpp\
 	tests/physics.cpp\
