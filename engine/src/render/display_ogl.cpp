@@ -499,15 +499,6 @@ struct OpenglDisplay : Display
 
     auto const relPos = where.pos - cam.pos;
 
-    {
-      // Don't call opengl if the object isn't visible.
-      // Huge FPS boost.
-      auto const CULL_DIST = 12;
-
-      if(abs(relPos.x) > CULL_DIST || abs(relPos.y) > CULL_DIST)
-        return;
-    }
-
     auto const sx = where.size.width;
     auto const sy = where.size.height;
 
@@ -517,6 +508,36 @@ struct OpenglDisplay : Display
 
     auto shrink = scale(0.125 * Vector2f(1, 1));
     mat = shrink * mat;
+
+    // Don't call opengl if the object isn't visible.
+    // Huge FPS boost.
+    if(1)
+    {
+      auto m0x = 0;
+      auto m0y = 0;
+      auto m1x = 1;
+      auto m1y = 1;
+
+      auto x0 = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
+      auto y0 = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
+
+      auto x1 = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
+      auto y1 = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
+
+      auto const MAX = 1.0;
+
+      if(x0 < -MAX && x1 < -MAX)
+        return;
+
+      if(x0 > +MAX && x1 > +MAX)
+        return;
+
+      if(y0 < -MAX && y1 < -MAX)
+        return;
+
+      if(y0 > +MAX && y1 > +MAX)
+        return;
+    }
 
     setOpenglMatrix4f(m_MVP, mat);
 
