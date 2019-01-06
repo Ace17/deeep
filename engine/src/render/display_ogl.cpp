@@ -588,7 +588,11 @@ struct OpenglDisplay : Display
   void beginDraw() override
   {
     m_frameCount++;
+    m_quads.clear();
+  }
 
+  void endDraw() override
+  {
     {
       int w, h;
       SDL_GL_GetDrawableSize(m_window, &w, &h);
@@ -601,14 +605,6 @@ struct OpenglDisplay : Display
     SAFE_GL(glClearColor(0, 0, 0, 1));
     SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
 
-    SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
-    SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
-
-    m_quads.clear();
-  }
-
-  void endDraw() override
-  {
     auto byPriority = [] (Quad const& a, Quad const& b)
       {
         if(a.zOrder != b.zOrder)
