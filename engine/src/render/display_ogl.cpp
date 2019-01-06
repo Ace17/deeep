@@ -37,7 +37,7 @@ using namespace std;
   do { a; ensureGl(# a, __LINE__); } while(0)
 #endif
 
-static const int MAX_QUADS = 2048;
+static const int MAX_VERTICES = 8192;
 
 static
 void ensureGl(char const* expr, int line)
@@ -411,7 +411,7 @@ struct OpenglDisplay : Display
 
     SAFE_GL(glGenBuffers(1, &m_batchVbo));
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
-    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(Model::Vertex) * 4 * MAX_QUADS, NULL, GL_DYNAMIC_DRAW));
+    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(Model::Vertex) * MAX_VERTICES, NULL, GL_DYNAMIC_DRAW));
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
     printf("[display] init OK\n");
@@ -522,7 +522,7 @@ struct OpenglDisplay : Display
     q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
 
     // Don't call opengl if the object isn't visible.
-    // Huge FPS boost.
+    // Notable FPS boost.
     if(1)
     {
       auto const MAX = 1.0;
@@ -650,6 +650,9 @@ struct OpenglDisplay : Display
 
     for(auto const& q : m_quads)
     {
+      if(vboData.size() * 4 >= MAX_VERTICES)
+        flush();
+
       if(q.texture != currTexture)
       {
         flush();
@@ -662,9 +665,6 @@ struct OpenglDisplay : Display
       vboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
       vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
       vboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
-
-      if(vboData.size() > MAX_QUADS * 4)
-        vboData.resize(MAX_QUADS * 4);
 
       SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
     }
