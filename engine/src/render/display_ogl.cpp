@@ -304,43 +304,6 @@ void printOpenGlVersion()
   printf("[display] OpenGL shading version: %s\n", notNull(sLangVersion));
 }
 
-static
-void setOpenglMatrix4f(GLint matrixId, Matrix3f const& mat)
-{
-  float mvp[4][4] = { 0 };
-
-  // opengl expects a column-major matrix
-  // (i.e columns are contiguous in memory)
-  // So the indexing is:
-  // mvp[col][row] = mat[row][col]
-
-  // row #0
-  mvp[0][0] = mat[0][0];
-  mvp[1][0] = mat[0][1];
-  mvp[2][0] = 0;
-  mvp[3][0] = mat[0][2];
-
-  // row #1
-  mvp[0][1] = mat[1][0];
-  mvp[1][1] = mat[1][1];
-  mvp[2][1] = 0;
-  mvp[3][1] = mat[1][2];
-
-  // row #2
-  mvp[0][2] = 0;
-  mvp[1][2] = 0;
-  mvp[2][2] = 1;
-  mvp[3][2] = 0;
-
-  // row #3
-  mvp[0][3] = mat[2][0];
-  mvp[1][3] = mat[2][1];
-  mvp[2][3] = 0;
-  mvp[3][3] = mat[2][2];
-
-  SAFE_GL(glUniformMatrix4fv(matrixId, 1, GL_FALSE, mvp[0]));
-};
-
 template<typename T>
 T blend(T a, T b, float alpha)
 {
@@ -396,9 +359,6 @@ struct OpenglDisplay : Display
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
-
-    m_MVP = glGetUniformLocation(m_programId, "MVP");
-    assert(m_MVP >= 0);
 
     m_colorId = glGetUniformLocation(m_programId, "fragOffset");
     assert(m_colorId >= 0);
@@ -618,8 +578,6 @@ struct OpenglDisplay : Display
 #define OFFSET(a) \
   ((GLvoid*)(&((Model::Vertex*)nullptr)->a))
 
-    setOpenglMatrix4f(m_MVP, scale({ 1, 1 }));
-
     vector<Model::Vertex> vboData;
 
     // Bind our diffuse texture in Texture Unit 0
@@ -689,7 +647,6 @@ struct OpenglDisplay : Display
   Camera m_camera;
   bool m_cameraValid = false;
 
-  GLint m_MVP;
   GLint m_colorId;
   GLint m_positionLoc;
   GLint m_texCoordLoc;
