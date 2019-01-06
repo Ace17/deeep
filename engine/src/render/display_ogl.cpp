@@ -611,7 +611,10 @@ struct OpenglDisplay : Display
   {
     auto byPriority = [] (Quad const& a, Quad const& b)
       {
-        return a.zOrder < b.zOrder;
+        if(a.zOrder != b.zOrder)
+          return a.zOrder < b.zOrder;
+
+        return a.texture < b.texture;
       };
 
     std::sort(m_quads.begin(), m_quads.end(), byPriority);
@@ -636,15 +639,16 @@ struct OpenglDisplay : Display
 
     int drawCalls = 0;
 
-    auto flush = [&]()
-    {
-      if(vboData.empty())
-        return;
-      SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
-      SAFE_GL(glDrawArrays(GL_QUADS, 0, vboData.size()));
-      vboData.clear();
-      ++drawCalls;
-    };
+    auto flush = [&] ()
+      {
+        if(vboData.empty())
+          return;
+
+        SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
+        SAFE_GL(glDrawArrays(GL_QUADS, 0, vboData.size()));
+        vboData.clear();
+        ++drawCalls;
+      };
 
     GLuint currTexture = -1;
 
@@ -663,13 +667,16 @@ struct OpenglDisplay : Display
       vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
       vboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
 
-      if(vboData.size() > MAX_QUADS)
-        vboData.resize(MAX_QUADS);
+      if(vboData.size() > MAX_QUADS * 4)
+        vboData.resize(MAX_QUADS * 4);
 
       SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
     }
 
     flush();
+
+    if(0)
+      printf("drawCalls: %d\n", drawCalls);
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
     SAFE_GL(glBindTexture(GL_TEXTURE_2D, 0));
