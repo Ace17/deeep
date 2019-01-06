@@ -634,8 +634,30 @@ struct OpenglDisplay : Display
     SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
     SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
 
+    int drawCalls = 0;
+
+    auto flush = [&]()
+    {
+      if(vboData.empty())
+        return;
+      SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
+      SAFE_GL(glDrawArrays(GL_QUADS, 0, vboData.size()));
+      vboData.clear();
+      ++drawCalls;
+    };
+
+    GLuint currTexture = -1;
+
     for(auto const& q : m_quads)
     {
+      if(q.texture != currTexture)
+      {
+        flush();
+
+        SAFE_GL(glBindTexture(GL_TEXTURE_2D, q.texture));
+        currTexture = q.texture;
+      }
+
       vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
       vboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
       vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
@@ -644,14 +666,10 @@ struct OpenglDisplay : Display
       if(vboData.size() > MAX_QUADS)
         vboData.resize(MAX_QUADS);
 
-      SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
-
       SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
-
-      SAFE_GL(glBindTexture(GL_TEXTURE_2D, q.texture));
-      SAFE_GL(glDrawArrays(GL_QUADS, 0, vboData.size()));
-      vboData.clear();
     }
+
+    flush();
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
     SAFE_GL(glBindTexture(GL_TEXTURE_2D, 0));
