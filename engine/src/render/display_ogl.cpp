@@ -621,7 +621,7 @@ struct OpenglDisplay : Display
 
     setOpenglMatrix4f(m_MVP, scale({ 1, 1 }));
 
-    m_batchVboData.clear();
+    vector<Model::Vertex> vboData;
 
     // Bind our diffuse texture in Texture Unit 0
     SAFE_GL(glActiveTexture(GL_TEXTURE0));
@@ -636,21 +636,21 @@ struct OpenglDisplay : Display
 
     for(auto const& q : m_quads)
     {
-      m_batchVboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
-      m_batchVboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
-      m_batchVboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
-      m_batchVboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
+      vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
+      vboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
+      vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
+      vboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
 
-      if(m_batchVboData.size() > MAX_QUADS)
-        m_batchVboData.resize(MAX_QUADS);
+      if(vboData.size() > MAX_QUADS)
+        vboData.resize(MAX_QUADS);
 
-      SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * m_batchVboData.size(), m_batchVboData.data()));
+      SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
 
       SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
 
       SAFE_GL(glBindTexture(GL_TEXTURE_2D, q.texture));
-      SAFE_GL(glDrawArrays(GL_QUADS, 0, m_batchVboData.size()));
-      m_batchVboData.clear();
+      SAFE_GL(glDrawArrays(GL_QUADS, 0, vboData.size()));
+      vboData.clear();
     }
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
@@ -682,7 +682,6 @@ struct OpenglDisplay : Display
   };
 
   vector<Quad> m_quads;
-  vector<Model::Vertex> m_batchVboData;
   GLuint m_batchVbo;
 
   GLuint m_programId;
