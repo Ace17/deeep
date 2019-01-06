@@ -395,7 +395,6 @@ struct OpenglDisplay : Display
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
-    sendToOpengl(m_fontModel);
 
     m_MVP = glGetUniformLocation(m_programId, "MVP");
     assert(m_MVP >= 0);
@@ -432,16 +431,6 @@ struct OpenglDisplay : Display
       m_Models.resize(id + 1);
 
     m_Models[id] = loadAnimation(path);
-    sendToOpengl(m_Models[id]);
-  }
-
-  void sendToOpengl(Model& model)
-  {
-    SAFE_GL(glGenBuffers(1, &model.buffer));
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(model.vertices[0]) * model.vertices.size(), model.vertices.data(), GL_STATIC_DRAW));
-
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
   }
 
   void setCamera(Vector2f pos) override
@@ -628,6 +617,14 @@ struct OpenglDisplay : Display
     // Bind our diffuse texture in Texture Unit 0
     SAFE_GL(glActiveTexture(GL_TEXTURE0));
 
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
+
+    SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
+    SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
+
+    SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
+    SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
+
     for(auto const& q : m_quads)
     {
       m_batchVboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
@@ -638,14 +635,7 @@ struct OpenglDisplay : Display
       if(m_batchVboData.size() > MAX_QUADS)
         m_batchVboData.resize(MAX_QUADS);
 
-      SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
       SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * m_batchVboData.size(), m_batchVboData.data()));
-
-      SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
-      SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
-
-      SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
-      SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
 
       SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
 
