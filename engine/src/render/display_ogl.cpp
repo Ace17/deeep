@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <vector>
 #include <map>
+#include <algorithm> // sort
 #include <stdexcept>
 using namespace std;
 
@@ -471,7 +472,7 @@ struct OpenglDisplay : Display
     m_ambientLight = ambientLight;
   }
 
-  void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio)
+  void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
   {
     if(model.actions.empty())
       throw runtime_error("model has no actions");
@@ -506,6 +507,7 @@ struct OpenglDisplay : Display
     mat = shrink * mat;
 
     Quad q;
+    q.zOrder = zOrder;
     q.texture = action.textures[idx];
 
     auto const m0x = 0;
@@ -558,11 +560,11 @@ struct OpenglDisplay : Display
     m_quads.push_back(q);
   }
 
-  void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio) override
+  void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
   {
     auto& model = m_Models.at(modelId);
     auto cam = useWorldRefFrame ? m_camera : Camera();
-    drawModel(where, cam, model, blinking, actionIdx, ratio);
+    drawModel(where, cam, model, blinking, actionIdx, ratio, zOrder);
   }
 
   void drawText(Vector2f pos, char const* text) override
@@ -577,7 +579,7 @@ struct OpenglDisplay : Display
 
     while(*text)
     {
-      drawModel(rect, cam, m_fontModel, false, *text, 0);
+      drawModel(rect, cam, m_fontModel, false, *text, 0, 100);
       rect.pos.x += rect.size.width;
       ++text;
     }
@@ -607,6 +609,13 @@ struct OpenglDisplay : Display
 
   void endDraw() override
   {
+    auto byPriority = [] (Quad const& a, Quad const& b)
+      {
+        return a.zOrder < b.zOrder;
+      };
+
+    std::sort(m_quads.begin(), m_quads.end(), byPriority);
+
 #define OFFSET(a) \
   ((GLvoid*)(&((Model::Vertex*)nullptr)->a))
 
@@ -666,6 +675,7 @@ struct OpenglDisplay : Display
 
   struct Quad
   {
+    int zOrder;
     float light[3] {};
     GLuint texture;
     Vector2f pos1, pos2;

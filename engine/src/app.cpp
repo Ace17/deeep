@@ -9,7 +9,6 @@
 // and no platform-specific code should be here (SDL is OK).
 
 #include <vector>
-#include <algorithm> // sort
 #include <string>
 #include <memory>
 
@@ -131,17 +130,10 @@ private:
   {
     m_display->beginDraw();
 
-    auto byZOrder = [] (Actor const& a, Actor const& b)
-      {
-        return a.zOrder < b.zOrder;
-      };
-
-    std::sort(m_actors.begin(), m_actors.end(), byZOrder);
-
     for(auto& actor : m_actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
-      m_display->drawActor(where, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio);
+      m_display->drawActor(where, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
     }
 
     if(m_paused)
