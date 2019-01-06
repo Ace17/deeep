@@ -36,6 +36,8 @@ using namespace std;
   do { a; ensureGl(# a, __LINE__); } while(0)
 #endif
 
+static const int MAX_QUADS = 2048;
+
 static
 void ensureGl(char const* expr, int line)
 {
@@ -407,6 +409,11 @@ struct OpenglDisplay : Display
     m_texCoordLoc = glGetAttribLocation(m_programId, "vertexUV");
     assert(m_texCoordLoc >= 0);
 
+    SAFE_GL(glGenBuffers(1, &m_batchVbo));
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
+    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(Model::Vertex) * 4 * MAX_QUADS, NULL, GL_DYNAMIC_DRAW));
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
     printf("[display] init OK\n");
   }
 
@@ -509,6 +516,9 @@ struct OpenglDisplay : Display
     auto shrink = scale(0.125 * Vector2f(1, 1));
     mat = shrink * mat;
 
+    Quad q;
+    q.texture = action.textures[idx];
+
     // Don't call opengl if the object isn't visible.
     // Huge FPS boost.
     if(1)
@@ -537,36 +547,29 @@ struct OpenglDisplay : Display
 
       if(y0 > +MAX && y1 > +MAX)
         return;
+
+      q.pos1 = { x0, y0 };
+      q.pos2 = { x1, y1 };
     }
 
-    setOpenglMatrix4f(m_MVP, mat);
-
-    // Bind our diffuse texture in Texture Unit 0
-    SAFE_GL(glActiveTexture(GL_TEXTURE0));
-    SAFE_GL(glBindTexture(GL_TEXTURE_2D, action.textures[idx]));
     // lighting
     {
-      float c = m_ambientLight;
-      SAFE_GL(glUniform4f(m_colorId, c, c, c, 0));
+      q.light[0] = m_ambientLight;
+      q.light[1] = m_ambientLight;
+      q.light[2] = m_ambientLight;
 
       if(blinking)
       {
         if((m_frameCount / 4) % 2)
-          SAFE_GL(glUniform4f(m_colorId, 0.8, 0.4, 0.4, 0));
+        {
+          q.light[0] = 0.8;
+          q.light[1] = 0.4;
+          q.light[2] = 0.4;
+        }
       }
     }
 
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, model.buffer));
-
-#define OFFSET(a) \
-  ((GLvoid*)(&((Model::Vertex*)nullptr)->a))
-
-    SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
-    SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
-
-#undef OFFSET
-
-    SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, model.vertices.size()));
+    m_quads.push_back(q);
   }
 
   void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio) override
@@ -612,11 +615,51 @@ struct OpenglDisplay : Display
 
     SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
     SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
+
+    m_quads.clear();
   }
 
   void endDraw() override
   {
+#define OFFSET(a) \
+  ((GLvoid*)(&((Model::Vertex*)nullptr)->a))
+
+    setOpenglMatrix4f(m_MVP, scale({ 1, 1 }));
+
+    for(auto const& q : m_quads)
+    {
+      SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
+
+      m_batchVboData.clear();
+      m_batchVboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
+      m_batchVboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
+      m_batchVboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
+      m_batchVboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
+
+      if(m_batchVboData.size() > MAX_QUADS)
+        m_batchVboData.resize(MAX_QUADS);
+
+      SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * m_batchVboData.size(), m_batchVboData.data()));
+
+      SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
+      SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
+
+      SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
+      SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
+
+      SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
+
+      // Bind our diffuse texture in Texture Unit 0
+      SAFE_GL(glActiveTexture(GL_TEXTURE0));
+      SAFE_GL(glBindTexture(GL_TEXTURE_2D, q.texture));
+      SAFE_GL(glDrawArrays(GL_QUADS, 0, m_batchVboData.size()));
+    }
+
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    SAFE_GL(glBindTexture(GL_TEXTURE_2D, 0));
+
     SDL_GL_SwapWindow(m_window);
+#undef OFFSET
   }
 
   // end-of public API
@@ -631,6 +674,17 @@ struct OpenglDisplay : Display
   GLint m_colorId;
   GLint m_positionLoc;
   GLint m_texCoordLoc;
+
+  struct Quad
+  {
+    float light[3] {};
+    GLuint texture;
+    Vector2f pos1, pos2;
+  };
+
+  vector<Quad> m_quads;
+  vector<Model::Vertex> m_batchVboData;
+  GLuint m_batchVbo;
 
   GLuint m_programId;
   vector<Model> m_Models;
