@@ -487,16 +487,16 @@ struct OpenglDisplay : Display
     {
       auto const MAX = 1.0;
 
-      if(q.pos1.x < -MAX && q.pos2.x < -MAX)
+      if(max(q.pos1.x, q.pos2.x) < -MAX)
         return;
 
-      if(q.pos1.x > +MAX && q.pos2.x > +MAX)
+      if(min(q.pos1.x, q.pos2.x) > +MAX)
         return;
 
-      if(q.pos1.y < -MAX && q.pos2.y < -MAX)
+      if(max(q.pos1.y, q.pos2.y) < -MAX)
         return;
 
-      if(q.pos1.y > +MAX && q.pos2.y > +MAX)
+      if(min(q.pos1.y, q.pos2.y) > +MAX)
         return;
     }
 
