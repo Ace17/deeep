@@ -599,7 +599,7 @@ struct OpenglDisplay : Display
           return;
 
         SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
-        SAFE_GL(glDrawArrays(GL_QUADS, 0, vboData.size()));
+        SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, vboData.size()));
         vboData.clear();
         ++drawCalls;
       };
@@ -608,7 +608,7 @@ struct OpenglDisplay : Display
 
     for(auto const& q : m_quads)
     {
-      if(vboData.size() * 4 >= MAX_VERTICES)
+      if(vboData.size() * 6 >= MAX_VERTICES)
         flush();
 
       if(q.texture != currTexture)
@@ -621,6 +621,9 @@ struct OpenglDisplay : Display
 
       vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
       vboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
+      vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
+
+      vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
       vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
       vboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
 
