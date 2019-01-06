@@ -519,37 +519,34 @@ struct OpenglDisplay : Display
     Quad q;
     q.texture = action.textures[idx];
 
+    auto const m0x = 0;
+    auto const m0y = 0;
+    auto const m1x = 1;
+    auto const m1y = 1;
+
+    q.pos1.x = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
+    q.pos1.y = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
+
+    q.pos2.x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
+    q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
+
     // Don't call opengl if the object isn't visible.
     // Huge FPS boost.
     if(1)
     {
-      auto m0x = 0;
-      auto m0y = 0;
-      auto m1x = 1;
-      auto m1y = 1;
-
-      auto x0 = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
-      auto y0 = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
-
-      auto x1 = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
-      auto y1 = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
-
       auto const MAX = 1.0;
 
-      if(x0 < -MAX && x1 < -MAX)
+      if(q.pos1.x < -MAX && q.pos2.x < -MAX)
         return;
 
-      if(x0 > +MAX && x1 > +MAX)
+      if(q.pos1.x > +MAX && q.pos2.x > +MAX)
         return;
 
-      if(y0 < -MAX && y1 < -MAX)
+      if(q.pos1.y < -MAX && q.pos2.y < -MAX)
         return;
 
-      if(y0 > +MAX && y1 > +MAX)
+      if(q.pos1.y > +MAX && q.pos2.y > +MAX)
         return;
-
-      q.pos1 = { x0, y0 };
-      q.pos2 = { x1, y1 };
     }
 
     // lighting
