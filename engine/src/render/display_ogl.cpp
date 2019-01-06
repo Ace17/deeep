@@ -432,7 +432,7 @@ struct OpenglDisplay : Display
     m_ambientLight = ambientLight;
   }
 
-  void drawModel(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
+  void pushQuad(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
   {
     if(model.actions.empty())
       throw runtime_error("model has no actions");
@@ -524,7 +524,7 @@ struct OpenglDisplay : Display
   {
     auto& model = m_Models.at(modelId);
     auto cam = useWorldRefFrame ? m_camera : Camera();
-    drawModel(where, cam, model, blinking, actionIdx, ratio, zOrder);
+    pushQuad(where, cam, model, blinking, actionIdx, ratio, zOrder);
   }
 
   void drawText(Vector2f pos, char const* text) override
@@ -539,7 +539,7 @@ struct OpenglDisplay : Display
 
     while(*text)
     {
-      drawModel(rect, cam, m_fontModel, false, *text, 0, 100);
+      pushQuad(rect, cam, m_fontModel, false, *text, 0, 100);
       rect.pos.x += rect.size.width;
       ++text;
     }
