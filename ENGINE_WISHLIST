@@ -1,0 +1,27 @@
+An item can be in this list, if and only if it has actually missed me in practice
+at least on one occasion. Every item must have a 'why', and must not be speculation.
+
+Performance monitoring
+----------------------
+
+- _What_: FPS (sensitive to monitor refresh rate)
+  _Why_: performance monitoring in the browser
+
+- _What_: Render time
+  _Why_: accurate performance tuning in the browser and comparison with native
+
+- _What_: Draw calls count
+  _Why_: performance comparison and tuning when batching draw calls
+
+Audio
+-----
+
+- _What_: Looping sounds (but how to avoid statefullness from the game point of view?)
+
+  _Why_: the metroid-map-like periodic bleeping sound for oxygen refill in Monoid Unrest.
+  At the moment, must be emulated in game code, leading to a slightly (but audible) irregular period,
+  and requiring the game code to know the period time value.
+
+- _What_: Positionnal audio
+  _Why_: for the heaters in pyyrolysis. It's unrealistic to have the full volume if the sound is emitted by a far away object.
+
