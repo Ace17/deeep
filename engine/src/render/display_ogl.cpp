@@ -535,11 +535,9 @@ struct OpenglDisplay : Display
     rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
     rect.pos.y = pos.y;
 
-    auto cam = Camera();
-
     while(*text)
     {
-      pushQuad(rect, cam, m_fontModel, false, *text, 0, 100);
+      pushQuad(rect, {}, m_fontModel, false, *text, 0, 100);
       rect.pos.x += rect.size.width;
       ++text;
     }
