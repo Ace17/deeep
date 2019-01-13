@@ -425,7 +425,7 @@ struct OpenglDisplay : Display
         if(vboData.empty())
           return;
 
-        SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * vboData.size(), vboData.data()));
+        SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vboData[0]) * vboData.size(), vboData.data()));
         SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, vboData.size()));
         vboData.clear();
         ++drawCalls;
