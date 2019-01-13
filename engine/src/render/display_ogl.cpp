@@ -386,6 +386,17 @@ struct OpenglDisplay : Display
     printf("[display] shutdown OK\n");
   }
 
+  void setFullscreen(bool fs) override
+  {
+    auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+    SDL_SetWindowFullscreen(m_window, flags);
+  }
+
+  void setCaption(const char* caption) override
+  {
+    SDL_SetWindowTitle(m_window, caption);
+  }
+
   void loadModel(int id, const char* path) override
   {
     if((int)m_Models.size() <= id)
@@ -416,131 +427,9 @@ struct OpenglDisplay : Display
     m_camera.angle = cam.angle;
   }
 
-  void setFullscreen(bool fs) override
-  {
-    auto flags = fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
-    SDL_SetWindowFullscreen(m_window, flags);
-  }
-
-  void setCaption(const char* caption) override
-  {
-    SDL_SetWindowTitle(m_window, caption);
-  }
-
   void setAmbientLight(float ambientLight) override
   {
     m_ambientLight = ambientLight;
-  }
-
-  void pushQuad(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
-  {
-    if(model.actions.empty())
-      throw runtime_error("model has no actions");
-
-    if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
-      throw runtime_error("invalid action index");
-
-    auto const& action = model.actions[actionIdx];
-
-    if(action.textures.empty())
-      throw runtime_error("action has no textures");
-
-    auto const N = (int)action.textures.size();
-    auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
-
-    if(where.size.width < 0)
-      where.pos.x -= where.size.width;
-
-    if(where.size.height < 0)
-      where.pos.y -= where.size.height;
-
-    auto const relPos = where.pos - cam.pos;
-
-    auto const sx = where.size.width;
-    auto const sy = where.size.height;
-
-    auto mat = scale(Vector2f(sx, sy));
-    mat = translate(relPos) * mat;
-    mat = rotate(cam.angle) * mat;
-
-    auto shrink = scale(0.125 * Vector2f(1, 1));
-    mat = shrink * mat;
-
-    Quad q;
-    q.zOrder = zOrder;
-    q.texture = action.textures[idx];
-
-    auto const m0x = 0;
-    auto const m0y = 0;
-    auto const m1x = 1;
-    auto const m1y = 1;
-
-    q.pos1.x = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
-    q.pos1.y = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
-
-    q.pos2.x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
-    q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
-
-    // Don't call opengl if the object isn't visible.
-    // Notable FPS boost.
-    if(1)
-    {
-      auto const MAX = 1.0;
-
-      if(max(q.pos1.x, q.pos2.x) < -MAX)
-        return;
-
-      if(min(q.pos1.x, q.pos2.x) > +MAX)
-        return;
-
-      if(max(q.pos1.y, q.pos2.y) < -MAX)
-        return;
-
-      if(min(q.pos1.y, q.pos2.y) > +MAX)
-        return;
-    }
-
-    // lighting
-    {
-      q.light[0] = m_ambientLight;
-      q.light[1] = m_ambientLight;
-      q.light[2] = m_ambientLight;
-
-      if(blinking)
-      {
-        if((m_frameCount / 4) % 2)
-        {
-          q.light[0] = 0.8;
-          q.light[1] = 0.4;
-          q.light[2] = 0.4;
-        }
-      }
-    }
-
-    m_quads.push_back(q);
-  }
-
-  void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
-  {
-    auto& model = m_Models.at(modelId);
-    auto cam = useWorldRefFrame ? m_camera : Camera();
-    pushQuad(where, cam, model, blinking, actionIdx, ratio, zOrder);
-  }
-
-  void drawText(Vector2f pos, char const* text) override
-  {
-    Rect2f rect;
-    rect.size.width = 0.5;
-    rect.size.height = 0.5;
-    rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
-    rect.pos.y = pos.y;
-
-    while(*text)
-    {
-      pushQuad(rect, {}, m_fontModel, false, *text, 0, 100);
-      rect.pos.x += rect.size.width;
-      ++text;
-    }
   }
 
   void beginDraw() override
@@ -640,7 +529,117 @@ struct OpenglDisplay : Display
 #undef OFFSET
   }
 
-  // end-of public API
+  void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
+  {
+    auto& model = m_Models.at(modelId);
+    auto cam = useWorldRefFrame ? m_camera : Camera();
+    pushQuad(where, cam, model, blinking, actionIdx, ratio, zOrder);
+  }
+
+  void drawText(Vector2f pos, char const* text) override
+  {
+    Rect2f rect;
+    rect.size.width = 0.5;
+    rect.size.height = 0.5;
+    rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
+    rect.pos.y = pos.y;
+
+    while(*text)
+    {
+      pushQuad(rect, {}, m_fontModel, false, *text, 0, 100);
+      rect.pos.x += rect.size.width;
+      ++text;
+    }
+  }
+
+private:
+  void pushQuad(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
+  {
+    if(model.actions.empty())
+      throw runtime_error("model has no actions");
+
+    if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
+      throw runtime_error("invalid action index");
+
+    auto const& action = model.actions[actionIdx];
+
+    if(action.textures.empty())
+      throw runtime_error("action has no textures");
+
+    auto const N = (int)action.textures.size();
+    auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
+
+    if(where.size.width < 0)
+      where.pos.x -= where.size.width;
+
+    if(where.size.height < 0)
+      where.pos.y -= where.size.height;
+
+    auto const relPos = where.pos - cam.pos;
+
+    auto const sx = where.size.width;
+    auto const sy = where.size.height;
+
+    auto mat = scale(Vector2f(sx, sy));
+    mat = translate(relPos) * mat;
+    mat = rotate(cam.angle) * mat;
+
+    auto shrink = scale(0.125 * Vector2f(1, 1));
+    mat = shrink * mat;
+
+    Quad q;
+    q.zOrder = zOrder;
+    q.texture = action.textures[idx];
+
+    auto const m0x = 0;
+    auto const m0y = 0;
+    auto const m1x = 1;
+    auto const m1y = 1;
+
+    q.pos1.x = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
+    q.pos1.y = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
+
+    q.pos2.x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
+    q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
+
+    // Don't call opengl if the object isn't visible.
+    // Notable FPS boost.
+    if(1)
+    {
+      auto const MAX = 1.0;
+
+      if(max(q.pos1.x, q.pos2.x) < -MAX)
+        return;
+
+      if(min(q.pos1.x, q.pos2.x) > +MAX)
+        return;
+
+      if(max(q.pos1.y, q.pos2.y) < -MAX)
+        return;
+
+      if(min(q.pos1.y, q.pos2.y) > +MAX)
+        return;
+    }
+
+    // lighting
+    {
+      q.light[0] = m_ambientLight;
+      q.light[1] = m_ambientLight;
+      q.light[2] = m_ambientLight;
+
+      if(blinking)
+      {
+        if((m_frameCount / 4) % 2)
+        {
+          q.light[0] = 0.8;
+          q.light[1] = 0.4;
+          q.light[2] = 0.4;
+        }
+      }
+    }
+
+    m_quads.push_back(q);
+  }
 
   SDL_Window* m_window;
   SDL_GLContext m_context;
