@@ -14,7 +14,6 @@
 #include <memory>
 #include <vector>
 #include <stdexcept>
-#include <string>
 #include <SDL.h>
 
 #include "base/util.h"
@@ -83,16 +82,14 @@ struct SdlAudioBackend : IAudioBackend
     channel->play(sound);
   }
 
-  void playMusic(const char* path) override
+  void playMusic(Sound* nextMusic) override
   {
-    auto nextMusic = loadSoundFile(path);
-
     SDL_LockAudioDevice(audioDevice);
 
     if(!m_channels[0].isDead())
       m_channels[0].fadeOut();
 
-    m_nextMusic = move(nextMusic);
+    m_nextMusic.reset(nextMusic);
     SDL_UnlockAudioDevice(audioDevice);
   }
 

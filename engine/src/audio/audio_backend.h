@@ -13,7 +13,7 @@ struct IAudioBackend
   virtual ~IAudioBackend() = default;
 
   virtual void playSound(Sound* sound) = 0;
-  virtual void playMusic(const char* path) = 0;
+  virtual void playMusic(Sound* music) = 0; // takes ownership!
   virtual void stopMusic() = 0;
 };
 
