@@ -387,7 +387,7 @@ struct GameState : Scene, private IGame
     auto box = entity->getFBox();
     auto r = Actor { box.pos, MDL_RECT };
     r.scale = box.size;
-    r.zOrder = 1;
+    r.zOrder = 10;
     return r;
   }
 };
