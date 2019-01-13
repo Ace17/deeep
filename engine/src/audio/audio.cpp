@@ -13,10 +13,38 @@
 
 #include <cstdio> // printf
 #include <cstring> // strcpy
+#include <cmath> // sin
 #include <vector>
 #include <memory>
 
 using namespace std;
+
+struct BleepSound : Sound
+{
+  unique_ptr<IAudioSource> createSource()
+  {
+    struct BleepSoundSource : IAudioSource
+    {
+      virtual int read(Span<float> output)
+      {
+        auto const MAX = 1000;
+        auto const N = min(output.len, MAX - sampleCount);
+
+        for(int i = 0; i < N; ++i)
+        {
+          output[i] = sin(440.0 * sampleCount * 3.1415 * 2.0) * 0.2;
+          ++sampleCount;
+        }
+
+        return N;
+      }
+
+      int sampleCount = 0;
+    };
+
+    return make_unique<BleepSoundSource>();
+  }
+};
 
 struct HighLevelAudio : Audio
 {
@@ -26,13 +54,15 @@ struct HighLevelAudio : Audio
 
   void loadSound(int id, const char* path) override
   {
+    sounds.resize(max(id + 1, (int)sounds.size()));
+
     if(!exists(path))
     {
       printf("[audio] sound '%s' was not found, fallback on default sound\n", path);
-      path = "res/sounds/default.ogg";
+      sounds[id] = make_unique<BleepSound>();
+      return;
     }
 
-    sounds.resize(max(id + 1, (int)sounds.size()));
     sounds[id] = loadSoundFile(path);
   }
 
