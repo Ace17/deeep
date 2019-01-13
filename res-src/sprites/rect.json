@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "rect.png",
-  "width" : 32,
-  "height" : 32,
+  "rows" : 1,
+  "cols" : 8,
   "actions": [
     {
       "name": "default",

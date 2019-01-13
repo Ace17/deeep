@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "wheel.png",
-  "width" : 48,
-  "height" : 48,
+  "rows" : 1,
+  "cols" : 9,
   "actions": [
     {
       "name": "roll",

@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "spider.png",
-  "width" : 32,
-  "height" : 32,
+  "rows" : 1,
+  "cols" : 2,
   "actions": [
     { "name": "", "frames": [ 0, 1 ] }
   ]

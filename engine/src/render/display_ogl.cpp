@@ -152,17 +152,23 @@ Picture* getPicture(string path)
 }
 
 // exported to Model
-int loadTexture(const char* path, Rect2i rect)
+int loadTexture(const char* path, Rect2f frect)
 {
   auto surface = getPicture(path);
 
-  if(rect.size.width == 0 && rect.size.height == 0)
-    rect = Rect2i(0, 0, surface->width, surface->height);
+  if(frect.size.width == 0 && frect.size.height == 0)
+    frect = Rect2f(0, 0, 1, 1);
 
-  if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->width || rect.pos.y + rect.size.height > surface->height)
+  if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.width > 1 || frect.pos.y + frect.size.height > 1)
     throw runtime_error("Invalid boundaries for '" + string(path) + "'");
 
   auto const bpp = 4;
+
+  Rect2i rect;
+  rect.pos.x = frect.pos.x * surface->width;
+  rect.pos.y = frect.pos.y * surface->height;
+  rect.size.width = frect.size.width * surface->width;
+  rect.size.height = frect.size.height * surface->height;
 
   vector<uint8_t> img(rect.size.width* rect.size.height* bpp);
 

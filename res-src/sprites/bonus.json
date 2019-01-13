@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "bonus.png",
-  "width" : 32,
-  "height" : 32,
+  "rows" : 8,
+  "cols" : 16,
   "actions": [
     {
       "name": "default",

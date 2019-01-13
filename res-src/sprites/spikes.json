@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "spikes.png",
-  "width" : 32,
-  "height" : 32,
+  "rows" : 1,
+  "cols" : 4,
   "actions": [
     {
       "name": "default",

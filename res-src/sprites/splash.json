@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "splash.png",
-  "width" : 768,
-  "height" : 768,
+  "rows" : 1,
+  "cols" : 1,
   "actions": [
     {
       "name": "default",

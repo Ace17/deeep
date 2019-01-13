@@ -10,16 +10,16 @@
 #include "misc/json.h"
 #include "misc/file.h"
 
-extern int loadTexture(const char* path, Rect2i rect);
+extern int loadTexture(const char* path, Rect2f rect);
 
 static
-void addTexture(Action& action, const char* path, Rect2i rect)
+void addTexture(Action& action, const char* path, Rect2f rect)
 {
   action.textures.push_back(loadTexture(path, rect));
 }
 
 static
-Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
+Action loadSheetAction(json::Value* val, string sheetPath, int ROWS, int COLS)
 {
   Action r;
 
@@ -31,9 +31,14 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
   {
     auto const idx = (json::cast<json::Number>(frame.get()))->value;
 
-    auto const col = idx % 16;
-    auto const row = idx / 16;
-    addTexture(r, sheetPath.c_str(), Rect2i(col * cell.width, row * cell.height, cell.width, cell.height));
+    auto const col = idx % COLS;
+    auto const row = idx / COLS;
+    Rect2f rect;
+    rect.pos.x = col / float(COLS);
+    rect.pos.y = row / float(ROWS);
+    rect.size.width = 1.0 / float(COLS);
+    rect.size.height = 1.0 / float(ROWS);
+    addTexture(r, sheetPath.c_str(), rect);
   }
 
   return r;
@@ -49,33 +54,29 @@ Model loadAnimatedModel(const char* jsonPath)
 
   auto type = obj->getMember<json::String>("type")->value;
   auto sheet = obj->getMember<json::String>("sheet")->value;
+  auto const cols = obj->getMember<json::Number>("cols")->value;
+  auto const rows = obj->getMember<json::Number>("rows")->value;
 
   if(type == "sheet")
   {
     auto actions = obj->getMember<json::Array>("actions");
-    auto width = obj->getMember<json::Number>("width")->value;
-    auto height = obj->getMember<json::Number>("height")->value;
-
-    auto cell = Size2i(width, height);
 
     for(auto& action : actions->elements)
-      r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, cell));
+      r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, rows, cols));
   }
   else if(type == "tiled")
   {
-    auto const cols = obj->getMember<json::Number>("cols")->value;
-    auto const rows = obj->getMember<json::Number>("rows")->value;
-    auto const sheet_width = obj->getMember<json::Number>("sheet_width")->value;
-    auto const sheet_height = obj->getMember<json::Number>("sheet_height")->value;
-
     for(int row = 0; row < rows; ++row)
     {
       for(int col = 0; col < rows; ++col)
       {
         Action action;
-        auto WIDTH = sheet_width / cols;
-        auto HEIGHT = sheet_height / rows;
-        addTexture(action, (dir + "/" + sheet).c_str(), Rect2i(col * WIDTH, row * HEIGHT, WIDTH, HEIGHT));
+        Rect2f rect;
+        rect.pos.x = col / float(cols);
+        rect.pos.y = row / float(rows);
+        rect.size.width = 1.0 / float(cols);
+        rect.size.height = 1.0 / float(rows);
+        addTexture(action, (dir + "/" + sheet).c_str(), rect);
         r.actions.push_back(action);
       }
     }
@@ -87,7 +88,7 @@ Model loadAnimatedModel(const char* jsonPath)
 }
 
 static
-Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
+Model loadTiledModel(const char* path, int count, int COLS, int ROWS)
 {
   auto m = Model();
 
@@ -96,8 +97,11 @@ Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
     auto col = i % COLS;
     auto row = i / COLS;
 
+    auto const width = 1.0 / float(COLS);
+    auto const height = 1.0 / float(ROWS);
+
     Action action;
-    addTexture(action, path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
+    addTexture(action, path, Rect2f(col * width, row * height, width, height));
     m.actions.push_back(action);
   }
 
@@ -106,31 +110,38 @@ Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
 
 Model loadModel(const char* path)
 {
-  if(endsWith(path, ".model"))
+  try
   {
-    if(!exists(path))
+    if(endsWith(path, ".model"))
     {
-      printf("[display] model '%s' doesn't exist, fallback on default model\n", path);
-      path = "res/sprites/rect.model";
+      if(!exists(path))
+      {
+        printf("[display] model '%s' doesn't exist, fallback on default model\n", path);
+        path = "res/sprites/rect.model";
+      }
+
+      return loadAnimatedModel(path);
     }
-
-    return loadAnimatedModel(path);
-  }
-  else if(endsWith(path, ".tiles"))
-  {
-    auto pngPath = setExtension(path, "png");
-
-    if(!exists(pngPath))
+    else if(endsWith(path, ".tiles"))
     {
-      printf("[display] tileset '%s' was not found, fallback on default tileset\n", pngPath.c_str());
-      pngPath = "res/tiles/default.png";
-    }
+      auto pngPath = setExtension(path, "png");
 
-    return loadTiledModel(pngPath.c_str(), 64 * 2, 8, 16);
+      if(!exists(pngPath))
+      {
+        printf("[display] tileset '%s' was not found, fallback on default tileset\n", pngPath.c_str());
+        pngPath = "res/tiles/default.png";
+      }
+
+      return loadTiledModel(pngPath.c_str(), 64 * 2, 8, 16);
+    }
+    else
+    {
+      throw runtime_error("unknown format for '" + string(path) + "'");
+    }
   }
-  else
+  catch(std::exception const& e)
   {
-    throw runtime_error("unknown format for '" + string(path) + "'");
+    throw runtime_error("When loading '" + string(path) + "': " + e.what());
   }
 }
 

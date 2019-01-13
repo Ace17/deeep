@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "rockman.png",
-  "width" : 48,
-  "height" : 48,
+  "rows" : 8,
+  "cols" : 16,
   "actions": [
     {
       "name": "victory",

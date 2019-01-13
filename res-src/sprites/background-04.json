@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "background-04.png",
-  "width" : 512,
-  "height" : 512,
+  "rows" : 1,
+  "cols" : 1,
   "actions": [
     {
       "name": "default",

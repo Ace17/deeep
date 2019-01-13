@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "bullet.png",
-  "width" : 32,
-  "height" : 32,
+  "rows" : 2,
+  "cols" : 4,
   "actions": [
     {
       "name": "default",

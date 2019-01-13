@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "block.png",
-  "width" : 32,
-  "height" : 32,
+  "rows" : 8,
+  "cols" : 8,
   "actions": [
     {
       "name": "hollow",
@@ -10,15 +10,15 @@
     },
     {
       "name": "crumble",
-      "frames": [ 16 ]
+      "frames": [ 8 ]
     },
     {
       "name": "crumble",
-      "frames": [ 17, 18, 19, 19, 18, 17 ]
+      "frames": [ 9, 10, 11, 11, 10, 9 ]
     },
     {
       "name": "fragile",
-      "frames": [ 32 ]
+      "frames": [ 16 ]
     }
   ]
 }

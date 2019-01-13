@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "elevator.png",
-  "width" : 32,
-  "height" : 16,
+  "rows" : 2,
+  "cols" : 2,
   "actions": [
     {
       "name": "off",
@@ -10,7 +10,7 @@
     },
     {
       "name": "on",
-      "frames": [ 16, 17 ]
+      "frames": [ 2, 3 ]
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "type" : "sheet",
   "sheet" : "lifebar.png",
-  "width" : 16,
-  "height" : 80,
+  "rows" : 3,
+  "cols" : 16,
   "actions": [
     {
       "name": "player",
