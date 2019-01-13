@@ -10,7 +10,7 @@
 #include "misc/json.h"
 #include "misc/file.h"
 
-extern int loadTexture(string path, Rect2i rect = Rect2i(0, 0, 0, 0));
+extern int loadTexture(string path, Rect2i rect);
 
 static
 Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
