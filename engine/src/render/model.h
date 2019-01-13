@@ -20,7 +20,5 @@ struct Model
 };
 
 Model loadModel(const char* jsonPath);
-
-#include "base/geom.h"
-void addTexture(Action& action, const char* path, Rect2i rect = Rect2i(0, 0, 0, 0));
+Model loadTiledModel(const char* path, int count, int COLS, int SIZE);
 

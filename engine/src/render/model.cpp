@@ -13,6 +13,12 @@
 extern int loadTexture(const char* path, Rect2i rect);
 
 static
+void addTexture(Action& action, const char* path, Rect2i rect)
+{
+  action.textures.push_back(loadTexture(path, rect));
+}
+
+static
 Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 {
   Action r;
@@ -58,8 +64,20 @@ Model loadModel(const char* jsonPath)
   return r;
 }
 
-void addTexture(Action& action, const char* path, Rect2i rect)
+Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
 {
-  action.textures.push_back(loadTexture(path, rect));
+  auto m = Model();
+
+  for(int i = 0; i < count; ++i)
+  {
+    auto col = i % COLS;
+    auto row = i / COLS;
+
+    Action action;
+    addTexture(action, path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
+    m.actions.push_back(action);
+  }
+
+  return m;
 }
 

@@ -218,24 +218,6 @@ struct Camera
 };
 
 static
-Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
-{
-  auto m = Model();
-
-  for(int i = 0; i < count; ++i)
-  {
-    auto col = i % COLS;
-    auto row = i / COLS;
-
-    Action action;
-    addTexture(action, path, Rect2i(col * SIZE, row * SIZE, SIZE, SIZE));
-    m.actions.push_back(action);
-  }
-
-  return m;
-}
-
-static
 Model loadAnimation(string path)
 {
   if(endsWith(path, ".model"))
