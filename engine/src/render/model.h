@@ -20,13 +20,6 @@ struct Action
 
 struct Model
 {
-  // mesh data
-  struct Vertex
-  {
-    float x, y, u, v;
-  };
-
-  vector<Vertex> vertices;
   vector<Action> actions;
 };
 

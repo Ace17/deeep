@@ -211,25 +211,6 @@ GLuint loadShaders()
   return progId;
 }
 
-static
-Model boxModel()
-{
-  const float w = 1;
-  const float h = 1;
-
-  Model model;
-
-  model.vertices.push_back({ 0, h, /* uv */ 0, 1 });
-  model.vertices.push_back({ 0, 0, /* uv */ 0, 0 });
-  model.vertices.push_back({ w, 0, /* uv */ 1, 0 });
-
-  model.vertices.push_back({ w, 0, /* uv */ 1, 0 });
-  model.vertices.push_back({ w, h, /* uv */ 1, 1 });
-  model.vertices.push_back({ 0, h, /* uv */ 0, 1 });
-
-  return model;
-}
-
 struct Camera
 {
   Vector2f pos = Vector2f(0, 0);
@@ -239,7 +220,7 @@ struct Camera
 static
 Model loadTiledModel(string path, int count, int COLS, int SIZE)
 {
-  auto m = boxModel();
+  auto m = Model();
 
   for(int i = 0; i < count; ++i)
   {
@@ -259,7 +240,7 @@ Model loadAnimation(string path)
 {
   if(endsWith(path, ".model"))
   {
-    auto m = boxModel();
+    auto m = Model();
 
     if(!exists(path))
     {
@@ -303,6 +284,12 @@ void printOpenGlVersion()
   printf("[display] OpenGL version: %s\n", notNull(sVersion));
   printf("[display] OpenGL shading version: %s\n", notNull(sLangVersion));
 }
+
+// VBO format
+struct Vertex
+{
+  float x, y, u, v;
+};
 
 template<typename T>
 T blend(T a, T b, float alpha)
@@ -371,7 +358,7 @@ struct OpenglDisplay : Display
 
     SAFE_GL(glGenBuffers(1, &m_batchVbo));
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
-    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(Model::Vertex) * MAX_VERTICES, NULL, GL_DYNAMIC_DRAW));
+    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * MAX_VERTICES, NULL, GL_DYNAMIC_DRAW));
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
     printf("[display] init OK\n");
@@ -463,9 +450,9 @@ struct OpenglDisplay : Display
     std::sort(m_quads.begin(), m_quads.end(), byPriority);
 
 #define OFFSET(a) \
-  ((GLvoid*)(&((Model::Vertex*)nullptr)->a))
+  ((GLvoid*)(&((Vertex*)nullptr)->a))
 
-    vector<Model::Vertex> vboData;
+    vector<Vertex> vboData;
 
     // Bind our diffuse texture in Texture Unit 0
     SAFE_GL(glActiveTexture(GL_TEXTURE0));
