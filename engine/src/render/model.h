@@ -20,5 +20,5 @@ struct Model
 };
 
 Model loadTiledModel(const char* path, int count, int COLS, int SIZE);
-Model loadAnimation(const char* path);
+Model loadModel(const char* path);
 

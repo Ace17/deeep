@@ -336,7 +336,7 @@ struct OpenglDisplay : Display
     if((int)m_Models.size() <= id)
       m_Models.resize(id + 1);
 
-    m_Models[id] = loadAnimation(path);
+    m_Models[id] = ::loadModel(path);
   }
 
   void setCamera(Vector2f pos) override

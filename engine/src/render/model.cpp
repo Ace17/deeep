@@ -82,7 +82,7 @@ Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
   return m;
 }
 
-Model loadAnimation(const char* path)
+Model loadModel(const char* path)
 {
   if(endsWith(path, ".model"))
   {
