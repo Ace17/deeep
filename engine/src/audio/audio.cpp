@@ -88,12 +88,12 @@ struct HighLevelAudio : Audio
 
     currMusic = id;
 
-    m_backend->playMusic(loadSoundFile(path).release());
+    m_backend->playLoopOnChannelZero(loadSoundFile(path).release());
   }
 
   void stopMusic() override
   {
-    m_backend->stopMusic();
+    m_backend->stopLoopOnChannelZero();
   }
 
   int currMusic = -1;

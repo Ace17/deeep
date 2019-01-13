@@ -13,7 +13,9 @@ struct IAudioBackend
   virtual ~IAudioBackend() = default;
 
   virtual void playSound(Sound* sound) = 0;
-  virtual void playMusic(Sound* music) = 0; // takes ownership!
-  virtual void stopMusic() = 0;
+
+  // takes ownership of 'sound'!
+  virtual void playLoopOnChannelZero(Sound* sound) = 0;
+  virtual void stopLoopOnChannelZero() = 0;
 };
 

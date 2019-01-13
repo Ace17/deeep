@@ -82,18 +82,18 @@ struct SdlAudioBackend : IAudioBackend
     channel->play(sound);
   }
 
-  void playMusic(Sound* nextMusic) override
+  void playLoopOnChannelZero(Sound* sound) override
   {
     SDL_LockAudioDevice(audioDevice);
 
     if(!m_channels[0].isDead())
       m_channels[0].fadeOut();
 
-    m_nextMusic.reset(nextMusic);
+    m_nextMusic.reset(sound);
     SDL_UnlockAudioDevice(audioDevice);
   }
 
-  void stopMusic() override
+  void stopLoopOnChannelZero() override
   {
     SDL_LockAudioDevice(audioDevice);
     m_channels[0].fadeOut();
