@@ -256,7 +256,7 @@ private:
   int m_running = 1;
 
   int m_lastTime;
-  int m_lastFps = 0;
+  int m_lastFps = -1;
   RateCounter m_fps;
   Control m_control {};
   vector<string> m_args;

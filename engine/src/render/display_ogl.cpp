@@ -329,7 +329,7 @@ struct OpenglDisplay : Display
     }
 
     m_window = SDL_CreateWindow(
-        "My Game",
+        "",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         resolution.width, resolution.height,
         SDL_WINDOW_OPENGL
