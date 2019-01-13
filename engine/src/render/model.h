@@ -19,6 +19,6 @@ struct Model
   vector<Action> actions;
 };
 
-Model loadModel(const char* jsonPath);
 Model loadTiledModel(const char* path, int count, int COLS, int SIZE);
+Model loadAnimation(const char* path);
 

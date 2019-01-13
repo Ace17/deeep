@@ -218,41 +218,6 @@ struct Camera
 };
 
 static
-Model loadAnimation(string path)
-{
-  if(endsWith(path, ".model"))
-  {
-    auto m = Model();
-
-    if(!exists(path))
-    {
-      printf("[display] model '%s' doesn't exist, fallback on default model\n", path.c_str());
-      path = "res/sprites/rect.model";
-    }
-
-    auto m2 = loadModel(path.c_str());
-    m.actions = move(m2.actions);
-    return m;
-  }
-  else if(endsWith(path, ".tiles"))
-  {
-    path = setExtension(path, "png");
-
-    if(!exists(path))
-    {
-      printf("[display] tileset '%s' was not found, fallback on default tileset\n", path.c_str());
-      path = "res/tiles/default.png";
-    }
-
-    return loadTiledModel(path.c_str(), 64 * 2, 8, 16);
-  }
-  else
-  {
-    throw runtime_error("unknown format for '" + path + "'");
-  }
-}
-
-static
 void printOpenGlVersion()
 {
   auto sVersion = (char const*)glGetString(GL_VERSION);

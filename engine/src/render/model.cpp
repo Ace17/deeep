@@ -39,6 +39,7 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
   return r;
 }
 
+static
 Model loadModel(const char* jsonPath)
 {
   auto data = read(jsonPath);
@@ -79,5 +80,35 @@ Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
   }
 
   return m;
+}
+
+Model loadAnimation(const char* path)
+{
+  if(endsWith(path, ".model"))
+  {
+    if(!exists(path))
+    {
+      printf("[display] model '%s' doesn't exist, fallback on default model\n", path);
+      path = "res/sprites/rect.model";
+    }
+
+    return loadModel(path);
+  }
+  else if(endsWith(path, ".tiles"))
+  {
+    auto pngPath = setExtension(path, "png");
+
+    if(!exists(pngPath))
+    {
+      printf("[display] tileset '%s' was not found, fallback on default tileset\n", pngPath.c_str());
+      pngPath = "res/tiles/default.png";
+    }
+
+    return loadTiledModel(pngPath.c_str(), 64 * 2, 8, 16);
+  }
+  else
+  {
+    throw runtime_error("unknown format for '" + string(path) + "'");
+  }
 }
 
