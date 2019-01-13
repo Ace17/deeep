@@ -71,7 +71,9 @@ struct SdlAudioBackend : IAudioBackend
 
   void playSound(Sound* sound) override
   {
+    SDL_LockAudioDevice(audioDevice);
     auto channel = allocChannel();
+    SDL_UnlockAudioDevice(audioDevice);
 
     if(!channel)
     {
