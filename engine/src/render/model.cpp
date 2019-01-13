@@ -40,7 +40,7 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 }
 
 static
-Model loadModel(const char* jsonPath)
+Model loadAnimatedModel(const char* jsonPath)
 {
   auto data = read(jsonPath);
   Model r;
@@ -92,7 +92,7 @@ Model loadAnimation(const char* path)
       path = "res/sprites/rect.model";
     }
 
-    return loadModel(path);
+    return loadAnimatedModel(path);
   }
   else if(endsWith(path, ".tiles"))
   {
