@@ -6,12 +6,8 @@
 
 #pragma once
 
-#include <stdint.h>
 #include <vector>
-#include <string>
 using namespace std;
-
-#include "base/geom.h"
 
 struct Action
 {
@@ -23,6 +19,8 @@ struct Model
   vector<Action> actions;
 };
 
-Model loadModel(string jsonPath);
-void addTexture(Action& action, string path, Rect2i rect = Rect2i(0, 0, 0, 0));
+Model loadModel(const char* jsonPath);
+
+#include "base/geom.h"
+void addTexture(Action& action, const char* path, Rect2i rect = Rect2i(0, 0, 0, 0));
 

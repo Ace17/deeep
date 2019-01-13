@@ -152,7 +152,7 @@ Picture* getPicture(string path)
 }
 
 // exported to Model
-int loadTexture(string path, Rect2i rect)
+int loadTexture(const char* path, Rect2i rect)
 {
   auto surface = getPicture(path);
 
@@ -160,7 +160,7 @@ int loadTexture(string path, Rect2i rect)
     rect = Rect2i(0, 0, surface->width, surface->height);
 
   if(rect.pos.x < 0 || rect.pos.y < 0 || rect.pos.x + rect.size.width > surface->width || rect.pos.y + rect.size.height > surface->height)
-    throw runtime_error("Invalid boundaries for '" + path + "'");
+    throw runtime_error("Invalid boundaries for '" + string(path) + "'");
 
   auto const bpp = 4;
 
@@ -218,7 +218,7 @@ struct Camera
 };
 
 static
-Model loadTiledModel(string path, int count, int COLS, int SIZE)
+Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
 {
   auto m = Model();
 
@@ -248,7 +248,7 @@ Model loadAnimation(string path)
       path = "res/sprites/rect.model";
     }
 
-    auto m2 = loadModel(path);
+    auto m2 = loadModel(path.c_str());
     m.actions = move(m2.actions);
     return m;
   }
@@ -262,7 +262,7 @@ Model loadAnimation(string path)
       path = "res/tiles/default.png";
     }
 
-    return loadTiledModel(path, 64 * 2, 8, 16);
+    return loadTiledModel(path.c_str(), 64 * 2, 8, 16);
   }
   else
   {

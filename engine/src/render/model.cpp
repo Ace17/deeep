@@ -10,7 +10,7 @@
 #include "misc/json.h"
 #include "misc/file.h"
 
-extern int loadTexture(string path, Rect2i rect);
+extern int loadTexture(const char* path, Rect2i rect);
 
 static
 Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
@@ -27,13 +27,13 @@ Action loadSheetAction(json::Value* val, string sheetPath, Size2i cell)
 
     auto const col = idx % 16;
     auto const row = idx / 16;
-    addTexture(r, sheetPath, Rect2i(col * cell.width, row * cell.height, cell.width, cell.height));
+    addTexture(r, sheetPath.c_str(), Rect2i(col * cell.width, row * cell.height, cell.width, cell.height));
   }
 
   return r;
 }
 
-Model loadModel(string jsonPath)
+Model loadModel(const char* jsonPath)
 {
   auto data = read(jsonPath);
   Model r;
@@ -58,7 +58,7 @@ Model loadModel(string jsonPath)
   return r;
 }
 
-void addTexture(Action& action, string path, Rect2i rect)
+void addTexture(Action& action, const char* path, Rect2i rect)
 {
   action.textures.push_back(loadTexture(path, rect));
 }
