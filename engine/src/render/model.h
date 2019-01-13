@@ -19,6 +19,5 @@ struct Model
   vector<Action> actions;
 };
 
-Model loadTiledModel(const char* path, int count, int COLS, int SIZE);
 Model loadModel(const char* path);
 

@@ -48,23 +48,45 @@ Model loadAnimatedModel(const char* jsonPath)
   auto dir = dirName(jsonPath);
 
   auto type = obj->getMember<json::String>("type")->value;
-  auto actions = obj->getMember<json::Array>("actions");
-
-  if(type != "sheet")
-    throw runtime_error("Unknown model type: '" + type + "'");
-
   auto sheet = obj->getMember<json::String>("sheet")->value;
-  auto width = obj->getMember<json::Number>("width")->value;
-  auto height = obj->getMember<json::Number>("height")->value;
 
-  auto cell = Size2i(width, height);
+  if(type == "sheet")
+  {
+    auto actions = obj->getMember<json::Array>("actions");
+    auto width = obj->getMember<json::Number>("width")->value;
+    auto height = obj->getMember<json::Number>("height")->value;
 
-  for(auto& action : actions->elements)
-    r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, cell));
+    auto cell = Size2i(width, height);
+
+    for(auto& action : actions->elements)
+      r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, cell));
+  }
+  else if(type == "tiled")
+  {
+    auto const cols = obj->getMember<json::Number>("cols")->value;
+    auto const rows = obj->getMember<json::Number>("rows")->value;
+    auto const sheet_width = obj->getMember<json::Number>("sheet_width")->value;
+    auto const sheet_height = obj->getMember<json::Number>("sheet_height")->value;
+
+    for(int row = 0; row < rows; ++row)
+    {
+      for(int col = 0; col < rows; ++col)
+      {
+        Action action;
+        auto WIDTH = sheet_width / cols;
+        auto HEIGHT = sheet_height / rows;
+        addTexture(action, (dir + "/" + sheet).c_str(), Rect2i(col * WIDTH, row * HEIGHT, WIDTH, HEIGHT));
+        r.actions.push_back(action);
+      }
+    }
+  }
+  else
+    throw runtime_error("Unknown model type: '" + type + "'");
 
   return r;
 }
 
+static
 Model loadTiledModel(const char* path, int count, int COLS, int SIZE)
 {
   auto m = Model();

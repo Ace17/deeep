@@ -292,7 +292,7 @@ struct OpenglDisplay : Display
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_fontModel = loadTiledModel("res/font.png", 256, 16, 8);
+    m_fontModel = ::loadModel("res/font.model");
 
     m_colorId = glGetUniformLocation(m_programId, "fragOffset");
     assert(m_colorId >= 0);
