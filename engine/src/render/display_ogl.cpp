@@ -338,7 +338,6 @@ struct OpenglDisplay : Display
     if(!m_window)
       throw runtime_error("Can't set video mode");
 
-    // Create our opengl context and attach it to our window
     m_context = SDL_GL_CreateContext(m_window);
 
     if(!m_context)
@@ -346,9 +345,10 @@ struct OpenglDisplay : Display
 
     printOpenGlVersion();
 
-    // This makes our buffer swap syncronized with the monitor's vertical refresh
+    // Enable vsync
     SDL_GL_SetSwapInterval(1);
 
+    // Create our unique vertex array
     GLuint VertexArrayID;
     SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
     SAFE_GL(glBindVertexArray(VertexArrayID));
@@ -407,7 +407,7 @@ struct OpenglDisplay : Display
 
   void setCamera(Vector2f pos) override
   {
-    auto cam = (Camera { pos, 0 });
+    auto cam = Camera { pos, 0 };
 
     if(!m_cameraValid)
     {

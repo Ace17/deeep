@@ -17,7 +17,6 @@ Audio
 -----
 
 - _What_: Looping sounds (but how to avoid statefullness from the game point of view?)
-
   _Why_: the metroid-map-like periodic bleeping sound for oxygen refill in Monoid Unrest.
   At the moment, must be emulated in game code, leading to a slightly (but audible) irregular period,
   and requiring the game code to know the period time value.
