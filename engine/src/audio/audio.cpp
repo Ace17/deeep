@@ -18,8 +18,6 @@
 
 using namespace std;
 
-IAudioBackend* createAudioBackend();
-
 struct HighLevelAudio : Audio
 {
   HighLevelAudio(unique_ptr<IAudioBackend> backend) : m_backend(move(backend))
@@ -72,6 +70,10 @@ struct HighLevelAudio : Audio
   const unique_ptr<IAudioBackend> m_backend;
   vector<unique_ptr<Sound>> sounds;
 };
+
+///////////////////////////////////////////////////////////////////////////////
+
+IAudioBackend* createAudioBackend();
 
 Audio* createAudio()
 {
