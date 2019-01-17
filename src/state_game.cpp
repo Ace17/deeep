@@ -62,7 +62,10 @@ struct GameState : Scene, private IGame
     loadLevelIfNeeded();
 
     m_player->think(c);
-    updateEntities();
+
+    for(int i = 0; i < 10; ++i)
+      updateEntities();
+
     updateCamera();
 
     updateDebugFlag(c.debug);

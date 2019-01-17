@@ -25,7 +25,7 @@
 
 using namespace std;
 
-auto const TIMESTEP = 1;
+auto const TIMESTEP = 10;
 
 Display* createDisplay(Size2i resolution);
 Audio* createAudio();
