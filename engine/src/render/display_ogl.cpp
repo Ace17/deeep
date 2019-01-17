@@ -234,8 +234,9 @@ void printOpenGlVersion()
       return s ? s : "<null>";
     };
 
-  printf("[display] OpenGL version: %s\n", notNull(sVersion));
-  printf("[display] OpenGL shading version: %s\n", notNull(sLangVersion));
+  printf("[display] OpenGL version: %s (shading version: %s)\n",
+         notNull(sVersion),
+         notNull(sLangVersion));
 }
 
 // VBO format
