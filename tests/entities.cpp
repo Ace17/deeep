@@ -44,7 +44,7 @@ struct NullPlayer : Player
   virtual void think(Control const &) {}
   virtual float health() { return 0; }
   virtual void addUpgrade(int) {}
-  virtual void addActors(vector<Actor> &) const override {}
+  virtual void addActors(vector<Actor> &) const {}
 };
 
 struct NullGame : IGame

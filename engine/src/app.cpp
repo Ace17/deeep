@@ -53,7 +53,7 @@ public:
     SDL_Quit();
   }
 
-  bool tick()
+  bool tick() override
   {
     processInput();
 
