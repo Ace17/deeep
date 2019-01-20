@@ -22,6 +22,10 @@ TARGETS+=res/font.model
 TILES_SRC+=$(wildcard res-src/tiles/*.xcf)
 TARGETS+=$(TILES_SRC:res-src/%.xcf=res/%.png)
 
+res/%.json: res-src/%.json
+	@mkdir -p $(dir $@)
+	@cat "$<" | sed '/^ *"version":/d' > "$@"
+
 res/%.model: res-src/%.json
 	@mkdir -p $(dir $@)
 	@cp "$<" "$@"
