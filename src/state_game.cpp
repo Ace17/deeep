@@ -20,7 +20,8 @@
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
 #include "quest.h"
-#include "quest_loader.h" // loadRoom
+#include "quest_loader.h"
+#include "level_graph.h"
 #include "variable.h"
 #include "state_machine.h"
 
@@ -46,6 +47,8 @@ struct GameState : Scene, private IGame
     m_view(view)
   {
     m_shouldLoadLevel = true;
+    m_quest = loadQuest("res/quest.json");
+    preprocessQuest(m_quest);
     resetPhysics();
   }
 
@@ -150,8 +153,8 @@ struct GameState : Scene, private IGame
 
     // prevent camera from going outside the level
     auto const limit = 8.0f;
-    cameraPos.x = clamp(cameraPos.x, limit, m_tiles.size.width - limit);
-    cameraPos.y = clamp(cameraPos.y, limit, m_tiles.size.height - limit);
+    cameraPos.x = clamp(cameraPos.x, limit, m_tiles->size.width - limit);
+    cameraPos.y = clamp(cameraPos.y, limit, m_tiles->size.height - limit);
 
     m_view->setCameraPos(cameraPos);
   }
@@ -166,7 +169,7 @@ struct GameState : Scene, private IGame
         if(!tile)
           return;
 
-        auto composition = computeTileFor(m_tiles, x, y);
+        auto composition = computeTileFor(*m_tiles, x, y);
 
         for(int subTile = 0; subTile < 4; ++subTile)
         {
@@ -181,7 +184,7 @@ struct GameState : Scene, private IGame
         }
       };
 
-    m_tiles.scan(onCell);
+    m_tiles->scan(onCell);
   }
 
   void removeDeadThings()
@@ -231,9 +234,12 @@ struct GameState : Scene, private IGame
     m_spawned.clear();
     assert(m_listeners.empty());
 
-    auto level = loadRoom(levelIdx);
+    if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
+      throw runtime_error("No such level");
+
+    auto& level = m_quest.rooms[levelIdx];
     spawnEntities(level, this);
-    m_tiles = move(level.tiles);
+    m_tiles = &level.tiles;
     m_theme = level.theme;
     m_view->playMusic(level.theme);
 
@@ -348,6 +354,7 @@ struct GameState : Scene, private IGame
     m_view->setAmbientLight(light);
   }
 
+  Quest m_quest;
   Player* m_player = nullptr;
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
@@ -357,7 +364,7 @@ struct GameState : Scene, private IGame
   EventDelegator m_levelBoundary;
   unique_ptr<Handle> m_levelBoundarySubscription;
 
-  Matrix2<int> m_tiles;
+  const Matrix2<int>* m_tiles;
   bool m_debug;
   bool m_debugFirstTime = true;
 
@@ -378,7 +385,7 @@ struct GameState : Scene, private IGame
 
     for(int row = row1; row <= row2; row++)
       for(int col = col1; col <= col2; col++)
-        if(m_tiles.isInside(col, row) && m_tiles.get(col, row))
+        if(m_tiles->isInside(col, row) && m_tiles->get(col, row))
           return true;
 
     return false;

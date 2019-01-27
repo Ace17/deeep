@@ -304,17 +304,3 @@ Quest loadQuest(string path) // tiled TMX format
   return r;
 }
 
-#include "level_graph.h"
-
-Room loadRoom(int roomIdx)
-{
-  auto quest = loadQuest("res/quest.json");
-
-  preprocessQuest(quest);
-
-  if(roomIdx < 0 || roomIdx >= (int)quest.rooms.size())
-    throw runtime_error("No such level");
-
-  return move(quest.rooms[roomIdx]);
-}
-
