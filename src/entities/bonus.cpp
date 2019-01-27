@@ -28,6 +28,15 @@ struct Bonus : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
+  void enter() override
+  {
+    auto var = game->getVariable(id);
+
+    // already picked up?
+    if(var->get())
+      dead = true;
+  }
+
   virtual void addActors(vector<Actor>& actors) const override
   {
     auto s = sin(time * 0.01);
@@ -55,6 +64,9 @@ struct Bonus : Entity
       game->playSound(SND_BONUS);
       game->textBox(msg);
       dead = true;
+
+      auto var = game->getVariable(id);
+      var->set(1);
     }
   }
 

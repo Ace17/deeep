@@ -34,6 +34,7 @@ struct Entity : Body
 
   virtual void addActors(vector<Actor>& actors) const = 0;
 
+  int id = 0;
   bool dead = false;
   int blinking = 0;
   IGame* game = nullptr;

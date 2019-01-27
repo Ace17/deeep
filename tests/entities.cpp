@@ -47,11 +47,20 @@ struct NullPlayer : Player
   virtual void addActors(vector<Actor> &) const {}
 };
 
+struct NullVariable : IVariable
+{
+  int get() { return 0; };
+  void set(int) {};
+  unique_ptr<Handle> observe(Observer) { return nullptr; };
+};
+
+static NullVariable nullVariable;
+
 struct NullGame : IGame
 {
   virtual void playSound(SOUND) {}
   virtual void spawn(Entity*) {}
-  virtual IVariable* getVariable(int) { return nullptr; }
+  virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(unique_ptr<Event> ) {}
   virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) { return nullptr; }
   virtual void unsubscribeForEvents(IEventSink*) {}

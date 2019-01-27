@@ -32,13 +32,19 @@ using namespace std;
 array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 
 static
-void spawnEntities(Room const& room, IGame* game)
+void spawnEntities(Room const& room, IGame* game, int levelIdx)
 {
+  // avoid collisions between static entities from different rooms
+  int id = levelIdx * 1000;
+
   for(auto& spawner : room.spawners)
   {
     auto entity = createEntity(spawner.name);
+    entity->id = id;
     entity->pos = spawner.pos;
     game->spawn(entity.release());
+
+    ++id;
   }
 }
 
@@ -239,7 +245,7 @@ struct GameState : Scene, private IGame
       throw runtime_error("No such level");
 
     auto& level = m_quest.rooms[levelIdx];
-    spawnEntities(level, this);
+    spawnEntities(level, this, levelIdx);
     m_tiles = &level.tiles;
     m_theme = level.theme;
     m_view->playMusic(level.theme);
