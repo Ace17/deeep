@@ -60,6 +60,12 @@ struct EventDelegator : IEventSink
   function<void(const Event*)> m_onNotify;
 };
 
+template<typename Class, typename ReturnType, typename... Args>
+auto BindThis(ReturnType (Class::* MemPtr)(Args...), Class* pThis)
+{
+  return [ = ] (Args... args) { return (pThis->*MemPtr)(args...); };
+}
+
 template<typename EventType>
 EventDelegator makeDelegator(function<void(const EventType*)> handler)
 {

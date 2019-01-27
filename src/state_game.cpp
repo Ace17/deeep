@@ -253,7 +253,7 @@ struct GameState : Scene, private IGame
     spawn(m_player);
 
     {
-      auto f = bind(&GameState::onTouchLevelBoundary, this, placeholders::_1);
+      auto f = BindThis(&GameState::onTouchLevelBoundary, this);
       m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
       m_levelBoundarySubscription = subscribeForEvents(&m_levelBoundary);
     }
