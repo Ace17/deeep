@@ -20,8 +20,8 @@
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
 #include "quest.h"
-#include "quest_loader.h"
-#include "level_graph.h"
+#include "load_quest.h"
+#include "preprocess_quest.h"
 #include "variable.h"
 #include "state_machine.h"
 

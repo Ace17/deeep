@@ -4,11 +4,13 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// Preprocessor for rooms
+// Preprocessor for rooms:
+// - create connections between adjacent rooms
+// - create blockers around rooms
+// - add some display randomness to the tiles
 
 #include "quest.h"
 #include <cstdlib> // rand
-#include <stdexcept> // runtime_error
 
 void addRandomWidgets(Matrix2<int>& tiles)
 {
