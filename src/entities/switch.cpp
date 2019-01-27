@@ -4,10 +4,7 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// Switch and door.
-
-#include <algorithm>
-#include <cmath>
+// Player-controlled switch
 
 #include "base/util.h"
 #include "base/scene.h"

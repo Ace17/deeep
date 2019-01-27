@@ -4,6 +4,8 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+// Various doors
+
 #include "collision_groups.h"
 #include "entity.h"
 #include "models.h"
@@ -97,6 +99,13 @@ struct BreakableDoor : Entity, Damageable
     actors.push_back(r);
   }
 
+  void enter() override
+  {
+    // already broken?
+    if(game->getVariable(id)->get())
+      dead = true;
+  }
+
   virtual void tick() override
   {
     decrement(blinking);
@@ -110,6 +119,7 @@ struct BreakableDoor : Entity, Damageable
     if(life < 0)
     {
       game->playSound(SND_EXPLODE);
+      game->getVariable(id)->set(1);
       dead = true;
 
       auto explosion = makeExplosion();
