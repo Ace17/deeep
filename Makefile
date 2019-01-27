@@ -52,6 +52,7 @@ SRCS_GAME:=\
 	src/entities/rockman.cpp\
 	src/entities/spider.cpp\
 	src/entities/switch.cpp\
+	src/entities/door.cpp\
 	src/entity_factory.cpp\
 	src/game.cpp\
 	src/physics.cpp\
