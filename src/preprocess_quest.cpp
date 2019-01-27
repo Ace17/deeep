@@ -12,6 +12,7 @@
 #include "quest.h"
 #include <cstdlib> // rand
 
+static
 void addRandomWidgets(Matrix2<int>& tiles)
 {
   auto rect = [&] (Vector2i pos, Size2i size, int tile)
@@ -44,6 +45,7 @@ void addRandomWidgets(Matrix2<int>& tiles)
   }
 }
 
+static
 bool isInsideRoom(Vector2i pos, Room const& room)
 {
   if(pos.x < room.pos.x)
@@ -72,11 +74,13 @@ int getRoomAt(vector<Room> const& quest, Vector2i absPos)
   return -1;
 }
 
+static
 Vector toVector(Vector2i v)
 {
   return Vector(v.x, v.y);
 }
 
+static
 void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 {
   auto const CELL_SIZE = 16;
@@ -142,6 +146,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   }
 }
 
+static
 void preprocessRoom(Room& room, vector<Room> const& quest)
 {
   addRandomWidgets(room.tiles);
