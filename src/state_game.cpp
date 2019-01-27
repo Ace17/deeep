@@ -54,6 +54,7 @@ struct GameState : Scene, private IGame
     m_view(view)
   {
     m_shouldLoadLevel = true;
+    m_shouldLoadVars = true;
     m_quest = loadQuest("res/quest.json");
     preprocessQuest(m_quest);
     resetPhysics();
@@ -241,6 +242,16 @@ struct GameState : Scene, private IGame
     m_spawned.clear();
     assert(m_listeners.empty());
 
+    if(m_shouldLoadVars)
+    {
+      m_vars.clear();
+
+      for(auto& savedVar : m_savedVars)
+        getVariable(savedVar.first)->set(savedVar.second);
+
+      m_shouldLoadVars = false;
+    }
+
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
       throw runtime_error("No such level");
 
@@ -284,6 +295,7 @@ struct GameState : Scene, private IGame
   int m_theme = 0;
   Vector m_transform;
   bool m_shouldLoadLevel = false;
+  bool m_shouldLoadVars = false;
 
   map<int, unique_ptr<IVariable>> m_vars;
 
@@ -348,10 +360,7 @@ struct GameState : Scene, private IGame
     m_level = m_savedLevel;
     m_transform = m_savedPos - m_player->pos + Vector(0, 0.01);
     m_shouldLoadLevel = true;
-    m_vars.clear();
-
-    for(auto& savedVar : m_savedVars)
-      getVariable(savedVar.first)->set(savedVar.second);
+    m_shouldLoadVars = true;
   }
 
   void textBox(char const* msg) override

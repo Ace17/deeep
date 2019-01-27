@@ -184,6 +184,7 @@ struct Rockman : Player, Damageable
     upgrades |= upgrade;
     blinking = 2000;
     life = 31;
+    game->getVariable(-1)->set(upgrades);
   }
 
   void computeVelocity(Control c)
@@ -386,6 +387,7 @@ struct Rockman : Player, Damageable
   void enter() override
   {
     game->setAmbientLight(0);
+    upgrades = game->getVariable(-1)->get();
   }
 
   void die()
