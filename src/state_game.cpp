@@ -330,11 +330,16 @@ struct GameState : Scene, private IGame
 
   int m_savedLevel = 0;
   Vector m_savedPos = NullVector;
+  map<int, int> m_savedVars;
 
   void savepoint() override
   {
     m_savedLevel = m_level;
     m_savedPos = m_player->pos;
+    m_savedVars.clear();
+
+    for(auto& var : m_vars)
+      m_savedVars[var.first] = var.second->get();
   }
 
   void respawn() override
@@ -343,6 +348,10 @@ struct GameState : Scene, private IGame
     m_level = m_savedLevel;
     m_transform = m_savedPos - m_player->pos + Vector(0, 0.01);
     m_shouldLoadLevel = true;
+    m_vars.clear();
+
+    for(auto& savedVar : m_savedVars)
+      getVariable(savedVar.first)->set(savedVar.second);
   }
 
   void textBox(char const* msg) override
