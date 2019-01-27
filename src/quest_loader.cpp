@@ -17,7 +17,7 @@
 #include "engine/src/misc/base64.h"
 #include "engine/src/misc/decompress.h"
 
-#include "room.h"
+#include "quest.h"
 
 static
 vector<int> convertFromLittleEndian(vector<uint8_t> const& input)
@@ -277,8 +277,6 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   return room;
 }
 
-#include "quest.h"
-
 Quest loadQuest(string path) // tiled TMX format
 {
   auto data = read(path);
@@ -304,5 +302,19 @@ Quest loadQuest(string path) // tiled TMX format
   }
 
   return r;
+}
+
+#include "level_graph.h"
+
+Room loadRoom(int roomIdx)
+{
+  auto quest = loadQuest("res/quest.json");
+
+  preprocessQuest(quest);
+
+  if(roomIdx < 0 || roomIdx >= (int)quest.rooms.size())
+    throw runtime_error("No such level");
+
+  return move(quest.rooms[roomIdx]);
 }
 

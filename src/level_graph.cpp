@@ -4,9 +4,9 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// Loader for rooms (levels)
+// Preprocessor for rooms
 
-#include "room.h"
+#include "quest.h"
 #include <cstdlib> // rand
 #include <stdexcept> // runtime_error
 
@@ -146,19 +146,9 @@ void preprocessRoom(Room& room, vector<Room> const& quest)
   addBoundaryDetectors(room, quest);
 }
 
-#include "quest.h"
-
-Room Graph_loadRoom(int roomIdx)
+void preprocessQuest(Quest& quest)
 {
-  auto quest = loadQuest("res/quest.json");
-
-  if(roomIdx < 0 || roomIdx >= (int)quest.rooms.size())
-    throw runtime_error("No such level");
-
-  auto r = move(quest.rooms[roomIdx]);
-
-  preprocessRoom(r, quest.rooms);
-
-  return r;
+  for(auto& r : quest.rooms)
+    preprocessRoom(r, quest.rooms);
 }
 

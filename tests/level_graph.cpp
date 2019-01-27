@@ -9,7 +9,7 @@
 #include <vector>
 #include "engine/tests/tests.h"
 #include "base/geom.h"
-#include "room.h"
+#include "quest.h"
 using namespace std;
 
 int getRoomAt(vector<Room> const& quest, Vector2i absPos);

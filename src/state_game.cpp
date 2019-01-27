@@ -19,7 +19,8 @@
 #include "game.h"
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
-#include "room.h"
+#include "quest.h"
+#include "quest_loader.h" // loadRoom
 #include "variable.h"
 #include "state_machine.h"
 
@@ -230,7 +231,7 @@ struct GameState : Scene, private IGame
     m_spawned.clear();
     assert(m_listeners.empty());
 
-    auto level = Graph_loadRoom(levelIdx);
+    auto level = loadRoom(levelIdx);
     spawnEntities(level, this);
     m_tiles = move(level.tiles);
     m_theme = level.theme;
