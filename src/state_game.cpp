@@ -8,6 +8,7 @@
 
 #include <array>
 #include <list>
+#include <map>
 
 #include "base/scene.h"
 #include "base/view.h"
@@ -278,7 +279,7 @@ struct GameState : Scene, private IGame
   Vector m_transform;
   bool m_shouldLoadLevel = false;
 
-  vector<unique_ptr<IVariable>> m_vars;
+  map<int, unique_ptr<IVariable>> m_vars;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
@@ -295,12 +296,6 @@ struct GameState : Scene, private IGame
 
   IVariable* getVariable(int name) override
   {
-    assert(name >= 0);
-    assert(name < 32768);
-
-    if(name >= (int)m_vars.size())
-      m_vars.resize(name + 1);
-
     if(!m_vars[name])
       m_vars[name] = make_unique<Variable>();
 
