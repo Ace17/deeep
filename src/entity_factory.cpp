@@ -105,7 +105,7 @@ unique_ptr<Entity> createEntity(string formula)
   auto words = parseCall(formula);
   auto name = words[0];
   words.erase(words.begin());
-  EntityArgs args = words;
+  EntityConfig args = words;
 
   auto i_func = registry.find(name);
 

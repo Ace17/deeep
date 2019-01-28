@@ -23,8 +23,8 @@ using namespace std;
 // createEntity("door(4)");
 std::unique_ptr<Entity> createEntity(string name);
 
-using EntityArgs = vector<string> const;
-using CreationFunc = function<unique_ptr<Entity>(EntityArgs & args)>;
+using EntityConfig = vector<string> const;
+using CreationFunc = function<unique_ptr<Entity>(EntityConfig & args)>;
 
 // user-provided
 extern map<string, CreationFunc> getRegistry();
