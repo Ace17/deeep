@@ -60,7 +60,7 @@ SRCS_GAME:=\
 	src/load_quest.cpp\
 	src/resources.cpp\
 	src/smarttiles.cpp\
-	src/state_game.cpp\
+	src/state_playing.cpp\
 	src/state_splash.cpp\
 
 #------------------------------------------------------------------------------
