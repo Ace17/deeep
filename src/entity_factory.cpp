@@ -13,12 +13,27 @@
 
 using namespace std;
 
-static map<string, CreationFunc> registry;
-static auto const g_registered = registerAll();
-
-void registerEntity(string type, CreationFunc func)
+namespace
 {
-  registry[type] = func;
+// don't put a unique_ptr here, as this would make us
+// depend on the module initialization order
+map<string, CreationFunc>* g_registry;
+
+struct RegistryDeleter
+{
+  ~RegistryDeleter() { delete g_registry; }
+};
+
+RegistryDeleter g_deleteRegistryAtProgramExit;
+}
+
+int registerEntity(string type, CreationFunc func)
+{
+  if(!g_registry)
+    g_registry = new map<string, CreationFunc>;
+
+  (*g_registry)[type] = func;
+  return 0; // ignored
 }
 
 static
@@ -113,9 +128,9 @@ unique_ptr<Entity> createEntity(string formula)
   words.erase(words.begin());
   EntityConfig args = words;
 
-  auto i_func = registry.find(name);
+  auto i_func = g_registry->find(name);
 
-  if(i_func == registry.end())
+  if(i_func == g_registry->end())
     throw runtime_error("unknown entity type: '" + name + "'");
 
   return (*i_func).second(args);

@@ -24,7 +24,7 @@
 
 using namespace std;
 
-int registerAll()
+static int registerAll()
 {
   registerEntity("upgrade_climb", [] (EntityConfig &) { return makeBonus(4, UPGRADE_CLIMB, "jump while against wall"); });
   registerEntity("upgrade_shoot", [] (EntityConfig &) { return makeBonus(3, UPGRADE_SHOOT, "press Z"); });
@@ -53,4 +53,6 @@ int registerAll()
 
   return 0; // ignored
 }
+
+static auto const g_registered = registerAll();
 
