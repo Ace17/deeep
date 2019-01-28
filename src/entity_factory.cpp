@@ -13,7 +13,13 @@
 
 using namespace std;
 
-static const map<string, CreationFunc> registry = getRegistry();
+static map<string, CreationFunc> registry;
+static auto const g_registered = registerAll();
+
+void registerEntity(string type, CreationFunc func)
+{
+  registry[type] = func;
+}
 
 static
 vector<string> parseCall(string content)

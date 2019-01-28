@@ -25,7 +25,8 @@ std::unique_ptr<Entity> createEntity(string name);
 
 using EntityConfig = vector<string> const;
 using CreationFunc = function<unique_ptr<Entity>(EntityConfig & args)>;
+void registerEntity(string type, CreationFunc func);
 
 // user-provided
-extern map<string, CreationFunc> getRegistry();
+int registerAll();
 
