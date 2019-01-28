@@ -13,6 +13,11 @@ struct HandleWithDeleter : Handle
 
 struct Variable : IVariable
 {
+  ~Variable()
+  {
+    assert(observers.empty());
+  }
+
   virtual int get() override
   {
     return value;
