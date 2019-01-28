@@ -57,13 +57,6 @@ struct GameState : Scene, private IGame
     m_shouldLoadVars = true;
     m_quest = loadQuest("res/quest.json");
     preprocessQuest(m_quest);
-    resetPhysics();
-  }
-
-  void resetPhysics()
-  {
-    m_physics = createPhysics();
-    m_physics->setEdifice(bind(&GameState::isBoxSolid, this, placeholders::_1));
   }
 
   ////////////////////////////////////////////////////////////////
@@ -228,6 +221,9 @@ struct GameState : Scene, private IGame
 
   void loadLevel(int levelIdx)
   {
+    ///////////////////////////////////////////////////////////////////////////
+    // destroy current game arena
+    ///////////////////////////////////////////////////////////////////////////
     if(m_player)
     {
       for(auto& entity : m_entities)
@@ -235,7 +231,7 @@ struct GameState : Scene, private IGame
           entity.release();
     }
 
-    resetPhysics();
+    m_physics.reset();
 
     m_levelBoundarySubscription.reset();
     m_entities.clear();
@@ -251,6 +247,13 @@ struct GameState : Scene, private IGame
 
       m_shouldLoadVars = false;
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // create new game arena
+    ///////////////////////////////////////////////////////////////////////////
+
+    m_physics = createPhysics();
+    m_physics->setEdifice(bind(&GameState::isBoxSolid, this, placeholders::_1));
 
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
       throw runtime_error("No such level");
