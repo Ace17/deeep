@@ -46,13 +46,22 @@ include $(ENGINE_ROOT)/project.mk
 #------------------------------------------------------------------------------
 
 SRCS_GAME:=\
-	src/entities/all.cpp\
+	src/entities/blocks.cpp\
 	src/entities/bonus.cpp\
-	src/entities/explosion.cpp\
-	src/entities/rockman.cpp\
-	src/entities/spider.cpp\
-	src/entities/switch.cpp\
+	src/entities/conveyor.cpp\
+	src/entities/detector.cpp\
 	src/entities/door.cpp\
+	src/entities/explosion.cpp\
+	src/entities/hatch.cpp\
+	src/entities/hopper.cpp\
+	src/entities/moving_platform.cpp\
+	src/entities/rockman.cpp\
+	src/entities/savepoint.cpp\
+	src/entities/spider.cpp\
+	src/entities/spikes.cpp\
+	src/entities/sweeper.cpp\
+	src/entities/switch.cpp\
+	src/entities/wheel.cpp\
 	src/entity_factory.cpp\
 	src/game.cpp\
 	src/physics.cpp\

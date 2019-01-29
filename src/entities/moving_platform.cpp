@@ -4,16 +4,16 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
 #include <cmath> // sin
 
 #include "base/util.h"
 #include "base/scene.h"
 
 #include "collision_groups.h"
+#include "toggle.h"
 #include "entity.h"
 #include "models.h"
+#include "sounds.h"
 #include "entities/move.h"
 
 struct MovingPlatform : Entity
@@ -143,4 +143,8 @@ struct Elevator : Entity
 
   Vector initialPos;
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("moving_platform", [] (EntityConfig& args) { auto arg = atoi(args[0].c_str()); return make_unique<MovingPlatform>(arg); });
+static auto const reg2 = registerEntity("elevator", [] (EntityConfig &) { return make_unique<Elevator>(); });
 

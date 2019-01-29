@@ -133,8 +133,7 @@ struct BreakableDoor : Entity, Damageable
   int life = 130;
 };
 
-unique_ptr<Entity> makeBreakableDoor()
-{
-  return make_unique<BreakableDoor>();
-}
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("fragile_door", [] (EntityConfig &) { return make_unique<BreakableDoor>(); });
+static auto const reg2 = registerEntity("door", [] (EntityConfig& args) { auto arg = atoi(args[0].c_str()); return makeDoor(arg); });
 

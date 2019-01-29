@@ -4,14 +4,13 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
 #include "vec.h"
 #include "base/util.h"
 #include "base/scene.h"
 
 #include "collision_groups.h"
 #include "entity.h"
+#include "toggle.h" // decrement
 #include "models.h" // MDL_BLOCK
 #include "sounds.h" // SND_HATCH
 
@@ -64,4 +63,8 @@ struct Hatch : Entity
   int openingTimer = 0;
   enum { OPEN_DURATION = 1000 };
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("hatch", [] (EntityConfig &) { return make_unique<Hatch>(); });
+static auto const reg2 = registerEntity("crumble_block", [] (EntityConfig &) { return make_unique<Hatch>(); });
 

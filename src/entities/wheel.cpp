@@ -4,25 +4,26 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
+#include <algorithm>
 
 #include "base/util.h"
 #include "base/scene.h"
 
+#include "collision_groups.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
+#include "toggle.h"
 #include "entities/explosion.h"
+#include "entities/move.h"
 
-#include <cstdlib> // rand
-
-struct Hopper : Entity, Damageable
+struct Wheel : Entity, Damageable
 {
-  Hopper()
+  Wheel()
   {
     vel = NullVector;
     dir = -1.0f;
-    size = Size(1, 0.5);
+    size = Size(1.5, 1.5);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
@@ -30,16 +31,16 @@ struct Hopper : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_RECT };
+    auto r = Actor { pos, MDL_WHEEL };
 
-    r.scale = size;
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
+    r.scale = Size(3, 3);
+    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.3);
 
     if(blinking)
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 800) / 800.0f;
+    r.ratio = (time % 200) / 200.0f;
 
     if(dir > 0)
       r.scale.width = -r.scale.width;
@@ -51,18 +52,8 @@ struct Hopper : Entity, Damageable
   {
     ++time;
 
+    vel.x = dir * 0.003;
     vel.y -= 0.00005; // gravity
-
-    if(ground && time % 500 == 0 && rand() % 4 == 0)
-    {
-      vel.y = 0.013;
-      ground = false;
-    }
-
-    if(ground)
-      vel.x = 0;
-    else
-      vel.x = dir * 0.003;
 
     auto trace = slideMove(this, vel);
 
@@ -70,10 +61,7 @@ struct Hopper : Entity, Damageable
       dir = -dir;
 
     if(!trace.vert)
-    {
-      ground = true;
       vel.y = 0;
-    }
 
     decrement(blinking);
   }
@@ -104,8 +92,10 @@ struct Hopper : Entity, Damageable
 
   int life = 30;
   int time = 0;
-  bool ground = false;
   float dir;
   Vector vel;
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("wheel", [] (EntityConfig &) { return make_unique<Wheel>(); });
 

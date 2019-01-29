@@ -69,3 +69,6 @@ unique_ptr<Entity> makeSwitch(int id)
   return make_unique<Switch>(id);
 }
 
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("switch", [] (EntityConfig& args) { auto arg = atoi(args[0].c_str()); return makeSwitch(arg); });
+

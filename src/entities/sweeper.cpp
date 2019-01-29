@@ -4,48 +4,42 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
-#include <algorithm>
-
 #include "base/util.h"
 #include "base/scene.h"
 
-#include "collision_groups.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
-#include "toggle.h"
+#include "collision_groups.h"
 #include "entities/explosion.h"
 #include "entities/move.h"
+#include "toggle.h"
 
-struct Wheel : Entity, Damageable
+struct Sweeper : Entity, Damageable
 {
-  Wheel()
+  Sweeper()
   {
-    vel = NullVector;
-    dir = -1.0f;
-    size = Size(1.5, 1.5);
+    size = Size(0.8, 0.8);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
+
+    vel.x = 0.003;
+    vel.y = 0.003;
   }
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_WHEEL };
+    auto r = Actor { pos, MDL_SWEEPER };
 
-    r.scale = Size(3, 3);
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.3);
+    r.scale = size;
+    r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
 
     if(blinking)
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 200) / 200.0f;
-
-    if(dir > 0)
-      r.scale.width = -r.scale.width;
+    r.ratio = (time % 800) / 800.0f;
 
     actors.push_back(r);
   }
@@ -54,16 +48,13 @@ struct Wheel : Entity, Damageable
   {
     ++time;
 
-    vel.x = dir * 0.003;
-    vel.y -= 0.00005; // gravity
-
     auto trace = slideMove(this, vel);
 
     if(!trace.horz)
-      dir = -dir;
+      vel.x = -vel.x;
 
     if(!trace.vert)
-      vel.y = 0;
+      vel.y = -vel.y;
 
     decrement(blinking);
   }
@@ -76,7 +67,7 @@ struct Wheel : Entity, Damageable
 
   virtual void onDamage(int amount) override
   {
-    blinking = 100;
+    blinking = 750;
     life -= amount;
 
     game->playSound(SND_DAMAGE);
@@ -94,7 +85,9 @@ struct Wheel : Entity, Damageable
 
   int life = 30;
   int time = 0;
-  float dir;
   Vector vel;
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("sweeper", [] (EntityConfig &) { return make_unique<Sweeper>(); });
 

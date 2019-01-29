@@ -4,66 +4,47 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
 #include "vec.h"
 #include "base/util.h"
 #include "base/scene.h"
 
 #include "collision_groups.h"
 #include "entity.h"
-#include "models.h"
+#include "models.h" // MDL_BLOCK
+#include "sounds.h" // SND_HATCH
+#include "entities/player.h"
 
-struct FragileBlock : Entity, Damageable
+struct SavePoint : Entity
 {
-  FragileBlock()
+  SavePoint()
   {
+    solid = 0;
     size = UnitSize;
-    reappear();
+    collisionGroup = 0;
+    collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    if(!solid)
-      return;
-
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 0;
-    r.action = 3;
+    r.action = 0;
 
     actors.push_back(r);
   }
 
-  virtual void onDamage(int) override
+  void onCollide(Body* other)
   {
-    disappear();
-  }
-
-  void tick() override
-  {
-    if(decrement(disappearTimer))
+    if(dynamic_cast<Player*>(other))
     {
-      reappear();
-
-      if(physics->getBodiesInBox(getBox(), CG_PLAYER, false, this))
-        disappear();
+      game->textBox("Game Saved");
+      game->savepoint();
     }
   }
-
-  void reappear()
-  {
-    collisionGroup = CG_WALLS;
-    solid = 1;
-  }
-
-  void disappear()
-  {
-    disappearTimer = 3000;
-    collisionGroup = 0;
-    solid = 0;
-  }
-
-  int disappearTimer = 0;
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("savepoint", [] (EntityConfig &) { return make_unique<SavePoint>(); });
 

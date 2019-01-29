@@ -9,6 +9,4 @@
 #include "entity.h"
 
 unique_ptr<Entity> makeSwitch(int id);
-unique_ptr<Entity> makeDoor(int id);
-unique_ptr<Entity> makeBreakableDoor();
 

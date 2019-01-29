@@ -4,8 +4,6 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
 #include "base/util.h"
 #include "base/scene.h"
 
@@ -13,23 +11,27 @@
 #include "models.h"
 #include "sounds.h"
 #include "entities/explosion.h"
+#include "entities/move.h"
+#include "collision_groups.h"
+#include "toggle.h" // decrement
 
-struct Sweeper : Entity, Damageable
+#include <cstdlib> // rand
+
+struct Hopper : Entity, Damageable
 {
-  Sweeper()
+  Hopper()
   {
-    size = Size(0.8, 0.8);
+    vel = NullVector;
+    dir = -1.0f;
+    size = Size(1, 0.5);
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
-
-    vel.x = 0.003;
-    vel.y = 0.003;
   }
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_SWEEPER };
+    auto r = Actor { pos, MDL_RECT };
 
     r.scale = size;
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
@@ -40,6 +42,9 @@ struct Sweeper : Entity, Damageable
     r.action = 0;
     r.ratio = (time % 800) / 800.0f;
 
+    if(dir > 0)
+      r.scale.width = -r.scale.width;
+
     actors.push_back(r);
   }
 
@@ -47,13 +52,29 @@ struct Sweeper : Entity, Damageable
   {
     ++time;
 
+    vel.y -= 0.00005; // gravity
+
+    if(ground && time % 500 == 0 && rand() % 4 == 0)
+    {
+      vel.y = 0.013;
+      ground = false;
+    }
+
+    if(ground)
+      vel.x = 0;
+    else
+      vel.x = dir * 0.003;
+
     auto trace = slideMove(this, vel);
 
     if(!trace.horz)
-      vel.x = -vel.x;
+      dir = -dir;
 
     if(!trace.vert)
-      vel.y = -vel.y;
+    {
+      ground = true;
+      vel.y = 0;
+    }
 
     decrement(blinking);
   }
@@ -66,7 +87,7 @@ struct Sweeper : Entity, Damageable
 
   virtual void onDamage(int amount) override
   {
-    blinking = 750;
+    blinking = 100;
     life -= amount;
 
     game->playSound(SND_DAMAGE);
@@ -84,6 +105,11 @@ struct Sweeper : Entity, Damageable
 
   int life = 30;
   int time = 0;
+  bool ground = false;
+  float dir;
   Vector vel;
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("hopper", [] (EntityConfig &) { return make_unique<Hopper>(); });
 

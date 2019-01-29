@@ -4,46 +4,39 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
+#include "base/util.h"
 #include "base/scene.h"
 
-#include "collision_groups.h"
 #include "entity.h"
 #include "models.h"
+#include "collision_groups.h"
 
-struct Conveyor : Entity
+struct Spikes : Entity
 {
-  Conveyor()
+  Spikes()
   {
-    size = UnitSize;
-    collisionGroup = CG_WALLS;
-    collidesWith = CG_PLAYER;
+    size = Size(1, 0.95);
     solid = 1;
+    collisionGroup = CG_WALLS;
+    collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_RECT };
-    r.action = 2;
+    auto r = Actor { pos, MDL_SPIKES };
     r.scale = size;
-    r.scale.width *= -1;
+    r.ratio = 0;
     actors.push_back(r);
   }
 
   void onCollide(Body* other)
   {
-    // avoid infinite recursion
-    // (if the conveyor pushes the player towards the conveyor)
-    if(noRecurse)
-      return;
-
-    noRecurse = true;
-    physics->moveBody(other, Vector(-0.004, 0));
-    noRecurse = false;
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(1000);
   }
-
-  bool noRecurse = false;
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("spikes", [] (EntityConfig &) { return make_unique<Spikes>(); });
 

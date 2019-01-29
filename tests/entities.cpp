@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-#include "entities/wheel.h"
 #include "entities/bonus.h"
 #include "entities/explosion.h"
 

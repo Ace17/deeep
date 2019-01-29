@@ -4,8 +4,6 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#pragma once
-
 #include "base/util.h"
 #include "base/scene.h"
 
@@ -67,4 +65,8 @@ struct RoomBoundaryBlocker : Entity
     actors.push_back(r);
   }
 };
+
+#include "entity_factory.h"
+static auto const reg1 = registerEntity("room_boundary_detector", [] (EntityConfig& args) { int targetLevel = atoi(args[0].c_str()); Vector transform; transform.x = atoi(args[1].c_str()); transform.y = atoi(args[2].c_str()); return make_unique<RoomBoundaryDetector>(targetLevel, transform); });
+static auto const reg2 = registerEntity("blocker", [] (EntityConfig &) { return make_unique<RoomBoundaryBlocker>(-1); });
 
