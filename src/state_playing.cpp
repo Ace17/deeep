@@ -233,10 +233,8 @@ struct GameState : Scene, private IGame
 
     m_physics.reset();
 
-    m_levelBoundarySubscription.reset();
     m_entities.clear();
     m_spawned.clear();
-    assert(m_listeners.empty());
 
     if(m_shouldLoadVars)
     {
@@ -279,12 +277,6 @@ struct GameState : Scene, private IGame
     }
 
     spawn(m_player);
-
-    {
-      auto f = BindThis(&GameState::onTouchLevelBoundary, this);
-      m_levelBoundary = makeDelegator<TouchLevelBoundary>(f);
-      m_levelBoundarySubscription = subscribeForEvents(&m_levelBoundary);
-    }
   }
 
   void onTouchLevelBoundary(const TouchLevelBoundary* event)
@@ -325,17 +317,8 @@ struct GameState : Scene, private IGame
 
   void postEvent(unique_ptr<Event> event) override
   {
-    for(auto& listener : m_listeners)
-      listener->notify(event.get());
-  }
-
-  unique_ptr<Handle> subscribeForEvents(IEventSink* sink) override
-  {
-    auto it = m_listeners.insert(m_listeners.begin(), sink);
-
-    auto unsubscribe = [ = ] () { m_listeners.erase(it); };
-
-    return make_unique<HandleWithDeleter>(unsubscribe);
+    if(auto levelBoundaryEvent = event->as<TouchLevelBoundary>())
+      onTouchLevelBoundary(levelBoundaryEvent);
   }
 
   Vector getPlayerPosition() override
@@ -380,11 +363,6 @@ struct GameState : Scene, private IGame
   Player* m_player = nullptr;
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
-
-  list<IEventSink*> m_listeners;
-
-  EventDelegator m_levelBoundary;
-  unique_ptr<Handle> m_levelBoundarySubscription;
 
   const Matrix2<int>* m_tiles;
   bool m_debug;

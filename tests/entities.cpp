@@ -61,8 +61,6 @@ struct NullGame : IGame
   virtual void spawn(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(unique_ptr<Event> ) {}
-  virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) { return nullptr; }
-  virtual void unsubscribeForEvents(IEventSink*) {}
   virtual Vector2f getPlayerPosition() { return Vector2f(0, 0); }
   virtual void textBox(char const*) {}
   virtual void setAmbientLight(float) {}
