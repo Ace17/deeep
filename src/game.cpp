@@ -12,7 +12,7 @@
 #include <string>
 
 unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view);
-unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level);
+unique_ptr<Scene> createPlayingState(StateMachine* fsm, View* view, int level);
 
 Span<const Resource> getResources();
 
@@ -40,7 +40,7 @@ Scene* createGame(View* view, vector<string> args)
   if(showSplash)
     fsm->states.push_back(createSplashState(fsm.get(), view));
 
-  fsm->states.push_back(createGameState(fsm.get(), view, level));
+  fsm->states.push_back(createPlayingState(fsm.get(), view, level));
 
   return fsm.release();
 }

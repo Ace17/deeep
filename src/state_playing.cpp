@@ -425,7 +425,7 @@ struct GameState : Scene, private IGame
   }
 };
 
-unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level)
+unique_ptr<Scene> createPlayingState(StateMachine* fsm, View* view, int level)
 {
   (void)fsm;
   auto gameState = make_unique<GameState>(view);
