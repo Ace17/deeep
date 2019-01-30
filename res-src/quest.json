@@ -266,8 +266,8 @@
                  "type":"1",
                  "visible":true,
                  "width":8,
-                 "x":108,
-                 "y":84
+                 "x":28,
+                 "y":104
                 }, 
                 {
                  "height":4,
@@ -299,8 +299,8 @@
                  "type":"1",
                  "visible":true,
                  "width":16,
-                 "x":48,
-                 "y":96
+                 "x":56,
+                 "y":88
                 }, 
                 {
                  "height":12,
