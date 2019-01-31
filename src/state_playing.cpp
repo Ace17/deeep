@@ -124,6 +124,7 @@ struct GameState : Scene, private IGame
       loadLevel(m_level);
       m_player->pos += m_transform;
       m_shouldLoadLevel = false;
+      setAmbientLight(0);
     }
   }
 

@@ -405,7 +405,6 @@ struct Rockman : Player, Damageable
   void respawn()
   {
     game->respawn();
-    game->setAmbientLight(0);
     blinking = 2000;
     vel = NullVector;
     life = 31;
