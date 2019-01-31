@@ -25,6 +25,7 @@ auto const MAX_FALL_SPEED = 0.02f;
 auto const CLIMB_DELAY = 100;
 auto const HURT_DELAY = 500;
 auto const JUMP_VEL = 0.015;
+auto const MAX_LIFE = 31;
 
 enum ORIENTATION
 {
@@ -176,14 +177,14 @@ struct Rockman : Player, Damageable
 
   float health() override
   {
-    return clamp(life / 31.0f, 0.0f, 1.0f);
+    return clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
   }
 
   virtual void addUpgrade(int upgrade) override
   {
     upgrades |= upgrade;
     blinking = 2000;
-    life = 31;
+    life = MAX_LIFE;
     game->getVariable(-1)->set(upgrades);
   }
 
@@ -408,7 +409,7 @@ struct Rockman : Player, Damageable
     game->respawn();
     blinking = 2000;
     vel = NullVector;
-    life = 31;
+    life = MAX_LIFE;
   }
 
   void handleShooting()
@@ -471,7 +472,7 @@ struct Rockman : Player, Damageable
   int dashDelay = 0;
   int dieDelay = 0;
   int shootDelay = 0;
-  int life = 31;
+  int life = MAX_LIFE;
   bool doubleJumped = false;
   bool ball = false;
   bool sliding = false;
