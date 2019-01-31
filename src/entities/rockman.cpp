@@ -212,7 +212,9 @@ struct Rockman : Player, Damageable
       {
         if(vel.y < 0 && facingWall() && (c.left || c.right))
         {
-          doubleJumped = false;
+          // don't allow double-jumping from sliding state,
+          // unless we have the climb upgrade
+          doubleJumped = !(upgrades & UPGRADE_CLIMB);
           vel.y *= 0.97;
           sliding = true;
           dashDelay = 0;
