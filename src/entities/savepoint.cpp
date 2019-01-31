@@ -39,8 +39,8 @@ struct SavePoint : Entity
   {
     if(dynamic_cast<Player*>(other))
     {
+      game->postEvent(make_unique<SaveEvent>());
       game->textBox("Game Saved");
-      game->savepoint();
     }
   }
 };

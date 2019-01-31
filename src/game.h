@@ -45,6 +45,10 @@ struct TouchLevelBoundary : Event
   Vector transform {};
 };
 
+struct SaveEvent : Event
+{
+};
+
 struct Handle
 {
   virtual ~Handle() = default;
@@ -75,7 +79,6 @@ struct IGame
   virtual IVariable* getVariable(int name) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;
   virtual Vector getPlayerPosition() = 0;
-  virtual void savepoint() = 0;
   virtual void respawn() = 0;
 };
 

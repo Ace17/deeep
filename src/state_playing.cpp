@@ -71,6 +71,7 @@ struct GameState : Scene, private IGame
     for(int i = 0; i < 10; ++i)
       updateEntities();
 
+    processEvents();
     updateCamera();
 
     updateDebugFlag(c.debug);
@@ -146,6 +147,19 @@ struct GameState : Scene, private IGame
 
     m_physics->checkForOverlaps();
     removeDeadThings();
+  }
+
+  void processEvents()
+  {
+    auto events = move(m_eventQueue);
+
+    for(auto& event : events)
+    {
+      if(auto levelBoundaryEvent = event->as<TouchLevelBoundary>())
+        onTouchLevelBoundary(levelBoundaryEvent);
+      else if(event->as<SaveEvent>())
+        onSaveEvent();
+    }
   }
 
   void updateCamera()
@@ -274,7 +288,7 @@ struct GameState : Scene, private IGame
     {
       m_player = makeRockman().release();
       m_player->pos = Vector(level.start.x, level.start.y);
-      savepoint();
+      postEvent(make_unique<SaveEvent>());
     }
 
     spawn(m_player);
@@ -294,6 +308,7 @@ struct GameState : Scene, private IGame
   bool m_shouldLoadVars = false;
 
   map<int, unique_ptr<IVariable>> m_vars;
+  vector<unique_ptr<Event>> m_eventQueue;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
@@ -318,8 +333,7 @@ struct GameState : Scene, private IGame
 
   void postEvent(unique_ptr<Event> event) override
   {
-    if(auto levelBoundaryEvent = event->as<TouchLevelBoundary>())
-      onTouchLevelBoundary(levelBoundaryEvent);
+    m_eventQueue.push_back(move(event));
   }
 
   Vector getPlayerPosition() override
@@ -331,7 +345,7 @@ struct GameState : Scene, private IGame
   Vector m_savedPos = NullVector;
   map<int, int> m_savedVars;
 
-  void savepoint() override
+  void onSaveEvent()
   {
     m_savedLevel = m_level;
     m_savedPos = m_player->pos;
