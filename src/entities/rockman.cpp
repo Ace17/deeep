@@ -299,8 +299,11 @@ struct Rockman : Player, Damageable
     if(hurtDelay || life <= 0)
       control = Control {};
 
+    if(restartbutton.toggle(control.restart))
+      die();
+
     // 'dying' animation
-    if(life <= 0 || control.restart)
+    if(life <= 0)
     {
       decrement(dieDelay);
 
@@ -392,6 +395,7 @@ struct Rockman : Player, Damageable
 
   void die()
   {
+    life = 0;
     game->playSound(SND_DIE);
     ball = false;
     size = NORMAL_SIZE;
@@ -460,7 +464,7 @@ struct Rockman : Player, Damageable
   int debounceLanding = 0;
   ORIENTATION dir = RIGHT;
   bool ground = false;
-  Toggle jumpbutton, firebutton, dashbutton;
+  Toggle jumpbutton, firebutton, dashbutton, restartbutton;
   int time = 0;
   int climbDelay = 0;
   int hurtDelay = 0;
