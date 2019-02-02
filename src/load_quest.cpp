@@ -55,12 +55,7 @@ vector<int> decompressTiles(string data)
 static
 Size2i getSize(json::Value const& obj)
 {
-  Size2i r;
-
-  r.width = (int)obj["width"];
-  r.height = (int)obj["height"];
-
-  return r;
+  return Size2i(obj["width"], obj["height"]);
 }
 
 static
@@ -68,8 +63,7 @@ Rect2i getRect(json::Value const& obj)
 {
   Rect2i r;
 
-  r.pos.x = (int)obj["x"];
-  r.pos.y = (int)obj["y"];
+  r.pos = Vector2i(obj["x"], obj["y"]);
   r.size = getSize(obj);
 
   return r;
