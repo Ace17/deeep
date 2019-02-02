@@ -19,17 +19,15 @@ void addTexture(Action& action, const char* path, Rect2f rect)
 }
 
 static
-Action loadSheetAction(json::Value* val, string sheetPath, int ROWS, int COLS)
+Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, int COLS)
 {
   Action r;
 
-  auto action = json::cast<json::Object>(val);
-  action->getMember<json::String>("name");
-  auto frames = action->getMember<json::Array>("frames");
+  action["name"];
 
-  for(auto& frame : frames->elements)
+  for(auto& frame : action["frames"].elements)
   {
-    auto const idx = (json::cast<json::Number>(frame.get()))->value;
+    auto const idx = (int)frame;
 
     auto const col = idx % COLS;
     auto const row = idx / COLS;
@@ -52,17 +50,15 @@ Model loadAnimatedModel(const char* jsonPath)
   auto obj = json::parse(data.c_str(), data.size());
   auto dir = dirName(jsonPath);
 
-  auto type = obj->getMember<json::String>("type")->value;
-  auto sheet = obj->getMember<json::String>("sheet")->value;
-  auto const cols = obj->getMember<json::Number>("cols")->value;
-  auto const rows = obj->getMember<json::Number>("rows")->value;
+  auto type = string(obj["type"]);
+  auto sheet = string(obj["sheet"]);
+  auto const cols = (int)obj["cols"];
+  auto const rows = (int)obj["rows"];
 
   if(type == "sheet")
   {
-    auto actions = obj->getMember<json::Array>("actions");
-
-    for(auto& action : actions->elements)
-      r.actions.push_back(loadSheetAction(action.get(), dir + "/" + sheet, rows, cols));
+    for(auto& action : obj["actions"].elements)
+      r.actions.push_back(loadSheetAction(action, dir + "/" + sheet, rows, cols));
   }
   else if(type == "tiled")
   {

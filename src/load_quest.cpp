@@ -53,23 +53,23 @@ vector<int> decompressTiles(string data)
 }
 
 static
-Size2i getSize(json::Object* obj)
+Size2i getSize(json::Value const& obj)
 {
   Size2i r;
 
-  r.width = obj->getMember<json::Number>("width")->value;
-  r.height = obj->getMember<json::Number>("height")->value;
+  r.width = (int)obj["width"];
+  r.height = (int)obj["height"];
 
   return r;
 }
 
 static
-Rect2i getRect(json::Object* obj)
+Rect2i getRect(json::Value const& obj)
 {
   Rect2i r;
 
-  r.pos.x = obj->getMember<json::Number>("x")->value;
-  r.pos.y = obj->getMember<json::Number>("y")->value;
+  r.pos.x = (int)obj["x"];
+  r.pos.y = (int)obj["y"];
   r.size = getSize(obj);
 
   return r;
@@ -93,28 +93,25 @@ Rect2i convertRect(Rect2i rect, int pelsPerTile, int areaHeight)
 }
 
 static
-map<string, json::Object*> getAllLayers(json::Object* js)
+map<string, json::Value> getAllLayers(json::Value const& js)
 {
-  auto layers = js->getMember<json::Array>("layers");
+  map<string, json::Value> nameToLayer;
 
-  map<string, json::Object*> nameToLayer;
-
-  for(auto& layer : layers->elements)
+  for(auto& layer : js["layers"].elements)
   {
-    auto lay = json::cast<json::Object>(layer.get());
-    auto name = lay->getMember<json::String>("name")->value;
-    nameToLayer[name] = lay;
+    auto name = (string)layer["name"];
+    nameToLayer[name] = layer;
   }
 
   return nameToLayer;
 }
 
 static
-Matrix2<int> parseTileLayer(json::Object* json)
+Matrix2<int> parseTileLayer(json::Value& json)
 {
   Matrix2<int> tiles;
 
-  auto const data = json->getMember<json::String>("data")->value;
+  auto const data = (string)json["data"];
   auto const buff = decompressTiles(data);
   auto const size = getSize(json);
 
@@ -187,17 +184,15 @@ void generateConcreteRoom(Room& room)
 }
 
 static
-vector<Room::Spawner> parseThingLayer(json::Object* objectLayer, int height)
+vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height)
 {
   vector<Room::Spawner> r;
-  auto objects = objectLayer->getMember<json::Array>("objects");
 
-  for(auto& jsonObj : objects->elements)
+  for(auto& obj : objectLayer["objects"].elements)
   {
-    auto obj = json::cast<json::Object>(jsonObj.get());
     auto const objRect = convertRect(getRect(obj), 16, height);
 
-    auto const name = obj->getMember<json::String>("name")->value;
+    auto const name = (string)obj["name"];
     auto const pos = Vector(objRect.pos.x, objRect.pos.y);
 
     r.push_back(Room::Spawner { pos, name });
@@ -207,10 +202,9 @@ vector<Room::Spawner> parseThingLayer(json::Object* objectLayer, int height)
 }
 
 static
-void loadConcreteRoom(Room& room, json::Object* jsRoom)
+void loadConcreteRoom(Room& room, json::Value const& jsRoom)
 {
   auto layers = getAllLayers(jsRoom);
-  assert(layers["tiles"]);
   room.tiles = parseTileLayer(layers["tiles"]);
 
   if(exists(layers, "things"))
@@ -232,7 +226,7 @@ void loadConcreteRoom(Room& room, json::Object* jsRoom)
 }
 
 static
-Room loadAbstractRoom(json::Object* jsonRoom)
+Room loadAbstractRoom(json::Value const& jsonRoom)
 {
   auto box = getRect(jsonRoom);
 
@@ -242,11 +236,11 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   auto const sizeInTiles = box.size * CELL_SIZE;
 
   Room room;
-  room.name = jsonRoom->getMember<json::String>("name")->value;
+  room.name = (string)jsonRoom["name"];
   room.pos = box.pos;
   room.size = box.size;
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
-  room.theme = atoi(jsonRoom->getMember<json::String>("type")->value.c_str());
+  room.theme = atoi(string(jsonRoom["type"]).c_str());
 
   auto const path = "res/rooms/" + room.name + ".json";
 
@@ -254,7 +248,7 @@ Room loadAbstractRoom(json::Object* jsonRoom)
   {
     auto data = read(path);
     auto jsRoom = json::parse(data.c_str(), data.size());
-    loadConcreteRoom(room, jsRoom.get());
+    loadConcreteRoom(room, jsRoom);
   }
   else
   {
@@ -282,22 +276,15 @@ Quest loadQuest(string path) // tiled TMX format
   auto data = read(path);
   auto js = json::parse(data.c_str(), data.size());
 
-  auto layers = getAllLayers(js.get());
+  auto layers = getAllLayers(js);
 
   auto layer = layers["rooms"];
 
-  if(!layer)
-    throw runtime_error("room layer was not found");
-
   Quest r;
 
-  auto& rooms = layer->getMember<json::Array>("objects")->elements;
-
-  for(auto& roomValue : rooms)
+  for(auto& roomValue : layer["objects"].elements)
   {
-    auto jsonRoom = json::cast<json::Object>(roomValue.get());
-
-    auto room = loadAbstractRoom(jsonRoom);
+    auto room = loadAbstractRoom(roomValue);
     r.rooms.push_back(move(room));
   }
 

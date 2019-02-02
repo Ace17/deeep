@@ -9,7 +9,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 #include <stdexcept>
@@ -17,59 +16,76 @@ using namespace std;
 
 namespace json
 {
-template<typename To, typename From>
-To* cast(From* from)
-{
-  auto to = dynamic_cast<To*>(from);
-
-  if(from && !to)
-    throw runtime_error("Type error");
-
-  return to;
-}
-
 struct Value
 {
-  virtual ~Value() = default;
-};
-
-struct Object : Value
-{
-  map<string, unique_ptr<Value>> members;
-
-  template<typename T>
-  T* getMember(string name)
+  enum class Type
   {
+    String,
+    Object,
+    Array,
+    Integer,
+    Boolean,
+  };
+
+  Type type;
+
+  ////////////////////////////////////////
+  // type == Type::String
+  string stringValue;
+
+  operator string () const
+  {
+    enforceType(Type::String);
+    return stringValue;
+  };
+
+  ////////////////////////////////////////
+  // type == Type::Object
+  map<string, Value> members;
+
+  Value const & operator [] (const char* name) const
+  {
+    enforceType(Type::Object);
     auto it = members.find(name);
 
     if(it == members.end())
-      throw runtime_error("Member '" + name + "' was not found");
+      throw runtime_error("Member '" + string(name) + "' was not found");
 
-    auto pValue = it->second.get();
-    return cast<T>(pValue);
+    return it->second;
+  }
+
+  ////////////////////////////////////////
+  // type == Type::Array
+  vector<Value> elements;
+
+  Value const & operator [] (int i)
+  {
+    enforceType(Type::Array);
+    return elements[i];
+  }
+
+  ////////////////////////////////////////
+  // type == Type::Boolean
+  bool boolValue {};
+
+  ////////////////////////////////////////
+  // type == Type::Integer
+  int intValue {};
+
+  operator int () const
+  {
+    enforceType(Type::Integer);
+    return intValue;
+  };
+
+private:
+  void enforceType(Type expected) const
+  {
+    if(type != expected)
+      throw runtime_error("Type error");
   }
 };
 
-struct Array : Value
-{
-  vector<unique_ptr<Value>> elements;
-};
-
-struct String : Value
-{
-  string value;
-};
-
-struct Number : Value
-{
-  int value;
-};
-
-struct Boolean : Value
-{
-  bool value;
-};
-
-unique_ptr<Object> parse(const char* text, size_t len);
+Value parse(const char* text, size_t len);
 }
 
