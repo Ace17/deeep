@@ -49,14 +49,17 @@ struct SplashState : Scene
         return createPlayingState(view);
     }
 
+    return this;
+  }
+
+  void draw() override
+  {
     {
       auto splash = Actor { NullVector, MDL_SPLASH };
       splash.scale = Size2f(16, 16);
       splash.pos -= Vector2f(8, 8);
       view->sendActor(splash);
     }
-
-    return this;
   }
 
 private:

@@ -68,11 +68,13 @@ public:
 
       if(!m_paused)
       {
-        m_actors.clear();
         auto next = m_scene->tick(m_control);
 
         if(next != m_scene.get())
+        {
+          m_scene.release();
           m_scene.reset(next);
+        }
       }
 
       dirty = true;
@@ -80,6 +82,8 @@ public:
 
     if(dirty)
     {
+      m_actors.clear();
+      m_scene->draw();
       draw();
       m_fps.tick(now);
     }

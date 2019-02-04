@@ -33,7 +33,7 @@ CXXFLAGS+=-std=c++14
 CXXFLAGS+=$(PKG_CFLAGS)
 LDFLAGS+=$(PKG_LDFLAGS)
 
-CXXFLAGS+=-O3
+#CXXFLAGS+=-O3
 
 CXXFLAGS+=$(DBGFLAGS)
 LDFLAGS+=$(DBGFLAGS)
@@ -70,6 +70,7 @@ SRCS_GAME:=\
 	src/resources.cpp\
 	src/smarttiles.cpp\
 	src/state_playing.cpp\
+	src/state_paused.cpp\
 	src/state_splash.cpp\
 
 #------------------------------------------------------------------------------

@@ -32,5 +32,8 @@ struct Scene
   // advance the scene simulation to the next frame
   // returns the next scene
   virtual Scene* tick(Control c) = 0;
+
+  // ask the scene to send its actors for rendering
+  virtual void draw() = 0;
 };
 

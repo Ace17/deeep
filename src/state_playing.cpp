@@ -17,6 +17,7 @@
 #include "entity_factory.h"
 #include "entities/player.h"
 #include "entities/rockman.h"
+#include "toggle.h"
 #include "game.h"
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
@@ -64,6 +65,9 @@ struct GameState : Scene, private IGame
 
   Scene* tick(Control c) override
   {
+    if(startButton.toggle(c.start))
+      return createPausedState(m_view, this);
+
     loadLevelIfNeeded();
 
     m_player->think(c);
@@ -75,13 +79,15 @@ struct GameState : Scene, private IGame
     updateCamera();
 
     updateDebugFlag(c.debug);
-    sendActors();
 
     return this;
   }
 
-  void sendActors() const
+  void draw() override
   {
+    if(!m_player)
+      return;
+
     sendActorsForTileMap();
 
     vector<Actor> actors;
@@ -384,6 +390,7 @@ struct GameState : Scene, private IGame
   const Matrix2<int>* m_tiles;
   bool m_debug;
   bool m_debugFirstTime = true;
+  Toggle startButton;
 
   vector<unique_ptr<Entity>> m_entities;
   vector<unique_ptr<Entity>> m_spawned;
