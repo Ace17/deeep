@@ -4,14 +4,14 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// splash menu
+// minimap paused state
 
 #include "base/scene.h"
 #include "base/view.h"
 
 #include "vec.h"
 #include "toggle.h"
-#include "models.h" // MDL_SPLASH
+#include "models.h" // MDL_PAUSED
 #include "state_machine.h"
 
 struct PausedState : Scene
