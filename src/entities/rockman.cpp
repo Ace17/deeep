@@ -303,7 +303,7 @@ struct Rockman : Player, Damageable
       control = Control {};
 
     if(restartbutton.toggle(control.restart))
-      die();
+      life = 0;
 
     // 'dying' animation
     if(life <= 0)
