@@ -9,10 +9,10 @@
 #include "state_machine.h"
 #include "base/view.h"
 #include "base/span.h"
+#include <vector>
 #include <string>
 
-unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view);
-unique_ptr<Scene> createPlayingState(StateMachine* fsm, View* view, int level);
+using namespace std;
 
 Span<const Resource> getResources();
 
@@ -26,22 +26,13 @@ Scene* createGame(View* view, vector<string> args)
 {
   view->setTitle("Deeep");
   preloadResources(view);
-  auto fsm = make_unique<StateMachine>();
-
-  bool showSplash = true;
-  int level = 1;
 
   if(args.size() == 1)
   {
-    level = atoi(args[0].c_str());
-    showSplash = false;
+    int level = atoi(args[0].c_str());
+    return createPlayingStateAtLevel(view, level);
   }
 
-  if(showSplash)
-    fsm->states.push_back(createSplashState(fsm.get(), view));
-
-  fsm->states.push_back(createPlayingState(fsm.get(), view, level));
-
-  return fsm.release();
+  return createSplashState(view);
 }
 

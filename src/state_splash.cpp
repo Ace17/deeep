@@ -16,19 +16,14 @@
 
 struct SplashState : Scene
 {
-  SplashState(View* view_, StateMachine* fsm_) : view(view_), fsm(fsm_)
+  SplashState(View* view_) : view(view_)
   {
   }
 
   ////////////////////////////////////////////////////////////////
   // Scene: Game, seen by the engine
 
-  void init() override
-  {
-    activated = false;
-  }
-
-  void tick(Control c) override
+  Scene* tick(Control c) override
   {
     auto const FADE_TIME = 100;
 
@@ -38,7 +33,7 @@ struct SplashState : Scene
     {
       delay = FADE_TIME;
 
-      if(c.fire || c.jump || c.dash)
+      if(c.fire || c.jump || c.dash || c.start)
       {
         view->stopMusic();
         activated = true;
@@ -51,7 +46,7 @@ struct SplashState : Scene
     if(activated)
     {
       if(decrement(delay))
-        fsm->next();
+        return createPlayingState(view);
     }
 
     {
@@ -60,17 +55,18 @@ struct SplashState : Scene
       splash.pos -= Vector2f(8, 8);
       view->sendActor(splash);
     }
+
+    return this;
   }
 
 private:
   View* const view;
-  StateMachine* const fsm;
   bool activated = false;
   int delay = 0;
 };
 
-unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view)
+Scene* createSplashState(View* view)
 {
-  return make_unique<SplashState>(view, fsm);
+  return new SplashState(view);
 }
 

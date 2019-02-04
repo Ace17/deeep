@@ -62,7 +62,7 @@ struct GameState : Scene, private IGame
   ////////////////////////////////////////////////////////////////
   // Scene: Game, seen by the engine
 
-  void tick(Control c) override
+  Scene* tick(Control c) override
   {
     loadLevelIfNeeded();
 
@@ -76,6 +76,8 @@ struct GameState : Scene, private IGame
 
     updateDebugFlag(c.debug);
     sendActors();
+
+    return this;
   }
 
   void sendActors() const
@@ -418,11 +420,15 @@ struct GameState : Scene, private IGame
   }
 };
 
-unique_ptr<Scene> createPlayingState(StateMachine* fsm, View* view, int level)
+Scene* createPlayingStateAtLevel(View* view, int level)
 {
-  (void)fsm;
   auto gameState = make_unique<GameState>(view);
   gameState->m_level = level;
-  return gameState;
+  return gameState.release();
+}
+
+Scene* createPlayingState(View* view)
+{
+  return createPlayingStateAtLevel(view, 1);
 }
 

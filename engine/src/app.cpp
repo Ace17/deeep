@@ -69,7 +69,10 @@ public:
       if(!m_paused)
       {
         m_actors.clear();
-        m_scene->tick(m_control);
+        auto next = m_scene->tick(m_control);
+
+        if(next != m_scene.get())
+          m_scene.reset(next);
       }
 
       dirty = true;
@@ -118,7 +121,8 @@ private:
     m_control.up = keys[SDL_SCANCODE_UP];
     m_control.down = keys[SDL_SCANCODE_DOWN];
 
-    m_control.fire = keys[SDL_SCANCODE_Z] || keys[SDL_SCANCODE_RETURN];
+    m_control.start = keys[SDL_SCANCODE_RETURN];
+    m_control.fire = keys[SDL_SCANCODE_Z] || keys[SDL_SCANCODE_LCTRL];
     m_control.jump = keys[SDL_SCANCODE_X] || keys[SDL_SCANCODE_SPACE];
     m_control.dash = keys[SDL_SCANCODE_C];
 

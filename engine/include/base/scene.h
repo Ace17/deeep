@@ -14,6 +14,7 @@ struct Control
   bool left, right, up, down;
 
   // player actions
+  bool start;
   bool fire;
   bool jump;
   bool dash;
@@ -28,10 +29,8 @@ struct Scene
 {
   virtual ~Scene() = default;
 
-  // resets the scene
-  virtual void init() {};
-
   // advance the scene simulation to the next frame
-  virtual void tick(Control c) = 0;
+  // returns the next scene
+  virtual Scene* tick(Control c) = 0;
 };
 
