@@ -6,6 +6,7 @@
 
 // minimap paused state
 
+#include <memory>
 #include "base/scene.h"
 #include "base/view.h"
 
@@ -28,7 +29,10 @@ struct PausedState : Scene
     decrement(pauseDelay);
 
     if(startButton.toggle(c.start) && !pauseDelay)
-      return sub;
+    {
+      std::unique_ptr<Scene> deleteMeOnReturn(this);
+      return sub.release();
+    }
 
     return this;
   }
@@ -49,7 +53,7 @@ private:
   int pauseDelay = 10;
   Toggle startButton;
   View* const view;
-  Scene* const sub;
+  std::unique_ptr<Scene> sub;
 };
 
 Scene* createPausedState(View* view, Scene* sub)

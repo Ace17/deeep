@@ -6,6 +6,7 @@
 
 // splash menu
 
+#include <memory>
 #include "base/scene.h"
 #include "base/view.h"
 
@@ -46,7 +47,10 @@ struct SplashState : Scene
     if(activated)
     {
       if(decrement(delay))
+      {
+        std::unique_ptr<Scene> deleteMeOnReturn(this);
         return createPlayingState(view);
+      }
     }
 
     return this;
