@@ -66,7 +66,7 @@ struct GameState : Scene, private IGame
   Scene* tick(Control c) override
   {
     if(startButton.toggle(c.start))
-      return createPausedState(m_view, this);
+      return createPausedState(m_view, this, &m_quest);
 
     loadLevelIfNeeded();
 

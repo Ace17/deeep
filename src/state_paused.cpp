@@ -11,13 +11,14 @@
 #include "base/view.h"
 
 #include "vec.h"
+#include "quest.h"
 #include "toggle.h"
 #include "models.h" // MDL_PAUSED
 #include "state_machine.h"
 
 struct PausedState : Scene
 {
-  PausedState(View* view_, Scene* sub_) : view(view_), sub(sub_)
+  PausedState(View* view_, Scene* sub_, Quest* quest_) : view(view_), sub(sub_), quest(quest_)
   {
   }
 
@@ -41,6 +42,22 @@ struct PausedState : Scene
   {
     sub->draw();
 
+    for(auto& room : quest->rooms)
+    {
+      auto const cellSize = 0.4;
+      int col = room.pos.x;
+      int row = room.pos.y;
+
+      auto cell = Actor { NullVector, MDL_RECT };
+      cell.scale.width = room.size.width * cellSize;
+      cell.scale.height = room.size.height * cellSize;
+      cell.pos.x = cellSize * (col - 20);
+      cell.pos.y = cellSize * (row - 20);
+      cell.screenRefFrame = true;
+      cell.zOrder = 5;
+      view->sendActor(cell);
+    }
+
     auto overlay = Actor { NullVector, MDL_PAUSED };
     overlay.scale = Size2f(8, 8);
     overlay.pos -= Vector2f(4, 4);
@@ -54,10 +71,11 @@ private:
   Toggle startButton;
   View* const view;
   std::unique_ptr<Scene> sub;
+  Quest* const quest;
 };
 
-Scene* createPausedState(View* view, Scene* sub)
+Scene* createPausedState(View* view, Scene* sub, Quest* quest)
 {
-  return new PausedState(view, sub);
+  return new PausedState(view, sub, quest);
 }
 
