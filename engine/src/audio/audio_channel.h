@@ -30,8 +30,7 @@ struct LoopingSource : IAudioSource
         src = sound->createSource();
 
       auto const N = src->read(output);
-      output.len -= N;
-      output.data += N;
+      output += N;
 
       if(N == 0)
         src.reset();
