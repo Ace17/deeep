@@ -543,25 +543,6 @@ private:
     q.pos2.x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
     q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
 
-    // Don't call opengl if the object isn't visible.
-    // Notable FPS boost.
-    if(1)
-    {
-      auto const MAX = 1.0;
-
-      if(max(q.pos1.x, q.pos2.x) < -MAX)
-        return;
-
-      if(min(q.pos1.x, q.pos2.x) > +MAX)
-        return;
-
-      if(max(q.pos1.y, q.pos2.y) < -MAX)
-        return;
-
-      if(min(q.pos1.y, q.pos2.y) > +MAX)
-        return;
-    }
-
     // lighting
     {
       q.light[0] = m_ambientLight;
