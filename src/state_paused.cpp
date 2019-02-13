@@ -18,7 +18,7 @@
 
 struct PausedState : Scene
 {
-  PausedState(View* view_, Scene* sub_, Quest* quest_) : view(view_), sub(sub_), quest(quest_)
+  PausedState(View* view_, Scene* sub_, Quest* quest_, int roomIdx) : view(view_), sub(sub_), quest(quest_), m_roomIdx(roomIdx)
   {
   }
 
@@ -42,19 +42,26 @@ struct PausedState : Scene
   {
     sub->draw();
 
-    for(auto& room : quest->rooms)
+    for(int idx = 0; idx < (int)quest->rooms.size(); ++idx)
     {
+      auto& room = quest->rooms[idx];
+
       auto const cellSize = 0.4;
       int col = room.pos.x;
       int row = room.pos.y;
 
       auto cell = Actor { NullVector, MDL_RECT };
+      cell.action = 5;
       cell.scale.width = room.size.width * cellSize;
       cell.scale.height = room.size.height * cellSize;
       cell.pos.x = cellSize * (col - 20);
       cell.pos.y = cellSize * (row - 24);
       cell.screenRefFrame = true;
       cell.zOrder = 5;
+
+      if(idx == m_roomIdx)
+        cell.action = 0;
+
       view->sendActor(cell);
     }
 
@@ -72,10 +79,11 @@ private:
   View* const view;
   std::unique_ptr<Scene> sub;
   Quest* const quest;
+  int const m_roomIdx;
 };
 
-Scene* createPausedState(View* view, Scene* sub, Quest* quest)
+Scene* createPausedState(View* view, Scene* sub, Quest* quest, int roomIdx)
 {
-  return new PausedState(view, sub, quest);
+  return new PausedState(view, sub, quest, roomIdx);
 }
 

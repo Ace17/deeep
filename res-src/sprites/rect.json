@@ -23,6 +23,10 @@
     {
       "name": "hollow",
       "frames": [ 4 ]
+    },
+    {
+      "name": "mapcell",
+      "frames": [ 5 ]
     }
   ]
 }
