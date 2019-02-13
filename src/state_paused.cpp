@@ -52,17 +52,17 @@ struct PausedState : Scene
       cell.scale.width = room.size.width * cellSize;
       cell.scale.height = room.size.height * cellSize;
       cell.pos.x = cellSize * (col - 20);
-      cell.pos.y = cellSize * (row - 20);
+      cell.pos.y = cellSize * (row - 24);
       cell.screenRefFrame = true;
       cell.zOrder = 5;
       view->sendActor(cell);
     }
 
     auto overlay = Actor { NullVector, MDL_PAUSED };
-    overlay.scale = Size2f(8, 8);
-    overlay.pos -= Vector2f(4, 4);
+    overlay.scale = Size2f(12, 12);
+    overlay.pos -= Vector2f(6, 6);
     overlay.screenRefFrame = true;
-    overlay.zOrder = 10;
+    overlay.zOrder = 4;
     view->sendActor(overlay);
   }
 
