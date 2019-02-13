@@ -51,6 +51,7 @@ SRCS_GAME:=\
 	src/entities/conveyor.cpp\
 	src/entities/detector.cpp\
 	src/entities/door.cpp\
+	src/entities/exitpoint.cpp\
 	src/entities/explosion.cpp\
 	src/entities/hatch.cpp\
 	src/entities/hopper.cpp\
@@ -69,6 +70,7 @@ SRCS_GAME:=\
 	src/load_quest.cpp\
 	src/resources.cpp\
 	src/smarttiles.cpp\
+	src/state_ending.cpp\
 	src/state_playing.cpp\
 	src/state_paused.cpp\
 	src/state_splash.cpp\

@@ -80,6 +80,12 @@ struct GameState : Scene, private IGame
 
     updateDebugFlag(c.debug);
 
+    if(m_gameFinished)
+    {
+      std::unique_ptr<Scene> deleteMeOnReturn(this);
+      return createEndingState(m_view);
+    }
+
     return this;
   }
 
@@ -167,6 +173,8 @@ struct GameState : Scene, private IGame
         onTouchLevelBoundary(levelBoundaryEvent);
       else if(event->as<SaveEvent>())
         onSaveEvent();
+      else if(event->as<FinishGameEvent>())
+        m_gameFinished = true;
     }
   }
 
@@ -386,6 +394,7 @@ struct GameState : Scene, private IGame
   Player* m_player = nullptr;
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
+  bool m_gameFinished = false;
 
   const Matrix2<int>* m_tiles;
   bool m_debug;

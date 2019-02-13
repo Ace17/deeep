@@ -3,6 +3,7 @@
  "layers":[
         {
          "draworder":"topdown",
+         "id":1,
          "name":"rooms",
          "objects":[
                 {
@@ -92,17 +93,6 @@
                  "width":8,
                  "x":88,
                  "y":172
-                }, 
-                {
-                 "height":4,
-                 "id":208,
-                 "name":"Antichamber",
-                 "rotation":0,
-                 "type":"5",
-                 "visible":true,
-                 "width":16,
-                 "x":116,
-                 "y":112
                 }, 
                 {
                  "height":4,
@@ -514,7 +504,7 @@
                 {
                  "height":4,
                  "id":278,
-                 "name":"savepoint",
+                 "name":"exitpoint",
                  "rotation":0,
                  "type":"5",
                  "visible":true,
@@ -530,6 +520,7 @@
         }, 
         {
          "draworder":"topdown",
+         "id":2,
          "name":"conections",
          "objects":[],
          "opacity":1,
@@ -541,6 +532,7 @@
         {
          "color":"#ff0000",
          "draworder":"topdown",
+         "id":3,
          "name":"items",
          "objects":[],
          "opacity":1,
@@ -552,6 +544,7 @@
         {
          "color":"#0e76ff",
          "draworder":"topdown",
+         "id":4,
          "name":"doors",
          "objects":[],
          "opacity":1,
@@ -560,14 +553,15 @@
          "x":0,
          "y":0
         }],
+ "nextlayerid":5,
  "nextobjectid":279,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.1.5",
+ "tiledversion":"1.2.1",
  "tileheight":4,
  "tilesets":[],
  "tilewidth":4,
  "type":"map",
- "version":1,
+ "version":1.2,
  "width":64
 }

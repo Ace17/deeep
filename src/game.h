@@ -49,6 +49,10 @@ struct SaveEvent : Event
 {
 };
 
+struct FinishGameEvent : Event
+{
+};
+
 struct Handle
 {
   virtual ~Handle() = default;
