@@ -17,7 +17,7 @@
 using namespace std;
 
 #define GL_GLEXT_PROTOTYPES 1
-#include "GL/gl.h"
+#include "SDL_opengl.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 
 #include "base/util.h" // clamp
