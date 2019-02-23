@@ -7,6 +7,7 @@
  */
 
 #include <algorithm>
+#include <cmath>
 
 #include "entities/bonus.h"
 #include "entities/explosion.h"
