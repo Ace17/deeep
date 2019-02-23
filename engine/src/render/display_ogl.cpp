@@ -256,7 +256,7 @@ struct OpenglDisplay : Display
   OpenglDisplay(Size2i resolution)
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
-      throw runtime_error("Can't init SDL");
+      throw runtime_error(string("Can't init SDL video: ") + SDL_GetError());
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
