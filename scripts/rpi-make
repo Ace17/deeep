@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# This scripts builds the project for the RPI target,
+# by injecting the proper parameters into the Makefile.
+
+set -euo pipefail
+
+# Here's the (native) command line to build SDL2:
+# (libudev is for input. Be sure to have libudev-dev installed).
+#
+# ./configure \
+#   --prefix=/opt/env/rpi \
+#   --enable-alsa --enable-video-rpi --enable-libudev \
+#   --disable-video-vulkan --disable-video-opengl --disable-video-opengles1 \
+#   --disable-diskaudio --disable-oss \
+#
+
+readonly SYSROOT=/opt/env/rpi
+
+export CROSS_COMPILE=arm-linux-gnueabihf-
+export PKG_CONFIG_LIBDIR=$SYSROOT/lib/pkgconfig
+
+if [ ! -d $PKG_CONFIG_LIBDIR ] ; then
+  echo "PKG_CONFIG_LIBDIR points to a non-existing directory ('$PKG_CONFIG_LIBDIR')" >&2
+  exit 1
+fi
+
+export DBGFLAGS=""
+export CXXFLAGS="-O3 -g0 -DNDEBUG"
+export LDFLAGS="-O3 -g0"
+
+make "$@"
+
