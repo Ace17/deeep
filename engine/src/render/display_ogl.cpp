@@ -311,9 +311,6 @@ struct OpenglDisplay : Display
     assert(m_texCoordLoc >= 0);
 
     SAFE_GL(glGenBuffers(1, &m_batchVbo));
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
-    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * MAX_VERTICES, NULL, GL_DYNAMIC_DRAW));
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
     printf("[display] init OK\n");
   }
@@ -426,7 +423,7 @@ struct OpenglDisplay : Display
         if(vboData.empty())
           return;
 
-        SAFE_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vboData[0]) * vboData.size(), vboData.data()));
+        SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(vboData[0]) * vboData.size(), vboData.data(), GL_STREAM_DRAW));
         SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, vboData.size()));
         vboData.clear();
         ++drawCalls;
