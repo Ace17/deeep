@@ -6,7 +6,6 @@
 
 // Game logic
 
-#include <array>
 #include <list>
 #include <map>
 
@@ -28,9 +27,6 @@
 #include "state_machine.h"
 
 using namespace std;
-
-// from smarttiles
-array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
 
 static
 void spawnEntities(Room const& room, IGame* game, int levelIdx)
@@ -198,25 +194,21 @@ struct GameState : Scene, private IGame
     auto onCell =
       [&] (int x, int y, int tile)
       {
-        if(!tile)
+        if(tile == -1)
           return;
 
-        auto composition = computeTileFor(*m_tiles, x, y);
-
-        for(int subTile = 0; subTile < 4; ++subTile)
         {
-          auto const ts = 1.0;
-          auto const posX = (x + (subTile % 2) * 0.5) * ts;
-          auto const posY = (y + (subTile / 2) * 0.5) * ts;
+          auto const posX = (x * 0.5);
+          auto const posY = (y * 0.5);
           auto actor = Actor { Vector(posX, posY), model };
-          actor.action = composition[subTile];
-          actor.scale = Size(0.5, 0.5);
+          actor.action = tile;
+          actor.scale = UnitSize * 0.5;
           actor.zOrder = -1;
           m_view->sendActor(actor);
         }
       };
 
-    m_tiles->scan(onCell);
+    m_tilesForDisplay->scan(onCell);
   }
 
   void removeDeadThings()
@@ -290,6 +282,7 @@ struct GameState : Scene, private IGame
     auto& level = m_quest.rooms[levelIdx];
     spawnEntities(level, this, levelIdx);
     m_tiles = &level.tiles;
+    m_tilesForDisplay = &level.tilesForDisplay;
     m_theme = level.theme;
     m_view->playMusic(level.theme);
 
@@ -397,6 +390,7 @@ struct GameState : Scene, private IGame
   bool m_gameFinished = false;
 
   const Matrix2<int>* m_tiles;
+  const Matrix2<int>* m_tilesForDisplay;
   bool m_debug;
   bool m_debugFirstTime = true;
   Toggle startButton;

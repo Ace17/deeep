@@ -20,6 +20,7 @@ struct Room
   Size2i size;
   int theme = 0;
   Matrix2<int> tiles;
+  Matrix2<int> tilesForDisplay;
   Vector2i start;
   std::string name;
 

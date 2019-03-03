@@ -236,10 +236,12 @@ struct Rockman : Player, Damageable
         game->playSound(SND_JUMP);
         // wall climbing
         vel.x = dir == RIGHT ? -0.04 : 0.04;
+
         if(c.dash)
           dashDelay = 400;
         else
           dashDelay = 0;
+
         vel.y = JUMP_VEL;
         climbDelay = CLIMB_DELAY;
         doubleJumped = false;
