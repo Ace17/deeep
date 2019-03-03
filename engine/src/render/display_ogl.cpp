@@ -540,6 +540,21 @@ private:
     q.pos2.x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
     q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
 
+    // culling
+    {
+      if(q.pos1.x < -1 && q.pos2.x < -1)
+        return;
+
+      if(q.pos1.y < -1 && q.pos2.y < -1)
+        return;
+
+      if(q.pos1.x > +1 && q.pos2.x > +1)
+        return;
+
+      if(q.pos1.y > +1 && q.pos2.y > +1)
+        return;
+    }
+
     // lighting
     {
       q.light[0] = m_ambientLight;
