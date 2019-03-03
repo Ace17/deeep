@@ -157,8 +157,8 @@
                  "type":"0",
                  "visible":true,
                  "width":4,
-                 "x":60,
-                 "y":188
+                 "x":56,
+                 "y":192
                 }, 
                 {
                  "height":12,
@@ -271,7 +271,7 @@
                  "y":136
                 }, 
                 {
-                 "height":4,
+                 "height":8,
                  "id":256,
                  "name":"corridor_4x1",
                  "rotation":0,
@@ -511,6 +511,17 @@
                  "width":4,
                  "x":60,
                  "y":120
+                }, 
+                {
+                 "height":8,
+                 "id":279,
+                 "name":"OnlyDownwards",
+                 "rotation":0,
+                 "type":"0",
+                 "visible":true,
+                 "width":4,
+                 "x":60,
+                 "y":188
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -554,7 +565,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":279,
+ "nextobjectid":281,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.1",
