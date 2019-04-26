@@ -8,7 +8,6 @@
 
 #include <functional>
 #include <string>
-#include <vector>
 #include <memory>
 
 using namespace std;
@@ -20,7 +19,11 @@ struct Entity;
 // createEntity("door(4)");
 std::unique_ptr<Entity> createEntity(string name);
 
-using EntityConfig = vector<string> const;
+struct EntityConfig
+{
+  virtual string getString(const char* varName) = 0;
+};
+
 using CreationFunc = function<unique_ptr<Entity>(EntityConfig & args)>;
 int registerEntity(string type, CreationFunc func);
 

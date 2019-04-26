@@ -429,6 +429,12 @@
                  "height":16,
                  "id":38,
                  "name":"moving_platform(1)",
+                 "properties":[
+                        {
+                         "name":"speed",
+                         "type":"string",
+                         "value":"2.5"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

@@ -67,6 +67,6 @@ struct RoomBoundaryBlocker : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("room_boundary_detector", [] (EntityConfig& args) { int targetLevel = atoi(args[0].c_str()); Vector transform; transform.x = atoi(args[1].c_str()); transform.y = atoi(args[2].c_str()); return make_unique<RoomBoundaryDetector>(targetLevel, transform); });
+static auto const reg1 = registerEntity("room_boundary_detector", [] (EntityConfig& args) { int targetLevel = atoi(args.getString("0").c_str()); Vector transform; transform.x = atoi(args.getString("1").c_str()); transform.y = atoi(args.getString("2").c_str()); return make_unique<RoomBoundaryDetector>(targetLevel, transform); });
 static auto const reg2 = registerEntity("blocker", [] (EntityConfig &) { return make_unique<RoomBoundaryBlocker>(-1); });
 

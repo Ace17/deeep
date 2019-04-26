@@ -126,7 +126,28 @@ unique_ptr<Entity> createEntity(string formula)
   auto words = parseCall(formula);
   auto name = words[0];
   words.erase(words.begin());
-  EntityConfig args = words;
+
+  struct EntityConfigImpl : EntityConfig
+  {
+    EntityConfigImpl(vector<string> const& values_)
+    {
+      int i = 0;
+
+      for(auto& varValue : values_)
+      {
+        auto varName = to_string(i++);
+        values[varName] = varValue;
+      }
+    }
+
+    string getString(const char* varName) override
+    {
+      return values[varName];
+    }
+
+    map<string, string> values;
+  };
+  EntityConfigImpl args(words);
 
   auto i_func = g_registry->find(name);
 
