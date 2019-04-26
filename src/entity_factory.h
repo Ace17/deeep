@@ -22,6 +22,8 @@ std::unique_ptr<Entity> createEntity(string name);
 struct EntityConfig
 {
   virtual string getString(const char* varName) = 0;
+
+  int getInt(const char* varName) { return atoi(getString(varName).c_str()); }
 };
 
 using CreationFunc = function<unique_ptr<Entity>(EntityConfig & args)>;

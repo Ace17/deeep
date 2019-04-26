@@ -145,6 +145,6 @@ struct Elevator : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("moving_platform", [] (EntityConfig& args) { auto arg = atoi(args.getString("0").c_str()); return make_unique<MovingPlatform>(arg); });
+static auto const reg1 = registerEntity("moving_platform", [] (EntityConfig& args) { auto arg = args.getInt("0"); return make_unique<MovingPlatform>(arg); });
 static auto const reg2 = registerEntity("elevator", [] (EntityConfig &) { return make_unique<Elevator>(); });
 

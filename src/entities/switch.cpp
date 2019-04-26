@@ -70,5 +70,5 @@ unique_ptr<Entity> makeSwitch(int id)
 }
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("switch", [] (EntityConfig& args) { auto arg = atoi(args.getString("0").c_str()); return makeSwitch(arg); });
+static auto const reg1 = registerEntity("switch", [] (EntityConfig& args) { auto arg = args.getInt("0"); return makeSwitch(arg); });
 
