@@ -155,5 +155,5 @@ unique_ptr<Entity> makeSpider()
 }
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("spider", [] (EntityConfig &) { extern unique_ptr<Entity> makeSpider(); return makeSpider(); });
+static auto const reg1 = registerEntity("spider", [] (IEntityConfig*) { extern unique_ptr<Entity> makeSpider(); return makeSpider(); });
 

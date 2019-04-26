@@ -89,5 +89,5 @@ struct Sweeper : Entity, Damageable
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("sweeper", [] (EntityConfig &) { return make_unique<Sweeper>(); });
+static auto const reg1 = registerEntity("sweeper", [] (IEntityConfig*) { return make_unique<Sweeper>(); });
 

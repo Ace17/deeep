@@ -46,5 +46,5 @@ struct Conveyor : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("conveyor", [] (EntityConfig &) { return make_unique<Conveyor>(); });
+static auto const reg1 = registerEntity("conveyor", [] (IEntityConfig*) { return make_unique<Conveyor>(); });
 

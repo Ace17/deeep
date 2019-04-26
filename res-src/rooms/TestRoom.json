@@ -433,7 +433,7 @@
                         {
                          "name":"speed",
                          "type":"string",
-                         "value":"2.5"
+                         "value":"250"
                         }],
                  "rotation":0,
                  "type":"",

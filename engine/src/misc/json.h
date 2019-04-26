@@ -54,6 +54,11 @@ struct Value
     return it->second;
   }
 
+  bool has(const char* name) const
+  {
+    return members.find(name) != members.end();
+  }
+
   ////////////////////////////////////////
   // type == Type::Array
   vector<Value> elements;

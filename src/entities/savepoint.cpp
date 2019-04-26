@@ -46,5 +46,5 @@ struct SavePoint : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("savepoint", [] (EntityConfig &) { return make_unique<SavePoint>(); });
+static auto const reg1 = registerEntity("savepoint", [] (IEntityConfig*) { return make_unique<SavePoint>(); });
 

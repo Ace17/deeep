@@ -18,8 +18,9 @@
 
 struct MovingPlatform : Entity
 {
-  MovingPlatform(int dir_)
+  MovingPlatform(int dir_, int speed_)
   {
+    speed = speed_ / 100.0;
     solid = true;
     pusher = true;
     size = Size(2, 1);
@@ -38,7 +39,7 @@ struct MovingPlatform : Entity
 
   void tick() override
   {
-    auto delta = 0.005 * sin(ticks * 0.005);
+    auto delta = 0.005 * sin(ticks * 0.005) * speed;
 
     // moveBody doesn't work well with very small displacements
     if(abs(delta) < 0.001)
@@ -51,6 +52,7 @@ struct MovingPlatform : Entity
 
   int ticks = 0;
   int dir = 0;
+  float speed = 1.0;
 };
 
 struct Elevator : Entity
@@ -145,6 +147,6 @@ struct Elevator : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("moving_platform", [] (EntityConfig& args) { auto arg = args.getInt("0"); return make_unique<MovingPlatform>(arg); });
-static auto const reg2 = registerEntity("elevator", [] (EntityConfig &) { return make_unique<Elevator>(); });
+static auto const reg1 = registerEntity("moving_platform", [] (IEntityConfig* cfg) { auto arg = cfg->getInt("0"); auto speed = cfg->getInt("speed", 100); return make_unique<MovingPlatform>(arg, speed); });
+static auto const reg2 = registerEntity("elevator", [] (IEntityConfig*) { return make_unique<Elevator>(); });
 

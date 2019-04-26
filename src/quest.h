@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include <vector>
 #include "base/geom.h"
 #include "vec.h"
@@ -28,6 +29,7 @@ struct Room
   {
     Vector pos;
     std::string name;
+    std::map<std::string, std::string> config {};
   };
 
   vector<Spawner> spawners;

@@ -44,5 +44,5 @@ struct ExitPoint : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("exitpoint", [] (EntityConfig &) { return make_unique<ExitPoint>(); });
+static auto const reg1 = registerEntity("exitpoint", [] (IEntityConfig*) { return make_unique<ExitPoint>(); });
 

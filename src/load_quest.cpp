@@ -186,10 +186,22 @@ vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height
   {
     auto const objRect = convertRect(getRect(obj), 16, height);
 
-    auto const name = (string)obj["name"];
-    auto const pos = Vector(objRect.pos.x, objRect.pos.y);
+    Room::Spawner spawner;
 
-    r.push_back(Room::Spawner { pos, name });
+    spawner.pos = Vector(objRect.pos.x, objRect.pos.y);
+    spawner.name = (string)obj["name"];
+
+    if(obj.has("properties"))
+    {
+      for(auto& prop : obj["properties"].elements)
+      {
+        auto varName = (string)prop["name"];
+        auto varValue = (string)prop["value"];
+        spawner.config[varName] = varValue;
+      }
+    }
+
+    r.push_back(spawner);
   }
 
   return r;
