@@ -32,7 +32,13 @@
                 {
                  "height":16,
                  "id":7,
-                 "name":"moving_platform(0)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -43,7 +49,13 @@
                 {
                  "height":16,
                  "id":8,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -54,7 +66,13 @@
                 {
                  "height":16,
                  "id":9,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -65,7 +83,13 @@
                 {
                  "height":16,
                  "id":10,
-                 "name":"moving_platform(0)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -76,7 +100,13 @@
                 {
                  "height":16,
                  "id":11,
-                 "name":"moving_platform(0)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -87,7 +117,13 @@
                 {
                  "height":16,
                  "id":12,
-                 "name":"moving_platform(0)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -98,7 +134,13 @@
                 {
                  "height":16,
                  "id":13,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -109,7 +151,13 @@
                 {
                  "height":16,
                  "id":14,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -120,7 +168,13 @@
                 {
                  "height":16,
                  "id":15,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -131,7 +185,13 @@
                 {
                  "height":16,
                  "id":16,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

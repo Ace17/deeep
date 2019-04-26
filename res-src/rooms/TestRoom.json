@@ -98,7 +98,13 @@
                 {
                  "height":16,
                  "id":8,
-                 "name":"moving_platform(0)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -109,7 +115,13 @@
                 {
                  "height":16,
                  "id":9,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
+                 "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -428,8 +440,13 @@
                 {
                  "height":16,
                  "id":38,
-                 "name":"moving_platform(1)",
+                 "name":"moving_platform",
                  "properties":[
+                        {
+                         "name":"dir",
+                         "type":"string",
+                         "value":"1"
+                        }, 
                         {
                          "name":"speed",
                          "type":"string",
