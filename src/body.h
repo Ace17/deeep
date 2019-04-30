@@ -33,7 +33,7 @@ struct Body
   int collidesWith = 0xFFFF;
 
   // the body we rest on (if any)
-  Body* ground = nullptr;
+  Body* floor = nullptr;
 
   // only called if (this->collidesWith & other->collisionGroup)
   function<void(Body*)> onCollision = [] (Body*) {};

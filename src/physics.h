@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <memory>
 #include "body.h"
 #include "physics_probe.h"
 
@@ -22,5 +21,6 @@ struct IPhysics : IPhysicsProbe
   virtual void setEdifice(function<bool(IntBox)> isSolid) = 0;
 };
 
+#include <memory>
 unique_ptr<IPhysics> createPhysics();
 

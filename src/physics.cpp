@@ -68,13 +68,13 @@ struct Physics : IPhysics
       // assert(!getSolidBodyInBox(body->getBox(), body));
     }
 
-    // update ground
+    // update floor
     if(!body->pusher)
     {
       auto feet = body->getBox();
       feet.size.height = 16;
       feet.pos.y -= feet.size.height;
-      body->ground = getSolidBodyInBox(feet, body);
+      body->floor = getSolidBodyInBox(feet, body);
     }
 
     return !blocked;
@@ -85,7 +85,7 @@ struct Physics : IPhysics
     // move stacked bodies
     for(auto otherBody : m_bodies)
     {
-      if(otherBody->ground == body)
+      if(otherBody->floor == body)
         moveBody(otherBody, delta);
     }
 
