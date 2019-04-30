@@ -81,6 +81,17 @@ struct Rockman : Player, Damageable
   Rockman()
   {
     size = NORMAL_SIZE;
+    collidesWith |= CG_LADDER;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
+  }
+
+  void onCollide(Body* b)
+  {
+    if(dynamic_cast<Climbable*>(b))
+    {
+      ladderDelay = 10;
+      ladderX = b->pos.x;
+    }
   }
 
   virtual void addActors(vector<Actor>& actors) const override
@@ -109,6 +120,12 @@ struct Rockman : Player, Damageable
     {
       r.action = ACTION_HURT;
       r.ratio = 1.0f - hurtDelay / float(HURT_DELAY);
+    }
+    else if(ladder)
+    {
+      r.action = ACTION_LADDER;
+      r.ratio = vel.y == 0 ? 0.3 : (time % 200) / 200.0f;
+      r.pos += Vector(0.05, -0.5);
     }
     else if(!ground)
     {
@@ -202,7 +219,7 @@ struct Rockman : Player, Damageable
       dir = LEFT;
 
     // gravity
-    if(life >= 0)
+    if(life > 0 && !ladder)
       vel.y -= 0.00005;
 
     sliding = false;
@@ -254,9 +271,12 @@ struct Rockman : Player, Damageable
       }
     }
 
-    // stop jump if the player release the button early
-    if(vel.y > 0 && !c.jump)
-      vel.y = 0;
+    if(!ladder)
+    {
+      // stop jump if the player release the button early
+      if(vel.y > 0 && !c.jump)
+        vel.y = 0;
+    }
 
     vel.x = clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
     vel.y = max(vel.y, -MAX_FALL_SPEED);
@@ -266,7 +286,30 @@ struct Rockman : Player, Damageable
   {
     float wantedSpeed = 0;
 
-    if(!climbDelay)
+    if(ladderDelay && (c.up || c.down))
+      ladder = true;
+
+    if(ladder)
+    {
+      pos.x = ladderX + 0.1;
+
+      if(c.jump || c.left || c.right)
+      {
+        ladder = false;
+        ground = false;
+      }
+      else
+      {
+        if(c.up)
+          vel.y = +WALK_SPEED;
+        else if(c.down)
+          vel.y = -WALK_SPEED;
+        else
+          vel.y = 0;
+      }
+    }
+
+    if(!climbDelay && !ladder)
     {
       if(c.left)
         wantedSpeed -= WALK_SPEED;
@@ -348,6 +391,7 @@ struct Rockman : Player, Damageable
     decrement(debounceLanding);
     decrement(climbDelay);
     decrement(shootDelay);
+    decrement(ladderDelay);
 
     handleShooting();
 
@@ -446,7 +490,7 @@ struct Rockman : Player, Damageable
 
   void handleBall()
   {
-    if(control.down && !ball && (upgrades & UPGRADE_BALL))
+    if(!ladder && control.down && !ball && (upgrades & UPGRADE_BALL))
     {
       ball = true;
       size = Size(NORMAL_SIZE.width, 0.9);
@@ -477,10 +521,13 @@ struct Rockman : Player, Damageable
   int dashDelay = 0;
   int dieDelay = 0;
   int shootDelay = 0;
+  int ladderDelay = 0;
+  float ladderX;
   int life = MAX_LIFE;
   bool doubleJumped = false;
   bool ball = false;
   bool sliding = false;
+  bool ladder = false;
   Control control {};
   Vector vel;
 

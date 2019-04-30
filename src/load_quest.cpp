@@ -216,16 +216,23 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
   if(exists(layers, "things"))
     room.spawners = parseThingLayer(layers["things"], room.size.height * 16);
 
-  // add spikes
+  // add spikes and ladders
   for(auto pos : rasterScan(room.tiles.size.width, room.tiles.size.height))
   {
     auto const x = pos.first;
     auto const y = pos.second;
+    auto const tile = room.tiles.get(x, y);
 
-    if(room.tiles.get(x, y) >= 8)
+    if(tile == 9)
     {
       auto const pos = Vector(x, y);
       room.spawners.push_back({ pos, "spikes" });
+      room.tiles.set(x, y, 0);
+    }
+    else if(tile == 10)
+    {
+      auto const pos = Vector(x, y);
+      room.spawners.push_back({ pos, "ladder" });
       room.tiles.set(x, y, 0);
     }
   }

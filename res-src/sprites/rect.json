@@ -27,6 +27,10 @@
     {
       "name": "mapcell",
       "frames": [ 5 ]
+    },
+    {
+      "name": "ladder",
+      "frames": [ 6 ]
     }
   ]
 }

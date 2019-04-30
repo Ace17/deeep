@@ -54,11 +54,11 @@
     },
     {
       "name": "ladder",
-      "frames": [ 4 ]
+      "frames": [ 113, 114, 115, 116, 115, 114 ]
     },
     {
       "name": "ladderEnd",
-      "frames": [ 4 ]
+      "frames": [ 113 ]
     },
     {
       "name": "ladderShoot",

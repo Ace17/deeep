@@ -63,6 +63,7 @@ SRCS_GAME:=\
 	src/entities/sweeper.cpp\
 	src/entities/switch.cpp\
 	src/entities/wheel.cpp\
+	src/entities/ladder.cpp\
 	src/entity_factory.cpp\
 	src/game.cpp\
 	src/physics.cpp\

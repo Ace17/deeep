@@ -19,6 +19,11 @@
 
 using namespace std;
 
+struct Climbable
+{
+  virtual ~Climbable() = default;
+};
+
 struct Damageable
 {
   virtual void onDamage(int amount) = 0;

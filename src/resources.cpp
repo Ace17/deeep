@@ -54,6 +54,7 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_BULLET, "res/sprites/bullet.model" },
   { ResourceType::Model, MDL_EXPLOSION, "res/sprites/explosion.model" },
   { ResourceType::Model, MDL_SPIKES, "res/sprites/spikes.model" },
+  { ResourceType::Model, MDL_LADDER, "res/sprites/rect.model" },
 };
 
 Span<const Resource> getResources()
