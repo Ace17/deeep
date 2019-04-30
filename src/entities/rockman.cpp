@@ -341,6 +341,12 @@ struct Rockman : Player, Damageable
 
   virtual void tick() override
   {
+    for(int i = 0; i < 10; ++i)
+      subTick();
+  }
+
+  void subTick()
+  {
     decrement(blinking);
     decrement(hurtDelay);
 
@@ -480,7 +486,7 @@ struct Rockman : Player, Damageable
           offsetV.y += 0.25;
 
         b->pos = pos + offsetV + offsetH * sign;
-        b->vel = Vector(0.025, 0) * sign;
+        b->vel = Vector(0.25, 0) * sign;
         game->spawn(b.release());
         game->playSound(SND_FIRE);
         shootDelay = 300;

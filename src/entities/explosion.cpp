@@ -14,7 +14,7 @@
 #include "sounds.h"
 #include "entities/player.h"
 
-static auto const DURATION = 400;
+static auto const DURATION = 40;
 
 struct Explosion : Entity
 {

@@ -61,7 +61,7 @@ struct Hatch : Entity
   }
 
   int openingTimer = 0;
-  enum { OPEN_DURATION = 1000 };
+  enum { OPEN_DURATION = 100 };
 };
 
 #include "entity_factory.h"

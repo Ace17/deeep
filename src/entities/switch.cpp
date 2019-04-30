@@ -52,7 +52,7 @@ struct Switch : Entity
     if(blinking)
       return;
 
-    blinking = 2000;
+    blinking = 200;
     state = !state;
     game->playSound(SND_SWITCH);
 

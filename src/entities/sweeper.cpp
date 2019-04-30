@@ -24,8 +24,8 @@ struct Sweeper : Entity, Damageable
     collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
 
-    vel.x = 0.003;
-    vel.y = 0.003;
+    vel.x = 0.03;
+    vel.y = 0.03;
   }
 
   virtual void addActors(vector<Actor>& actors) const override
@@ -39,7 +39,7 @@ struct Sweeper : Entity, Damageable
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 800) / 800.0f;
+    r.ratio = (time % 80) / 80.0f;
 
     actors.push_back(r);
   }
@@ -67,7 +67,7 @@ struct Sweeper : Entity, Damageable
 
   virtual void onDamage(int amount) override
   {
-    blinking = 750;
+    blinking = 75;
     life -= amount;
 
     game->playSound(SND_DAMAGE);

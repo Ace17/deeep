@@ -58,7 +58,7 @@ struct FragileBlock : Entity, Damageable
 
   void disappear()
   {
-    disappearTimer = 3000;
+    disappearTimer = 300;
     collisionGroup = 0;
     solid = 0;
   }

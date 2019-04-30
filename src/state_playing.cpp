@@ -192,8 +192,7 @@ struct GameState : Scene, private IGame
 
     m_player->think(c);
 
-    for(int i = 0; i < 10; ++i)
-      updateEntities();
+    updateEntities();
 
     processEvents();
     updateCamera();

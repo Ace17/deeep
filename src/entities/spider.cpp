@@ -53,7 +53,7 @@ struct SpiderBullet : Entity
     dead = true;
   }
 
-  int life = 1000;
+  int life = 100;
   Vector vel;
 };
 
@@ -78,7 +78,7 @@ struct Spider : Entity, Damageable
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 200) / 200.0f;
+    r.ratio = (time % 20) / 20.0f;
 
     if(dir > 0)
       r.scale.width = -r.scale.width;
@@ -92,7 +92,7 @@ struct Spider : Entity, Damageable
 
     decrement(blinking);
 
-    if(time % 1500 == 0)
+    if(time % 150 == 0)
     {
       auto target = game->getPlayerPosition();
       auto delta = target - pos;
@@ -113,7 +113,7 @@ struct Spider : Entity, Damageable
 
   void shoot(float angle)
   {
-    auto const speed = 0.01;
+    auto const speed = 0.1;
     auto bullet = make_unique<SpiderBullet>();
     bullet->pos = getCenter();
     bullet->vel = Vector(cos(angle) * speed, sin(angle) * speed);

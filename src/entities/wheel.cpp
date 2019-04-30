@@ -40,7 +40,7 @@ struct Wheel : Entity, Damageable
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 200) / 200.0f;
+    r.ratio = (time % 20) / 20.0f;
 
     if(dir > 0)
       r.scale.width = -r.scale.width;
@@ -52,8 +52,8 @@ struct Wheel : Entity, Damageable
   {
     ++time;
 
-    vel.x = dir * 0.003;
-    vel.y -= 0.00005; // gravity
+    vel.x = dir * 0.03;
+    vel.y -= 0.0005; // gravity
 
     auto trace = slideMove(this, vel);
 

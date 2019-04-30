@@ -108,6 +108,12 @@ struct Elevator : Entity
 
   void tick() override
   {
+    for(int i = 0; i < 10; ++i)
+      subTick();
+  }
+
+  void subTick()
+  {
     decrement(liftTimer);
     decrement(debounceTrigger);
 
