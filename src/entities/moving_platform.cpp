@@ -39,7 +39,7 @@ struct MovingPlatform : Entity
 
   void tick() override
   {
-    auto delta = 0.005 * sin(ticks * 0.005) * speed;
+    auto delta = 0.05 * sin(ticks * 0.05) * speed;
 
     // moveBody doesn't work well with very small displacements
     if(abs(delta) < 0.001)
