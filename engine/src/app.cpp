@@ -153,7 +153,13 @@ private:
 
     if(m_textboxDelay > 0)
     {
-      m_display->drawText(Vector2f(0, 2), m_textbox.c_str());
+      auto y = 2.0f;
+      auto const DELAY = 90.0f;
+
+      if(m_textboxDelay < DELAY)
+        y += 16 * (DELAY - m_textboxDelay) / DELAY;
+
+      m_display->drawText(Vector2f(0, y), m_textbox.c_str());
       m_textboxDelay--;
     }
 
