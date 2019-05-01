@@ -296,7 +296,6 @@ struct Rockman : Player, Damageable
       if(c.jump || c.left || c.right)
       {
         ladder = false;
-        ground = false;
       }
       else
       {
@@ -376,21 +375,30 @@ struct Rockman : Player, Damageable
 
     auto trace = slideMove(this, vel);
 
-    if(trace.vert && !Body::floor)
-      ground = false;
-
     if(!trace.vert)
+      vel.y = 0;
+
+    auto const wasOnGround = ground;
+
+    // probe for solid ground
     {
-      if(vel.y < 0 && !ground)
+      Box box;
+      box.pos.x = pos.x;
+      box.pos.y = pos.y - 0.1;
+      box.size.width = size.width;
+      box.size.height = 0.1;
+      ground = physics->isSolid(this, roundBox(box));
+    }
+
+    if(ground && !wasOnGround)
+    {
+      if(vel.y < 0)
       {
         if(tryActivate(debounceLanding, 150))
           game->playSound(SND_LAND);
 
-        ground = true;
         dashDelay = 0;
       }
-
-      vel.y = 0;
     }
 
     decrement(debounceFire);
