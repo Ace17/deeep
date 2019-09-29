@@ -65,6 +65,6 @@ struct Hatch : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("hatch", [] (IEntityConfig*) { return make_unique<Hatch>(); });
-static auto const reg2 = registerEntity("crumble_block", [] (IEntityConfig*) { return make_unique<Hatch>(); });
+static auto const reg1 = registerEntity("hatch", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Hatch>(); });
+static auto const reg2 = registerEntity("crumble_block", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Hatch>(); });
 

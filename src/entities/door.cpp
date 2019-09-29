@@ -134,6 +134,6 @@ struct BreakableDoor : Entity, Damageable
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("fragile_door", [] (IEntityConfig*) { return make_unique<BreakableDoor>(); });
-static auto const reg2 = registerEntity("door", [] (IEntityConfig* args) { auto arg = args->getInt("0"); return makeDoor(arg); });
+static auto const reg1 = registerEntity("fragile_door", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<BreakableDoor>(); });
+static auto const reg2 = registerEntity("door", [] (IEntityConfig* args) -> unique_ptr<Entity> { auto arg = args->getInt("0"); return makeDoor(arg); });
 

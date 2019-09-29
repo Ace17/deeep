@@ -31,5 +31,5 @@ struct Ladder : Entity, Climbable
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("ladder", [] (IEntityConfig*) { return make_unique<Ladder>(); });
+static auto const reg1 = registerEntity("ladder", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Ladder>(); });
 

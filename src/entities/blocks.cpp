@@ -67,5 +67,5 @@ struct FragileBlock : Entity, Damageable
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("fragile_block", [] (IEntityConfig*) { return make_unique<FragileBlock>(); });
+static auto const reg1 = registerEntity("fragile_block", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<FragileBlock>(); });
 

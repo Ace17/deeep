@@ -97,5 +97,5 @@ struct Wheel : Entity, Damageable
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("wheel", [] (IEntityConfig*) { return make_unique<Wheel>(); });
+static auto const reg1 = registerEntity("wheel", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Wheel>(); });
 

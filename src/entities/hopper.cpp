@@ -111,5 +111,5 @@ struct Hopper : Entity, Damageable
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("hopper", [] (IEntityConfig*) { return make_unique<Hopper>(); });
+static auto const reg1 = registerEntity("hopper", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Hopper>(); });
 

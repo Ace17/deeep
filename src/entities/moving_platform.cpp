@@ -154,6 +154,6 @@ struct Elevator : Entity
 
 #include "entity_factory.h"
 
-static auto const reg1 = registerEntity("moving_platform", [] (IEntityConfig* cfg) { auto arg = cfg->getInt("dir"); auto speed = cfg->getInt("speed", 100); return make_unique<MovingPlatform>(arg, speed); });
-static auto const reg2 = registerEntity("elevator", [] (IEntityConfig*) { return make_unique<Elevator>(); });
+static auto const reg1 = registerEntity("moving_platform", [] (IEntityConfig* cfg)  -> unique_ptr<Entity> { auto arg = cfg->getInt("dir"); auto speed = cfg->getInt("speed", 100); return make_unique<MovingPlatform>(arg, speed); });
+static auto const reg2 = registerEntity("elevator", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Elevator>(); });
 

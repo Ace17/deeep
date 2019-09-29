@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <functional>
 #include <string>
 #include <memory>
 
@@ -25,6 +24,6 @@ struct IEntityConfig
 // createEntity("door(4)");
 std::unique_ptr<Entity> createEntity(string name, IEntityConfig* config);
 
-using CreationFunc = function<unique_ptr<Entity>(IEntityConfig* args)>;
+using CreationFunc = unique_ptr<Entity>(*)(IEntityConfig* args);
 int registerEntity(string type, CreationFunc func);
 

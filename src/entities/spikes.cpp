@@ -38,5 +38,5 @@ struct Spikes : Entity
 };
 
 #include "entity_factory.h"
-static auto const reg1 = registerEntity("spikes", [] (IEntityConfig*) { return make_unique<Spikes>(); });
+static auto const reg1 = registerEntity("spikes", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Spikes>(); });
 
