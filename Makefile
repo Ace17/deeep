@@ -55,6 +55,8 @@ SRCS_GAME:=\
 	src/entities/explosion.cpp\
 	src/entities/hatch.cpp\
 	src/entities/hopper.cpp\
+	src/entities/ladder.cpp\
+	src/entities/lift.cpp\
 	src/entities/moving_platform.cpp\
 	src/entities/rockman.cpp\
 	src/entities/savepoint.cpp\
@@ -63,7 +65,6 @@ SRCS_GAME:=\
 	src/entities/sweeper.cpp\
 	src/entities/switch.cpp\
 	src/entities/wheel.cpp\
-	src/entities/ladder.cpp\
 	src/entity_factory.cpp\
 	src/game.cpp\
 	src/physics.cpp\

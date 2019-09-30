@@ -3,7 +3,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztl8EOxCAIRPW4\/\/\/DPZlsGoQZRLC7ncSktcLDAjbtrbUujLukNdp47Z9nn6l\/50txVHFP5PfJ9betNofYV+VcU3VMJ9RBRm7Y8\/Qel1Wvq+c1Er92j9h7+Ei\/VvG9fiK+l2PuMxkIX7pm+dZaq6aZOkbk4Vu+I84Hi68xMvkRvXYCH6kltua9WuFb\/YdwpGdRfDTGlfyzkuwj+ex78+Rf4rGK4ntV3X8sH\/FXwZfWsO9nJ9\/TMzv52vqX769\/Kz6Wn6lT+FXaybfOuSy+NmflX9sDsr+Zn\/E\/5vX\/a+MCeCQC3Q==",
+         "data":"eJztl9EOgCAIRfWx\/\/\/hntpaQ7gXEWx1N7Yy8ZACrd5a64I9Jc3R7Pd\/n3+mvs6X4qji7sjvg+u7rzaG+FeduabqmHbIg4yzYfvpMy4rX2f7NRK\/do\/4e\/hIvVbxvetEfC+vsWNgCF+6ZvnWXCunmTxG5OFba0f0B4uvMTL5EbW2Ax\/JJTbnvZrhW\/WHcKRnUXw0xpnzZyX5R\/LZffOcv8RjFcX3qrr+WD6yXgVfmsPuz0q+p2ZW8rX5P9+f\/1Z8LD9Tu\/CrlMUf7XP2+7P5p\/XqGbv+x1at\/zY7AXMAAtw=",
          "encoding":"base64",
          "height":48,
          "name":"tiles",
@@ -32,13 +32,24 @@
                 {
                  "height":16,
                  "id":79,
-                 "name":"elevator",
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"-7"
+                        }, 
+                        {
+                         "name":"link",
+                         "type":"string",
+                         "value":"60"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
                  "x":448,
-                 "y":688
+                 "y":576
                 }, 
                 {
                  "height":16,
@@ -105,17 +116,6 @@
                  "width":16,
                  "x":496,
                  "y":160
-                }, 
-                {
-                 "height":16,
-                 "id":86,
-                 "name":"door(60)",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":400,
-                 "y":672
                 }, 
                 {
                  "height":16,

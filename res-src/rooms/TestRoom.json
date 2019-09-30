@@ -365,7 +365,13 @@
                 {
                  "height":16,
                  "id":31,
-                 "name":"elevator",
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"15"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -482,6 +488,28 @@
                  "width":16,
                  "x":576,
                  "y":576
+                }, 
+                {
+                 "height":16,
+                 "id":39,
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_x",
+                         "type":"string",
+                         "value":"-3"
+                        }, 
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":592,
+                 "y":688
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -490,10 +518,10 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":39,
+ "nextobjectid":40,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.1",
+ "tiledversion":"1.2.4",
  "tileheight":16,
  "tilesets":[
         {
