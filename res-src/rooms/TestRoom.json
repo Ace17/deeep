@@ -510,6 +510,28 @@
                  "width":32,
                  "x":592,
                  "y":688
+                }, 
+                {
+                 "height":16,
+                 "id":40,
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_x",
+                         "type":"string",
+                         "value":"5"
+                        }, 
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"0"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":672,
+                 "y":688
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -518,7 +540,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":40,
+ "nextobjectid":41,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
