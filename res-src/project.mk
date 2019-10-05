@@ -22,6 +22,10 @@ TARGETS+=res/font.model
 TILES_SRC+=$(wildcard res-src/tiles/*.xcf)
 TARGETS+=$(TILES_SRC:res-src/%.xcf=res/%.png)
 
+res/quest.json: res-src/quest.json $(BIN)/packquest.exe
+	@mkdir -p $(dir $@)
+	$(BIN)/packquest.exe "$<" "$@"
+
 res/%.json: res-src/%.json
 	@mkdir -p $(dir $@)
 	@cat "$<" > "$@"

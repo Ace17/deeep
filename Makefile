@@ -5,6 +5,8 @@ ifneq (,$(CROSS_COMPILE))
 CXX:=$(CROSS_COMPILE)g++
 endif
 
+HOST_CXX?=g++
+
 EXT?=.exe
 
 all: true_all
@@ -114,5 +116,19 @@ $(BIN)/tests$(EXT): $(SRCS_TESTS:%=$(BIN)/%.o)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
 TARGETS+=$(BIN)/tests$(EXT)
+
+#------------------------------------------------------------------------------
+
+SRCS_PACKQUEST:=\
+	$(SRCS_GAME)\
+	$(filter-out $(ENGINE_ROOT)/src/main.cpp, $(SRCS_ENGINE))\
+	src/packquest.cpp\
+
+
+$(BIN)/packquest.exe: $(SRCS_PACKQUEST:%=$(BIN)/%.o)
+	@mkdir -p $(dir $@)
+	$(CXX) $^ -o '$@' $(LDFLAGS)
+
+TARGETS+=$(BIN)/packquest.exe
 
 include build/common.mak
