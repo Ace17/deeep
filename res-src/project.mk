@@ -24,7 +24,7 @@ TARGETS+=$(TILES_SRC:res-src/%.xcf=res/%.png)
 
 res/%.json: res-src/%.json
 	@mkdir -p $(dir $@)
-	@cat "$<" | sed '/^ *"version":/d' > "$@"
+	@cat "$<" > "$@"
 
 res/%.model: res-src/%.json
 	@mkdir -p $(dir $@)
