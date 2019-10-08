@@ -12,6 +12,7 @@ int main(int argc, const char* argv[])
     fprintf(stderr, "Usage: %s <quest.json> <packedquest.json>\n", argv[0]);
     return 1;
   }
+
   auto q = loadQuest(argv[1]);
   preprocessQuest(q);
   dumpQuest(q, argv[2]);
@@ -21,8 +22,10 @@ int main(int argc, const char* argv[])
 void dumpQuest(Quest const& q, const char* filename)
 {
   FILE* fp = fopen(filename, "wb");
+
   if(!fp)
     throw std::runtime_error("Can't open file for writing");
+
   (void)q;
   fprintf(fp, "{\n");
   fprintf(fp, "  \"layers\":\n");
@@ -32,7 +35,7 @@ void dumpQuest(Quest const& q, const char* filename)
   fprintf(fp, "    \"objects\":\n");
   fprintf(fp, "      [\n");
 
-  for(int i=0;i < (int)q.rooms.size();++i)
+  for(int i = 0; i < (int)q.rooms.size(); ++i)
   {
     auto& r = q.rooms[i];
 
@@ -46,8 +49,10 @@ void dumpQuest(Quest const& q, const char* filename)
     fprintf(fp, "           \"ender\":0\n");
 
     fprintf(fp, "         }");
-    if(i < int(q.rooms.size()-1))
+
+    if(i < int(q.rooms.size() - 1))
       fprintf(fp, ",");
+
     fprintf(fp, "\n");
   }
 

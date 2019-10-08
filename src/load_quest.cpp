@@ -287,13 +287,16 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
 static void removeVersion(string& data)
 {
   auto i = data.find("\"version\":");
+
   if(i == string::npos)
     return; // nothing to do
+
   auto j = i;
+
   while(data[j] != ',')
     ++j;
 
-  data.erase(i, j-i+1);
+  data.erase(i, j - i + 1);
 }
 
 Quest loadQuest(string path) // tiled TMX format
