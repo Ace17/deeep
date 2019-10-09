@@ -59,6 +59,7 @@ static NullVariable nullVariable;
 struct NullGame : IGame
 {
   virtual void playSound(SOUND) {}
+  virtual void stopMusic() {};
   virtual void spawn(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(unique_ptr<Event> ) {}

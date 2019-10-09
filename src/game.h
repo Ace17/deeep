@@ -77,6 +77,7 @@ struct IGame
   virtual void textBox(char const* msg) = 0;
   virtual void playSound(SOUND id) = 0;
   virtual void setAmbientLight(float amount) = 0;
+  virtual void stopMusic() = 0;
 
   // logic
   virtual void spawn(Entity* e) = 0;

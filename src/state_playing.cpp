@@ -450,6 +450,11 @@ struct GameState : Scene, private IGame
     m_view->playSound(sound);
   }
 
+  void stopMusic() override
+  {
+    m_view->stopMusic();
+  }
+
   void spawn(Entity* e) override
   {
     m_spawned.push_back(unique(e));
