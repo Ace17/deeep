@@ -28,10 +28,10 @@ struct SplashState : Scene
   {
     auto const FADE_TIME = 100;
 
-    view->playMusic(6);
-
     if(!activated)
     {
+      view->playMusic(6);
+
       delay = FADE_TIME;
 
       if(c.fire || c.jump || c.dash || c.start)
