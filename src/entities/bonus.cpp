@@ -65,8 +65,7 @@ struct Bonus : Entity
     if(auto player = dynamic_cast<Player*>(other))
     {
       player->addUpgrade(type);
-      game->stopMusic();
-      game->playSound(SND_VICTORY);
+      game->playSound(SND_BONUS);
       game->textBox(msg);
       dead = true;
 

@@ -4,8 +4,7 @@ TARGETS+=$(SOUNDS_SRC:res-src/%.ogg=res/%.ogg)
 
 res/%.ogg: res-src/%.ogg
 	@mkdir -p $(dir $@)
-	@echo "Transcode $<"
-	@ffmpeg -loglevel 1 -y -i "$<" -ar 22050 -ac 2 "$@" </dev/null
+	./scripts/cook-audio.sh "$@" "$<"
 
 SPRITES_SRC+=$(wildcard res-src/sprites/*.json)
 TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.model)
