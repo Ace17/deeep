@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+Quest loadTmxQuest(string path);
 void dumpQuest(Quest const& q, const char* filename);
 
 int main(int argc, const char* argv[])
@@ -13,7 +14,7 @@ int main(int argc, const char* argv[])
     return 1;
   }
 
-  auto q = loadQuest(argv[1]);
+  auto q = loadTmxQuest(argv[1]);
   preprocessQuest(q);
   dumpQuest(q, argv[2]);
   return 0;
@@ -41,10 +42,10 @@ void dumpQuest(Quest const& q, const char* filename)
 
     fprintf(fp, "         {\n");
     fprintf(fp, "           \"type\":\"%d\",\n", r.theme);
-    fprintf(fp, "           \"x\":%d,\n", r.pos.x * 4);
-    fprintf(fp, "           \"y\":%d,\n", r.pos.y * 4);
-    fprintf(fp, "           \"width\":%d,\n", r.size.width * 4);
-    fprintf(fp, "           \"height\":%d,\n", r.size.height * 4);
+    fprintf(fp, "           \"x\":%d,\n", r.pos.x);
+    fprintf(fp, "           \"y\":%d,\n", r.pos.y);
+    fprintf(fp, "           \"width\":%d,\n", r.size.width);
+    fprintf(fp, "           \"height\":%d,\n", r.size.height);
     fprintf(fp, "           \"name\":\"%s\",\n", r.name.c_str());
     fprintf(fp, "           \"ender\":0\n");
 

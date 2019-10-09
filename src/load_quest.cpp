@@ -238,13 +238,30 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
   }
 }
 
+static void removeVersion(string& data)
+{
+  auto i = data.find("\"version\":");
+
+  if(i == string::npos)
+    return; // nothing to do
+
+  auto j = i;
+
+  while(data[j] != ',')
+    ++j;
+
+  data.erase(i, j - i + 1);
+}
+
 static
-Room loadAbstractRoom(json::Value const& jsonRoom)
+Room loadAbstractRoom(json::Value const& jsonRoom, bool isTmx = false)
 {
   auto box = getRect(jsonRoom);
 
   auto const PELS_PER_TILE = 4;
-  box = convertRect(box, PELS_PER_TILE, 64);
+
+  if(isTmx)
+    box = convertRect(box, PELS_PER_TILE, 64);
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
@@ -260,6 +277,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   if(exists(path))
   {
     auto data = read(path);
+    removeVersion(data);
     auto jsRoom = json::parse(data.c_str(), data.size());
     loadConcreteRoom(room, jsRoom);
   }
@@ -284,22 +302,27 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   return room;
 }
 
-static void removeVersion(string& data)
+Quest loadQuest(string path)
 {
-  auto i = data.find("\"version\":");
+  auto data = read(path);
+  auto js = json::parse(data.c_str(), data.size());
 
-  if(i == string::npos)
-    return; // nothing to do
+  auto layers = getAllLayers(js);
 
-  auto j = i;
+  auto layer = layers["rooms"];
 
-  while(data[j] != ',')
-    ++j;
+  Quest r;
 
-  data.erase(i, j - i + 1);
+  for(auto& roomValue : layer["objects"].elements)
+  {
+    auto room = loadAbstractRoom(roomValue);
+    r.rooms.push_back(move(room));
+  }
+
+  return r;
 }
 
-Quest loadQuest(string path) // tiled TMX format
+Quest loadTmxQuest(string path) // tiled TMX format
 {
   auto data = read(path);
   removeVersion(data);
@@ -313,7 +336,7 @@ Quest loadQuest(string path) // tiled TMX format
 
   for(auto& roomValue : layer["objects"].elements)
   {
-    auto room = loadAbstractRoom(roomValue);
+    auto room = loadAbstractRoom(roomValue, true);
     r.rooms.push_back(move(room));
   }
 
