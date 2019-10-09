@@ -56,7 +56,7 @@ struct Physics : IPhysics
 
     if(blocked)
     {
-      if(auto blocker = getSolidBodyInBox(irect, body))
+      if(auto blocker = getSolidBodyInBox(irect, -1, body))
         collideBodies(*body, *blocker);
     }
     else
@@ -65,7 +65,7 @@ struct Physics : IPhysics
         pushOthers(body, irect, delta);
 
       body->pos = frect.pos;
-      // assert(!getSolidBodyInBox(body->getBox(), body));
+      // assert(!getSolidBodyInBox(body->getBox(), -1, body));
     }
 
     // update floor
@@ -74,7 +74,7 @@ struct Physics : IPhysics
       auto feet = body->getBox();
       feet.size.height = 16;
       feet.pos.y -= feet.size.height;
-      body->floor = getSolidBodyInBox(feet, body);
+      body->floor = getSolidBodyInBox(feet, -1, body);
     }
 
     return !blocked;
@@ -97,7 +97,7 @@ struct Physics : IPhysics
 
   bool isSolid(const Body* except, IntBox rect) const
   {
-    if(getSolidBodyInBox(rect, except))
+    if(getSolidBodyInBox(rect, except->collidesWith, except))
       return true;
 
     if(m_isSolid(rect))
@@ -158,9 +158,9 @@ struct Physics : IPhysics
   }
 
 private:
-  Body* getSolidBodyInBox(IntBox myBox, const Body* except) const
+  Body* getSolidBodyInBox(IntBox myBox, int collisionGroup, const Body* except) const
   {
-    return getBodiesInBox(myBox, -1, true, except);
+    return getBodiesInBox(myBox, collisionGroup, true, except);
   }
 
   vector<Body*> m_bodies;
