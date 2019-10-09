@@ -12,7 +12,6 @@ EXT?=.exe
 all: true_all
 
 PKGS:=\
-	gl\
 	sdl2\
 	ogg \
 	vorbisfile \
