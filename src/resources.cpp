@@ -15,6 +15,7 @@ static const Resource resources[] =
 {
   { ResourceType::Sound, SND_PAUSE, "res/sounds/pause.ogg" },
   { ResourceType::Sound, SND_CHIRP, "res/sounds/base.ogg" },
+  { ResourceType::Sound, SND_DOOR, "res/sounds/door.ogg" },
   { ResourceType::Sound, SND_FIRE, "res/sounds/fire.ogg" },
   { ResourceType::Sound, SND_JUMP, "res/sounds/jump.ogg" },
   { ResourceType::Sound, SND_BEEP, "res/sounds/beep.ogg" },
@@ -27,6 +28,8 @@ static const Resource resources[] =
   { ResourceType::Sound, SND_HATCH, "res/sounds/hatch.ogg" },
   { ResourceType::Sound, SND_TELEPORT, "res/sounds/teleport.ogg" },
   { ResourceType::Sound, SND_EXPLODE, "res/sounds/explode.ogg" },
+  { ResourceType::Sound, SND_SAVEPOINT, "res/sounds/savepoint.ogg" },
+  { ResourceType::Sound, SND_VICTORY, "res/sounds/victory.ogg" },
 
   { ResourceType::Model, MDL_TILES_00, "res/tiles/tiles-00.tiles" },
   { ResourceType::Model, MDL_TILES_01, "res/tiles/tiles-01.tiles" },
@@ -38,8 +41,10 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_TILES_07, "res/tiles/tiles-07.tiles" },
 
   { ResourceType::Model, MDL_DOOR, "res/sprites/door.model" },
+  { ResourceType::Model, MDL_SAVEPOINT, "res/sprites/savepoint.model" },
   { ResourceType::Model, MDL_BLOCK, "res/sprites/block.model" },
   { ResourceType::Model, MDL_SPLASH, "res/sprites/splash.model" },
+  { ResourceType::Model, MDL_ENDING, "res/sprites/ending.model" },
   { ResourceType::Model, MDL_PAUSED, "res/sprites/minimap.model" },
   { ResourceType::Model, MDL_ELEVATOR, "res/sprites/elevator.model" },
   { ResourceType::Model, MDL_RECT, "res/sprites/rect.model" },
@@ -49,12 +54,13 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_ROCKMAN, "res/sprites/rockman.model" },
   { ResourceType::Model, MDL_WHEEL, "res/sprites/wheel.model" },
   { ResourceType::Model, MDL_LIFEBAR, "res/sprites/lifebar.model" },
+  { ResourceType::Model, MDL_LADDER, "res/sprites/ladder.model" },
   { ResourceType::Model, MDL_TELEPORTER, "res/sprites/teleporter.model" },
   { ResourceType::Model, MDL_BONUS, "res/sprites/bonus.model" },
   { ResourceType::Model, MDL_BULLET, "res/sprites/bullet.model" },
   { ResourceType::Model, MDL_EXPLOSION, "res/sprites/explosion.model" },
   { ResourceType::Model, MDL_SPIKES, "res/sprites/spikes.model" },
-  { ResourceType::Model, MDL_LADDER, "res/sprites/rect.model" },
+  { ResourceType::Model, MDL_HOPPER, "res/sprites/hopper.model" },
 };
 
 Span<const Resource> getResources()

@@ -11,6 +11,7 @@
 enum
 {
   SND_PAUSE,
+  SND_DOOR,
   SND_CHIRP,
   SND_BEEP,
   SND_FIRE,
@@ -24,5 +25,7 @@ enum
   SND_TELEPORT,
   SND_HATCH,
   SND_EXPLODE,
+  SND_SAVEPOINT,
+  SND_VICTORY,
 };
 

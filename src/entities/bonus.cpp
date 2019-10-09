@@ -16,6 +16,7 @@
 #include "models.h"
 #include "sounds.h"
 #include "entities/player.h"
+#include "collision_groups.h"
 
 struct Bonus : Entity
 {
@@ -26,6 +27,9 @@ struct Bonus : Entity
     msg = msg_;
     size = UnitSize;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
+
+    collidesWith = CG_SOLIDPLAYER;
+    collisionGroup = CG_BONUS;
   }
 
   void enter() override
@@ -39,7 +43,7 @@ struct Bonus : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto s = sin(time * 0.01);
+    auto s = sin(time * 0.1);
     auto r = Actor { pos, MDL_BONUS };
     r.scale = UnitSize;
     r.ratio = max(s, 0.0);
@@ -61,7 +65,8 @@ struct Bonus : Entity
     if(auto player = dynamic_cast<Player*>(other))
     {
       player->addUpgrade(type);
-      game->playSound(SND_BONUS);
+      game->stopMusic();
+      game->playSound(SND_VICTORY);
       game->textBox(msg);
       dead = true;
 

@@ -7,8 +7,10 @@
 #pragma once
 
 static auto const CG_ALL = -1;
-static auto const CG_PLAYER = 0b1000;
-static auto const CG_SOLIDPLAYER = 0b0001; // non-blinking player
-static auto const CG_WALLS = 0b0010;
-static auto const CG_LADDER = 0b0100;
+static auto const CG_PLAYER = 0x1;
+static auto const CG_SOLIDPLAYER = 0x2; // non-blinking player
+static auto const CG_WALLS = 0x4;
+static auto const CG_LADDER = 0x8;
+static auto const CG_DOORS = 0x10;
+static auto const CG_BONUS = 0x20;
 

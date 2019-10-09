@@ -31,7 +31,7 @@ struct Hopper : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_RECT };
+    auto r = Actor { pos, MDL_HOPPER };
 
     r.scale = size;
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
@@ -40,7 +40,7 @@ struct Hopper : Entity, Damageable
       r.effect = Effect::Blinking;
 
     r.action = 0;
-    r.ratio = (time % 800) / 800.0f;
+    r.ratio = (time % 80) / 80.0f;
 
     if(dir > 0)
       r.scale.width = -r.scale.width;
@@ -52,18 +52,18 @@ struct Hopper : Entity, Damageable
   {
     ++time;
 
-    vel.y -= 0.00005; // gravity
+    vel.y -= 0.005; // gravity
 
-    if(ground && time % 500 == 0 && rand() % 4 == 0)
+    if(ground && time % 50 == 0 && rand() % 4 == 0)
     {
-      vel.y = 0.013;
+      vel.y = 0.13;
       ground = false;
     }
 
     if(ground)
       vel.x = 0;
     else
-      vel.x = dir * 0.003;
+      vel.x = dir * 0.03;
 
     auto trace = slideMove(this, vel);
 

@@ -12,6 +12,7 @@
 #include "toggle.h"
 #include "entity.h"
 #include "models.h"
+#include "entities/player.h"
 
 struct FragileBlock : Entity, Damageable
 {
@@ -23,12 +24,17 @@ struct FragileBlock : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    if(!solid)
+    if(state == 2)
       return;
 
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
-    r.ratio = 0;
+
+    if(state == 0)
+      r.ratio = 0;
+    else
+      r.ratio = 1.0f - (timer / 50.0f);
+
     r.action = 3;
 
     actors.push_back(r);
@@ -36,16 +42,38 @@ struct FragileBlock : Entity, Damageable
 
   virtual void onDamage(int) override
   {
+    if(state != 0)
+      return;
+
     disappear();
   }
 
   void tick() override
   {
-    if(decrement(disappearTimer))
-    {
-      reappear();
+    bool canReapear = !physics->getBodiesInBox(getBox(), CG_PLAYER, false, this);
 
-      if(physics->getBodiesInBox(getBox(), CG_PLAYER, false, this))
+    if(state == 1)
+    {
+      if(decrement(timer))
+      {
+        collisionGroup = 0;
+        collidesWith = 0;
+        solid = 0;
+
+        state = 2;
+        timer = 300;
+      }
+    }
+    else if(state == 2)
+    {
+      decrement(timer);
+
+      if(canReapear && timer == 0)
+        reappear();
+    }
+    else if(state == 0)
+    {
+      if(!canReapear)
         disappear();
     }
   }
@@ -53,17 +81,19 @@ struct FragileBlock : Entity, Damageable
   void reappear()
   {
     collisionGroup = CG_WALLS;
+    collidesWith = CG_WALLS;
     solid = 1;
+    state = 0;
   }
 
   void disappear()
   {
-    disappearTimer = 300;
-    collisionGroup = 0;
-    solid = 0;
+    timer = 50;
+    state = 1;
   }
 
-  int disappearTimer = 0;
+  int state = 0; // 0: solid, 1:disapearing, 2: disapeared
+  int timer = 0;
 };
 
 #include "entity_factory.h"

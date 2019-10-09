@@ -18,6 +18,7 @@ struct Door : Entity
   {
     size = Size(1, 3);
     solid = true;
+    collisionGroup = CG_DOORS;
   }
 
   void enter() override
@@ -30,6 +31,8 @@ struct Door : Entity
         // in case of closing, immediately prevent traversal
         if(!open)
           solid = true;
+
+        game->playSound(SND_DOOR);
       };
 
     auto var = game->getVariable(id);
