@@ -28,91 +28,6 @@
 
 using namespace std;
 
-static
-vector<string> parseCall(string content)
-{
-  content += '\0';
-  auto stream = content.c_str();
-
-  auto head = [&] ()
-    {
-      return *stream;
-    };
-
-  auto accept = [&] (char what)
-    {
-      if(!*stream)
-        return false;
-
-      if(head() != what)
-        return false;
-
-      stream++;
-      return true;
-    };
-
-  auto expect = [&] (char what)
-    {
-      if(!accept(what))
-        throw runtime_error(string("Expected '") + what + "'");
-    };
-
-  auto parseString = [&] ()
-    {
-      string r;
-
-      while(!accept('"'))
-      {
-        char c = head();
-        accept(c);
-        r += c;
-      }
-
-      return r;
-    };
-
-  auto parseIdentifier = [&] ()
-    {
-      string r;
-
-      while(isalnum(head()) || head() == '_' || head() == '-')
-      {
-        char c = head();
-        accept(c);
-        r += c;
-      }
-
-      return r;
-    };
-
-  auto parseArgument = [&] ()
-    {
-      if(accept('"'))
-        return parseString();
-      else
-        return parseIdentifier();
-    };
-
-  vector<string> r;
-  r.push_back(parseIdentifier());
-
-  if(accept('('))
-  {
-    bool first = true;
-
-    while(!accept(')'))
-    {
-      if(!first)
-        expect(',');
-
-      r.push_back(parseArgument());
-      first = false;
-    }
-  }
-
-  return r;
-}
-
 struct EntityConfigImpl : IEntityConfig
 {
   string getString(const char* varName, string defaultValue) override
@@ -146,21 +61,10 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
 
   for(auto& spawner : room.spawners)
   {
-    auto words = parseCall(spawner.name);
-    auto name = words[0];
-    words.erase(words.begin());
-
     EntityConfigImpl config;
     config.values = spawner.config;
 
-    {
-      int i = 0;
-
-      for(auto& varValue : words)
-        config.values[to_string(i++)] = varValue;
-    }
-
-    auto entity = createEntity(name, &config);
+    auto entity = createEntity(spawner.name, &config);
     entity->id = id;
     entity->pos = spawner.pos;
     game->spawn(entity.release());

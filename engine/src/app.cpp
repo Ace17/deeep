@@ -140,7 +140,9 @@ private:
 
     for(auto& actor : m_actors)
     {
-      auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
+      auto where = Rect2f(
+          actor.pos.x, actor.pos.y,
+          actor.scale.width, actor.scale.height);
       m_display->drawActor(where, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
     }
 
@@ -180,27 +182,46 @@ private:
 
   void onKeyDown(SDL_Event* evt)
   {
-    if(evt->key.keysym.sym == SDLK_ESCAPE)
-      onQuit();
-
-    if(evt->key.keysym.sym == SDLK_F2)
-      m_scene.reset(createGame(this, m_args));
-
-    if(evt->key.keysym.sym == SDLK_TAB)
-      m_slowMotion = !m_slowMotion;
-
-    if(evt->key.keysym.sym == SDLK_RETURN && (evt->key.keysym.mod & KMOD_LALT))
+    switch(evt->key.keysym.sym)
     {
-      if(evt->key.repeat == 0)
+    case SDLK_ESCAPE:
       {
-        m_fullscreen = !m_fullscreen;
-        m_display->setFullscreen(m_fullscreen);
+        onQuit();
+        break;
       }
-    }
-    else if(evt->key.keysym.sym == SDLK_PAUSE)
-    {
-      m_audio->playSound(0);
-      m_paused = !m_paused;
+
+    case SDLK_F2:
+      {
+        m_scene.reset(createGame(this, m_args));
+        break;
+      }
+
+    case SDLK_TAB:
+      {
+        m_slowMotion = !m_slowMotion;
+        break;
+      }
+
+    case SDLK_RETURN:
+      {
+        if(evt->key.keysym.mod & KMOD_LALT)
+        {
+          if(evt->key.repeat == 0)
+          {
+            m_fullscreen = !m_fullscreen;
+            m_display->setFullscreen(m_fullscreen);
+          }
+        }
+
+        break;
+      }
+
+    case SDLK_PAUSE:
+      {
+        m_audio->playSound(0);
+        m_paused = !m_paused;
+        break;
+      }
     }
 
     keys[evt->key.keysym.scancode] = 1;
