@@ -19,12 +19,12 @@
 
 #include "rockman.h"
 
-auto const WALK_SPEED = 0.0075f;
-auto const MAX_HORZ_SPEED = 0.02f;
-auto const MAX_FALL_SPEED = 0.02f;
-auto const CLIMB_DELAY = 100;
-auto const HURT_DELAY = 500;
-auto const JUMP_VEL = 0.015;
+auto const WALK_SPEED = 0.075f;
+auto const MAX_HORZ_SPEED = 0.2f;
+auto const MAX_FALL_SPEED = 0.2f;
+auto const CLIMB_DELAY = 10;
+auto const HURT_DELAY = 50;
+auto const JUMP_VEL = 0.15;
 auto const MAX_LIFE = 31;
 
 enum ORIENTATION
@@ -105,7 +105,7 @@ struct Rockman : Player, Damageable
     if(ball)
     {
       r.action = ACTION_BALL;
-      r.ratio = (time % 300) / 300.0f;
+      r.ratio = (time % 30) / 30.0f;
     }
     else if(sliding)
     {
@@ -114,7 +114,7 @@ struct Rockman : Player, Damageable
       else
         r.action = ACTION_SLIDE_SHOOT;
 
-      r.ratio = (time % 300) / 300.0f;
+      r.ratio = (time % 30) / 30.0f;
     }
     else if(hurtDelay || life < 0)
     {
@@ -124,7 +124,7 @@ struct Rockman : Player, Damageable
     else if(ladder)
     {
       r.action = ACTION_LADDER;
-      r.ratio = vel.y == 0 ? 0.3 : (time % 200) / 200.0f;
+      r.ratio = vel.y == 0 ? 0.3 : (time % 20) / 20.0f;
       r.pos += Vector(0.05, -0.5);
     }
     else if(!ground)
@@ -148,12 +148,12 @@ struct Rockman : Player, Damageable
       {
         if(dashDelay)
         {
-          r.ratio = min(400 - dashDelay, 400) / 100.0f;
+          r.ratio = min(40 - dashDelay, 40) / 10.0f;
           r.action = ACTION_DASH;
         }
         else
         {
-          r.ratio = (time % 500) / 500.0f;
+          r.ratio = (time % 50) / 50.0f;
 
           if(shootDelay == 0)
             r.action = ACTION_WALK;
@@ -165,7 +165,7 @@ struct Rockman : Player, Damageable
       {
         if(shootDelay == 0)
         {
-          r.ratio = (time % 3000) / 3000.0f;
+          r.ratio = (time % 300) / 300.0f;
           r.action = ACTION_STAND;
         }
         else
@@ -200,7 +200,7 @@ struct Rockman : Player, Damageable
   virtual void addUpgrade(int upgrade) override
   {
     upgrades |= upgrade;
-    blinking = 2000;
+    blinking = 200;
     life = MAX_LIFE;
     game->getVariable(-1)->set(upgrades);
   }
@@ -220,7 +220,7 @@ struct Rockman : Player, Damageable
 
     // gravity
     if(life > 0 && !ladder)
-      vel.y -= 0.00005;
+      vel.y -= 0.005;
 
     sliding = false;
 
@@ -233,7 +233,10 @@ struct Rockman : Player, Damageable
           // don't allow double-jumping from sliding state,
           // unless we have the climb upgrade
           doubleJumped = !(upgrades & UPGRADE_CLIMB);
-          vel.y *= 0.97;
+
+          for(int i=0;i < 8;++i)
+            vel.y *= 0.97;
+
           sliding = true;
           dashDelay = 0;
         }
@@ -255,7 +258,7 @@ struct Rockman : Player, Damageable
         vel.x = dir == RIGHT ? -0.04 : 0.04;
 
         if(c.dash)
-          dashDelay = 400;
+          dashDelay = 40;
         else
           dashDelay = 0;
 
@@ -322,7 +325,7 @@ struct Rockman : Player, Damageable
       if(dashbutton.toggle(c.dash) && ground && dashDelay == 0)
       {
         game->playSound(SND_JUMP);
-        dashDelay = 400;
+        dashDelay = 40;
       }
     }
 
@@ -332,19 +335,14 @@ struct Rockman : Player, Damageable
       vel.x = wantedSpeed;
     }
 
-    vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
+    for(int i=0;i < 10;++i)
+      vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
 
-    if(abs(vel.x) < 0.00001)
+    if(abs(vel.x) < 0.001)
       vel.x = 0;
   }
 
   virtual void tick() override
-  {
-    for(int i = 0; i < 10; ++i)
-      subTick();
-  }
-
-  void subTick()
   {
     decrement(blinking);
     decrement(hurtDelay);
@@ -363,8 +361,8 @@ struct Rockman : Player, Damageable
     {
       decrement(dieDelay);
 
-      if(dieDelay < 1000)
-        game->setAmbientLight((dieDelay - 1000) * 0.001);
+      if(dieDelay < 100)
+        game->setAmbientLight((dieDelay - 100) / 100.0);
 
       if(dieDelay == 0)
         respawn();
@@ -432,7 +430,7 @@ struct Rockman : Player, Damageable
       }
 
       hurtDelay = HURT_DELAY;
-      blinking = 2000;
+      blinking = 200;
       game->playSound(SND_HURT);
     }
   }
@@ -464,13 +462,13 @@ struct Rockman : Player, Damageable
     game->playSound(SND_DIE);
     ball = false;
     size = NORMAL_SIZE;
-    dieDelay = 1500;
+    dieDelay = 150;
   }
 
   void respawn()
   {
     game->respawn();
-    blinking = 2000;
+    blinking = 20;
     vel = NullVector;
     life = MAX_LIFE;
   }
@@ -479,7 +477,7 @@ struct Rockman : Player, Damageable
   {
     if(upgrades & UPGRADE_SHOOT && !ball)
     {
-      if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 150))
+      if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
       {
         auto b = make_unique<Bullet>();
         auto sign = (dir == LEFT ? -1 : 1);
@@ -497,7 +495,7 @@ struct Rockman : Player, Damageable
         b->vel = Vector(0.25, 0) * sign;
         game->spawn(b.release());
         game->playSound(SND_FIRE);
-        shootDelay = 300;
+        shootDelay = 30;
       }
     }
   }
