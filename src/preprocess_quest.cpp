@@ -264,13 +264,8 @@ vector<string> parseCall(string content)
 }
 
 static
-void preprocessRoom(Room& room, vector<Room> const& quest)
+void replaceLegacyEntityNames(Room& room)
 {
-  room.tilesForDisplay = applySmartTiling(room.tiles);
-
-  addRandomWidgets(room.tiles);
-  addBoundaryDetectors(room, quest);
-
   for(auto& spawner : room.spawners)
   {
     auto words = parseCall(spawner.name);
@@ -282,6 +277,16 @@ void preprocessRoom(Room& room, vector<Room> const& quest)
     for(auto& varValue : words)
       spawner.config[to_string(i++)] = varValue;
   }
+}
+
+static
+void preprocessRoom(Room& room, vector<Room> const& quest)
+{
+  room.tilesForDisplay = applySmartTiling(room.tiles);
+
+  addRandomWidgets(room.tiles);
+  addBoundaryDetectors(room, quest);
+  replaceLegacyEntityNames(room);
 }
 
 void preprocessQuest(Quest& quest)
