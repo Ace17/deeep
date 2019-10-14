@@ -35,6 +35,9 @@ struct Hatch : Entity
 
   void onCollide(Body* other)
   {
+    if(openingTimer)
+      return;
+
     if(other->pos.y > pos.y + size.height * 0.9)
     {
       openingTimer = OPEN_DURATION;
