@@ -234,7 +234,7 @@ struct Rockman : Player, Damageable
           // unless we have the climb upgrade
           doubleJumped = !(upgrades & UPGRADE_CLIMB);
 
-          for(int i=0;i < 8;++i)
+          for(int i = 0; i < 8; ++i)
             vel.y *= 0.97;
 
           sliding = true;
@@ -335,7 +335,7 @@ struct Rockman : Player, Damageable
       vel.x = wantedSpeed;
     }
 
-    for(int i=0;i < 10;++i)
+    for(int i = 0; i < 10; ++i)
       vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
 
     if(abs(vel.x) < 0.001)
