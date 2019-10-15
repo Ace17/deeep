@@ -431,6 +431,7 @@ struct OpenglDisplay : Display
       };
 
     GLuint currTexture = -1;
+    std::array<float, 3> currLight;
 
     for(auto const& q : m_quads)
     {
@@ -445,6 +446,14 @@ struct OpenglDisplay : Display
         currTexture = q.texture;
       }
 
+      if(q.light != currLight)
+      {
+        flush();
+
+        SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
+        currLight = q.light;
+      }
+
       vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
       vboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
       vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
@@ -452,8 +461,6 @@ struct OpenglDisplay : Display
       vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
       vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
       vboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
-
-      SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
     }
 
     flush();
@@ -589,7 +596,7 @@ private:
   struct Quad
   {
     int zOrder;
-    float light[3] {};
+    std::array<float, 3> light {};
     GLuint texture;
     Vector2f pos1, pos2;
   };
