@@ -20,6 +20,23 @@ int main(int argc, const char* argv[])
   return 0;
 }
 
+std::string serializeMatrix(Matrix2<int> const& m)
+{
+  std::string r;
+
+  for(int row = 0; row < m.size.height; ++row)
+  {
+    for(int col = 0; col < m.size.width; ++col)
+    {
+      char buffer[256];
+      snprintf(buffer, sizeof buffer, "%d, ", m.get(col, row));
+      r += buffer;
+    }
+  }
+
+  return r;
+}
+
 void dumpQuest(Quest const& q, const char* filename)
 {
   FILE* fp = fopen(filename, "wb");
@@ -27,7 +44,6 @@ void dumpQuest(Quest const& q, const char* filename)
   if(!fp)
     throw std::runtime_error("Can't open file for writing");
 
-  (void)q;
   fprintf(fp, "{\n");
   fprintf(fp, "  \"layers\":\n");
   fprintf(fp, "  [\n");
@@ -47,6 +63,53 @@ void dumpQuest(Quest const& q, const char* filename)
     fprintf(fp, "           \"width\":%d,\n", r.size.width);
     fprintf(fp, "           \"height\":%d,\n", r.size.height);
     fprintf(fp, "           \"name\":\"%s\",\n", r.name.c_str());
+    fprintf(fp, "           \"tiles\":\"%s\",\n", serializeMatrix(r.tiles).c_str());
+    fprintf(fp, "           \"tilesForDisplay\":\"%s\",\n", serializeMatrix(r.tiles).c_str());
+    fprintf(fp, "           \"entities\":\n");
+    fprintf(fp, "           [\n");
+
+    for(int k = 0; k < (int)r.spawners.size(); ++k)
+    {
+      auto& s = r.spawners[k];
+
+      fprintf(fp, "             {\n");
+      fprintf(fp, "               \"type\": \"%s\",\n", s.name.c_str());
+      fprintf(fp, "               \"x\":%d,\n", int(s.pos.x * PRECISION));
+      fprintf(fp, "               \"y\":%d,\n", int(s.pos.y * PRECISION));
+
+      if(!s.config.empty())
+      {
+        fprintf(fp, "               \"props\":\n");
+        fprintf(fp, "               {\n");
+
+        {
+          bool first = true;
+
+          for(auto& prop : s.config)
+          {
+            if(!first)
+              fprintf(fp, ",\n");
+
+            fprintf(fp, "                 \"%s\": \"%s\"", prop.first.c_str(), prop.second.c_str());
+            first = false;
+          }
+
+          fprintf(fp, "\n");
+        }
+
+        fprintf(fp, "               },\n");
+      }
+
+      fprintf(fp, "               \"ender\":0\n");
+      fprintf(fp, "             }");
+
+      if(k < int(r.spawners.size() - 1))
+        fprintf(fp, ",");
+
+      fprintf(fp, "\n");
+    }
+
+    fprintf(fp, "           ],\n");
     fprintf(fp, "           \"ender\":0\n");
 
     fprintf(fp, "         }");

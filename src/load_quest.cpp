@@ -302,26 +302,6 @@ Room loadAbstractRoom(json::Value const& jsonRoom, bool isTmx = false)
   return room;
 }
 
-Quest loadQuest(string path)
-{
-  auto data = read(path);
-  auto js = json::parse(data.c_str(), data.size());
-
-  auto layers = getAllLayers(js);
-
-  auto layer = layers["rooms"];
-
-  Quest r;
-
-  for(auto& roomValue : layer["objects"].elements)
-  {
-    auto room = loadAbstractRoom(roomValue);
-    r.rooms.push_back(move(room));
-  }
-
-  return r;
-}
-
 Quest loadTmxQuest(string path) // tiled TMX format
 {
   auto data = read(path);
@@ -337,6 +317,26 @@ Quest loadTmxQuest(string path) // tiled TMX format
   for(auto& roomValue : layer["objects"].elements)
   {
     auto room = loadAbstractRoom(roomValue, true);
+    r.rooms.push_back(move(room));
+  }
+
+  return r;
+}
+
+Quest loadQuest(string path)
+{
+  auto data = read(path);
+  auto js = json::parse(data.c_str(), data.size());
+
+  auto layers = getAllLayers(js);
+
+  auto layer = layers["rooms"];
+
+  Quest r;
+
+  for(auto& roomValue : layer["objects"].elements)
+  {
+    auto room = loadAbstractRoom(roomValue);
     r.rooms.push_back(move(room));
   }
 
