@@ -22,7 +22,6 @@
 #include "physics.h"
 #include "quest.h"
 #include "load_quest.h"
-#include "preprocess_quest.h"
 #include "variable.h"
 #include "state_machine.h"
 
@@ -80,8 +79,7 @@ struct GameState : Scene, private IGame
   {
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
-    m_quest = loadQuest("res/quest.json");
-    preprocessQuest(m_quest);
+    m_quest = loadQuest("res/quest.gz");
   }
 
   ////////////////////////////////////////////////////////////////

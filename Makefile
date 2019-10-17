@@ -124,10 +124,10 @@ SRCS_PACKQUEST:=\
 	src/packquest.cpp\
 
 
-$(BIN)/packquest.exe: $(SRCS_PACKQUEST:%=$(BIN)/%.o)
+$(BIN)/packquest.host.exe: $(SRCS_PACKQUEST:%=$(BIN)/%.o)
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
-TARGETS+=$(BIN)/packquest.exe
+TARGETS+=$(BIN)/packquest.host.exe
 
 include build/common.mak

@@ -102,13 +102,10 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
       auto transform = (room.pos - otherRoom.pos) * CELL_SIZE + margin;
 
       Room::Spawner s;
-      s.name = "room_boundary_detector(";
-      s.name += to_string(neighboorIdx);
-      s.name += ",";
-      s.name += to_string(transform.x);
-      s.name += ",";
-      s.name += to_string(transform.y);
-      s.name += ")";
+      s.name = "room_boundary_detector";
+      s.config["target_level"] = to_string(neighboorIdx);
+      s.config["transform_x"] = to_string(transform.x);
+      s.config["transform_y"] = to_string(transform.y);
       s.pos = toVector(delta * CELL_SIZE);
       room.spawners.push_back(s);
     };

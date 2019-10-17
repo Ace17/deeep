@@ -9,6 +9,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <sstream>
 #include "base/geom.h"
 #include "base/util.h"
 
@@ -323,10 +324,47 @@ Quest loadTmxQuest(string path) // tiled TMX format
   return r;
 }
 
+Matrix2<int> parseMatrix(Size2i size, const std::string& s)
+{
+  std::stringstream is(s);
+  auto parseInteger = [&] () -> int
+    {
+      int r;
+      is >> std::ws >> r;
+
+      char c;
+      is >> c;
+      assert(c == ',');
+
+      return r;
+    };
+
+  Matrix2<int> r(size);
+
+  for(int row = 0; row < r.size.height; ++row)
+  {
+    for(int col = 0; col < r.size.width; ++col)
+    {
+      r.set(col, row, parseInteger());
+    }
+  }
+
+  return r;
+}
+
 Quest loadQuest(string path)
 {
-  auto data = read(path);
-  auto js = json::parse(data.c_str(), data.size());
+  auto compressedData = read(path);
+
+  {
+    // replace gzip header with zlib header
+    compressedData = compressedData.substr(8);
+    compressedData[0] = 0x78;
+    compressedData[1] = 0x9c;
+  }
+
+  auto data = decompress({ (uint8_t*)compressedData.c_str(), (int)compressedData.size() });
+  auto js = json::parse((const char*)data.data(), data.size());
 
   auto layers = getAllLayers(js);
 
@@ -334,9 +372,36 @@ Quest loadQuest(string path)
 
   Quest r;
 
-  for(auto& roomValue : layer["objects"].elements)
+  for(auto& jsonRoom : layer["objects"].elements)
   {
-    auto room = loadAbstractRoom(roomValue);
+    Room room {};
+    room.name = string(jsonRoom["name"]);
+    room.theme = atoi(string(jsonRoom["type"]).c_str());
+    room.pos.x = int(jsonRoom["x"]);
+    room.pos.y = int(jsonRoom["y"]);
+    room.start.x = int(jsonRoom["start_x"]);
+    room.start.y = int(jsonRoom["start_y"]);
+    room.size.width = int(jsonRoom["width"]);
+    room.size.height = int(jsonRoom["height"]);
+    room.tiles = parseMatrix(room.size * CELL_SIZE, jsonRoom["tiles"]);
+    room.tilesForDisplay = parseMatrix(room.size * CELL_SIZE * 2, jsonRoom["tilesForDisplay"]);
+
+    for(auto& jsonSpawner : jsonRoom["entities"].elements)
+    {
+      Room::Spawner s;
+      s.name = string(jsonSpawner["type"]);
+      s.pos.x = double(int(jsonSpawner["x"])) / PRECISION;
+      s.pos.y = double(int(jsonSpawner["y"])) / PRECISION;
+
+      if(jsonSpawner.has("props"))
+      {
+        for(auto& member : jsonSpawner["props"].members)
+          s.config[member.first] = string(member.second);
+      }
+
+      room.spawners.push_back(s);
+    }
+
     r.rooms.push_back(move(room));
   }
 

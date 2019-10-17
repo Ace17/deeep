@@ -70,8 +70,8 @@ struct RoomBoundaryBlocker : Entity
 
 static unique_ptr<Entity> makeBoundaryDetector(IEntityConfig* cfg)
 {
-  auto targetLevel = cfg->getInt("0");
-  auto transform = Vector(cfg->getInt("1"), cfg->getInt("2"));
+  auto targetLevel = cfg->getInt("target_level");
+  auto transform = Vector(cfg->getInt("transform_x"), cfg->getInt("transform_y"));
   return make_unique<RoomBoundaryDetector>(targetLevel, transform);
 }
 

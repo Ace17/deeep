@@ -13,17 +13,20 @@ TARGETS+=$(SPRITES_SRC:res-src/%.json=res/%.png)
 ROOMS_SRC+=$(wildcard res-src/rooms/*.json)
 TARGETS+=$(ROOMS_SRC:res-src/%=res/%)
 
-TARGETS+=res/quest.json
-
 TARGETS+=res/font.png
 TARGETS+=res/font.model
 
 TILES_SRC+=$(wildcard res-src/tiles/*.xcf)
 TARGETS+=$(TILES_SRC:res-src/%.xcf=res/%.png)
 
-res/quest.json: res-src/quest.json $(BIN)/packquest.exe
+TARGETS+=res/quest.json
+res/quest.json: res-src/quest.json $(BIN)/packquest.host.exe
 	@mkdir -p $(dir $@)
-	$(BIN)/packquest.exe "$<" "$@"
+	$(BIN)/packquest.host.exe "$<" "$@"
+
+TARGETS+=res/quest.gz
+res/quest.gz: res/quest.json
+	gzip -n -c "$<" > "$@"
 
 res/%.json: res-src/%.json
 	@mkdir -p $(dir $@)

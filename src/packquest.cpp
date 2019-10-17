@@ -60,11 +60,13 @@ void dumpQuest(Quest const& q, const char* filename)
     fprintf(fp, "           \"type\":\"%d\",\n", r.theme);
     fprintf(fp, "           \"x\":%d,\n", r.pos.x);
     fprintf(fp, "           \"y\":%d,\n", r.pos.y);
+    fprintf(fp, "           \"start_x\":%d,\n", r.start.x);
+    fprintf(fp, "           \"start_y\":%d,\n", r.start.y);
     fprintf(fp, "           \"width\":%d,\n", r.size.width);
     fprintf(fp, "           \"height\":%d,\n", r.size.height);
     fprintf(fp, "           \"name\":\"%s\",\n", r.name.c_str());
     fprintf(fp, "           \"tiles\":\"%s\",\n", serializeMatrix(r.tiles).c_str());
-    fprintf(fp, "           \"tilesForDisplay\":\"%s\",\n", serializeMatrix(r.tiles).c_str());
+    fprintf(fp, "           \"tilesForDisplay\":\"%s\",\n", serializeMatrix(r.tilesForDisplay).c_str());
     fprintf(fp, "           \"entities\":\n");
     fprintf(fp, "           [\n");
 

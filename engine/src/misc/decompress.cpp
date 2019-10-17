@@ -465,7 +465,9 @@ int Zlib_decompress(std::vector<uint8_t>& out, Span<const uint8_t> in_span) // r
   if((in[0] * 256 + in[1]) % 31 != 0)
     throw runtime_error("decompress: invalid header");
 
-  unsigned long CM = in[0] & 15, CINFO = (in[0] >> 4) & 15, FDICT = (in[1] >> 5) & 1;
+  auto const CM = (in[0] >> 0) & 15;
+  auto const CINFO = (in[0] >> 4) & 15;
+  auto const FDICT = (in[1] >> 5) & 1;
 
   if(CM != 8 || CINFO > 7)
     throw runtime_error("decompress: unsupported compression method");
