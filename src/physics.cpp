@@ -61,10 +61,14 @@ struct Physics : IPhysics
     }
     else
     {
+      auto oldSolid = body->solid;
+      body->solid = false; // make pusher non-solid, so stacked bodies can move down
+
       if(body->pusher)
         pushOthers(body, irect, delta);
 
       body->pos = frect.pos;
+      body->solid = oldSolid;
       // assert(!getSolidBodyInBox(body->getBox(), -1, body));
     }
 
