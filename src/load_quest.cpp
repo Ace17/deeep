@@ -273,7 +273,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom, bool isTmx = false)
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
   room.theme = atoi(string(jsonRoom["type"]).c_str());
 
-  auto const path = "res/rooms/" + room.name + ".json";
+  auto const path = "res-src/rooms/" + room.name + ".json";
 
   if(exists(path))
   {
