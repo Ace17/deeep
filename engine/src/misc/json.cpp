@@ -38,7 +38,7 @@ public:
     decodeToken();
   }
 
-  const Token& front() const { return curr; }
+  const Token & front() const { return curr; }
   bool empty() const { return curr.type == Token::EOF_; }
   void popFront() { decodeToken(); }
 

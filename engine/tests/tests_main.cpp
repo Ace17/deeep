@@ -6,8 +6,8 @@
 
 // Unit test framework: entry point
 
-#include <cstdio>
 #include "tests.h"
+#include <cstdio>
 
 using namespace std;
 

@@ -10,12 +10,12 @@
 
 #pragma once
 
-#include <vector>
-#include "base/scene.h"
 #include "base/geom.h"
-#include "game.h"
+#include "base/scene.h"
 #include "body.h"
+#include "game.h"
 #include "physics_probe.h"
+#include <vector>
 
 using namespace std;
 

@@ -4,16 +4,16 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include "vec.h"
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
+#include "vec.h"
 
 #include "collision_groups.h"
+#include "entities/player.h"
 #include "entity.h"
-#include "toggle.h"
 #include "models.h" // MDL_BLOCK
 #include "sounds.h" // SND_HATCH
-#include "entities/player.h"
+#include "toggle.h"
 
 struct SavePoint : Entity
 {

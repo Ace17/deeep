@@ -4,11 +4,11 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include "model.h"
 #include "base/geom.h"
-#include "misc/util.h" // dirName
-#include "misc/json.h"
 #include "misc/file.h"
+#include "misc/json.h"
+#include "misc/util.h" // dirName
+#include "model.h"
 
 extern int loadTexture(const char* path, Rect2f rect);
 

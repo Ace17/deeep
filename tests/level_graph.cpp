@@ -6,10 +6,10 @@
  * License, or (at your option) any later version.
  */
 
-#include <vector>
-#include "engine/tests/tests.h"
 #include "base/geom.h"
+#include "engine/tests/tests.h"
 #include "quest.h"
+#include <vector>
 using namespace std;
 
 int getRoomAt(vector<Room> const& quest, Vector2i absPos);

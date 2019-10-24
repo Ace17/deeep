@@ -6,11 +6,11 @@
 
 // main FSM: dispatching between various game states
 
-#include "state_machine.h"
-#include "base/view.h"
 #include "base/span.h"
-#include <vector>
+#include "base/view.h"
+#include "state_machine.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 

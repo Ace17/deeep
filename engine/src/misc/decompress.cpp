@@ -5,8 +5,8 @@
 // License, or (at your option) any later version.
 
 #include "decompress.h"
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 // Copyright (c) 2005-2010 Lode Vandevenne
 //
@@ -161,7 +161,6 @@ struct Inflator
   void generateFixedTrees(HuffmanTree& tree, HuffmanTree& treeD) // get the tree of a deflated block with fixed tree
   {
     std::vector<unsigned long> bitlen(288, 8), bitlenD(32, 5);
-    ;
 
     for(size_t i = 144; i <= 255; i++)
       bitlen[i] = 9;

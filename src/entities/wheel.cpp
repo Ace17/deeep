@@ -6,16 +6,16 @@
 
 #include <algorithm>
 
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
 
 #include "collision_groups.h"
+#include "entities/explosion.h"
+#include "entities/move.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
 #include "toggle.h"
-#include "entities/explosion.h"
-#include "entities/move.h"
 
 struct Wheel : Entity, Damageable
 {

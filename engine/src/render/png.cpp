@@ -21,12 +21,12 @@
 
 #include "png.h"
 
-#include <climits>
-#include <cstdint>
-#include <vector>
-#include <stdexcept>
 #include "base/span.h"
 #include "misc/decompress.h"
+#include <climits>
+#include <cstdint>
+#include <stdexcept>
+#include <vector>
 
 namespace
 {
@@ -338,7 +338,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
 
     else // less than 8 bits per pixel, so fill it up bit per bit
     {
-      std::vector<uint8_t> templine((info.width* bpp + 7) >> 3); // only used if bpp < 8
+      std::vector<uint8_t> templine((info.width * bpp + 7) >> 3); // only used if bpp < 8
 
       for(size_t y = 0, obp = 0; y < info.height; y++)
       {
@@ -363,7 +363,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
     for(int i = 0; i < 6; i++)
       passstart[i + 1] = passstart[i] + passh[i] * ((passw[i] ? 1 : 0) + (passw[i] * bpp + 7) / 8);
 
-    std::vector<uint8_t> scanlineo((info.width* bpp + 7) / 8), scanlinen((info.width * bpp + 7) / 8); // "old" and "new" scanline
+    std::vector<uint8_t> scanlineo((info.width * bpp + 7) / 8), scanlinen((info.width * bpp + 7) / 8); // "old" and "new" scanline
 
     for(int i = 0; i < 7; i++)
       adam7Pass(&out_[0], &scanlinen[0], &scanlineo[0], &scanlines[passstart[i]], info.width, pattern[i], pattern[i + 7], pattern[i + 14], pattern[i + 21], passw[i], passh[i], bpp);

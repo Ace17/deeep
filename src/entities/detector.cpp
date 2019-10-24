@@ -4,14 +4,14 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
 
+#include "collision_groups.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
 #include "toggle.h"
-#include "collision_groups.h"
 
 struct RoomBoundaryDetector : Entity
 {

@@ -18,11 +18,11 @@ struct Span
   Span(T* tab, int N) : data(tab), len(N) {}
 
   template<size_t N>
-  Span(T(&tab)[N]) : data(tab), len(N) {}
+  Span(T (& tab)[N]) : data(tab), len(N) {}
 
   T* begin() const { return data; }
   T* end() const { return data + len; }
-  T & operator [] (int i) { return data[i]; }
+  T& operator [] (int i) { return data[i]; }
   void operator += (int i) { data += i; len -= i; }
 };
 

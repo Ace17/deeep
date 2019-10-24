@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <memory>
 #include "base/span.h"
+#include <memory>
 
 // A sound being played (holds the current sound position)
 struct IAudioSource

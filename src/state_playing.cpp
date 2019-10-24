@@ -10,20 +10,20 @@
 #include <map>
 
 #include "base/scene.h"
-#include "base/view.h"
 #include "base/util.h"
+#include "base/view.h"
 
-#include "entity_factory.h"
 #include "entities/player.h"
 #include "entities/rockman.h"
-#include "toggle.h"
+#include "entity_factory.h"
 #include "game.h"
+#include "load_quest.h"
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
 #include "quest.h"
-#include "load_quest.h"
-#include "variable.h"
 #include "state_machine.h"
+#include "toggle.h"
+#include "variable.h"
 
 using namespace std;
 

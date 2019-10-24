@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <string>
-#include <map>
-#include <vector>
 #include "base/geom.h"
 #include "vec.h"
+#include <map>
+#include <string>
+#include <vector>
 
 using namespace std;
 

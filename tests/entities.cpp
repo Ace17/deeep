@@ -41,17 +41,17 @@ unittest("Entity: explosion")
 
 struct NullPlayer : Player
 {
-  virtual void think(Control const &) {}
+  virtual void think(Control const&) {}
   virtual float health() { return 0; }
   virtual void addUpgrade(int) {}
-  virtual void addActors(vector<Actor> &) const {}
+  virtual void addActors(vector<Actor>&) const {}
 };
 
 struct NullVariable : IVariable
 {
-  int get() { return 0; };
-  void set(int) {};
-  unique_ptr<Handle> observe(Observer) { return nullptr; };
+  int get() { return 0; }
+  void set(int) {}
+  unique_ptr<Handle> observe(Observer) { return nullptr; }
 };
 
 static NullVariable nullVariable;
@@ -59,14 +59,14 @@ static NullVariable nullVariable;
 struct NullGame : IGame
 {
   virtual void playSound(SOUND) {}
-  virtual void stopMusic() {};
+  virtual void stopMusic() {}
   virtual void spawn(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
-  virtual void postEvent(unique_ptr<Event> ) {}
+  virtual void postEvent(unique_ptr<Event>) {}
   virtual Vector2f getPlayerPosition() { return Vector2f(0, 0); }
   virtual void textBox(char const*) {}
   virtual void setAmbientLight(float) {}
-  virtual void respawn() {};
+  virtual void respawn() {}
 };
 
 struct NullPhysicsProbe : IPhysicsProbe

@@ -6,8 +6,8 @@
 
 // Player-controlled switch
 
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
 
 #include "collision_groups.h"
 #include "entity.h"

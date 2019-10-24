@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include <memory>
-#include <functional>
 #include "base/geom.h"
 #include "base/scene.h"
 #include "base/view.h"
 #include "vec.h"
+#include <functional>
+#include <memory>
 
 using namespace std;
 

@@ -21,23 +21,23 @@ struct Matrix3f
   {
     float elements[3];
 
-    float const & operator [] (int i) const
+    float const& operator [] (int i) const
     {
       return elements[i];
     }
 
-    float & operator [] (int i)
+    float& operator [] (int i)
     {
       return elements[i];
     }
   };
 
-  const row & operator [] (int i) const
+  const row& operator [] (int i) const
   {
     return m_rows[i];
   }
 
-  row & operator [] (int i)
+  row& operator [] (int i)
   {
     return m_rows[i];
   }

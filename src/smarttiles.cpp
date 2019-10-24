@@ -8,10 +8,10 @@
 
 // Auto-connecting tiles.
 
-#include <cassert>
-#include <array>
-#include "base/util.h"
 #include "base/geom.h"
+#include "base/util.h"
+#include <array>
+#include <cassert>
 
 using namespace std;
 

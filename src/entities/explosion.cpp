@@ -6,13 +6,13 @@
 
 #include "explosion.h"
 
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
 
+#include "entities/player.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
-#include "entities/player.h"
 
 static auto const DURATION = 40;
 

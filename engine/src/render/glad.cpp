@@ -19,10 +19,10 @@
         https://glad.dav1d.de/#profile=compatibility&language=c&specification=gl&loader=on&api=gles2%3D3.0
  */
 
+#include "glad.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "glad.h"
 
 #ifdef __EMSCRIPTEN__
 

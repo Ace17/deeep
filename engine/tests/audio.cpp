@@ -4,8 +4,8 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include "engine/tests/tests.h"
 #include "engine/src/audio/audio_channel.h"
+#include "engine/tests/tests.h"
 
 struct DummySource : IAudioSource
 {
@@ -40,7 +40,7 @@ struct DummySound : Sound
 };
 
 template<size_t N>
-bool buffEquals(float(&expected)[N], float(&actual)[N])
+bool buffEquals(float (& expected)[N], float (& actual)[N])
 {
   bool mismatch = false;
 

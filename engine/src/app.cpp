@@ -8,19 +8,19 @@
 // No game-specific code should be here,
 // and no platform-specific code should be here (SDL is OK).
 
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "SDL.h"
 
+#include "app.h"
+#include "audio/audio.h"
 #include "base/geom.h"
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
-#include "app.h"
 #include "ratecounter.h"
-#include "audio/audio.h"
 #include "render/display.h"
 
 using namespace std;
@@ -141,8 +141,8 @@ private:
     for(auto& actor : m_actors)
     {
       auto where = Rect2f(
-          actor.pos.x, actor.pos.y,
-          actor.scale.width, actor.scale.height);
+        actor.pos.x, actor.pos.y,
+        actor.scale.width, actor.scale.height);
       m_display->drawActor(where, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
     }
 

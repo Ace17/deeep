@@ -4,15 +4,15 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include "vec.h"
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
+#include "vec.h"
 
 #include "collision_groups.h"
 #include "entity.h"
-#include "toggle.h" // decrement
 #include "models.h" // MDL_BLOCK
 #include "sounds.h" // SND_HATCH
+#include "toggle.h" // decrement
 
 struct Hatch : Entity
 {

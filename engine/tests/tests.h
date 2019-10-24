@@ -9,8 +9,8 @@
 #pragma once
 
 #include <cassert>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 #include <vector>
 
 int RegisterTest(void (* f)(), const char* testName);
@@ -39,7 +39,7 @@ struct Registrator
   assertEqualsFunc(u, v, __FILE__, __LINE__)
 
 static inline
-std::ostream & operator << (std::ostream& o, const std::pair<int, int>& p)
+std::ostream& operator << (std::ostream& o, const std::pair<int, int>& p)
 {
   o << "(";
   o << p.first;
@@ -50,7 +50,7 @@ std::ostream & operator << (std::ostream& o, const std::pair<int, int>& p)
 }
 
 template<typename T>
-std::ostream & operator << (std::ostream& o, const std::vector<T>& v)
+std::ostream& operator << (std::ostream& o, const std::vector<T>& v)
 {
   int idx = 0;
   o << "[";

@@ -8,16 +8,16 @@
 
 #include "audio_backend.h"
 
-#include "sound.h"
 #include "audio_channel.h"
+#include "sound.h"
 
 #include <memory>
-#include <vector>
 #include <stdexcept>
 #include <SDL.h>
+#include <vector>
 
-#include "base/util.h"
 #include "base/span.h"
+#include "base/util.h"
 
 using namespace std;
 

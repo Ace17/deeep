@@ -10,8 +10,8 @@
 #include "base/util.h"
 
 #include "collision_groups.h"
-#include "entities/player.h"
 #include "entities/move.h"
+#include "entities/player.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"

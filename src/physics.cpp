@@ -8,11 +8,11 @@
 
 #include <cmath> // round
 
-#include "body.h"
 #include "base/util.h"
+#include "body.h"
 #include "physics.h"
-#include <vector>
 #include <memory>
+#include <vector>
 
 using namespace std;
 

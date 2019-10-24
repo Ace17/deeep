@@ -8,32 +8,32 @@
 
 #include "display.h"
 
+#include <algorithm> // sort
 #include <cassert>
 #include <cstdio>
-#include <vector>
 #include <map>
-#include <algorithm> // sort
 #include <stdexcept>
+#include <vector>
 using namespace std;
 
 #include "glad.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 
-#include "base/util.h" // clamp
-#include "base/scene.h"
 #include "base/geom.h"
+#include "base/scene.h"
 #include "base/span.h"
+#include "base/util.h" // clamp
+#include "matrix3.h"
 #include "misc/file.h"
 #include "misc/util.h"
 #include "model.h"
-#include "matrix3.h"
 #include "png.h"
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
 #else
 #define SAFE_GL(a) \
-  do { a; ensureGl(# a, __LINE__); } while(0)
+  do { a; ensureGl(# a, __LINE__); } while (0)
 #endif
 
 static const int MAX_VERTICES = 8192;
@@ -169,7 +169,7 @@ int loadTexture(const char* path, Rect2f frect)
   rect.size.width = frect.size.width * surface->width;
   rect.size.height = frect.size.height * surface->height;
 
-  vector<uint8_t> img(rect.size.width* rect.size.height* bpp);
+  vector<uint8_t> img(rect.size.width * rect.size.height * bpp);
 
   auto src = (Uint8*)surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->stride;
   auto dst = (Uint8*)img.data() + bpp * rect.size.width * rect.size.height;
@@ -268,11 +268,11 @@ struct OpenglDisplay : Display
     }
 
     m_window = SDL_CreateWindow(
-        "",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        resolution.width, resolution.height,
-        SDL_WINDOW_OPENGL
-        );
+      "",
+      SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+      resolution.width, resolution.height,
+      SDL_WINDOW_OPENGL
+      );
 
     if(!m_window)
       throw runtime_error("Can't set video mode");

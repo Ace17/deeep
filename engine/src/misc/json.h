@@ -9,9 +9,9 @@
 #pragma once
 
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <stdexcept>
 using namespace std;
 
 namespace json
@@ -37,13 +37,13 @@ struct Value
   {
     enforceType(Type::String);
     return stringValue;
-  };
+  }
 
   ////////////////////////////////////////
   // type == Type::Object
   map<string, Value> members;
 
-  Value const & operator [] (const char* name) const
+  Value const& operator [] (const char* name) const
   {
     enforceType(Type::Object);
     auto it = members.find(name);
@@ -63,7 +63,7 @@ struct Value
   // type == Type::Array
   vector<Value> elements;
 
-  Value const & operator [] (int i)
+  Value const& operator [] (int i)
   {
     enforceType(Type::Array);
     return elements[i];
@@ -81,7 +81,7 @@ struct Value
   {
     enforceType(Type::Integer);
     return intValue;
-  };
+  }
 
 private:
   void enforceType(Type expected) const

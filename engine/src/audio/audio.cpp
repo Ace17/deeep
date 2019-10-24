@@ -7,15 +7,15 @@
 // Playlist management, sound loading
 
 #include "audio.h"
-#include "misc/file.h" // exists
 #include "audio_backend.h"
+#include "misc/file.h" // exists
 #include "sound.h"
 
+#include <cmath> // sin
 #include <cstdio> // printf
 #include <cstring> // strcpy
-#include <cmath> // sin
-#include <vector>
 #include <memory>
+#include <vector>
 
 using namespace std;
 

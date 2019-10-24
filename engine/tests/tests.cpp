@@ -6,11 +6,11 @@
 
 // Unit test framework: test runner
 
-#include <cstdio>
-#include <cassert>
-#include <stdexcept>
-#include <cstring>
 #include "tests.h"
+#include <cassert>
+#include <cstdio>
+#include <cstring>
+#include <stdexcept>
 
 namespace
 {

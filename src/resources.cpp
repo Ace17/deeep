@@ -8,8 +8,8 @@
 
 #include "base/resource.h"
 #include "base/span.h"
-#include "sounds.h"
 #include "models.h"
+#include "sounds.h"
 
 static const Resource resources[] =
 {

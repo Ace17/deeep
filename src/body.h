@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <functional>
 #include "vec.h"
+#include <functional>
 
 using namespace std;
 

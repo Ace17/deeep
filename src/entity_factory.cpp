@@ -15,7 +15,7 @@ using namespace std;
 
 namespace
 {
-map<string, CreationFunc>& g_registry()
+map<string, CreationFunc> & g_registry()
 {
   static map<string, CreationFunc> registry;
   return registry;

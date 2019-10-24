@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <memory>
 #include "sound.h"
 #include <cassert>
+#include <memory>
 
 using namespace std;
 

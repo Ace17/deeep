@@ -6,17 +6,17 @@
 
 // Loader for the quest file and room files.
 // (using the TMX JSON+gzip format)
-#include <cassert>
-#include <map>
-#include <string>
-#include <sstream>
 #include "base/geom.h"
 #include "base/util.h"
+#include <cassert>
+#include <map>
+#include <sstream>
+#include <string>
 
-#include "engine/src/misc/file.h"
-#include "engine/src/misc/json.h"
 #include "engine/src/misc/base64.h"
 #include "engine/src/misc/decompress.h"
+#include "engine/src/misc/file.h"
+#include "engine/src/misc/json.h"
 
 #include "quest.h"
 

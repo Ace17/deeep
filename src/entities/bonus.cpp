@@ -6,17 +6,17 @@
 
 // Bonus entity
 
-#include <cmath> // sin
 #include <algorithm>
+#include <cmath> // sin
 
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
 
+#include "collision_groups.h"
+#include "entities/player.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
-#include "entities/player.h"
-#include "collision_groups.h"
 
 struct Bonus : Entity
 {

@@ -7,12 +7,12 @@
 // OGG sound file format loading.
 // Uses libogg/libvorbis.
 
+#include "misc/file.h" // read
 #include "sound.h"
-#include <string.h> // memcpy
 #include <cassert>
 #include <ogg/ogg.h>
+#include <string.h> // memcpy
 #include <vorbis/vorbisfile.h>
-#include "misc/file.h" // read
 
 using namespace std;
 

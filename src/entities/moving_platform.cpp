@@ -6,15 +6,15 @@
 
 #include <cmath> // sin
 
-#include "base/util.h"
 #include "base/scene.h"
+#include "base/util.h"
 
 #include "collision_groups.h"
-#include "toggle.h"
+#include "entities/move.h"
 #include "entity.h"
 #include "models.h"
 #include "sounds.h"
-#include "entities/move.h"
+#include "toggle.h"
 
 struct MovingPlatform : Entity
 {

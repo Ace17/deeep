@@ -6,14 +6,14 @@
 
 // splash menu
 
-#include <memory>
 #include "base/scene.h"
 #include "base/view.h"
+#include <memory>
 
-#include "vec.h"
-#include "toggle.h"
 #include "models.h" // MDL_SPLASH
 #include "state_machine.h"
+#include "toggle.h"
+#include "vec.h"
 
 struct SplashState : Scene
 {
