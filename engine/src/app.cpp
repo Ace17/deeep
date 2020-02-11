@@ -180,6 +180,12 @@ private:
     m_running = 0;
   }
 
+  void toggleFullScreen()
+  {
+    m_fullscreen = !m_fullscreen;
+    m_display->setFullscreen(m_fullscreen);
+  }
+
   void onKeyDown(SDL_Event* evt)
   {
     switch(evt->key.keysym.sym)
@@ -208,8 +214,7 @@ private:
         {
           if(evt->key.repeat == 0)
           {
-            m_fullscreen = !m_fullscreen;
-            m_display->setFullscreen(m_fullscreen);
+            toggleFullScreen();
           }
         }
 
