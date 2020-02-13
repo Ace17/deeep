@@ -35,7 +35,7 @@ struct Sweeper : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_SWEEPER };
+    auto r = Actor { id, pos, MDL_SWEEPER };
 
     r.scale = size;
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);

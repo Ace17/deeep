@@ -134,7 +134,8 @@ struct GameState : Scene, private IGame
     }
 
     {
-      Actor lifebar { Vector(-7, 1.5), MDL_LIFEBAR };
+      Actor lifebar { 1024 * 1024 + 1, Vector(-7, 1.5), MDL_LIFEBAR };
+
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(1, 5);
@@ -144,7 +145,7 @@ struct GameState : Scene, private IGame
     }
 
     {
-      Actor background = { Vector(-8, -8), MDL_BACKGROUND };
+      Actor background = { 1024 * 1024 + 2, Vector(-8, -8), MDL_BACKGROUND };
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
       background.zOrder = -2;
@@ -218,6 +219,7 @@ struct GameState : Scene, private IGame
   {
     auto const model = MDL_TILES_00 + m_theme % 8;
 
+    int id = 2 * 1024 * 1024;
     auto onCell =
       [&] (int x, int y, int tile)
       {
@@ -227,7 +229,7 @@ struct GameState : Scene, private IGame
         {
           const float posX = x;
           const float posY = y;
-          auto actor = Actor { Vector(posX, posY), model };
+          auto actor = Actor { id++, Vector(posX, posY), model };
           actor.action = tile;
           actor.scale = UnitSize;
           actor.zOrder = -1;
@@ -449,7 +451,7 @@ struct GameState : Scene, private IGame
   static Actor getDebugActor(Entity* entity)
   {
     auto box = entity->getBox();
-    auto r = Actor { box.pos, MDL_RECT };
+    auto r = Actor { 1024 * 1024 * 3 + entity->id, box.pos, MDL_RECT };
     r.scale = box.size;
     r.zOrder = 10;
     return r;

@@ -39,7 +39,7 @@ struct Elevator : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_ELEVATOR };
+    auto r = Actor { id, pos, MDL_ELEVATOR };
     r.scale = size;
     r.ratio = 0;
     r.action = liftTimer > 0 ? 1 : 0;

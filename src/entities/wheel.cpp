@@ -33,7 +33,7 @@ struct Wheel : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_WHEEL };
+    auto r = Actor { id, pos, MDL_WHEEL };
 
     r.scale = Size(3, 3);
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.3);

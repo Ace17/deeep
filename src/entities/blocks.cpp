@@ -32,7 +32,7 @@ struct FragileBlock : Entity, Damageable
     if(state == 2)
       return;
 
-    auto r = Actor { pos, model };
+    auto r = Actor { id, pos, model };
     r.scale = size;
 
     if(state == 0)
@@ -126,7 +126,7 @@ struct CrumbleBlock : Entity
   {
     if(solid)
     {
-      auto r = Actor { pos, model };
+      auto r = Actor { id, pos, model };
       r.scale = size;
       r.action = tile;
 

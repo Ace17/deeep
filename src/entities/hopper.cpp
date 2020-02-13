@@ -35,7 +35,7 @@ struct Hopper : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_HOPPER };
+    auto r = Actor { id, pos, MDL_HOPPER };
 
     r.scale = size;
     r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);

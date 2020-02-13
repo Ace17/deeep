@@ -30,7 +30,7 @@ struct ExitPoint : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_BLOCK };
+    auto r = Actor { id, pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 0;
     r.action = 0;

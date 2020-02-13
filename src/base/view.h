@@ -24,6 +24,8 @@ enum class Effect
 // a displayable object (= a game object, as seen by the user-interface)
 struct Actor
 {
+  int id = 0; // unique id (used for matching the same actor between frames)
+
   Vector2f pos = Vector2f(0, 0); // object position, in logical units
   MODEL model = 0; // what sprite to display
   int action = 0; // what sprite action to use

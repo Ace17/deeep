@@ -46,7 +46,7 @@ struct Bonus : Entity
   virtual void addActors(vector<Actor>& actors) const override
   {
     auto s = sin(time * 0.1);
-    auto r = Actor { pos, MDL_BONUS };
+    auto r = Actor { id, pos, MDL_BONUS };
     r.scale = UnitSize;
     r.ratio = max(s, 0.0);
     r.action = modelAction;

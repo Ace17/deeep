@@ -31,7 +31,7 @@ struct SavePoint : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_SAVEPOINT };
+    auto r = Actor { id, pos, MDL_SAVEPOINT };
     r.scale = size;
     r.ratio = 0;
     r.action = 0;

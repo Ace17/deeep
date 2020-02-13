@@ -50,7 +50,7 @@ struct PausedState : Scene
       int col = room.pos.x;
       int row = room.pos.y;
 
-      auto cell = Actor { NullVector, MDL_RECT };
+      auto cell = Actor { 1024 * 1024 + idx + 1, NullVector, MDL_RECT };
       cell.action = 5;
       cell.scale.width = room.size.width * cellSize;
       cell.scale.height = room.size.height * cellSize;
@@ -65,7 +65,7 @@ struct PausedState : Scene
       view->sendActor(cell);
     }
 
-    auto overlay = Actor { NullVector, MDL_PAUSED };
+    auto overlay = Actor { 1024 * 1024, NullVector, MDL_PAUSED };
     overlay.scale = Size2f(12, 12);
     overlay.pos -= Vector2f(6, 6);
     overlay.screenRefFrame = true;

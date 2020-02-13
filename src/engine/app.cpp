@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/geom.h"
+#include "base/my_algorithm.h"
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
@@ -26,6 +27,7 @@
 #include "display.h"
 #include "graphics_backend.h"
 #include "input.h"
+#include "interpolation.h"
 #include "ratecounter.h"
 #include "stats.h"
 #include "video_capture.h"
@@ -100,9 +102,8 @@ private:
     }
 
     // draw the frame
-    m_actors.clear();
     m_scene->draw();
-    draw();
+    draw(now);
 
     m_fps.tick(now);
     Stat("FPS", m_fps.slope());
@@ -110,9 +111,16 @@ private:
 
   void tickGameplay()
   {
+    std::swap(m_currFrame, m_prevFrame);
+    m_currFrame.actors.clear();
+    m_currFrame.date = m_lastTime;
     m_control.debug = m_debugMode;
 
     auto next = m_scene->tick(m_control);
+
+    // sort actors by id
+    auto byId = [] (const Actor& a, const Actor& b) { return a.id < b.id; };
+    my::sort(Span<Actor>(m_currFrame.actors), byId);
 
     if(next != m_scene.get())
     {
@@ -156,11 +164,13 @@ private:
     m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ playSound(0); togglePause(); } });
   }
 
-  void draw()
+  void draw(int now)
   {
     m_display->beginDraw();
 
-    for(auto& actor : m_actors)
+    auto frame = interpolate(m_prevFrame, m_currFrame, now);
+
+    for(auto& actor : frame.actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
       m_display->drawActor(where, actor.angle, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
@@ -330,7 +340,7 @@ private:
 
   void sendActor(Actor const& actor) override
   {
-    m_actors.push_back(actor);
+    m_currFrame.actors.push_back(actor);
   }
 
   enum class AppState
@@ -360,7 +370,7 @@ private:
   unique_ptr<IAudioBackend> m_audioBackend;
   unique_ptr<Display> m_display;
   unique_ptr<IGraphicsBackend> m_graphicsBackend;
-  vector<Actor> m_actors;
+  ActorFrame m_currFrame, m_prevFrame;
   unique_ptr<UserInput> m_input;
 
   string m_textbox;

@@ -25,7 +25,7 @@ struct Ladder : Entity, Climbable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_LADDER };
+    auto r = Actor { id, pos, MDL_LADDER };
     r.scale = size;
     r.ratio = 0;
     r.action = 6;
