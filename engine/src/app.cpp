@@ -58,29 +58,23 @@ public:
     processInput();
 
     auto const now = (int)SDL_GetTicks();
-    bool dirty = false;
+    tickOneDisplayFrame(now);
+    return m_running;
+  }
 
-    auto timestep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+private:
+  void tickOneDisplayFrame(int now)
+  {
+    auto const timeStep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
 
-    while(m_lastTime + timestep < now)
+    while(m_lastTime + timeStep < now)
     {
-      m_lastTime += timestep;
+      m_lastTime += timeStep;
 
       if(!m_paused)
-      {
-        auto next = m_scene->tick(m_control);
-
-        if(next != m_scene.get())
-        {
-          m_scene.release();
-          m_scene.reset(next);
-        }
-      }
-
-      dirty = true;
+        tickGameplay();
     }
 
-    if(dirty)
     {
       m_actors.clear();
       m_scene->draw();
@@ -95,11 +89,20 @@ public:
       fpsChanged(fps);
       m_lastFps = fps;
     }
-
-    return m_running;
   }
 
 private:
+  void tickGameplay()
+  {
+    auto next = m_scene->tick(m_control);
+
+    if(next != m_scene.get())
+    {
+      m_scene.release();
+      m_scene.reset(next);
+    }
+  }
+
   void processInput()
   {
     SDL_Event event;
