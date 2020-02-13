@@ -6,7 +6,10 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "base/geom.h"
+#include "base/span.h"
 
 struct Display
 {
@@ -21,5 +24,6 @@ struct Display
   virtual void drawText(Vector2f pos, char const* text) = 0;
   virtual void setCamera(Vector2f pos) = 0;
   virtual void setAmbientLight(float ambientLight) = 0;
+  virtual void readPixels(Span<uint8_t> dstRgbPixels) = 0;
 };
 

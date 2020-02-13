@@ -26,6 +26,7 @@
 using namespace std;
 
 auto const TIMESTEP = 10;
+auto const RESOLUTION = Size2i(768, 768);
 
 Display* createDisplay(Size2i resolution);
 Audio* createAudio();
@@ -40,12 +41,13 @@ public:
   {
     SDL_Init(0);
 
-    m_display.reset(createDisplay(Size2i(768, 768)));
+    m_display.reset(createDisplay(RESOLUTION));
     m_audio.reset(createAudio());
 
     m_scene.reset(createGame(this, m_args));
 
     m_lastTime = SDL_GetTicks();
+    m_lastDisplayFrameTime = SDL_GetTicks();
   }
 
   virtual ~App()
@@ -58,7 +60,21 @@ public:
     processInput();
 
     auto const now = (int)SDL_GetTicks();
-    tickOneDisplayFrame(now);
+
+    if(m_fixedDisplayFramePeriod)
+    {
+      while(m_lastDisplayFrameTime + m_fixedDisplayFramePeriod < now)
+      {
+        m_lastDisplayFrameTime += m_fixedDisplayFramePeriod;
+        tickOneDisplayFrame(m_lastDisplayFrameTime);
+      }
+    }
+    else
+    {
+      m_lastDisplayFrameTime = now;
+      tickOneDisplayFrame(now);
+    }
+
     return m_running;
   }
 
@@ -89,9 +105,28 @@ private:
       fpsChanged(fps);
       m_lastFps = fps;
     }
+
+    if(m_captureFile || m_mustScreenshot)
+    {
+      vector<uint8_t> pixels(RESOLUTION.width * RESOLUTION.height * 4);
+      m_display->readPixels({ pixels.data(), (int)pixels.size() });
+
+      if(m_captureFile)
+        fwrite(pixels.data(), 1, pixels.size(), m_captureFile);
+
+      if(m_mustScreenshot)
+      {
+        FILE* fp = fopen("screenshot.rgba", "wb");
+        fwrite(pixels.data(), 1, pixels.size(), fp);
+        fflush(fp);
+        fclose(fp);
+        fprintf(stderr, "Saved screenshot to 'screenshot.rgba'\n");
+
+        m_mustScreenshot = false;
+      }
+    }
   }
 
-private:
   void tickGameplay()
   {
     auto next = m_scene->tick(m_control);
@@ -183,8 +218,44 @@ private:
     m_running = 0;
   }
 
+  void toggleVideoCapture()
+  {
+    if(!m_captureFile)
+    {
+      if(m_fullscreen)
+      {
+        fprintf(stderr, "Can't capture video in fullscreen mode\n");
+        return;
+      }
+
+      m_captureFile = fopen("capture.rgb", "wb");
+
+      if(!m_captureFile)
+      {
+        fprintf(stderr, "Can't start video capture!\n");
+        return;
+      }
+
+      m_fixedDisplayFramePeriod = 40;
+      fprintf(stderr, "Capturing video at %d Hz...\n", 1000 / m_fixedDisplayFramePeriod);
+    }
+    else
+    {
+      fprintf(stderr, "Stopped video capture\n");
+      fclose(m_captureFile);
+      m_captureFile = nullptr;
+      m_fixedDisplayFramePeriod = 0;
+    }
+  }
+
   void toggleFullScreen()
   {
+    if(m_captureFile)
+    {
+      fprintf(stderr, "Can't toggle full-screen during video capture\n");
+      return;
+    }
+
     m_fullscreen = !m_fullscreen;
     m_display->setFullscreen(m_fullscreen);
   }
@@ -208,6 +279,23 @@ private:
     case SDLK_TAB:
       {
         m_slowMotion = !m_slowMotion;
+        break;
+      }
+
+    case SDLK_PRINTSCREEN:
+      {
+        if(evt->key.repeat == 0)
+        {
+          if(evt->key.keysym.mod & KMOD_CTRL)
+          {
+            toggleVideoCapture();
+          }
+          else
+          {
+            m_mustScreenshot = true;
+          }
+        }
+
         break;
       }
 
@@ -297,8 +385,12 @@ private:
 
   int keys[SDL_NUM_SCANCODES] {};
   int m_running = 1;
+  int m_fixedDisplayFramePeriod = 0;
+  FILE* m_captureFile = nullptr;
+  bool m_mustScreenshot = false;
 
   int m_lastTime;
+  int m_lastDisplayFrameTime;
   int m_lastFps = -1;
   RateCounter m_fps;
   Control m_control {};
