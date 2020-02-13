@@ -84,6 +84,12 @@ Just run the following command:
 $ bin/rel/game.exe
 ```
 
+Convert screenshot to PNG
+-------------------------
+
+```
+ffmpeg -f rawvideo -pixel_format rgba -video_size 768x768 -framerate 25 -i screenshot.rgba -y screenshot.png
+```
 
 Thanks to:
 ----------
