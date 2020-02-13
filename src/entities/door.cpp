@@ -60,7 +60,7 @@ struct Door : Entity
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_DOOR };
+    auto r = Actor { id, pos, MDL_DOOR };
     r.action = state ? 1 : 3;
     r.ratio = 1 - (delay / 100.0f);
     r.scale = size;
@@ -93,7 +93,7 @@ struct BreakableDoor : Entity, Damageable
 
   virtual void addActors(vector<Actor>& actors) const override
   {
-    auto r = Actor { pos, MDL_DOOR };
+    auto r = Actor { id, pos, MDL_DOOR };
     r.scale = size;
 
     if(blinking)

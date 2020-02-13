@@ -58,7 +58,7 @@ struct EndingState : Scene
 
   void draw() override
   {
-    auto splash = Actor { NullVector, MDL_ENDING };
+    auto splash = Actor { -1, NullVector, MDL_ENDING };
     splash.scale = Size2f(16, 16);
     splash.pos -= Vector2f(8, 8);
     view->sendActor(splash);

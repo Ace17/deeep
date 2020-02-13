@@ -27,7 +27,7 @@ struct FragileBlock : Entity, Damageable
     if(state == 2)
       return;
 
-    auto r = Actor { pos, MDL_BLOCK };
+    auto r = Actor { id, pos, MDL_BLOCK };
     r.scale = size;
 
     if(state == 0)

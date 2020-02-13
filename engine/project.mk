@@ -2,6 +2,7 @@ SRCS_ENGINE:=\
 	$(BIN)/$(ENGINE_ROOT)/src/render/fragment.glsl.cpp\
 	$(BIN)/$(ENGINE_ROOT)/src/render/vertex.glsl.cpp\
 	$(ENGINE_ROOT)/src/app.cpp\
+	$(ENGINE_ROOT)/src/interpolation.cpp\
 	$(ENGINE_ROOT)/src/main.cpp\
 	$(ENGINE_ROOT)/src/audio/audio.cpp\
 	$(ENGINE_ROOT)/src/audio/audio_sdl.cpp\

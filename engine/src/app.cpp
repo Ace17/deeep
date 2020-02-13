@@ -8,6 +8,7 @@
 // No game-specific code should be here,
 // and no platform-specific code should be here (SDL is OK).
 
+#include <algorithm> // sort
 #include <memory>
 #include <string>
 #include <vector>
@@ -20,6 +21,7 @@
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
+#include "interpolation.h"
 #include "ratecounter.h"
 #include "render/display.h"
 
@@ -58,33 +60,27 @@ public:
     processInput();
 
     auto const now = (int)SDL_GetTicks();
-    bool dirty = false;
 
-    auto timestep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+    tickOneDisplayFrame(now);
 
-    while(m_lastTime + timestep < now)
+    return m_running;
+  }
+
+private:
+  void tickOneDisplayFrame(int now)
+  {
+    auto const timeStep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+
+    while(m_lastTime < now)
     {
-      m_lastTime += timestep;
+      m_lastTime += timeStep;
 
       if(!m_paused)
-      {
-        auto next = m_scene->tick(m_control);
-
-        if(next != m_scene.get())
-        {
-          m_scene.release();
-          m_scene.reset(next);
-        }
-      }
-
-      dirty = true;
+        tickGameplay();
     }
 
-    if(dirty)
     {
-      m_actors.clear();
-      m_scene->draw();
-      draw();
+      draw(now);
       m_fps.tick(now);
     }
 
@@ -95,8 +91,24 @@ public:
       fpsChanged(fps);
       m_lastFps = fps;
     }
+  }
 
-    return m_running;
+  void tickGameplay()
+  {
+    std::swap(m_currFrame, m_prevFrame);
+    m_currFrame.actors.clear();
+    m_currFrame.date = m_lastTime;
+    auto next = m_scene->tick(m_control);
+
+    // sort actors by id
+    auto byId = [] (const Actor& a, const Actor& b) { return a.id < b.id; };
+    std::sort(m_currFrame.actors.begin(), m_currFrame.actors.end(), byId);
+
+    if(next != m_scene.get())
+    {
+      m_scene.release();
+      m_scene.reset(next);
+    }
   }
 
 private:
@@ -134,11 +146,14 @@ private:
     m_control.debug = keys[SDL_SCANCODE_SCROLLLOCK];
   }
 
-  void draw()
+  void draw(int now)
   {
+    m_scene->draw();
     m_display->beginDraw();
 
-    for(auto& actor : m_actors)
+    auto frame = interpolate(m_prevFrame, m_currFrame, now);
+
+    for(auto& actor : frame.actors)
     {
       auto where = Rect2f(
         actor.pos.x, actor.pos.y,
@@ -289,7 +304,7 @@ private:
 
   void sendActor(Actor const& actor) override
   {
-    m_actors.push_back(actor);
+    m_currFrame.actors.push_back(actor);
   }
 
   int keys[SDL_NUM_SCANCODES] {};
@@ -306,7 +321,7 @@ private:
   bool m_paused = false;
   unique_ptr<Audio> m_audio;
   unique_ptr<Display> m_display;
-  vector<Actor> m_actors;
+  ActorFrame m_currFrame, m_prevFrame;
 
   string m_title;
   string m_textbox;
