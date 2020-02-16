@@ -2,3 +2,5 @@
 /tags
 /res
 session.vim
+*.swp
+*.swo

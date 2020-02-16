@@ -47,8 +47,6 @@ Build
 Requirements:
 ```
 * libsdl2-dev
-* libogg-dev
-* libvorbis-dev
 ```
 
 It can be compiled to native code using your native compiler (gcc or clang):

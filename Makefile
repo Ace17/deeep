@@ -13,8 +13,6 @@ all: true_all
 
 PKGS:=\
 	sdl2\
-	ogg \
-	vorbisfile \
 
 PKG_CFLAGS:=$(shell pkg-config $(PKGS) --cflags)
 PKG_LDFLAGS:=$(shell pkg-config $(PKGS) --libs || echo "ERROR")
