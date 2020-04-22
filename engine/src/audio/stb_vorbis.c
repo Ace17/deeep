@@ -287,6 +287,10 @@ enum STBVorbisError
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 // find definition of alloca if it's not in stdlib.h:
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #include <malloc.h>
