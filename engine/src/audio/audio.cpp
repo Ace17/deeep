@@ -8,8 +8,9 @@
 
 #include "audio.h"
 #include "audio_backend.h"
-#include "misc/file.h" // exists
 #include "sound.h"
+
+#include "misc/file.h" // exists
 
 #include <cmath> // sin
 #include <cstdio> // printf
@@ -89,17 +90,16 @@ struct HighLevelAudio : Audio
     currMusic = id;
     printf("[audio] playing music: %s\n", path);
 
-    m_backend->playLoopOnChannelZero(loadSoundFile(path).release());
+    musicChannel = m_backend->playLoop(loadSoundFile(path).release());
   }
 
   void stopMusic() override
   {
-    printf("[audio] stopping music\n");
-    m_backend->stopLoopOnChannelZero();
-    currMusic = -1;
+    m_backend->stopLoop(musicChannel);
   }
 
   int currMusic = -1;
+  int musicChannel = -1;
   const unique_ptr<IAudioBackend> m_backend;
   vector<unique_ptr<Sound>> sounds;
 };

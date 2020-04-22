@@ -111,10 +111,7 @@ struct AudioChannel
     }
 
     if(m_fadingOut && m_volume == 0)
-    {
-      m_source.reset();
       m_isDead = true;
-    }
   }
 
   void fadeOut()

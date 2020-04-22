@@ -7,8 +7,10 @@
 // OGG sound file format loading.
 // Uses stb_vorbis.
 
-#include "misc/file.h" // read
 #include "sound.h"
+
+#include "misc/file.h" // read
+
 #include "stb_vorbis.c"
 #include <cassert>
 #include <string.h> // memcpy

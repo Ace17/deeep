@@ -7,7 +7,6 @@
 // SDL audio output
 
 #include "audio_backend.h"
-
 #include "audio_channel.h"
 #include "sound.h"
 
@@ -21,7 +20,10 @@
 
 using namespace std;
 
+namespace
+{
 auto const MAX_CHANNELS = 16;
+auto const LOOP_CHANNEL = 0;
 
 struct SdlAudioBackend : IAudioBackend
 {
@@ -84,21 +86,24 @@ struct SdlAudioBackend : IAudioBackend
     channel->play(sound);
   }
 
-  void playLoopOnChannelZero(Sound* sound) override
+  int playLoop(Sound* sound) override
   {
     SDL_LockAudioDevice(audioDevice);
 
-    if(!m_channels[0].isDead())
-      m_channels[0].fadeOut();
+    if(!m_channels[LOOP_CHANNEL].isDead())
+      m_channels[LOOP_CHANNEL].fadeOut();
 
     m_nextMusic.reset(sound);
     SDL_UnlockAudioDevice(audioDevice);
+
+    return LOOP_CHANNEL;
   }
 
-  void stopLoopOnChannelZero() override
+  void stopLoop(int channel) override
   {
+    assert(channel == LOOP_CHANNEL);
     SDL_LockAudioDevice(audioDevice);
-    m_channels[0].fadeOut();
+    m_channels[channel].fadeOut();
     SDL_UnlockAudioDevice(audioDevice);
   }
 
@@ -120,10 +125,10 @@ struct SdlAudioBackend : IAudioBackend
 
   void mixAudio(float* stream, int sampleCount)
   {
-    if(m_nextMusic && m_channels[0].isDead())
+    if(m_nextMusic && m_channels[LOOP_CHANNEL].isDead())
     {
       m_music = move(m_nextMusic);
-      m_channels[0].play(m_music.get(), 2, true);
+      m_channels[LOOP_CHANNEL].play(m_music.get(), 2, true);
     }
 
     int shift = 0;
@@ -164,6 +169,7 @@ struct SdlAudioBackend : IAudioBackend
     return nullptr;
   }
 };
+}
 
 IAudioBackend* createAudioBackend()
 {

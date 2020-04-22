@@ -15,7 +15,7 @@ struct IAudioBackend
   virtual void playSound(Sound* sound) = 0;
 
   // takes ownership of 'sound'!
-  virtual void playLoopOnChannelZero(Sound* sound) = 0;
-  virtual void stopLoopOnChannelZero() = 0;
+  virtual int playLoop(Sound* sound) = 0;
+  virtual void stopLoop(int channel) = 0;
 };
 
