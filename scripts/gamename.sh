@@ -1,0 +1,1 @@
+readonly NAME=deeep

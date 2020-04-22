@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# This scripts builds the project for the Windows 64-bits target,
+# by injectiing the proper parameters into the Makefile.
+#
+
+set -euo pipefail
+
+readonly PREFIX=/opt/envs/win64
+
+export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
+export CROSS_COMPILE="x86_64-w64-mingw32-"
+
+if ! which "${CROSS_COMPILE}g++" >/dev/null 2>/dev/null ; then
+  echo "${CROSS_COMPILE}g++ wasn't found in PATH" >&2
+  exit 1
+fi
+
+if [ ! -d $PKG_CONFIG_LIBDIR ] ; then
+  echo "PKG_CONFIG_LIBDIR points to an unexisting directory ('$PKG_CONFIG_LIBDIR')" >&2
+  exit 1
+fi
+
+export DBGFLAGS=""
+export CXXFLAGS="-w -O3 -g0 -DNDEBUG"
+export LDFLAGS="-g0 -L$PREFIX/lib -lwinmm -lgdi32 -lws2_32 -limm32 -ldxguid -lole32 -luser32 -s -mconsole"
+
+make "$@"

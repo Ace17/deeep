@@ -1,0 +1,93 @@
+#!/bin/bash
+set -euo pipefail
+
+readonly scriptDir=$(dirname $0)
+source $scriptDir/gamename.sh
+
+readonly tmpDir=/tmp/deliver-$$
+trap "rm -rf $tmpDir" EXIT
+mkdir -p $tmpDir
+
+function main
+{
+  echo "Delivering [$NAME]"
+  make clean
+  ./check
+  deliverBinaryVersion
+  #deliverWebVersion
+}
+
+function deliverBinaryVersion
+{
+  local N=$NAME
+
+  echo "-------------------------------------"
+  echo "Building binaries"
+
+  # Windows binaries
+  BIN=$tmpDir/bin/w64 \
+    ./scripts/w64-make -j`nproc` >/dev/null
+
+  cp -a $tmpDir/bin/w64/rel                                        $tmpDir/$N
+  cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll               $tmpDir/$N
+  cp /usr/lib/gcc/x86_64-w64-mingw32/8.3-posix/libstdc++-6.dll     $tmpDir/$N
+  cp /usr/lib/gcc/x86_64-w64-mingw32/8.3-posix/libgcc_s_seh-1.dll  $tmpDir/$N
+  cp /opt/envs/win64/bin/SDL2.dll                                  $tmpDir/$N
+  mv $tmpDir/$N/game.exe $tmpDir/$N/$N.exe
+
+  # GNU/Linux binaries
+  BIN=$tmpDir/bin/gnu \
+    make -j`nproc` >/dev/null
+
+  cp -a $tmpDir/bin/gnu/rel/game.exe                               $tmpDir/$N/$N.x86_64
+
+  # Resources
+  cp -a res                                                        $tmpDir/$N
+
+  # Strip executables
+  strip -s $tmpDir/$N/*.{exe,dll,x86_64}
+
+  (
+    cd $tmpDir
+    zip -q $N.zip -r $N
+  )
+
+  cp $tmpDir/$N.zip /tmp/
+  du -hs /tmp/$N.zip
+}
+
+function deliverWebVersion
+{
+  echo "-------------------------------------"
+  echo "Building Web version"
+  BIN=bin/asmjs \
+    scripts/asmjs-make -j`nproc` bin/asmjs/rel/game.html
+
+  #------------------------------------------------------------------------------
+  # create game directory
+  #------------------------------------------------------------------------------
+  readonly gameDir=$tmpDir/$NAME
+  mkdir -p $gameDir
+
+  cp -a bin/asmjs/rel/* $gameDir
+  cp index.html $gameDir/index.html
+
+  #------------------------------------------------------------------------------
+  # archive it
+  #------------------------------------------------------------------------------
+  pushd $tmpDir
+  zip $NAME.zip -r $NAME
+  popd
+
+  mv $tmpDir/$NAME.zip .
+
+  #------------------------------------------------------------------------------
+  # upload it to code.alaiwan.org
+  #------------------------------------------------------------------------------
+  rsync \
+    --compress \
+    --delete \
+    -vr $gameDir/* alaiwans@code.alaiwan.org:public_html/games/$NAME
+}
+
+main
