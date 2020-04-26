@@ -454,13 +454,13 @@ struct OpenglDisplay : Display
         currLight = q.light;
       }
 
-      vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
-      vboData.push_back({ q.pos1.x, q.pos2.y, 0, 1 });
-      vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
+      vboData.push_back({ q.pos[0].x, q.pos[0].y, 0, 0 });
+      vboData.push_back({ q.pos[1].x, q.pos[1].y, 0, 1 });
+      vboData.push_back({ q.pos[2].x, q.pos[2].y, 1, 1 });
 
-      vboData.push_back({ q.pos1.x, q.pos1.y, 0, 0 });
-      vboData.push_back({ q.pos2.x, q.pos2.y, 1, 1 });
-      vboData.push_back({ q.pos2.x, q.pos1.y, 1, 0 });
+      vboData.push_back({ q.pos[0].x, q.pos[0].y, 0, 0 });
+      vboData.push_back({ q.pos[2].x, q.pos[2].y, 1, 1 });
+      vboData.push_back({ q.pos[3].x, q.pos[3].y, 1, 0 });
     }
 
     flush();
@@ -497,11 +497,11 @@ struct OpenglDisplay : Display
     }
   }
 
-  void drawActor(Rect2f where, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
+  void drawActor(Rect2f where, float angle, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
   {
     auto& model = m_Models.at(modelId);
     auto cam = useWorldRefFrame ? m_camera : Camera();
-    pushQuad(where, cam, model, blinking, actionIdx, ratio, zOrder);
+    pushQuad(where, angle, cam, model, blinking, actionIdx, ratio, zOrder);
   }
 
   void drawText(Vector2f pos, char const* text) override
@@ -514,14 +514,14 @@ struct OpenglDisplay : Display
 
     while(*text)
     {
-      pushQuad(rect, {}, m_fontModel, false, *text, 0, 100);
+      pushQuad(rect, 0, {}, m_fontModel, false, *text, 0, 100);
       rect.pos.x += rect.size.width;
       ++text;
     }
   }
 
 private:
-  void pushQuad(Rect2f where, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
+  void pushQuad(Rect2f where, float angle, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
   {
     if(model.actions.empty())
       throw runtime_error("model has no actions");
@@ -549,8 +549,9 @@ private:
     auto const sy = where.size.height;
 
     auto mat = scale(Vector2f(sx, sy));
+    mat = rotate(angle) * mat;
     mat = translate(relPos) * mat;
-    mat = rotate(cam.angle) * mat;
+    mat = rotate(-cam.angle) * mat;
 
     auto shrink = scale(0.125 * Vector2f(1, 1));
     mat = shrink * mat;
@@ -564,26 +565,17 @@ private:
     auto const m1x = 1;
     auto const m1y = 1;
 
-    q.pos1.x = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
-    q.pos1.y = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
+    q.pos[0].x = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
+    q.pos[0].y = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
 
-    q.pos2.x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
-    q.pos2.y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
+    q.pos[1].x = mat[0][0] * m0x + mat[0][1] * m1y + mat[0][2];
+    q.pos[1].y = mat[1][0] * m0x + mat[1][1] * m1y + mat[1][2];
 
-    // culling
-    {
-      if(q.pos1.x < -1 && q.pos2.x < -1)
-        return;
+    q.pos[2].x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
+    q.pos[2].y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
 
-      if(q.pos1.y < -1 && q.pos2.y < -1)
-        return;
-
-      if(q.pos1.x > +1 && q.pos2.x > +1)
-        return;
-
-      if(q.pos1.y > +1 && q.pos2.y > +1)
-        return;
-    }
+    q.pos[3].x = mat[0][0] * m1x + mat[0][1] * m0y + mat[0][2];
+    q.pos[3].y = mat[1][0] * m1x + mat[1][1] * m0y + mat[1][2];
 
     // lighting
     {
@@ -620,7 +612,7 @@ private:
     int zOrder;
     std::array<float, 3> light {};
     GLuint texture;
-    Vector2f pos1, pos2;
+    Vector2f pos[4];
   };
 
   vector<Quad> m_quads;

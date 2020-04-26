@@ -28,6 +28,7 @@ struct Actor
   MODEL model = 0; // what sprite to display
   int action = 0; // what sprite action to use
   float ratio = 0; // in [0 .. 1]. 0 for action beginning, 1 for action end
+  float angle = 0;
   Size2f scale = Size2f(1, 1); // sprite size
   Effect effect = Effect::Normal;
   bool screenRefFrame = false; // if true, 'pos' is expressed relative to the camera (used for HUD objects).
