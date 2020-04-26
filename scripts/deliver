@@ -14,7 +14,6 @@ function main
   make clean
   ./check
   deliverBinaryVersion
-  #deliverWebVersion
 }
 
 function deliverBinaryVersion
@@ -28,10 +27,11 @@ function deliverBinaryVersion
   BIN=$tmpDir/bin/w64 \
     ./scripts/w64-make -j`nproc` >/dev/null
 
-  cp -a $tmpDir/bin/w64/rel                                        $tmpDir/$N
+  mkdir $tmpDir/$N
+  cp -a $tmpDir/bin/w64/rel/game.exe                               $tmpDir/$N
   cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll               $tmpDir/$N
-  cp /usr/lib/gcc/x86_64-w64-mingw32/8.3-posix/libstdc++-6.dll     $tmpDir/$N
-  cp /usr/lib/gcc/x86_64-w64-mingw32/8.3-posix/libgcc_s_seh-1.dll  $tmpDir/$N
+  cp /usr/lib/gcc/x86_64-w64-mingw32/9.3-posix/libstdc++-6.dll     $tmpDir/$N
+  cp /usr/lib/gcc/x86_64-w64-mingw32/9.3-posix/libgcc_s_seh-1.dll  $tmpDir/$N
   cp /opt/envs/win64/bin/SDL2.dll                                  $tmpDir/$N
   mv $tmpDir/$N/game.exe $tmpDir/$N/$N.exe
 
@@ -47,6 +47,9 @@ function deliverBinaryVersion
   # Strip executables
   strip -s $tmpDir/$N/*.{exe,dll,x86_64}
 
+  # Compress executables
+  upx $tmpDir/$N/*.{exe,x86_64}
+
   (
     cd $tmpDir
     zip -q $N.zip -r $N
@@ -54,40 +57,6 @@ function deliverBinaryVersion
 
   cp $tmpDir/$N.zip /tmp/
   du -hs /tmp/$N.zip
-}
-
-function deliverWebVersion
-{
-  echo "-------------------------------------"
-  echo "Building Web version"
-  BIN=bin/asmjs \
-    scripts/asmjs-make -j`nproc` bin/asmjs/rel/game.html
-
-  #------------------------------------------------------------------------------
-  # create game directory
-  #------------------------------------------------------------------------------
-  readonly gameDir=$tmpDir/$NAME
-  mkdir -p $gameDir
-
-  cp -a bin/asmjs/rel/* $gameDir
-  cp index.html $gameDir/index.html
-
-  #------------------------------------------------------------------------------
-  # archive it
-  #------------------------------------------------------------------------------
-  pushd $tmpDir
-  zip $NAME.zip -r $NAME
-  popd
-
-  mv $tmpDir/$NAME.zip .
-
-  #------------------------------------------------------------------------------
-  # upload it to code.alaiwan.org
-  #------------------------------------------------------------------------------
-  rsync \
-    --compress \
-    --delete \
-    -vr $gameDir/* alaiwans@code.alaiwan.org:public_html/games/$NAME
 }
 
 main
