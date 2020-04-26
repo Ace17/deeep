@@ -15,4 +15,10 @@ BIN=bin/native \
 
 ./bin/native/tests.exe
 
+echo "----------------------------------------------------------------"
+echo "Building Windows version"
+
+BIN=bin/w64 \
+  ./scripts/w64-make -j`nproc`
+
 echo OK

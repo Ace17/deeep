@@ -8,6 +8,8 @@ endif
 HOST_CXX?=g++
 
 EXT?=.exe
+BIN_HOST?=bin_host
+TARGETS+=$(BIN_HOST)
 
 all: true_all
 
@@ -115,17 +117,28 @@ $(BIN)/tests$(EXT): $(SRCS_TESTS:%=$(BIN)/%.o)
 TARGETS+=$(BIN)/tests$(EXT)
 
 #------------------------------------------------------------------------------
+$(BIN_HOST):
+	@mkdir -p "$@"
 
 SRCS_PACKQUEST:=\
-	$(SRCS_GAME)\
-	$(filter-out $(ENGINE_ROOT)/src/main.cpp, $(SRCS_ENGINE))\
+	engine/src/misc/decompress.cpp\
+	engine/src/misc/base64.cpp\
+	engine/src/misc/json.cpp\
+	engine/src/misc/file.cpp\
+	src/load_quest.cpp\
+	src/smarttiles.cpp\
+	src/preprocess_quest.cpp\
 	src/packquest.cpp\
 
-
-$(BIN)/packquest.host.exe: $(SRCS_PACKQUEST:%=$(BIN)/%.o)
+$(BIN_HOST)/%.cpp.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $^ -o '$@' $(LDFLAGS)
+	@echo [HOST] compile "$@"
+	g++ -Iengine/include -Iengine/src -I. -c "$^" -o "$@"
 
-TARGETS+=$(BIN)/packquest.host.exe
+$(BIN_HOST)/packquest.exe: $(SRCS_PACKQUEST:%=$(BIN_HOST)/%.o)
+	@mkdir -p $(dir $@)
+	g++ $^ -o '$@'
+
+TARGETS+=$(BIN_HOST)/packquest.exe
 
 include build/common.mak
