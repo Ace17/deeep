@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "elevator.png",
   "rows" : 2,
   "cols" : 2,
   "actions": [

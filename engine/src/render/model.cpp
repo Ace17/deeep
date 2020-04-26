@@ -51,17 +51,20 @@ Model loadAnimatedModel(const char* jsonPath)
   auto dir = dirName(jsonPath);
 
   auto type = string(obj["type"]);
-  auto sheet = string(obj["sheet"]);
   auto const cols = (int)obj["cols"];
   auto const rows = (int)obj["rows"];
 
   if(type == "sheet")
   {
+    std::string sheet = setExtension(jsonPath, "png");
+
     for(auto& action : obj["actions"].elements)
-      r.actions.push_back(loadSheetAction(action, dir + "/" + sheet, rows, cols));
+      r.actions.push_back(loadSheetAction(action, sheet, rows, cols));
   }
   else if(type == "tiled")
   {
+    auto sheet = string(obj["sheet"]);
+
     for(int row = 0; row < rows; ++row)
     {
       for(int col = 0; col < rows; ++col)

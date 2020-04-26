@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "wheel.png",
   "rows" : 1,
   "cols" : 9,
   "actions": [

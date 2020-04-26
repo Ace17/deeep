@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "minimap.png",
   "rows" : 1,
   "cols" : 1,
   "actions": [

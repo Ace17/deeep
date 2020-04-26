@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "bullet.png",
   "rows" : 2,
   "cols" : 4,
   "actions": [

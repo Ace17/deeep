@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "spikes.png",
   "rows" : 1,
   "cols" : 4,
   "actions": [

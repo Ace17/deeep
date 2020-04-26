@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "lifebar.png",
   "rows" : 3,
   "cols" : 16,
   "actions": [

@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "block.png",
   "rows" : 8,
   "cols" : 8,
   "actions": [

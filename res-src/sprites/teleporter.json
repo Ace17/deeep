@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "teleporter.png",
   "rows" : 2,
   "cols" : 4,
   "actions": [

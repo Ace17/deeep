@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "bonus.png",
   "rows" : 8,
   "cols" : 16,
   "actions": [

@@ -1,6 +1,5 @@
 {
   "type" : "sheet",
-  "sheet" : "door.png",
   "rows" : 1,
   "cols" : 8,
   "actions": [
