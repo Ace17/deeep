@@ -33,7 +33,7 @@ Directory structure
 ```
 bin:            output directory for architecture-specific executable binaries.
 res:            output directory for game resources (e.g. sounds, music, sprites, tilesets).
-res-src:        source files for game resources.
+assets:         source files for game resources.
 src:            source files for the game logic (agnostic to the engine implementation).
 engine/src:     I/O code (=engine), mostly game-agnostic.
 engine/include: interfaces for communication between the game logic and the I/O code. Also contains shared low-level utilities (e.g Vector2f, Span, etc.).
