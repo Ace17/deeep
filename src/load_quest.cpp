@@ -275,9 +275,9 @@ Room loadAbstractRoom(json::Value const& jsonRoom, bool isTmx = false)
 
   auto const path = "assets/rooms/" + room.name + ".json";
 
-  if(exists(path))
+  if(File::exists(path))
   {
-    auto data = read(path);
+    auto data = File::read(path);
     removeVersion(data);
     auto jsRoom = json::parse(data.c_str(), data.size());
     loadConcreteRoom(room, jsRoom);
@@ -305,7 +305,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom, bool isTmx = false)
 
 Quest loadTmxQuest(string path) // tiled TMX format
 {
-  auto data = read(path);
+  auto data = File::read(path);
   removeVersion(data);
   auto js = json::parse(data.c_str(), data.size());
 
@@ -354,7 +354,7 @@ Matrix2<int> parseMatrix(Size2i size, const std::string& s)
 
 Quest loadQuest(string path)
 {
-  auto compressedData = read(path);
+  auto compressedData = File::read(path);
 
   {
     // replace gzip header with zlib header

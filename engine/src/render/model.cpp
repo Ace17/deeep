@@ -45,7 +45,7 @@ Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, in
 static
 Model loadAnimatedModel(const char* jsonPath)
 {
-  auto data = read(jsonPath);
+  auto data = File::read(jsonPath);
   Model r;
   auto obj = json::parse(data.c_str(), data.size());
   auto dir = dirName(jsonPath);
@@ -113,7 +113,7 @@ Model loadModel(const char* path)
   {
     if(endsWith(path, ".model"))
     {
-      if(!exists(path))
+      if(!File::exists(path))
       {
         printf("[display] model '%s' doesn't exist, fallback on default model\n", path);
         path = "res/sprites/rect.model";
@@ -125,7 +125,7 @@ Model loadModel(const char* path)
     {
       auto pngPath = setExtension(path, "png");
 
-      if(!exists(pngPath))
+      if(!File::exists(pngPath))
       {
         printf("[display] tileset '%s' was not found, fallback on default tileset\n", pngPath.c_str());
         pngPath = "res/tiles/default.png";

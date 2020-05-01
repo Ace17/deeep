@@ -57,7 +57,7 @@ struct HighLevelAudio : Audio
   {
     sounds.resize(max(id + 1, (int)sounds.size()));
 
-    if(!exists(path))
+    if(!File::exists(path))
     {
       printf("[audio] sound '%s' was not found, fallback on default sound\n", path);
       sounds[id] = make_unique<BleepSound>();
@@ -77,7 +77,7 @@ struct HighLevelAudio : Audio
     char path[256];
     sprintf(path, "res/music/music-%02d.ogg", id);
 
-    if(!exists(path))
+    if(!File::exists(path))
     {
       printf("[audio] music '%s' was not found, fallback on default music\n", path);
       strcpy(path, "res/music/default.ogg");

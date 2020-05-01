@@ -20,6 +20,7 @@
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
+#include "misc/file.h"
 #include "ratecounter.h"
 #include "render/display.h"
 
@@ -121,10 +122,7 @@ private:
 
       if(m_mustScreenshot)
       {
-        FILE* fp = fopen("screenshot.rgba", "wb");
-        fwrite(pixels.data(), 1, pixels.size(), fp);
-        fflush(fp);
-        fclose(fp);
+        File::write("screenshot.rgba", pixels);
         fprintf(stderr, "Saved screenshot to 'screenshot.rgba'\n");
 
         m_mustScreenshot = false;

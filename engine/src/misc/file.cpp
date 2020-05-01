@@ -6,36 +6,54 @@
 
 #include "file.h"
 
-#include <fstream>
+#include <cstdio>
+#include <stdexcept>
 
-inline
-ifstream openInput(string path)
+using namespace std;
+
+namespace File
 {
-  ifstream fp(path, ios::binary);
-
-  if(!fp.is_open())
-    throw runtime_error("Can't open file '" + path + "'");
-
-  return fp;
-}
-
 string read(string path)
 {
-  auto fp = openInput(path);
+  FILE* fp = fopen(path.c_str(), "rb");
 
-  fp.seekg(0, ios::end);
-  auto size = fp.tellg();
-  fp.seekg(0, ios::beg);
+  if(!fp)
+    throw runtime_error("Can't open file '" + path + "' for reading");
+
+  fseek(fp, 0, SEEK_END);
+  auto size = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
 
   string r;
   r.resize(size);
-  fp.read(&r[0], r.size());
+  fread(&r[0], 1, r.size(), fp);
+
+  fclose(fp);
 
   return r;
 }
 
+void write(string path, Span<const uint8_t> data)
+{
+  FILE* fp = fopen(path.c_str(), "wb");
+
+  if(!fp)
+    throw runtime_error("Can't open file '" + path + "' for writing");
+
+  fwrite(data.data, 1, data.len, fp);
+  fflush(fp);
+  fclose(fp);
+}
+
 bool exists(string path)
 {
-  return ifstream(path).is_open();
+  FILE* fp = fopen(path.c_str(), "rb");
+
+  if(!fp)
+    return false;
+
+  fclose(fp);
+  return true;
+}
 }
 

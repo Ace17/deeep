@@ -132,7 +132,7 @@ struct Picture
 Picture loadPicture(string path)
 {
   Picture pic;
-  auto pngDataBuf = read(path);
+  auto pngDataBuf = File::read(path);
   auto pngData = Span<const uint8_t>((uint8_t*)pngDataBuf.data(), (int)pngDataBuf.size());
   pic.pixels = decodePng(pngData, pic.dim.width, pic.dim.height);
   pic.stride = pic.dim.width * 4;

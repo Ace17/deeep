@@ -43,10 +43,10 @@ struct OggSound : Sound
 {
   OggSound(string filename)
   {
-    if(!exists(filename))
+    if(!File::exists(filename))
       throw runtime_error("OggSound: file doesn't exist: '" + filename + "'");
 
-    m_data = read(filename);
+    m_data = File::read(filename);
   }
 
   unique_ptr<IAudioSource> createSource()

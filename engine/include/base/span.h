@@ -20,6 +20,14 @@ struct Span
   template<size_t N>
   Span(T (& tab)[N]) : data(tab), len(N) {}
 
+  // construction from vector/string
+  template<typename U, typename = decltype(((U*)0)->data())>
+  Span(U const& s)
+  {
+    data = s.data();
+    len = s.size();
+  }
+
   T* begin() const { return data; }
   T* end() const { return data + len; }
   T& operator [] (int i) { return data[i]; }
