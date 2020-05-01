@@ -152,43 +152,69 @@ Picture* getPicture(string path)
 
 Picture loadPicture(const char* path, Rect2f frect)
 {
-  auto surface = getPicture(path);
-
-  if(frect.size.width == 0 && frect.size.height == 0)
-    frect = Rect2f(0, 0, 1, 1);
-
-  if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.width > 1 || frect.pos.y + frect.size.height > 1)
-    throw runtime_error("Invalid boundaries for '" + string(path) + "'");
-
-  auto const bpp = 4;
-
-  Rect2i rect;
-  rect.pos.x = frect.pos.x * surface->dim.width;
-  rect.pos.y = frect.pos.y * surface->dim.height;
-  rect.size.width = frect.size.width * surface->dim.width;
-  rect.size.height = frect.size.height * surface->dim.height;
-
-  vector<uint8_t> img(rect.size.width * rect.size.height * bpp);
-
-  auto src = (Uint8*)surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->stride;
-  auto dst = (Uint8*)img.data() + bpp * rect.size.width * rect.size.height;
-
-  // from glTexImage2D doc:
-  // "The first element corresponds to the lower left corner of the texture image",
-  // (e.g (u,v) = (0,0))
-  for(int y = 0; y < rect.size.height; ++y)
+  try
   {
-    dst -= bpp * rect.size.width;
-    memcpy(dst, src, bpp * rect.size.width);
-    src += surface->stride;
+    auto surface = getPicture(path);
+
+    if(frect.size.width == 0 && frect.size.height == 0)
+      frect = Rect2f(0, 0, 1, 1);
+
+    if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.width > 1 || frect.pos.y + frect.size.height > 1)
+      throw runtime_error("Invalid boundaries for '" + string(path) + "'");
+
+    auto const bpp = 4;
+
+    Rect2i rect;
+    rect.pos.x = frect.pos.x * surface->dim.width;
+    rect.pos.y = frect.pos.y * surface->dim.height;
+    rect.size.width = frect.size.width * surface->dim.width;
+    rect.size.height = frect.size.height * surface->dim.height;
+
+    vector<uint8_t> img(rect.size.width * rect.size.height * bpp);
+
+    auto src = (Uint8*)surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->stride;
+    auto dst = (Uint8*)img.data() + bpp * rect.size.width * rect.size.height;
+
+    // from glTexImage2D doc:
+    // "The first element corresponds to the lower left corner of the texture image",
+    // (e.g (u,v) = (0,0))
+    for(int y = 0; y < rect.size.height; ++y)
+    {
+      dst -= bpp * rect.size.width;
+      memcpy(dst, src, bpp * rect.size.width);
+      src += surface->stride;
+    }
+
+    Picture r;
+    r.dim = rect.size;
+    r.stride = rect.size.width;
+    r.pixels = std::move(img);
+
+    return r;
   }
+  catch(std::exception const& e)
+  {
+    printf("[display] can't load texture: %s\n", e.what());
+    printf("[display] falling back on generated texture\n");
 
-  Picture r;
-  r.dim = rect.size;
-  r.stride = rect.size.width;
-  r.pixels = img;
+    Picture r;
+    r.dim = Size2i(32, 32);
+    r.stride = r.dim.width;
+    r.pixels.resize(r.dim.width * r.dim.height * 4);
 
-  return r;
+    for(int y = 0; y < r.dim.height; ++y)
+    {
+      for(int x = 0; x < r.dim.width; ++x)
+      {
+        r.pixels[(x + y * r.dim.width) * 4 + 0] = 0xff;
+        r.pixels[(x + y * r.dim.width) * 4 + 1] = x < 16 ? 0xff : 0x00;
+        r.pixels[(x + y * r.dim.width) * 4 + 2] = y < 16 ? 0xff : 0x00;
+        r.pixels[(x + y * r.dim.width) * 4 + 3] = 0xff;
+      }
+    }
+
+    return r;
+  }
 }
 
 GLuint sendToOpengl(const Picture& pic)
