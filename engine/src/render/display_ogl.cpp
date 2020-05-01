@@ -124,7 +124,7 @@ int linkShaders(vector<int> ids)
 
 struct Picture
 {
-  int width, height;
+  Size2i dim;
   int stride;
   vector<uint8_t> pixels;
 };
@@ -134,8 +134,8 @@ Picture loadPicture(string path)
   Picture pic;
   auto pngDataBuf = read(path);
   auto pngData = Span<const uint8_t>((uint8_t*)pngDataBuf.data(), (int)pngDataBuf.size());
-  pic.pixels = decodePng(pngData, pic.width, pic.height);
-  pic.stride = pic.width * 4;
+  pic.pixels = decodePng(pngData, pic.dim.width, pic.dim.height);
+  pic.stride = pic.dim.width * 4;
 
   return pic;
 }
@@ -164,10 +164,10 @@ int loadTexture(const char* path, Rect2f frect)
   auto const bpp = 4;
 
   Rect2i rect;
-  rect.pos.x = frect.pos.x * surface->width;
-  rect.pos.y = frect.pos.y * surface->height;
-  rect.size.width = frect.size.width * surface->width;
-  rect.size.height = frect.size.height * surface->height;
+  rect.pos.x = frect.pos.x * surface->dim.width;
+  rect.pos.y = frect.pos.y * surface->dim.height;
+  rect.size.width = frect.size.width * surface->dim.width;
+  rect.size.height = frect.size.height * surface->dim.height;
 
   vector<uint8_t> img(rect.size.width * rect.size.height * bpp);
 
