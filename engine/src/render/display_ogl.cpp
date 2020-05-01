@@ -17,6 +17,7 @@
 using namespace std;
 
 #include "glad.h"
+#include "png.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 
 #include "base/geom.h"
@@ -27,7 +28,9 @@ using namespace std;
 #include "misc/file.h"
 #include "misc/util.h"
 #include "model.h"
-#include "png.h"
+
+extern const Span<uint8_t> VertexShaderCode;
+extern const Span<uint8_t> FragmentShaderCode;
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
@@ -36,9 +39,10 @@ using namespace std;
   do { a; ensureGl(# a, __LINE__); } while (0)
 #endif
 
-static const int MAX_VERTICES = 8192;
+namespace
+{
+const int MAX_VERTICES = 8192;
 
-static
 void ensureGl(char const* expr, int line)
 {
   auto const errorCode = glGetError();
@@ -54,7 +58,6 @@ void ensureGl(char const* expr, int line)
   throw runtime_error(ss);
 }
 
-static
 int compileShader(Span<uint8_t> code, int type)
 {
   auto shaderId = glCreateShader(type);
@@ -88,7 +91,6 @@ int compileShader(Span<uint8_t> code, int type)
   return shaderId;
 }
 
-static
 int linkShaders(vector<int> ids)
 {
   // Link the program
@@ -127,8 +129,7 @@ struct Picture
   vector<uint8_t> pixels;
 };
 
-static
-Picture loadPng(string path)
+Picture loadPicture(string path)
 {
   Picture pic;
   auto pngDataBuf = read(path);
@@ -139,17 +140,16 @@ Picture loadPng(string path)
   return pic;
 }
 
-static
 Picture* getPicture(string path)
 {
   static map<string, Picture> cache;
 
   if(cache.find(path) == cache.end())
-    cache[path] = loadPng(path);
+    cache[path] = loadPicture(path);
 
   return &cache.at(path);
 }
-
+}
 // exported to Model
 int loadTexture(const char* path, Rect2f frect)
 {
@@ -199,10 +199,8 @@ int loadTexture(const char* path, Rect2f frect)
   return texture;
 }
 
-extern const Span<uint8_t> VertexShaderCode;
-extern const Span<uint8_t> FragmentShaderCode;
-
-static
+namespace
+{
 GLuint loadShaders()
 {
   auto const vertexId = compileShader(VertexShaderCode, GL_VERTEX_SHADER);
@@ -222,7 +220,6 @@ struct Camera
   float angle = 0;
 };
 
-static
 void printOpenGlVersion()
 {
   auto sVersion = (char const*)glGetString(GL_VERSION);
@@ -625,6 +622,7 @@ private:
   float m_ambientLight = 0;
   int m_frameCount = 0;
 };
+}
 
 Display* createDisplay(Size2i resolution)
 {
