@@ -129,7 +129,7 @@ struct Picture
   vector<uint8_t> pixels;
 };
 
-Picture loadPicture(string path)
+Picture loadPng(string path)
 {
   Picture pic;
   auto pngDataBuf = File::read(path);
@@ -145,13 +145,12 @@ Picture* getPicture(string path)
   static map<string, Picture> cache;
 
   if(cache.find(path) == cache.end())
-    cache[path] = loadPicture(path);
+    cache[path] = loadPng(path);
 
   return &cache.at(path);
 }
-}
-// exported to Model
-int loadTexture(const char* path, Rect2f frect)
+
+Picture loadPicture(const char* path, Rect2f frect)
 {
   auto surface = getPicture(path);
 
@@ -184,12 +183,22 @@ int loadTexture(const char* path, Rect2f frect)
     src += surface->stride;
   }
 
+  Picture r;
+  r.dim = rect.size;
+  r.stride = rect.size.width;
+  r.pixels = img;
+
+  return r;
+}
+
+GLuint sendToOpengl(const Picture& pic)
+{
   GLuint texture;
 
   glGenTextures(1, &texture);
 
   glBindTexture(GL_TEXTURE_2D, texture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.size.width, rect.size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.data());
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.width, pic.dim.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pic.pixels.data());
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -197,6 +206,14 @@ int loadTexture(const char* path, Rect2f frect)
   glBindTexture(GL_TEXTURE_2D, 0);
 
   return texture;
+}
+}
+
+// exported to Model
+int loadTexture(const char* path, Rect2f frect)
+{
+  const auto pic = loadPicture(path, frect);
+  return sendToOpengl(pic);
 }
 
 namespace
