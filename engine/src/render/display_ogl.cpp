@@ -335,21 +335,21 @@ struct OpenglDisplay : Display
     SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
     SAFE_GL(glBindVertexArray(VertexArrayID));
 
-    m_programId = loadShaders();
+    m_shader.programId = loadShaders();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_fontModel = ::loadModel("res/font.model");
 
-    m_colorId = glGetUniformLocation(m_programId, "fragOffset");
-    assert(m_colorId >= 0);
+    m_shader.colorId = glGetUniformLocation(m_shader.programId, "fragOffset");
+    assert(m_shader.colorId >= 0);
 
-    m_positionLoc = glGetAttribLocation(m_programId, "vertexPos_model");
-    assert(m_positionLoc >= 0);
+    m_shader.positionLoc = glGetAttribLocation(m_shader.programId, "vertexPos_model");
+    assert(m_shader.positionLoc >= 0);
 
-    m_texCoordLoc = glGetAttribLocation(m_programId, "vertexUV");
-    assert(m_texCoordLoc >= 0);
+    m_shader.texCoordLoc = glGetAttribLocation(m_shader.programId, "vertexUV");
+    assert(m_shader.texCoordLoc >= 0);
 
     SAFE_GL(glGenBuffers(1, &m_batchVbo));
 
@@ -426,7 +426,7 @@ struct OpenglDisplay : Display
       SAFE_GL(glViewport((w - size) / 2, (h - size) / 2, size, size));
     }
 
-    SAFE_GL(glUseProgram(m_programId));
+    SAFE_GL(glUseProgram(m_shader.programId));
 
     SAFE_GL(glClearColor(0, 0, 0, 1));
     SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
@@ -451,11 +451,11 @@ struct OpenglDisplay : Display
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
 
-    SAFE_GL(glEnableVertexAttribArray(m_positionLoc));
-    SAFE_GL(glVertexAttribPointer(m_positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
+    SAFE_GL(glEnableVertexAttribArray(m_shader.positionLoc));
+    SAFE_GL(glVertexAttribPointer(m_shader.positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
 
-    SAFE_GL(glEnableVertexAttribArray(m_texCoordLoc));
-    SAFE_GL(glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
+    SAFE_GL(glEnableVertexAttribArray(m_shader.texCoordLoc));
+    SAFE_GL(glVertexAttribPointer(m_shader.texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
 
     int drawCalls = 0;
 
@@ -490,7 +490,7 @@ struct OpenglDisplay : Display
       {
         flush();
 
-        SAFE_GL(glUniform4f(m_colorId, q.light[0], q.light[1], q.light[2], 0));
+        SAFE_GL(glUniform4f(m_shader.colorId, q.light[0], q.light[1], q.light[2], 0));
         currLight = q.light;
       }
 
@@ -643,9 +643,16 @@ private:
   Camera m_camera;
   bool m_cameraValid = false;
 
-  GLint m_colorId;
-  GLint m_positionLoc;
-  GLint m_texCoordLoc;
+  // shader attribute/uniform locations
+  struct Shader
+  {
+    GLuint programId;
+    GLint colorId;
+    GLint positionLoc;
+    GLint texCoordLoc;
+  };
+
+  Shader m_shader;
 
   struct Quad
   {
@@ -658,7 +665,6 @@ private:
   vector<Quad> m_quads;
   GLuint m_batchVbo;
 
-  GLuint m_programId;
   vector<Model> m_Models;
   Model m_fontModel;
 
