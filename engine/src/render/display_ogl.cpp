@@ -315,12 +315,13 @@ struct OpenglDisplay : Display
       );
 
     if(!m_window)
-      throw runtime_error("Can't set video mode");
+      throw runtime_error(string("Can't create SDL window: ") + SDL_GetError());
 
+    // Create our opengl context and attach it to our window
     m_context = SDL_GL_CreateContext(m_window);
 
     if(!m_context)
-      throw runtime_error("Can't create OpenGL context");
+      throw runtime_error(string("Can't create OpenGL context: ") + SDL_GetError());
 
     if(!gladLoadGLES2Loader(&SDL_GL_GetProcAddress))
       throw runtime_error("Can't load OpenGL");
