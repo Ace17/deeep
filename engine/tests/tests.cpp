@@ -1,4 +1,4 @@
-// Copyright (C) 2018 - Sebastien Alaiwan
+// Copyright (C) 2020 - Sebastien Alaiwan
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
@@ -9,43 +9,58 @@
 #include "tests.h"
 #include <cassert>
 #include <cstdio>
-#include <cstring>
-#include <stdexcept>
+#include <cstring> // strstr
+#include <stdlib.h> // abort
 
-namespace
+static Test* g_first;
+bool g_sorted;
+
+void failUnitTest(char const* file, int line, const char* msg)
 {
-struct Test
-{
-  void (* run)();
-  const char* sName;
-};
-
-int const MAX_TESTS = 512;
-
-Test tests[MAX_TESTS];
-int numTests;
+  fprintf(stderr, "[%s:%d] %s\n", file, line, msg);
+  abort();
 }
 
-int RegisterTest(void (* proc)(), const char* testName)
+Registration RegisterTest(Test& test)
 {
-  assert(numTests < MAX_TESTS);
-  tests[numTests].run = proc;
-  tests[numTests].sName = testName;
-  ++numTests;
-  return 1;
+  test.next = g_first;
+  g_first = &test;
+  return {};
 }
 
 void RunTests(const char* filter)
 {
+  if(!g_sorted) // reverse list
+  {
+    Test* curr = g_first;
+    g_first = nullptr;
+
+    while(curr)
+    {
+      auto next = curr->next;
+      curr->next = g_first;
+      g_first = curr;
+
+      curr = next;
+    }
+  }
+
   printf("Running tests.\n");
 
-  for(int i = 0; i < numTests; ++i)
-  {
-    if(!strstr(tests[i].sName, filter))
-      continue;
+  auto test = g_first;
 
-    printf("[%d] %s\n", i, tests[i].sName);
-    tests[i].run();
+  int i = 0;
+
+  while(test)
+  {
+    if(strstr(test->name, filter))
+    {
+      printf("[%d] %s\n", i, test->name);
+      test->func();
+    }
+
+    ++i;
+    test = test->next;
   }
 }
 

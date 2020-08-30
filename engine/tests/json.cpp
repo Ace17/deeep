@@ -31,25 +31,25 @@ auto jsonParse(string text)
 
 unittest("Json parser: empty")
 {
-  assert(jsonOk("{}"));
+  assertTrue(jsonOk("{}"));
 
-  assert(!jsonOk("{"));
+  assertTrue(!jsonOk("{"));
 }
 
 unittest("Json parser: members")
 {
-  assert(jsonOk("{ \"var\": 0 }"));
-  assert(jsonOk("{ \"var\": -10 }"));
-  assert(jsonOk("{ \"hello\": \"world\" }"));
-  assert(jsonOk("{ \"N1\": \"V1\", \"N2\": \"V2\" }"));
+  assertTrue(jsonOk("{ \"var\": 0 }"));
+  assertTrue(jsonOk("{ \"var\": -10 }"));
+  assertTrue(jsonOk("{ \"hello\": \"world\" }"));
+  assertTrue(jsonOk("{ \"N1\": \"V1\", \"N2\": \"V2\" }"));
 
-  assert(!jsonOk("{ \"N1\" : : \"V2\" }"));
+  assertTrue(!jsonOk("{ \"N1\" : : \"V2\" }"));
 }
 
 unittest("Json parser: booleans")
 {
-  assert(jsonOk("{ \"var\": true }"));
-  assert(jsonOk("{ \"var\": false }"));
+  assertTrue(jsonOk("{ \"var\": true }"));
+  assertTrue(jsonOk("{ \"var\": false }"));
 
   {
     auto o = jsonParse("{ \"isCool\" : true }");
@@ -73,12 +73,12 @@ unittest("Json parser: non-zero terminated")
 
 unittest("Json parser: arrays")
 {
-  assert(jsonOk("{ \"A\": [] }"));
-  assert(jsonOk("{ \"A\": [ { }, { } ] }"));
-  assert(jsonOk("{ \"A\": [ \"hello\", \"world\" ] }"));
+  assertTrue(jsonOk("{ \"A\": [] }"));
+  assertTrue(jsonOk("{ \"A\": [ { }, { } ] }"));
+  assertTrue(jsonOk("{ \"A\": [ \"hello\", \"world\" ] }"));
 
-  assert(!jsonOk("{ \"A\": [ }"));
-  assert(!jsonOk("{ \"A\": ] }"));
+  assertTrue(!jsonOk("{ \"A\": [ }"));
+  assertTrue(!jsonOk("{ \"A\": ] }"));
 }
 
 unittest("Json parser: returned value")

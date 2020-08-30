@@ -1,17 +1,28 @@
-// Copyright (C) 2018 - Sebastien Alaiwan
+// Copyright (C) 2020 - Sebastien Alaiwan
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// Unit test framework: API
-
 #pragma once
 
-#include <cassert>
+///////////////////////////////////////////////////////////////////////////////
+// Unit test framework: API
+
 #include <sstream>
-#include <stdexcept>
-#include <vector>
+
+#define unittest(name) \
+  unittestWithCounter(__COUNTER__, name)
+
+#define assertTrue(expr) \
+  assertTrueFunc(__FILE__, __LINE__, # expr, expr)
+
+#define assertEquals(expected, actual) \
+  assertEqualsFunc(__FILE__, __LINE__, # actual, expected, actual)
+
+#define assertThrown(expr) \
+  do { try{ expr; failUnitTest(__FILE__, __LINE__, "No exception was thrown: " # expr); }catch(...){} \
+  } while (0)
 
 int RegisterTest(void (* f)(), const char* testName);
 void RunTests(const char* filter);
@@ -24,20 +35,6 @@ struct Registrator
   }
 };
 
-#define unittest(name) \
-  unittest2(__LINE__, name)
-
-#define unittest2(line, name) \
-  unittest3(testFunction, line, name)
-
-#define unittest3(prefix, line, name) \
-  static void prefix ## line(); \
-  static Registrator g_Registrator ## line( & prefix ## line, name); \
-  static void prefix ## line()
-
-#define assertEquals(u, v) \
-  assertEqualsFunc(u, v, __FILE__, __LINE__)
-
 static inline
 std::ostream& operator << (std::ostream& o, const std::pair<int, int>& p)
 {
@@ -49,36 +46,70 @@ std::ostream& operator << (std::ostream& o, const std::pair<int, int>& p)
   return o;
 }
 
-template<typename T>
-std::ostream& operator << (std::ostream& o, const std::vector<T>& v)
+// match std::vector
+template<typename T, typename = decltype(((T*)nullptr)->emplace({}))>
+std::ostream& operator << (std::ostream& o, const T& container)
 {
-  int idx = 0;
+  bool comma = false;
   o << "[";
 
-  for(auto& element : v)
+  for(auto& element : container)
   {
-    if(idx > 0)
+    if(comma)
       o << ", ";
 
     o << element;
-    ++idx;
+    comma = true;
   }
 
   o << "]";
+
   return o;
 }
 
-template<typename U, typename V>
-void assertEqualsFunc(U const& expected, V const& actual, const char* file, int line)
+///////////////////////////////////////////////////////////////////////////////
+// implementation details
+
+struct Test
 {
-  if(expected != actual)
-  {
-    using namespace std;
-    stringstream ss;
-    ss << "Assertion failure" << endl;
-    ss << file << "(" << line << ")" << endl;
-    ss << "Expected '" << expected << "', got '" << actual << "'" << endl;
-    throw logic_error(ss.str());
-  }
+  void (* func)();
+  const char* name;
+  Test* next = nullptr;
+};
+
+#define unittestWithCounter(counter, name) \
+  unittest2(counter, name)
+
+#define unittest2(counter, name) \
+  static void g_myTest ## counter(); \
+  static Test g_myTestInfo ## counter = { &g_myTest ## counter, name }; \
+  static auto g_registration ## counter = RegisterTest(g_myTestInfo ## counter); \
+  static void g_myTest ## counter()
+
+struct Registration {};
+Registration RegisterTest(Test& test);
+
+void failUnitTest(char const* file, int line, const char* msg);
+
+template<typename T>
+inline void assertTrueFunc(char const* file, int line, const char* caption, T const& expr)
+{
+  if(expr)
+    return;
+
+  failUnitTest(file, line, caption);
+}
+
+template<typename T, typename U>
+inline void assertEqualsFunc(const char* file, int line, const char* caption, T const& expected, U const& actual)
+{
+  if(expected == actual)
+    return;
+
+  std::stringstream ss;
+  ss << "'" << caption << "' has an invalid value\n";
+  ss << "  Expect: '" << expected << "'\n";
+  ss << "  Actual: '" << actual << "'\n";
+  failUnitTest(file, line, ss.str().c_str());
 }
 
