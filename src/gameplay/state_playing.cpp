@@ -6,7 +6,6 @@
 
 // Game logic
 
-#include <list>
 #include <map>
 #include <stdexcept>
 
