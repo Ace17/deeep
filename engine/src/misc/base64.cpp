@@ -8,6 +8,7 @@
 
 #include "base64.h"
 #include <array>
+#include <stdexcept>
 
 static const string base64_map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 

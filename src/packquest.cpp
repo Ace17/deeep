@@ -1,6 +1,7 @@
 #include "load_quest.h"
 #include "preprocess_quest.h"
 
+#include <stdexcept>
 #include <stdio.h>
 
 Quest loadTmxQuest(string path);

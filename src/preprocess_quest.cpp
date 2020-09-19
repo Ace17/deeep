@@ -11,6 +11,7 @@
 
 #include "quest.h"
 #include <cstdlib> // rand
+#include <stdexcept>
 
 static
 void addRandomWidgets(Matrix2<int>& tiles)

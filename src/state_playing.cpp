@@ -8,6 +8,7 @@
 
 #include <list>
 #include <map>
+#include <stdexcept>
 
 #include "base/scene.h"
 #include "base/util.h"
