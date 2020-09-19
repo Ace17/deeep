@@ -182,5 +182,5 @@ struct Lift : Entity
 };
 }
 
-static auto const reg = registerEntity("lift", [] (IEntityConfig* cfg) -> unique_ptr<Entity> { return make_unique<Lift>(cfg); });
+DECLARE_ENTITY("lift", Lift);
 
