@@ -11,6 +11,7 @@
 
 #include "collision_groups.h"
 #include "entity.h"
+#include "entity_factory.h"
 #include "models.h"
 #include "move.h"
 #include "player.h"
@@ -78,7 +79,7 @@ static auto const NORMAL_SIZE = Size(0.7, 1.9);
 
 struct Rockman : Player, Damageable
 {
-  Rockman()
+  Rockman(IEntityConfig*)
   {
     size = NORMAL_SIZE;
     collidesWith |= CG_LADDER;
@@ -548,6 +549,8 @@ struct Rockman : Player, Damageable
 
 std::unique_ptr<Player> makeRockman()
 {
-  return make_unique<Rockman>();
+  return make_unique<Rockman>(nullptr);
 }
+
+DECLARE_ENTITY("Hero", Rockman);
 

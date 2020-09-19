@@ -21,7 +21,6 @@
 #include "physics.h"
 #include "player.h"
 #include "quest.h"
-#include "rockman.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "variable.h"
@@ -321,7 +320,8 @@ struct GameState : Scene, private IGame
 
     if(!m_player)
     {
-      m_player = makeRockman().release();
+      EntityConfigImpl config;
+      m_player = dynamic_cast<Player*>(createEntity("Hero", &config).release());
       m_player->pos = Vector(level.start.x, level.start.y);
       postEvent(make_unique<SaveEvent>());
     }
