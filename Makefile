@@ -52,13 +52,13 @@ SRCS_GAME:=\
 	src/entities/conveyor.cpp\
 	src/entities/detector.cpp\
 	src/entities/door.cpp\
+	src/entities/elevator.cpp\
 	src/entities/exitpoint.cpp\
 	src/entities/explosion.cpp\
 	src/entities/hatch.cpp\
 	src/entities/hopper.cpp\
 	src/entities/ladder.cpp\
 	src/entities/lift.cpp\
-	src/entities/moving_platform.cpp\
 	src/entities/rockman.cpp\
 	src/entities/savepoint.cpp\
 	src/entities/spider.cpp\

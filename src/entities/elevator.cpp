@@ -16,44 +16,6 @@
 #include "sounds.h"
 #include "toggle.h"
 
-struct MovingPlatform : Entity
-{
-  MovingPlatform(int dir_, int speed_)
-  {
-    speed = speed_ / 100.0;
-    solid = true;
-    pusher = true;
-    size = Size(2, 1);
-    collisionGroup = CG_WALLS;
-    dir = dir_;
-  }
-
-  virtual void addActors(vector<Actor>& actors) const override
-  {
-    auto r = Actor { pos, MDL_RECT };
-    r.scale = size;
-
-    actors.push_back(r);
-  }
-
-  void tick() override
-  {
-    auto delta = 0.05 * sin(ticks * 0.05) * speed;
-
-    // moveBody doesn't work well with very small displacements
-    if(abs(delta) < 0.001)
-      delta = 0;
-
-    auto v = dir ? Vector(delta, 0) : Vector(0, delta);
-    physics->moveBody(this, v);
-    ++ticks;
-  }
-
-  int ticks = 0;
-  int dir = 0;
-  float speed = 1.0;
-};
-
 struct Elevator : Entity
 {
   Elevator()
@@ -153,6 +115,5 @@ struct Elevator : Entity
 
 #include "entity_factory.h"
 
-static auto const reg1 = registerEntity("moving_platform", [] (IEntityConfig* cfg)  -> unique_ptr<Entity> { auto arg = cfg->getInt("dir"); auto speed = cfg->getInt("speed", 100); return make_unique<MovingPlatform>(arg, speed); });
 static auto const reg2 = registerEntity("elevator", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Elevator>(); });
 
