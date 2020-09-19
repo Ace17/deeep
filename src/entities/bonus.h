@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "entity.h"
-
 #include <memory>
 
+struct Entity;
 std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg);
 

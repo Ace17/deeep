@@ -7,13 +7,14 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entities/explosion.h"
-#include "entities/move.h"
-#include "entity.h"
-#include "models.h"
-#include "sounds.h"
-#include "toggle.h" // decrement
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
+#include "gameplay/move.h"
+#include "gameplay/sounds.h"
+#include "gameplay/toggle.h" // decrement
+
+#include "explosion.h"
 
 #include <cstdlib> // rand
 
@@ -110,6 +111,6 @@ struct Hopper : Entity, Damageable
   Vector vel;
 };
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("hopper", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Hopper>(); });
 

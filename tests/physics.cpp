@@ -7,8 +7,8 @@
  */
 
 #include "engine/tests/tests.h"
-#include "src/body.h"
-#include "src/physics.h"
+#include "gameplay/body.h"
+#include "gameplay/physics.h"
 #include <cmath>
 #include <memory>
 

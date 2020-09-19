@@ -37,7 +37,7 @@ unittest("Entity: explosion")
   assertEquals(100, int(getActor(explosion).ratio * 100));
 }
 
-#include "entities/player.h"
+#include "gameplay/player.h"
 
 struct NullPlayer : Player
 {
@@ -151,7 +151,7 @@ unittest("Entity: animate")
   assert(nearlyEquals(1, maxVal));
 }
 
-#include "entities/rockman.h"
+#include "gameplay/rockman.h"
 
 unittest("Entity: rockman falls")
 {

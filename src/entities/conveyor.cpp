@@ -6,9 +6,9 @@
 
 #include "base/scene.h"
 
-#include "collision_groups.h"
-#include "entity.h"
-#include "models.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
 
 struct Conveyor : Entity
 {
@@ -45,6 +45,6 @@ struct Conveyor : Entity
   bool noRecurse = false;
 };
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("conveyor", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Conveyor>(); });
 

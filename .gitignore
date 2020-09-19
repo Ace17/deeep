@@ -1,4 +1,5 @@
 /bin
+/bin_host
 /tags
 /res
 session.vim

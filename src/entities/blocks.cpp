@@ -6,13 +6,13 @@
 
 #include "base/scene.h"
 #include "base/util.h"
-#include "vec.h"
 
-#include "collision_groups.h"
-#include "entities/player.h"
-#include "entity.h"
-#include "models.h"
-#include "toggle.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
+#include "gameplay/player.h"
+#include "gameplay/toggle.h"
+#include "gameplay/vec.h"
 
 struct FragileBlock : Entity, Damageable
 {
@@ -96,6 +96,6 @@ struct FragileBlock : Entity, Damageable
   int timer = 0;
 };
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("fragile_block", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<FragileBlock>(); });
 

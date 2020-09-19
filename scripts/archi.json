@@ -1,0 +1,41 @@
+[
+   {
+      "desc" : "Desc base",
+      "name" : "base"
+   },
+   {
+      "desc" : "Desc engine",
+      "name" : "engine",
+      "deps" : [ "base" ]
+   },
+   {
+      "desc" : "Desc gameplay",
+      "name" : "gameplay",
+      "deps" : [ "base", "engine" ]
+   },
+   {
+      "desc" : "Desc entities",
+      "name" : "entities",
+      "deps" : [ "base", "gameplay" ]
+   },
+   {
+      "desc" : "Desc render",
+      "name" : "render",
+      "deps" : [ "base", "engine"]
+   },
+   {
+      "desc" : "Desc audio",
+      "name" : "audio",
+      "deps" : [ "base", "engine" ]
+   },
+   {
+      "desc" : "Desc input",
+      "name" : "input",
+      "deps" : [ "base", "engine" ]
+   },
+   {
+      "desc" : "Desc tests",
+      "name" : "tests",
+      "deps" : [ "engine", "base", "audio" ]
+   }
+]

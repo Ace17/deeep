@@ -8,11 +8,11 @@
 
 #include "base/scene.h" // Actor
 
-#include "collision_groups.h"
-#include "entity.h"
-#include "models.h"
-#include "sounds.h"
-#include "toggle.h" // decrement
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
+#include "gameplay/sounds.h"
+#include "gameplay/toggle.h" // decrement
 
 #include "explosion.h"
 
@@ -154,6 +154,6 @@ unique_ptr<Entity> makeSpider()
   return make_unique<Spider>();
 }
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("spider", [] (IEntityConfig*) { extern unique_ptr<Entity> makeSpider(); return makeSpider(); });
 

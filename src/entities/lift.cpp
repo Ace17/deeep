@@ -7,14 +7,14 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entities/move.h"
-#include "entity.h"
-#include "models.h"
-#include "sounds.h"
-#include "toggle.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
+#include "gameplay/models.h"
+#include "gameplay/move.h"
+#include "gameplay/sounds.h"
+#include "gameplay/toggle.h"
 
-#include "entity_factory.h"
 #include <cmath> // sqrt
 
 namespace

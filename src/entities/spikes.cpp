@@ -7,9 +7,9 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entity.h"
-#include "models.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
 
 struct Spikes : Entity
 {
@@ -37,6 +37,6 @@ struct Spikes : Entity
   }
 };
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("spikes", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Spikes>(); });
 

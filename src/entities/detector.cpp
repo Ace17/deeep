@@ -7,11 +7,11 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entity.h"
-#include "models.h"
-#include "sounds.h"
-#include "toggle.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
+#include "gameplay/sounds.h"
+#include "gameplay/toggle.h"
 
 struct RoomBoundaryDetector : Entity
 {
@@ -66,7 +66,7 @@ struct RoomBoundaryBlocker : Entity
   }
 };
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 
 static unique_ptr<Entity> makeBoundaryDetector(IEntityConfig* cfg)
 {

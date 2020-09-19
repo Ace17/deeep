@@ -8,7 +8,7 @@
 
 #include "base/geom.h"
 #include "engine/tests/tests.h"
-#include "quest.h"
+#include "gameplay/quest.h"
 #include <vector>
 using namespace std;
 

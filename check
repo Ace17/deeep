@@ -8,6 +8,10 @@ scripts/reformat.sh "engine"
 scripts/reformat.sh "tests"
 
 echo "----------------------------------------------------------------"
+echo "Checking dependencies ..."
+./scripts/CheckDeps.py -o bin/archi.dot scripts/archi.json src
+
+echo "----------------------------------------------------------------"
 echo "Building native version"
 
 BIN=bin/native \

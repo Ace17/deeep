@@ -14,14 +14,14 @@
 #include "base/util.h"
 #include "base/view.h"
 
-#include "entities/player.h"
-#include "entities/rockman.h"
 #include "entity_factory.h"
 #include "game.h"
 #include "load_quest.h"
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
+#include "player.h"
 #include "quest.h"
+#include "rockman.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "variable.h"

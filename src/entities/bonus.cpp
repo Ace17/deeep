@@ -12,11 +12,11 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entities/player.h"
-#include "entity.h"
-#include "models.h"
-#include "sounds.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
+#include "gameplay/player.h"
+#include "gameplay/sounds.h"
 
 struct Bonus : Entity
 {
@@ -85,7 +85,7 @@ std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg)
   return make_unique<Bonus>(action, upgradeType, msg);
 }
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("upgrade_climb", [] (IEntityConfig*) { return makeBonus(4, UPGRADE_CLIMB, "jump while against wall"); });
 static auto const reg2 = registerEntity("upgrade_shoot", [] (IEntityConfig*) { return makeBonus(3, UPGRADE_SHOOT, "press Z"); });
 static auto const reg3 = registerEntity("upgrade_dash", [] (IEntityConfig*) { return makeBonus(5, UPGRADE_DASH, "press C while walking"); });

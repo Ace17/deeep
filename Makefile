@@ -47,6 +47,18 @@ include $(ENGINE_ROOT)/project.mk
 #------------------------------------------------------------------------------
 
 SRCS_GAME:=\
+	src/gameplay/entity_factory.cpp\
+	src/gameplay/game.cpp\
+	src/gameplay/physics.cpp\
+	src/gameplay/preprocess_quest.cpp\
+	src/gameplay/load_quest.cpp\
+	src/gameplay/resources.cpp\
+	src/gameplay/rockman.cpp\
+	src/gameplay/smarttiles.cpp\
+	src/gameplay/state_ending.cpp\
+	src/gameplay/state_playing.cpp\
+	src/gameplay/state_paused.cpp\
+	src/gameplay/state_splash.cpp\
 	src/entities/blocks.cpp\
 	src/entities/bonus.cpp\
 	src/entities/conveyor.cpp\
@@ -59,24 +71,12 @@ SRCS_GAME:=\
 	src/entities/hopper.cpp\
 	src/entities/ladder.cpp\
 	src/entities/lift.cpp\
-	src/entities/rockman.cpp\
 	src/entities/savepoint.cpp\
 	src/entities/spider.cpp\
 	src/entities/spikes.cpp\
 	src/entities/sweeper.cpp\
 	src/entities/switch.cpp\
 	src/entities/wheel.cpp\
-	src/entity_factory.cpp\
-	src/game.cpp\
-	src/physics.cpp\
-	src/preprocess_quest.cpp\
-	src/load_quest.cpp\
-	src/resources.cpp\
-	src/smarttiles.cpp\
-	src/state_ending.cpp\
-	src/state_playing.cpp\
-	src/state_paused.cpp\
-	src/state_splash.cpp\
 
 #------------------------------------------------------------------------------
 
@@ -125,10 +125,10 @@ SRCS_PACKQUEST:=\
 	engine/src/misc/base64.cpp\
 	engine/src/misc/json.cpp\
 	engine/src/misc/file.cpp\
-	src/load_quest.cpp\
-	src/smarttiles.cpp\
-	src/preprocess_quest.cpp\
-	src/packquest.cpp\
+	src/gameplay/load_quest.cpp\
+	src/gameplay/smarttiles.cpp\
+	src/gameplay/preprocess_quest.cpp\
+	src/gameplay/packquest.cpp\
 
 $(BIN_HOST)/%.cpp.o: %.cpp
 	@mkdir -p $(dir $@)

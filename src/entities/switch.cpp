@@ -9,11 +9,11 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entity.h"
-#include "models.h"
-#include "sounds.h"
-#include "toggle.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/models.h"
+#include "gameplay/sounds.h"
+#include "gameplay/toggle.h"
 
 struct Switch : Entity
 {
@@ -69,6 +69,6 @@ unique_ptr<Entity> makeSwitch(int id)
   return make_unique<Switch>(id);
 }
 
-#include "entity_factory.h"
+#include "gameplay/entity_factory.h"
 static auto const reg1 = registerEntity("switch", [] (IEntityConfig* cfg) { auto arg = cfg->getInt("0"); return makeSwitch(arg); });
 
