@@ -1,4 +1,12 @@
-{ "height":64,
+{ "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
+ "height":64,
  "infinite":false,
  "layers":[
         {
@@ -96,40 +104,6 @@
                  "width":16,
                  "x":416,
                  "y":960
-                }, 
-                {
-                 "height":16,
-                 "id":8,
-                 "name":"moving_platform",
-                 "properties":[
-                        {
-                         "name":"dir",
-                         "type":"string",
-                         "value":"0"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":928
-                }, 
-                {
-                 "height":16,
-                 "id":9,
-                 "name":"moving_platform",
-                 "properties":[
-                        {
-                         "name":"dir",
-                         "type":"string",
-                         "value":"1"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":176,
-                 "y":896
                 }, 
                 {
                  "height":16,
@@ -448,17 +422,22 @@
                 {
                  "height":16,
                  "id":38,
-                 "name":"moving_platform",
+                 "name":"lift",
                  "properties":[
                         {
-                         "name":"dir",
+                         "name":"delta_x",
                          "type":"string",
-                         "value":"1"
+                         "value":"3"
                         }, 
                         {
-                         "name":"speed",
+                         "name":"delta_y",
                          "type":"string",
-                         "value":"250"
+                         "value":"0"
+                        }, 
+                        {
+                         "name":"unstable",
+                         "type":"string",
+                         "value":"1"
                         }],
                  "rotation":0,
                  "type":"",
@@ -532,6 +511,60 @@
                  "width":32,
                  "x":672,
                  "y":688
+                }, 
+                {
+                 "height":16,
+                 "id":41,
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_x",
+                         "type":"string",
+                         "value":"4"
+                        }, 
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"0"
+                        }, 
+                        {
+                         "name":"unstable",
+                         "type":"string",
+                         "value":"1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":176,
+                 "y":896
+                }, 
+                {
+                 "height":16,
+                 "id":42,
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_x",
+                         "type":"string",
+                         "value":"0"
+                        }, 
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"4"
+                        }, 
+                        {
+                         "name":"unstable",
+                         "type":"string",
+                         "value":"1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":928
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -540,10 +573,10 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":41,
+ "nextobjectid":43,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.4",
+ "tiledversion":"1.4.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -552,6 +585,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":1.2,
+ "version":1.4,
  "width":64
 }

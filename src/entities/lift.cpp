@@ -37,6 +37,7 @@ struct Lift : Entity
     solid = true;
     pusher = true;
     size = Size(2, 1);
+    unstable = cfg->getInt("unstable", 0);
     link = cfg->getInt("link", 0);
     delta_x = cfg->getInt("delta_x", 0);
     delta_y = cfg->getInt("delta_y", +7);
@@ -86,7 +87,7 @@ struct Lift : Entity
     r.ratio = 0;
     r.action = state ? 1 : 0;
 
-    if(state)
+    if(state && !unstable)
       r.effect = Effect::Blinking;
 
     actors.push_back(r);
@@ -111,6 +112,11 @@ struct Lift : Entity
     {
     case 0: // at rest
       physics->moveBody(this, initialPos - pos); // stick to initial pos
+      timer = 50;
+
+      if(unstable)
+        state = 1;
+
       break;
 
     case 1: // initial pause
@@ -164,6 +170,7 @@ struct Lift : Entity
   int debounceTrigger = 0;
 
   // config
+  int unstable = 0;
   int delta_x = 0;
   int delta_y = 0;
   int link = 0;
