@@ -13,6 +13,7 @@ SRCS_ENGINE:=\
 	$(ENGINE_ROOT)/src/render/display_ogl.cpp\
 	$(ENGINE_ROOT)/src/render/glad.cpp\
 	$(ENGINE_ROOT)/src/render/model.cpp\
+	$(ENGINE_ROOT)/src/render/picture.cpp\
 	$(ENGINE_ROOT)/src/render/png.cpp\
 
 $(BIN)/$(ENGINE_ROOT)/src/render/vertex.glsl.cpp: NAME=VertexShaderCode
