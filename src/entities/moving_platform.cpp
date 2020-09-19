@@ -25,7 +25,6 @@ struct MovingPlatform : Entity
     pusher = true;
     size = Size(2, 1);
     collisionGroup = CG_WALLS;
-    ticks = rand();
     dir = dir_;
   }
 
