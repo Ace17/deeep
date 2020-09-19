@@ -53,7 +53,6 @@ SRCS_GAME:=\
 	src/gameplay/preprocess_quest.cpp\
 	src/gameplay/load_quest.cpp\
 	src/gameplay/resources.cpp\
-	src/gameplay/rockman.cpp\
 	src/gameplay/smarttiles.cpp\
 	src/gameplay/state_ending.cpp\
 	src/gameplay/state_playing.cpp\
@@ -68,6 +67,7 @@ SRCS_GAME:=\
 	src/entities/exitpoint.cpp\
 	src/entities/explosion.cpp\
 	src/entities/hatch.cpp\
+	src/entities/hero.cpp\
 	src/entities/hopper.cpp\
 	src/entities/ladder.cpp\
 	src/entities/lift.cpp\

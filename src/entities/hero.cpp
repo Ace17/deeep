@@ -9,16 +9,16 @@
 #include "base/scene.h"
 #include "base/util.h"
 
-#include "collision_groups.h"
-#include "entity.h"
-#include "entity_factory.h"
-#include "models.h"
-#include "move.h"
-#include "player.h"
-#include "sounds.h"
-#include "toggle.h"
+#include "gameplay/collision_groups.h"
+#include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
+#include "gameplay/models.h"
+#include "gameplay/move.h"
+#include "gameplay/player.h"
+#include "gameplay/sounds.h"
+#include "gameplay/toggle.h"
 
-#include "rockman.h"
+#include "hero.h"
 
 auto const WALK_SPEED = 0.075f;
 auto const MAX_HORZ_SPEED = 0.2f;

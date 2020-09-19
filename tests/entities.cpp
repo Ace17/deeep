@@ -151,9 +151,9 @@ unittest("Entity: animate")
   assert(nearlyEquals(1, maxVal));
 }
 
-#include "gameplay/rockman.h"
+#include "entities/hero.h"
 
-unittest("Entity: rockman falls")
+unittest("Entity: hero falls")
 {
   auto player = makeRockman();
   auto game = NullGame();
@@ -166,7 +166,7 @@ unittest("Entity: rockman falls")
   assertEquals(ACTION_FALL, getActor(player).action);
 }
 
-unittest("Entity: rockman stands on ground, then walks")
+unittest("Entity: hero stands on ground, then walks")
 {
   auto player = makeRockman();
   auto game = NullGame();
