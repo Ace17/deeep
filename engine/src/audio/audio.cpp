@@ -16,7 +16,7 @@
 #include <cstdio> // printf
 #include <cstring> // strcpy
 #include <memory>
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -55,8 +55,6 @@ struct HighLevelAudio : Audio
 
   void loadSound(int id, const char* path) override
   {
-    sounds.resize(max(id + 1, (int)sounds.size()));
-
     if(!File::exists(path))
     {
       printf("[audio] sound '%s' was not found, fallback on default sound\n", path);
@@ -101,7 +99,7 @@ struct HighLevelAudio : Audio
   int currMusic = -1;
   int musicChannel = -1;
   const unique_ptr<IAudioBackend> m_backend;
-  vector<unique_ptr<Sound>> sounds;
+  unordered_map<int, unique_ptr<Sound>> sounds;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

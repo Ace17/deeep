@@ -12,6 +12,7 @@
 #include <cassert>
 #include <cstdio>
 #include <stdexcept>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -283,9 +284,6 @@ struct OpenglDisplay : Display
 
   void loadModel(int id, const char* path) override
   {
-    if((int)m_Models.size() <= id)
-      m_Models.resize(id + 1);
-
     m_Models[id] = ::loadModel(path);
   }
 
@@ -570,7 +568,7 @@ private:
   vector<Quad> m_quads;
   GLuint m_batchVbo;
 
-  vector<Model> m_Models;
+  unordered_map<int, Model> m_Models;
   Model m_fontModel;
 
   float m_ambientLight = 0;
