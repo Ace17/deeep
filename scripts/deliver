@@ -24,6 +24,7 @@ function deliverBinaryVersion
   echo "Building binaries"
 
   # Windows binaries
+  CXXFLAGS+=-O3 \
   BIN=$tmpDir/bin/w64 \
     ./scripts/w64-make -j`nproc` >/dev/null
 
@@ -38,6 +39,7 @@ function deliverBinaryVersion
   mv $tmpDir/$N/game.exe $tmpDir/$N/$N.exe
 
   # GNU/Linux binaries
+  CXXFLAGS+=-O3 \
   BIN=$tmpDir/bin/gnu \
     make -j`nproc` >/dev/null
 
