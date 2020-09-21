@@ -21,10 +21,10 @@
 #include "quest.h"
 
 static
-vector<int> convertFromLittleEndian(vector<uint8_t> const& input)
+vector<int> convertFromLittleEndian(Span<const uint8_t> input)
 {
-  assert(input.size() % 4 == 0);
-  vector<int> r(input.size() / 4);
+  assert(input.len % 4 == 0);
+  vector<int> r(input.len / 4);
 
   for(int i = 0; i < (int)r.size(); ++i)
   {
@@ -255,14 +255,12 @@ static void removeVersion(string& data)
 }
 
 static
-Room loadAbstractRoom(json::Value const& jsonRoom, bool isTmx = false)
+Room loadAbstractRoom(json::Value const& jsonRoom)
 {
-  auto box = getRect(jsonRoom);
-
   auto const PELS_PER_TILE = 4;
 
-  if(isTmx)
-    box = convertRect(box, PELS_PER_TILE, 64);
+  auto box = getRect(jsonRoom);
+  box = convertRect(box, PELS_PER_TILE, 64);
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
@@ -317,7 +315,7 @@ Quest loadTmxQuest(string path) // tiled TMX format
 
   for(auto& roomValue : layer["objects"].elements)
   {
-    auto room = loadAbstractRoom(roomValue, true);
+    auto room = loadAbstractRoom(roomValue);
     r.rooms.push_back(move(room));
   }
 
