@@ -5,7 +5,6 @@ echo "----------------------------------------------------------------"
 echo "Reformatting ..."
 scripts/reformat.sh "src"
 scripts/reformat.sh "engine"
-scripts/reformat.sh "tests"
 
 echo "----------------------------------------------------------------"
 echo "Checking dependencies ..."

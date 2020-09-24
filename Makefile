@@ -106,9 +106,9 @@ SRCS_TESTS:=\
 	engine/tests/json.cpp\
 	engine/tests/util.cpp\
 	engine/tests/png.cpp\
-	tests/entities.cpp\
-	tests/level_graph.cpp\
-	tests/physics.cpp\
+	src/tests/entities.cpp\
+	src/tests/level_graph.cpp\
+	src/tests/physics.cpp\
 
 $(BIN)/tests$(EXT): $(SRCS_TESTS:%=$(BIN)/%.o)
 	@mkdir -p $(dir $@)

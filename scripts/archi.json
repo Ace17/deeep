@@ -36,6 +36,6 @@
    {
       "desc" : "Desc tests",
       "name" : "tests",
-      "deps" : [ "engine", "base", "audio" ]
+      "deps" : [ "engine", "base", "audio", "gameplay", "entities" ]
    }
 ]
