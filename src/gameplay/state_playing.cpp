@@ -205,8 +205,8 @@ struct GameState : Scene, private IGame
 
     // prevent camera from going outside the level
     auto const limit = 8.0f;
-    cameraPos.x = clamp(cameraPos.x, limit, m_tiles->size.width - limit);
-    cameraPos.y = clamp(cameraPos.y, limit, m_tiles->size.height - limit);
+    cameraPos.x = clamp(cameraPos.x, limit, m_currRoom->size.width * 16  - limit);
+    cameraPos.y = clamp(cameraPos.y, limit, m_currRoom->size.height * 16 - limit);
 
     m_view->setCameraPos(cameraPos);
   }
@@ -303,9 +303,10 @@ struct GameState : Scene, private IGame
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
       throw runtime_error("No such level");
 
+    m_currRoom = &m_quest.rooms[levelIdx];
+
     auto& level = m_quest.rooms[levelIdx];
     spawnEntities(level, this, levelIdx);
-    m_tiles = &level.tiles;
     m_tilesForDisplay = &level.tilesForDisplay;
     m_theme = level.theme;
     m_view->playMusic(level.theme);
@@ -414,12 +415,12 @@ struct GameState : Scene, private IGame
   }
 
   Quest m_quest;
+  Room* m_currRoom = nullptr;
   Player* m_player = nullptr;
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
   bool m_gameFinished = false;
 
-  const Matrix2<int>* m_tiles;
   const Matrix2<int>* m_tilesForDisplay;
   bool m_debug;
   bool m_debugFirstTime = true;
@@ -442,7 +443,7 @@ struct GameState : Scene, private IGame
 
     for(int row = row1; row <= row2; row++)
       for(int col = col1; col <= col2; col++)
-        if(m_tiles->isInside(col, row) && m_tiles->get(col, row))
+        if(m_currRoom->tiles.isInside(col, row) && m_currRoom->tiles.get(col, row))
           return true;
 
     return false;
