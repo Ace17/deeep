@@ -20,6 +20,7 @@
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
+#include "input.h"
 #include "misc/file.h"
 #include "ratecounter.h"
 #include "render/display.h"
@@ -31,6 +32,7 @@ auto const RESOLUTION = Size2i(768, 768);
 
 Display* createDisplay(Size2i resolution);
 Audio* createAudio();
+UserInput* createUserInput();
 
 Scene* createGame(View* view, vector<string> argv);
 
@@ -44,11 +46,14 @@ public:
 
     m_display.reset(createDisplay(RESOLUTION));
     m_audio.reset(createAudio());
+    m_input.reset(createUserInput());
 
     m_scene.reset(createGame(this, m_args));
 
     m_lastTime = SDL_GetTicks();
     m_lastDisplayFrameTime = SDL_GetTicks();
+
+    registerUserInputActions();
   }
 
   virtual ~App()
@@ -58,7 +63,7 @@ public:
 
   bool tick() override
   {
-    processInput();
+    m_input->process();
 
     auto const now = (int)SDL_GetTicks();
 
@@ -142,39 +147,33 @@ private:
     }
   }
 
-  void processInput()
+  void registerUserInputActions()
   {
-    SDL_Event event;
+    // App keys
+    m_input->listenToKey(Key::PrintScreen, [&] (bool isDown) { if(isDown) toggleVideoCapture(); }, true);
+    m_input->listenToKey(Key::Return, [&] (bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
+    m_input->listenToQuit([&] () { onQuit(); });
 
-    while(SDL_PollEvent(&event))
-    {
-      switch(event.type)
-      {
-      case SDL_QUIT:
-        onQuit();
-        break;
-      case SDL_KEYDOWN:
-        onKeyDown(&event);
-        break;
-      case SDL_KEYUP:
-        onKeyUp(&event);
-        break;
-      }
-    }
+    // Player keys
+    m_input->listenToKey(Key::Esc, [&] (bool isDown) { if(isDown) onQuit(); });
+    m_input->listenToKey(Key::Return, [&] (bool isDown) { m_control.start = isDown; });
 
-    m_control.left = keys[SDL_SCANCODE_LEFT];
-    m_control.right = keys[SDL_SCANCODE_RIGHT];
-    m_control.up = keys[SDL_SCANCODE_UP];
-    m_control.down = keys[SDL_SCANCODE_DOWN];
+    m_input->listenToKey(Key::Left, [&] (bool isDown) { m_control.left = isDown; });
+    m_input->listenToKey(Key::Right, [&] (bool isDown) { m_control.right = isDown; });
+    m_input->listenToKey(Key::Up, [&] (bool isDown) { m_control.up = isDown; });
+    m_input->listenToKey(Key::Down, [&] (bool isDown) { m_control.down = isDown; });
 
-    m_control.start = keys[SDL_SCANCODE_RETURN];
-    m_control.fire = keys[SDL_SCANCODE_Z] || keys[SDL_SCANCODE_LCTRL];
-    m_control.jump = keys[SDL_SCANCODE_X] || keys[SDL_SCANCODE_SPACE];
-    m_control.dash = keys[SDL_SCANCODE_C];
+    m_input->listenToKey(Key::Z, [&] (bool isDown) { m_control.fire = isDown; });
+    m_input->listenToKey(Key::X, [&] (bool isDown) { m_control.jump = isDown; });
+    m_input->listenToKey(Key::C, [&] (bool isDown) { m_control.dash = isDown; });
 
-    m_control.restart = keys[SDL_SCANCODE_R];
+    m_input->listenToKey(Key::R, [&] (bool isDown) { m_control.restart = isDown; });
 
-    m_control.debug = m_debugMode;
+    // Debug keys
+    m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(this, m_args)); });
+    m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
+    m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) m_control.debug = !m_control.debug; });
+    m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ m_audio->playSound(0); m_paused = !m_paused; } });
   }
 
   void draw()
@@ -413,6 +412,7 @@ private:
   unique_ptr<Audio> m_audio;
   unique_ptr<Display> m_display;
   vector<Actor> m_actors;
+  unique_ptr<UserInput> m_input;
 
   string m_title;
   string m_textbox;

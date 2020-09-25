@@ -16,6 +16,9 @@ SRCS_ENGINE:=\
 	$(ENGINE_ROOT)/src/render/picture.cpp\
 	$(ENGINE_ROOT)/src/render/png.cpp\
 
+SRCS_ENGINE+=\
+	$(ENGINE_ROOT)/src/platform/input_sdl.cpp\
+
 $(BIN)/$(ENGINE_ROOT)/src/render/vertex.glsl.cpp: NAME=VertexShaderCode
 $(BIN)/$(ENGINE_ROOT)/src/render/fragment.glsl.cpp: NAME=FragmentShaderCode
 

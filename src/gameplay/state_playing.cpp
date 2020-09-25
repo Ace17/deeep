@@ -205,8 +205,8 @@ struct GameState : Scene, private IGame
 
     // prevent camera from going outside the level
     auto const limit = 8.0f;
-    cameraPos.x = clamp(cameraPos.x, limit, m_currRoom->size.width * 16  - limit);
-    cameraPos.y = clamp(cameraPos.y, limit, m_currRoom->size.height * 16 - limit);
+    cameraPos.x = ::clamp(cameraPos.x, limit, m_currRoom->size.width * 16.0f - limit);
+    cameraPos.y = ::clamp(cameraPos.y, limit, m_currRoom->size.height * 16.0f - limit);
 
     m_view->setCameraPos(cameraPos);
   }

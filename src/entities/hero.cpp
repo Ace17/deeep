@@ -195,7 +195,7 @@ struct Rockman : Player, Damageable
 
   float health() override
   {
-    return clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
+    return ::clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
   }
 
   virtual void addUpgrade(int upgrade) override
@@ -282,7 +282,7 @@ struct Rockman : Player, Damageable
         vel.y = 0;
     }
 
-    vel.x = clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
+    vel.x = ::clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
     vel.y = max(vel.y, -MAX_FALL_SPEED);
   }
 
