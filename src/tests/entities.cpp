@@ -12,7 +12,7 @@
 #include "entities/bonus.h"
 #include "entities/explosion.h"
 
-#include "engine/tests/tests.h"
+#include "tests.h"
 
 template<typename T>
 Actor getActor(T& ent)

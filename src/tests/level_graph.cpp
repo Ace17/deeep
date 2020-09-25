@@ -7,8 +7,8 @@
  */
 
 #include "base/geom.h"
-#include "engine/tests/tests.h"
 #include "gameplay/quest.h"
+#include "tests.h"
 #include <vector>
 using namespace std;
 

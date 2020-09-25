@@ -1,41 +1,55 @@
 [
    {
-      "desc" : "Desc base",
+      "desc" : "Basic types",
       "name" : "base"
    },
    {
-      "desc" : "Desc engine",
-      "name" : "engine",
+      "desc" : "Miscellaneous stuff",
+      "name" : "misc",
       "deps" : [ "base" ]
    },
    {
-      "desc" : "Desc gameplay",
-      "name" : "gameplay",
-      "deps" : [ "base", "engine" ]
+      "desc" : "Main",
+      "name" : "engine",
+      "deps" : [ "base", "misc", "audio", "render" ]
    },
    {
-      "desc" : "Desc entities",
+      "desc" : "Game-specific gameplay",
+      "name" : "gameplay",
+      "deps" : [ "base", "misc" ]
+   },
+   {
+      "desc" : "Game-specific entities",
       "name" : "entities",
       "deps" : [ "base", "gameplay" ]
    },
    {
-      "desc" : "Desc render",
+      "desc" : "Render subsystem",
       "name" : "render",
-      "deps" : [ "base", "engine"]
+      "deps" : [ "base", "misc"]
    },
    {
-      "desc" : "Desc audio",
+      "desc" : "Audio subsystem",
       "name" : "audio",
-      "deps" : [ "base", "engine" ]
+      "deps" : [ "base"]
    },
    {
-      "desc" : "Desc input",
+      "desc" : "Input subsystem",
       "name" : "input",
       "deps" : [ "base", "engine" ]
    },
    {
-      "desc" : "Desc tests",
+      "desc" : "Platform-specific adapters",
+      "name" : "platform",
+      "deps" : [ "base", "engine", "render", "audio", "misc", "GL" ]
+   },
+   {
+      "desc" : "Desc GL",
+      "name" : "GL"
+   },
+   {
+      "desc" : "Test suite",
       "name" : "tests",
-      "deps" : [ "engine", "base", "audio", "gameplay", "entities" ]
+      "deps" : [ "engine", "base", "misc", "audio", "gameplay", "entities", "render" ]
    }
 ]

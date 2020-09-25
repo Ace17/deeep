@@ -4,7 +4,7 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include "engine/src/misc/decompress.h"
+#include "misc/decompress.h"
 #include "tests.h"
 #include <vector>
 using namespace std;

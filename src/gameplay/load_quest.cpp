@@ -13,10 +13,10 @@
 #include <sstream>
 #include <string>
 
-#include "engine/src/misc/base64.h"
-#include "engine/src/misc/decompress.h"
-#include "engine/src/misc/file.h"
-#include "engine/src/misc/json.h"
+#include "misc/base64.h"
+#include "misc/decompress.h"
+#include "misc/file.h"
+#include "misc/json.h"
 
 #include "quest.h"
 

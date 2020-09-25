@@ -6,9 +6,9 @@
  * License, or (at your option) any later version.
  */
 
-#include "engine/tests/tests.h"
 #include "gameplay/body.h"
 #include "gameplay/physics.h"
+#include "tests.h"
 #include <cmath>
 #include <memory>
 

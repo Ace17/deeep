@@ -6,7 +6,7 @@
 
 // User input event source: SDL implementation
 
-#include "input.h"
+#include "engine/input.h"
 #include "SDL.h"
 #include <map>
 

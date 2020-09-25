@@ -4,7 +4,6 @@ set -euo pipefail
 echo "----------------------------------------------------------------"
 echo "Reformatting ..."
 scripts/reformat.sh "src"
-scripts/reformat.sh "engine"
 
 echo "----------------------------------------------------------------"
 echo "Checking dependencies ..."

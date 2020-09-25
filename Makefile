@@ -28,8 +28,6 @@ DBGFLAGS?=-g
 CXXFLAGS+=-Wall -Wextra
 CXXFLAGS+=-Isrc
 CXXFLAGS+=-I.
-CXXFLAGS+=-Iengine
-CXXFLAGS+=-Iengine/include
 CXXFLAGS+=-std=c++17
 CXXFLAGS+=$(PKG_CFLAGS)
 LDFLAGS+=$(PKG_LDFLAGS)
@@ -41,8 +39,33 @@ LDFLAGS+=$(DBGFLAGS)
 
 #------------------------------------------------------------------------------
 
-ENGINE_ROOT:=engine
-include $(ENGINE_ROOT)/project.mk
+SRCS_ENGINE:=\
+	$(BIN)/src/render/fragment.glsl.cpp\
+	$(BIN)/src/render/vertex.glsl.cpp\
+	src/engine/app.cpp\
+	src/engine/main.cpp\
+	src/audio/audio.cpp\
+	src/audio/audio_sdl.cpp\
+	src/audio/sound_ogg.cpp\
+	src/misc/base64.cpp\
+	src/misc/decompress.cpp\
+	src/misc/file.cpp\
+	src/misc/json.cpp\
+	src/render/model.cpp\
+	src/render/picture.cpp\
+	src/render/png.cpp\
+
+SRCS_ENGINE+=\
+	src/platform/input_sdl.cpp\
+	src/platform/display_ogl.cpp\
+	src/platform/glad.cpp\
+
+$(BIN)/src/render/vertex.glsl.cpp: NAME=VertexShaderCode
+$(BIN)/src/render/fragment.glsl.cpp: NAME=FragmentShaderCode
+
+$(BIN)/%.glsl.cpp: %.glsl
+	@mkdir -p $(dir $@)
+	scripts/embed.sh "$<" "$@" "$(NAME)"
 
 #------------------------------------------------------------------------------
 
@@ -97,15 +120,15 @@ include assets/project.mk
 
 SRCS_TESTS:=\
 	$(SRCS_GAME)\
-	$(filter-out $(ENGINE_ROOT)/src/main.cpp, $(SRCS_ENGINE))\
-	engine/tests/tests.cpp\
-	engine/tests/tests_main.cpp\
-	engine/tests/audio.cpp\
-	engine/tests/base64.cpp\
-	engine/tests/decompress.cpp\
-	engine/tests/json.cpp\
-	engine/tests/util.cpp\
-	engine/tests/png.cpp\
+	$(filter-out src/engine/main.cpp, $(SRCS_ENGINE))\
+	src/tests/tests.cpp\
+	src/tests/tests_main.cpp\
+	src/tests/audio.cpp\
+	src/tests/base64.cpp\
+	src/tests/decompress.cpp\
+	src/tests/json.cpp\
+	src/tests/util.cpp\
+	src/tests/png.cpp\
 	src/tests/entities.cpp\
 	src/tests/level_graph.cpp\
 	src/tests/physics.cpp\
@@ -121,10 +144,10 @@ $(BIN_HOST):
 	@mkdir -p "$@"
 
 SRCS_PACKQUEST:=\
-	engine/src/misc/decompress.cpp\
-	engine/src/misc/base64.cpp\
-	engine/src/misc/json.cpp\
-	engine/src/misc/file.cpp\
+	src/misc/decompress.cpp\
+	src/misc/base64.cpp\
+	src/misc/json.cpp\
+	src/misc/file.cpp\
 	src/gameplay/load_quest.cpp\
 	src/gameplay/smarttiles.cpp\
 	src/gameplay/preprocess_quest.cpp\
@@ -133,7 +156,7 @@ SRCS_PACKQUEST:=\
 $(BIN_HOST)/%.cpp.o: %.cpp
 	@mkdir -p $(dir $@)
 	@echo [HOST] compile "$@"
-	g++ -Iengine/include -Iengine/src -I. -c "$^" -o "$@"
+	g++ -Isrc -c "$^" -o "$@"
 
 $(BIN_HOST)/packquest.exe: $(SRCS_PACKQUEST:%=$(BIN_HOST)/%.o)
 	@mkdir -p $(dir $@)
