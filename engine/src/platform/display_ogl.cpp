@@ -6,7 +6,7 @@
 
 // OpenGL stuff
 
-#include "display.h"
+#include "render/display.h"
 
 #include <algorithm> // sort
 #include <cassert>
@@ -23,11 +23,11 @@ using namespace std;
 #include "base/scene.h"
 #include "base/span.h"
 #include "base/util.h" // clamp
-#include "matrix3.h"
 #include "misc/file.h"
 #include "misc/util.h"
-#include "model.h"
-#include "picture.h"
+#include "render/matrix3.h"
+#include "render/model.h"
+#include "render/picture.h"
 
 extern const Span<uint8_t> VertexShaderCode;
 extern const Span<uint8_t> FragmentShaderCode;
