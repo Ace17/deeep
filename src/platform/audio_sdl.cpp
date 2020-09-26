@@ -6,9 +6,9 @@
 
 // SDL audio output
 
-#include "audio_backend.h"
-#include "audio_channel.h"
-#include "sound.h"
+#include "audio/audio_backend.h"
+#include "audio/audio_channel.h"
+#include "audio/sound.h"
 
 #include <memory>
 #include <stdexcept>

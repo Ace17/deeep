@@ -45,7 +45,6 @@ SRCS_ENGINE:=\
 	src/engine/app.cpp\
 	src/engine/main.cpp\
 	src/audio/audio.cpp\
-	src/audio/audio_sdl.cpp\
 	src/audio/sound_ogg.cpp\
 	src/misc/base64.cpp\
 	src/misc/decompress.cpp\
@@ -56,6 +55,7 @@ SRCS_ENGINE:=\
 	src/render/png.cpp\
 
 SRCS_ENGINE+=\
+	src/platform/audio_sdl.cpp\
 	src/platform/input_sdl.cpp\
 	src/platform/display_ogl.cpp\
 	src/platform/glad.cpp\
