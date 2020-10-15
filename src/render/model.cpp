@@ -10,6 +10,8 @@
 #include "misc/util.h" // dirName
 #include "model.h"
 
+#include <stdexcept>
+
 extern int loadTexture(const char* path, Rect2f rect);
 
 static

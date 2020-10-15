@@ -9,7 +9,6 @@
 #pragma once
 
 #include <map>
-#include <stdexcept>
 #include <string>
 #include <vector>
 using namespace std;
@@ -43,16 +42,7 @@ struct Value
   // type == Type::Object
   map<string, Value> members;
 
-  Value const& operator [] (const char* name) const
-  {
-    enforceType(Type::Object);
-    auto it = members.find(name);
-
-    if(it == members.end())
-      throw runtime_error("Member '" + string(name) + "' was not found");
-
-    return it->second;
-  }
+  Value const& operator [] (const char* name) const;
 
   bool has(const char* name) const
   {
@@ -84,11 +74,7 @@ struct Value
   }
 
 private:
-  void enforceType(Type expected) const
-  {
-    if(type != expected)
-      throw runtime_error("Type error");
-  }
+  void enforceType(Type expected) const;
 };
 
 Value parse(const char* text, size_t len);
