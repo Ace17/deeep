@@ -73,10 +73,8 @@ SRCS_GAME:=\
 	src/gameplay/entity_factory.cpp\
 	src/gameplay/game.cpp\
 	src/gameplay/physics.cpp\
-	src/gameplay/preprocess_quest.cpp\
 	src/gameplay/load_quest.cpp\
 	src/gameplay/resources.cpp\
-	src/gameplay/smarttiles.cpp\
 	src/gameplay/state_ending.cpp\
 	src/gameplay/state_playing.cpp\
 	src/gameplay/state_paused.cpp\
@@ -120,6 +118,8 @@ include assets/project.mk
 
 SRCS_TESTS:=\
 	$(SRCS_GAME)\
+	src/gameplay/smarttiles.cpp\
+	src/gameplay/preprocess_quest.cpp\
 	$(filter-out src/engine/main.cpp, $(SRCS_ENGINE))\
 	src/tests/tests.cpp\
 	src/tests/tests_main.cpp\
