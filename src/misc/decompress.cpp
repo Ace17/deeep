@@ -125,7 +125,7 @@ struct Inflator
 {
   int error;
 
-  void inflate(std::vector<uint8_t>& out, const std::vector<uint8_t>& in, size_t inpos = 0)
+  void inflate(std::vector<uint8_t>& out, Span<const uint8_t> in, size_t inpos = 0)
   {
     size_t bp = 0, pos = 0; // bit pointer and byte pointer
     error = 0;
@@ -133,7 +133,7 @@ struct Inflator
 
     while(!BFINAL && !error)
     {
-      if(bp >> 3 >= in.size())
+      if((bp >> 3) >= (size_t)in.len)
       {
         error = 52;
         return;
@@ -149,9 +149,9 @@ struct Inflator
         return;
       } // error: invalid BTYPE
       else if(BTYPE == 0)
-        inflateNoCompression(out, &in[inpos], bp, pos, in.size());
+        inflateNoCompression(out, &in[inpos], bp, pos, in.len);
       else
-        inflateHuffmanBlock(out, &in[inpos], bp, pos, in.size(), BTYPE);
+        inflateHuffmanBlock(out, &in[inpos], bp, pos, in.len, BTYPE);
     }
 
     if(!error)
@@ -453,38 +453,81 @@ struct Inflator
     bp = p * 8;
   }
 };
-
-int Zlib_decompress(std::vector<uint8_t>& out, Span<const uint8_t> in_span) // returns error value
-{
-  auto in = std::vector<uint8_t>(in_span.data, in_span.data + in_span.len);
-
-  if(in.size() < 2)
-    throw runtime_error("decompress: size of zlib data too small");
-
-  if((in[0] * 256 + in[1]) % 31 != 0)
-    throw runtime_error("decompress: invalid header");
-
-  auto const CM = (in[0] >> 0) & 15;
-  auto const CINFO = (in[0] >> 4) & 15;
-  auto const FDICT = (in[1] >> 5) & 1;
-
-  if(CM != 8 || CINFO > 7)
-    throw runtime_error("decompress: unsupported compression method");
-
-  if(FDICT != 0)
-    throw runtime_error("decompress: unsupported preset directory");
-
-  Inflator inflator;
-  inflator.inflate(out, in, 2);
-  return inflator.error; // note: adler32 checksum was skipped and ignored
-}
 }
 
 using namespace std;
-vector<uint8_t> decompress(Span<const uint8_t> buffer)
+
+// https://tools.ietf.org/html/rfc1950#page-5
+//
+// zlib header:
+// - 2 bytes: 0x78 0x9C
+// - <deflated stream>
+// - 4 bytes: adler32 checksum
+vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
 {
-  vector<uint8_t> r;
-  Zlib_decompress(r, buffer);
-  return r;
+  if(in.len < 2)
+    throw runtime_error("zlibDecompress: zlib data too small");
+
+  if((in[0] * 256 + in[1]) % 31 != 0)
+    throw runtime_error("zlibDecompress: invalid header");
+
+  const int CM = (in[0] >> 0) & 15;
+  const int CINFO = (in[0] >> 4) & 15;
+  const int FDICT = (in[1] >> 5) & 1;
+
+  if(CM != 8 || CINFO > 7)
+    throw runtime_error("zlibDecompress: unsupported compression method");
+
+  if(FDICT != 0)
+    throw runtime_error("zlibDecompress: unsupported preset directory");
+
+  vector<uint8_t> out;
+  Inflator inflator;
+  inflator.inflate(out, in, 2);
+  // skip adler32 checksum
+
+  if(inflator.error)
+    throw runtime_error("zlibDecompress: decompression error");
+
+  return out;
+}
+
+// gzip header:
+// - 2 bytes: magic: 0x1f 0x8b
+// - 1 byte: compression method (0x08 = deflate)
+// - 1 byte $00 FLaGs bit 0   FTEXT - indicates file is ASCII text (can be safely ignored) bit 1   FHCRC - there is a CRC16 for the header immediately following the header bit 2   FEXTRA - extra fields are present bit 3   FNAME - the zero-terminated filename is present. encoding; ISO-8859-1. bit 4   FCOMMENT - a zero-terminated file comment is present. encoding: ISO-8859-1 bit 5-7   reserved
+// - 4 bytes: Modification time
+// - 1 byte: extra flags
+// - 1 byte: OS
+// - <deflated stream>
+// - 4 bytes crc32
+// - 4 bytes input size
+vector<uint8_t> gzipDecompress(Span<const uint8_t> in)
+{
+  if(in.len < 10)
+    throw runtime_error("gzipDecompress: gzip data too small");
+
+  if(in[0] != 0x1F || in[1] != 0x8B)
+    throw runtime_error("gzipDecompress: invalid header");
+
+  const int CM = in[2];
+
+  if(CM != 8)
+    throw runtime_error("gzipDecompress: unsupported compression method");
+
+  const int flags = in[3];
+
+  if(flags != 0)
+    throw runtime_error("gzipDecompress: unsupported flags");
+
+  vector<uint8_t> out;
+  Inflator inflator;
+  inflator.inflate(out, in, 10);
+  // skip crc32 and input size
+
+  if(inflator.error)
+    throw runtime_error("gzipDecompress: decompression error");
+
+  return out;
 }
 

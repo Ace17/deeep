@@ -12,5 +12,9 @@ using namespace std;
 
 #include "base/span.h"
 
-vector<uint8_t> decompress(Span<const uint8_t> buffer);
+// e.g: 78 9C ..
+vector<uint8_t> zlibDecompress(Span<const uint8_t> buffer);
+
+// e.g: 1F 8B ..
+vector<uint8_t> gzipDecompress(Span<const uint8_t> buffer);
 

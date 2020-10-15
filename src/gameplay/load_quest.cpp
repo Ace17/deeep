@@ -49,7 +49,7 @@ vector<int> decompressTiles(string data)
   compData.data = compDataBuffer.data();
   compData.len = compDataBuffer.size();
 
-  auto const uncompData = decompress(compData);
+  auto const uncompData = zlibDecompress(compData);
   return convertFromLittleEndian(uncompData);
 }
 
@@ -354,14 +354,7 @@ Quest loadQuest(string path)
 {
   auto compressedData = File::read(path);
 
-  {
-    // replace gzip header with zlib header
-    compressedData = compressedData.substr(8);
-    compressedData[0] = 0x78;
-    compressedData[1] = 0x9c;
-  }
-
-  auto data = decompress({ (uint8_t*)compressedData.c_str(), (int)compressedData.size() });
+  auto data = gzipDecompress({ (uint8_t*)compressedData.c_str(), (int)compressedData.size() });
   auto js = json::parse((const char*)data.data(), data.size());
 
   auto layers = getAllLayers(js);

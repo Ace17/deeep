@@ -9,13 +9,13 @@
 #include <vector>
 using namespace std;
 
-unittest("Decompress: simple")
-{
-  auto toString = [] (vector<uint8_t> s)
-    {
-      return string(s.begin(), s.end());
-    };
+static auto toString = [] (vector<uint8_t> s)
+  {
+    return string(s.begin(), s.end());
+  };
 
+unittest("ZLIB decompress: simple")
+{
   const uint8_t input[] =
   {
     0x78, 0x9C, 0xF3, 0x48, 0xCD, 0xC9, 0xC9, 0xD7,
@@ -23,10 +23,10 @@ unittest("Decompress: simple")
     0x1B, 0xD4, 0x04, 0x69,
   };
   assertEquals("Hello, world",
-               toString(decompress(input)));
+               toString(zlibDecompress(input)));
 }
 
-unittest("Decompress: big")
+unittest("ZLIB decompress: big")
 {
   // "[AAA...AAAA]" (126 'A')
   const uint8_t input[] =
@@ -35,12 +35,26 @@ unittest("Decompress: big")
     0x00, 0x3E, 0x54, 0x20, 0xB7,
   };
 
-  auto const output = decompress(input);
+  auto const output = zlibDecompress(input);
   assertEquals(128u, output.size());
   assertEquals('[', output[0]);
   assertEquals('A', output[1]);
   assertEquals('A', output[80]);
   assertEquals('A', output[126]);
   assertEquals(']', output[127]);
+}
+
+unittest("GZIP decompress: simple")
+{
+  const uint8_t input[] =
+  {
+    0x1f, 0x8b,
+    0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03,
+    0xcb, 0x48, 0xcd, 0xc9, 0xc9, 0x07, 0x00,
+    0x86, 0xa6, 0x10, 0x36,
+    0x05, 0x00, 0x00, 0x00
+  };
+  assertEquals("hello",
+               toString(gzipDecompress(input)));
 }
 
