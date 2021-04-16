@@ -6,8 +6,6 @@
 
 // OpenGL stuff
 
-#include "render/display.h"
-
 #include <algorithm> // sort
 #include <cassert>
 #include <cstdio>
@@ -23,6 +21,7 @@ using namespace std;
 #include "base/scene.h"
 #include "base/span.h"
 #include "base/util.h" // clamp
+#include "engine/display.h"
 #include "misc/file.h"
 #include "misc/util.h"
 #include "render/matrix3.h"

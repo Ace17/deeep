@@ -11,7 +11,7 @@
    {
       "desc" : "Main",
       "name" : "engine",
-      "deps" : [ "base", "misc", "audio", "render" ]
+      "deps" : [ "base", "misc", "audio" ]
    },
    {
       "desc" : "Game-specific gameplay",
@@ -26,7 +26,7 @@
    {
       "desc" : "Render subsystem",
       "name" : "render",
-      "deps" : [ "base", "misc"]
+      "deps" : [ "base", "engine", "misc"]
    },
    {
       "desc" : "Audio subsystem",

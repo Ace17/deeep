@@ -22,9 +22,9 @@
 #include "misc/file.h"
 #include "misc/time.h"
 
+#include "display.h"
 #include "input.h"
 #include "ratecounter.h"
-#include "render/display.h"
 #include "stats.h"
 
 using namespace std;

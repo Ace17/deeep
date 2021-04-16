@@ -72,15 +72,6 @@ $(BIN)/%.glsl.cpp: %.glsl
 #------------------------------------------------------------------------------
 
 SRCS_GAME:=\
-	src/gameplay/entity_factory.cpp\
-	src/gameplay/game.cpp\
-	src/gameplay/physics.cpp\
-	src/gameplay/load_quest.cpp\
-	src/gameplay/resources.cpp\
-	src/gameplay/state_ending.cpp\
-	src/gameplay/state_playing.cpp\
-	src/gameplay/state_paused.cpp\
-	src/gameplay/state_splash.cpp\
 	src/entities/blocks.cpp\
 	src/entities/bonus.cpp\
 	src/entities/conveyor.cpp\
@@ -100,6 +91,15 @@ SRCS_GAME:=\
 	src/entities/sweeper.cpp\
 	src/entities/switch.cpp\
 	src/entities/wheel.cpp\
+	src/gameplay/entity_factory.cpp\
+	src/gameplay/game.cpp\
+	src/gameplay/physics.cpp\
+	src/gameplay/load_quest.cpp\
+	src/gameplay/resources.cpp\
+	src/gameplay/state_ending.cpp\
+	src/gameplay/state_playing.cpp\
+	src/gameplay/state_paused.cpp\
+	src/gameplay/state_splash.cpp\
 
 #------------------------------------------------------------------------------
 
