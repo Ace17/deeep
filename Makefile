@@ -44,6 +44,7 @@ SRCS_ENGINE:=\
 	$(BIN)/src/render/vertex.glsl.cpp\
 	src/engine/app.cpp\
 	src/engine/main.cpp\
+	src/engine/stats.cpp\
 	src/audio/audio.cpp\
 	src/audio/sound_ogg.cpp\
 	src/misc/base64.cpp\

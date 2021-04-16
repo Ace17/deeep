@@ -57,7 +57,7 @@ private:
   {
     StaticInvokable(void(*f)(Args...)) : funcPtr(f) {}
     void call(Args... args) override { (*funcPtr)(args...); }
-    void (* funcPtr)(Args...) {};
+    void (* funcPtr)(Args...) = nullptr;
   };
 
   template<typename Lambda>

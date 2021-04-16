@@ -24,6 +24,7 @@
 #include "misc/file.h"
 #include "ratecounter.h"
 #include "render/display.h"
+#include "stats.h"
 
 using namespace std;
 
@@ -104,8 +105,9 @@ private:
       m_fps.tick(now);
     }
 
-    auto fps = m_fps.slope();
+    Stat("FPS", m_fps.slope());
 
+    auto fps = m_fps.slope();
     if(fps != m_lastFps)
     {
       fpsChanged(fps);
