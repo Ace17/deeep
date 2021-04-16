@@ -14,33 +14,19 @@ struct Matrix3f
   {
     for(int row = 0; row < 3; ++row)
       for(int col = 0; col < 3; ++col)
-        (*this)[row][col] = init;
+        m_rows[row][col] = init;
   }
 
   struct row
   {
     float elements[3];
 
-    float const& operator [] (int i) const
-    {
-      return elements[i];
-    }
-
-    float& operator [] (int i)
-    {
-      return elements[i];
-    }
+    operator float* () { return elements; }
+    operator const float* () const { return elements; }
   };
 
-  const row& operator [] (int i) const
-  {
-    return m_rows[i];
-  }
-
-  row& operator [] (int i)
-  {
-    return m_rows[i];
-  }
+  operator row* () { return m_rows; }
+  operator const row* () const { return m_rows; }
 
   row m_rows[3];
 };
@@ -56,9 +42,9 @@ Matrix3f operator * (Matrix3f const& A, Matrix3f const& B)
       double sum = 0;
 
       for(int k = 0; k < 3; ++k)
-        sum += A[row][k] * B[k][col];
+        sum += A.m_rows[row][k] * B.m_rows[k][col];
 
-      r[row][col] = sum;
+      r.m_rows[row][col] = sum;
     }
 
   return r;
