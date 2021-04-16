@@ -6,22 +6,23 @@
 
 // Main loop timing.
 // No game-specific code should be here,
-// and no platform-specific code should be here (SDL is OK).
+// and no platform-specific code should be here.
+
+#include "app.h"
 
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "SDL.h"
-
-#include "app.h"
 #include "audio/audio.h"
 #include "base/geom.h"
 #include "base/resource.h"
 #include "base/scene.h"
 #include "base/view.h"
-#include "input.h"
 #include "misc/file.h"
+#include "misc/time.h"
+
+#include "input.h"
 #include "ratecounter.h"
 #include "render/display.h"
 #include "stats.h"
@@ -43,30 +44,23 @@ public:
   App(Span<char*> args)
     : m_args({ args.data, args.data + args.len })
   {
-    SDL_Init(0);
-
     m_display.reset(createDisplay(RESOLUTION));
     m_audio.reset(createAudio());
     m_input.reset(createUserInput());
 
     m_scene.reset(createGame(this, m_args));
 
-    m_lastTime = SDL_GetTicks();
-    m_lastDisplayFrameTime = SDL_GetTicks();
+    m_lastTime = GetSteadyClockMs();
+    m_lastDisplayFrameTime = GetSteadyClockMs();
 
     registerUserInputActions();
-  }
-
-  virtual ~App()
-  {
-    SDL_Quit();
   }
 
   bool tick() override
   {
     m_input->process();
 
-    auto const now = (int)SDL_GetTicks();
+    auto const now = (int)GetSteadyClockMs();
 
     if(m_fixedDisplayFramePeriod)
     {
