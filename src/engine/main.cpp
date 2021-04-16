@@ -56,6 +56,7 @@ int main(int argc, char* argv[])
   }
   catch(exception const& e)
   {
+    fflush(stdout);
     fprintf(stderr, "Fatal: %s\n", e.what());
     return 1;
   }
