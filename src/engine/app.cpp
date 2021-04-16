@@ -88,7 +88,7 @@ public:
 private:
   void tickOneDisplayFrame(int now)
   {
-    auto const timeStep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+    const auto timeStep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
 
     while(m_lastTime + timeStep < now)
     {
@@ -98,13 +98,12 @@ private:
         tickGameplay();
     }
 
-    {
-      m_actors.clear();
-      m_scene->draw();
-      draw();
-      m_fps.tick(now);
-    }
+    // draw the frame
+    m_actors.clear();
+    m_scene->draw();
+    draw();
 
+    m_fps.tick(now);
     Stat("FPS", m_fps.slope());
 
     auto fps = m_fps.slope();
