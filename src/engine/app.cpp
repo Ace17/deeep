@@ -106,14 +106,6 @@ private:
     m_fps.tick(now);
     Stat("FPS", m_fps.slope());
 
-    auto fps = m_fps.slope();
-
-    if(fps != m_lastFps)
-    {
-      fpsChanged(fps);
-      m_lastFps = fps;
-    }
-
     captureDisplayFrameIfNeeded();
   }
 
@@ -227,13 +219,6 @@ private:
     m_display->endDraw();
   }
 
-  void fpsChanged(int fps)
-  {
-    char title[128];
-    sprintf(title, "%s (%d FPS)", m_title.c_str(), fps);
-    m_display->setCaption(title);
-  }
-
   void onQuit()
   {
     if(m_running == 2)
@@ -287,7 +272,7 @@ private:
   // View implementation
   void setTitle(char const* gameTitle) override
   {
-    m_title = gameTitle;
+    m_display->setCaption(gameTitle);
   }
 
   void preload(Resource res) override
@@ -348,7 +333,6 @@ private:
 
   int m_lastTime;
   int m_lastDisplayFrameTime;
-  int m_lastFps = -1;
   RateCounter m_fps;
   Control m_control {};
   vector<string> m_args;
@@ -361,7 +345,6 @@ private:
   vector<Actor> m_actors;
   unique_ptr<UserInput> m_input;
 
-  string m_title;
   string m_textbox;
   int m_textboxDelay = 0;
 };
