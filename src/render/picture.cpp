@@ -29,17 +29,17 @@ Picture* getPicture(string path)
 }
 }
 
-Picture loadPicture(const char* path, Rect2f frect)
+Picture loadPicture(String path, Rect2f frect)
 {
   try
   {
-    auto surface = getPicture(path);
+    auto surface = getPicture(string(path.data, path.len));
 
     if(frect.size.width == 0 && frect.size.height == 0)
       frect = Rect2f(0, 0, 1, 1);
 
     if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.width > 1 || frect.pos.y + frect.size.height > 1)
-      throw runtime_error("Invalid boundaries for '" + string(path) + "'");
+      throw runtime_error("Invalid boundaries for '" + string(path.data, path.len) + "'");
 
     auto const bpp = 4;
 

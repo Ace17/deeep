@@ -141,7 +141,7 @@ GLuint sendToOpengl(PictureView pic)
 }
 
 // exported to Model
-int loadTexture(const char* path, Rect2f frect)
+int loadTexture(String path, Rect2f frect)
 {
   auto pic = loadPicture(path, frect);
   return sendToOpengl(pic);
@@ -282,7 +282,7 @@ struct OpenglDisplay : Display
     SDL_SetWindowTitle(m_window, caption);
   }
 
-  void loadModel(int id, const char* path) override
+  void loadModel(int id, String path) override
   {
     m_Models[id] = ::loadModel(path);
   }

@@ -5,6 +5,7 @@
 // License, or (at your option) any later version.
 
 #include "base/util.h"
+#include "misc/util.h"
 #include "tests.h"
 #include <algorithm>
 #include <vector>
@@ -57,5 +58,38 @@ unittest("Util: rasterScan simple")
     result.push_back(p);
 
   assertEquals(expected, result);
+}
+
+unittest("Util: endsWith")
+{
+  assertTrue(endsWith("Hello World", "World"));
+  assertTrue(!endsWith("Hello World", "You"));
+}
+
+unittest("Util: setExtension")
+{
+  assertEquals("test.obj", setExtension("test.source", "obj"));
+}
+
+static bool operator == (const String& a, const String& b)
+{
+  if(a.len != b.len)
+    return false;
+
+  return memcmp(a.data, b.data, a.len) == 0;
+}
+
+static
+std::ostream& operator << (std::ostream& o, const String& v)
+{
+  for(auto& c : v)
+    o << c;
+
+  return o;
+}
+
+unittest("Util: dirName")
+{
+  assertEquals("Hello/World", dirName("Hello/World/Goodbye.txt"));
 }
 

@@ -5,6 +5,7 @@
 // License, or (at your option) any later version.
 
 #include "base/geom.h"
+#include "base/string.h"
 #include "misc/file.h"
 #include "misc/json.h"
 #include "misc/util.h" // dirName
@@ -12,10 +13,10 @@
 
 #include <stdexcept>
 
-extern int loadTexture(const char* path, Rect2f rect);
+extern int loadTexture(String path, Rect2f rect);
 
 static
-void addTexture(Action& action, const char* path, Rect2f rect)
+void addTexture(Action& action, String path, Rect2f rect)
 {
   action.textures.push_back(loadTexture(path, rect));
 }
@@ -38,14 +39,14 @@ Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, in
     rect.pos.y = row / float(ROWS);
     rect.size.width = 1.0 / float(COLS);
     rect.size.height = 1.0 / float(ROWS);
-    addTexture(r, sheetPath.c_str(), rect);
+    addTexture(r, sheetPath, rect);
   }
 
   return r;
 }
 
 static
-Model loadAnimatedModel(const char* jsonPath)
+Model loadAnimatedModel(String jsonPath)
 {
   auto data = File::read(jsonPath);
   Model r;
@@ -77,7 +78,8 @@ Model loadAnimatedModel(const char* jsonPath)
         rect.pos.y = row / float(rows);
         rect.size.width = 1.0 / float(cols);
         rect.size.height = 1.0 / float(rows);
-        addTexture(action, (dir + "/" + sheet).c_str(), rect);
+
+        addTexture(action, (string(dir.data, dir.len) + "/" + sheet), rect);
         r.actions.push_back(action);
       }
     }
@@ -89,7 +91,7 @@ Model loadAnimatedModel(const char* jsonPath)
 }
 
 static
-Model loadTiledModel(const char* path, int count, int COLS, int ROWS)
+Model loadTiledModel(String path, int count, int COLS, int ROWS)
 {
   auto m = Model();
 
@@ -109,7 +111,7 @@ Model loadTiledModel(const char* path, int count, int COLS, int ROWS)
   return m;
 }
 
-Model loadModel(const char* path)
+Model loadModel(String path)
 {
   try
   {
@@ -117,7 +119,7 @@ Model loadModel(const char* path)
     {
       if(!File::exists(path))
       {
-        printf("[display] model '%s' doesn't exist, fallback on default model\n", path);
+        printf("[display] model '%.*s' doesn't exist, fallback on default model\n", path.len, path.data);
         path = "res/sprites/rect.model";
       }
 
@@ -133,16 +135,16 @@ Model loadModel(const char* path)
         pngPath = "res/tiles/default.png";
       }
 
-      return loadTiledModel(pngPath.c_str(), 64 * 2, 8, 16);
+      return loadTiledModel(pngPath, 64 * 2, 8, 16);
     }
     else
     {
-      throw runtime_error("unknown format for '" + string(path) + "'");
+      throw runtime_error("unknown format for '" + string(path.data, path.len) + "'");
     }
   }
   catch(std::exception const& e)
   {
-    throw runtime_error("When loading '" + string(path) + "': " + e.what());
+    throw runtime_error("When loading '" + string(path.data, path.len) + "': " + e.what());
   }
 }
 

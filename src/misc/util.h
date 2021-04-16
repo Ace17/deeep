@@ -1,30 +1,41 @@
 #pragma once
 
+#include "base/string.h"
+
 #include <string>
+#include <string.h> // memcmp
 
 using namespace std;
 
-inline bool endsWith(string const& value, string const& ending)
+inline bool endsWith(String value, String suffix)
 {
-  if(ending.size() > value.size())
+  if(suffix.len > value.len)
     return false;
 
-  return equal(ending.rbegin(), ending.rend(), value.rbegin());
+  return memcmp(value.data + value.len - suffix.len, suffix.data, suffix.len) == 0;
 }
 
-inline string setExtension(string name, string ext)
+inline string setExtension(String name, String ext)
 {
-  auto e = name.rfind('.');
-  return name.substr(0, e) + "." + ext;
+  int i = (int)name.len - 1;
+
+  while(i > 0 && name.data[i] != '.')
+    --i;
+
+  return std::string(name.data, i) + "." + std::string(ext.data, ext.len);
 }
 
-inline string dirName(string path)
+inline String dirName(String path)
 {
-  auto n = path.rfind('/');
+  while(path.len > 0 && path.data[path.len - 1] != '/')
+    --path.len;
 
-  if(n == path.npos)
+  if(path.len && path.data[path.len - 1] == '/')
+    path.len--;
+
+  if(path.len == 0)
     return ".";
 
-  return path.substr(0, n);
+  return path;
 }
 

@@ -21,5 +21,5 @@ struct Picture
   operator PictureView () { return { dim, stride, pixels.data() }; }
 };
 
-Picture loadPicture(const char* path, Rect2f frect);
+Picture loadPicture(String path, Rect2f frect);
 

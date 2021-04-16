@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "base/string.h"
 #include <vector>
 using namespace std;
 
@@ -19,5 +20,5 @@ struct Model
   vector<Action> actions;
 };
 
-Model loadModel(const char* path);
+Model loadModel(String path);
 

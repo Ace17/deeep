@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "string.h"
+
 enum class ResourceType
 {
   Sound,
@@ -16,6 +18,6 @@ struct Resource
 {
   ResourceType type;
   int id;
-  char const* path;
+  String path;
 };
 

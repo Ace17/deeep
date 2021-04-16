@@ -7,13 +7,14 @@
 #pragma once
 
 #include "base/span.h"
+#include "base/string.h"
 #include <string>
 using namespace std;
 
 namespace File
 {
-string read(string path);
-void write(string path, Span<const uint8_t> data);
-bool exists(string path);
+string read(String path);
+void write(String path, Span<const uint8_t> data);
+bool exists(String path);
 }
 

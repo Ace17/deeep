@@ -7,6 +7,7 @@
 #pragma once
 
 #include "base/span.h"
+#include "base/string.h"
 #include <memory>
 
 // A sound being played (holds the current sound position)
@@ -23,5 +24,5 @@ struct Sound
   virtual std::unique_ptr<IAudioSource> createSource() = 0;
 };
 
-std::unique_ptr<Sound> loadSoundFile(std::string filename);
+std::unique_ptr<Sound> loadSoundFile(String filename);
 

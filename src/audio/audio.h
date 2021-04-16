@@ -6,11 +6,13 @@
 
 #pragma once
 
+#include "base/string.h"
+
 struct Audio
 {
   virtual ~Audio() = default;
 
-  virtual void loadSound(int id, const char* path) = 0;
+  virtual void loadSound(int id, String path) = 0;
   virtual void playSound(int id) = 0;
   virtual void playMusic(int id) = 0;
   virtual void stopMusic() = 0;

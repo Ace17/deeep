@@ -10,6 +10,7 @@
 
 #include "base/geom.h"
 #include "base/span.h"
+#include "base/string.h"
 
 struct Display
 {
@@ -17,7 +18,7 @@ struct Display
 
   virtual void setFullscreen(bool fs) = 0;
   virtual void setCaption(const char* caption) = 0;
-  virtual void loadModel(int id, const char* imagePath) = 0;
+  virtual void loadModel(int id, String imagePath) = 0;
   virtual void beginDraw() = 0;
   virtual void endDraw() = 0;
   virtual void drawActor(Rect2f where, float angle, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float frame, int zOrder) = 0;
