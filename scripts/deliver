@@ -11,8 +11,8 @@ mkdir -p $tmpDir
 function main
 {
   echo "Delivering [$NAME]"
-  make clean
-  ./check
+  #make clean
+  #./check
   deliverBinaryVersion
 }
 
@@ -46,7 +46,7 @@ function deliverBinaryVersion
   cp /opt/envs/win64/bin/SDL2.dll                                    $tmpDir/$N
 
   # GNU/Linux binaries
-  CXXFLAGS+=-O3 \
+  CXXFLAGS="-include extra/glibc_version.h -O3" \
   BIN=$tmpDir/bin/gnu \
     make -j`nproc` \
     VERSION="$version" \
@@ -61,7 +61,7 @@ function deliverBinaryVersion
   strip -s $tmpDir/$N/*.{exe,dll,x86_64}
 
   # Compress executables
-  upx -9 $tmpDir/$N/*.{exe,x86_64}
+  upx -9 $tmpDir/$N/*.{exe,dll,x86_64}
 
   echo "$version" > "$tmpDir/$N/version.txt"
 
