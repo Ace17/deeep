@@ -94,7 +94,7 @@ private:
     {
       m_lastTime += timeStep;
 
-      if(!m_paused)
+      if(!m_paused && m_running == 1)
         tickGameplay();
     }
 
@@ -107,6 +107,7 @@ private:
     Stat("FPS", m_fps.slope());
 
     auto fps = m_fps.slope();
+
     if(fps != m_lastFps)
     {
       fpsChanged(fps);
@@ -138,6 +139,8 @@ private:
 
   void tickGameplay()
   {
+    m_control.debug = m_debugMode;
+
     auto next = m_scene->tick(m_control);
 
     if(next != m_scene.get())
@@ -151,9 +154,13 @@ private:
   void registerUserInputActions()
   {
     // App keys
+    m_input->listenToQuit([&] () { m_running = 0; });
+
     m_input->listenToKey(Key::PrintScreen, [&] (bool isDown) { if(isDown) toggleVideoCapture(); }, true);
     m_input->listenToKey(Key::Return, [&] (bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
-    m_input->listenToQuit([&] () { onQuit(); });
+
+    m_input->listenToKey(Key::Y, [&] (bool isDown) { if(isDown && m_running == 2) m_running = 0; });
+    m_input->listenToKey(Key::N, [&] (bool isDown) { if(isDown && m_running == 2) m_running = 1; });
 
     // Player keys
     m_input->listenToKey(Key::Esc, [&] (bool isDown) { if(isDown) onQuit(); });
@@ -173,7 +180,7 @@ private:
     // Debug keys
     m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(this, m_args)); });
     m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
-    m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) m_control.debug = !m_control.debug; });
+    m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) m_debugMode = !m_debugMode; });
     m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ m_audio->playSound(0); m_paused = !m_paused; } });
   }
 
@@ -187,16 +194,22 @@ private:
       m_display->drawActor(where, actor.angle, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
     }
 
-    if(m_paused)
+    if(m_running == 2)
+      m_display->drawText(Vector2f(0, 0), "QUIT? [Y/N]");
+    else if(m_paused)
       m_display->drawText(Vector2f(0, 0), "PAUSE");
     else if(m_slowMotion)
       m_display->drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
 
-    if(m_debugMode)
+    if(m_control.debug)
     {
-      char debugText[256];
-      sprintf(debugText, "FPS: %d", m_fps.slope());
-      m_display->drawText(Vector2f(0, -4), debugText);
+      for(int i = 0; i < getStatCount(); ++i)
+      {
+        char txt[256];
+        auto stat = getStat(i);
+        snprintf(txt, sizeof txt, "%s: %.2f", stat.name, stat.val);
+        m_display->drawText(Vector2f(0, 4 - i), txt);
+      }
     }
 
     if(m_textboxDelay > 0)
@@ -223,7 +236,10 @@ private:
 
   void onQuit()
   {
-    m_running = 0;
+    if(m_running == 2)
+      m_running = 1;
+    else
+      m_running = 2;
   }
 
   void toggleVideoCapture()

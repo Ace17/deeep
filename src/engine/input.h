@@ -22,10 +22,12 @@ enum class Key
   ScrollLock,
   Tab,
   CapsLock,
-  R,
-  Z,
-  X,
   C,
+  N,
+  R,
+  X,
+  Y,
+  Z,
 };
 
 struct UserInput

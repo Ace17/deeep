@@ -38,10 +38,12 @@ Uint32 translateToSdlKey(Key key)
   case Key::Tab: return SDLK_TAB;
   case Key::CapsLock: return SDLK_CAPSLOCK;
   case Key::ScrollLock: return SDLK_SCROLLLOCK;
-  case Key::R: return SDLK_r;
-  case Key::Z: return SDLK_z;
-  case Key::X: return SDLK_x;
   case Key::C: return SDLK_c;
+  case Key::N: return SDLK_n;
+  case Key::R: return SDLK_r;
+  case Key::X: return SDLK_x;
+  case Key::Y: return SDLK_y;
+  case Key::Z: return SDLK_z;
   }
 
   return 0;
