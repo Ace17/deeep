@@ -19,40 +19,54 @@ function main
 function deliverBinaryVersion
 {
   local N=$NAME
+  local version="$(date +"%Y%m%d")_$(git rev-parse HEAD)"
+
+  mkdir $tmpDir/$N
+
+  echo "Version: $version"
 
   echo "-------------------------------------"
   echo "Building binaries"
 
   # Windows binaries
+  BIN_WIN=$tmpDir/bin/w64
   CXXFLAGS+=-O3 \
-  BIN=$tmpDir/bin/w64 \
-    ./scripts/w64-make -j`nproc` >/dev/null
+  BIN=$BIN_WIN \
+    ./scripts/w64-make -j`nproc` \
+    VERSION="$version" \
+    $BIN_WIN/rel/game.exe \
+    >/dev/null
 
   gccVersion=$(x86_64-w64-mingw32-g++ -dumpversion)
 
-  mkdir $tmpDir/$N
-  cp -a $tmpDir/bin/w64/rel/game.exe                                 $tmpDir/$N
+  cp $BIN_WIN/rel/game.exe                                           $tmpDir/$N/$N.exe
   cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll                 $tmpDir/$N
   cp /usr/lib/gcc/x86_64-w64-mingw32/$gccVersion/libstdc++-6.dll     $tmpDir/$N
   cp /usr/lib/gcc/x86_64-w64-mingw32/$gccVersion/libgcc_s_seh-1.dll  $tmpDir/$N
-  cp /opt/envs/win64/bin/SDL2.dll                                   $tmpDir/$N
-  mv $tmpDir/$N/game.exe $tmpDir/$N/$N.exe
+  cp /opt/envs/win64/bin/SDL2.dll                                    $tmpDir/$N
 
   # GNU/Linux binaries
   CXXFLAGS+=-O3 \
   BIN=$tmpDir/bin/gnu \
-    make -j`nproc` >/dev/null
+    make -j`nproc` \
+    VERSION="$version" \
+    >/dev/null
 
-  cp -a $tmpDir/bin/gnu/rel/game.exe                               $tmpDir/$N/$N.x86_64
+  echo -n "Game required GLIBC: "
+  nm -D $tmpDir/bin/gnu/rel/game.exe | grep GLIBC_ | sed 's/.*GLIBC_//g' | sort -Vru | head -n 1
 
-  # Resources
-  cp -a res                                                        $tmpDir/$N
+  cp -a $tmpDir/bin/gnu/rel/game.exe                                 $tmpDir/$N/$N.x86_64
 
   # Strip executables
   strip -s $tmpDir/$N/*.{exe,dll,x86_64}
 
   # Compress executables
-  upx $tmpDir/$N/*.{exe,x86_64}
+  upx -9 $tmpDir/$N/*.{exe,x86_64}
+
+  echo "$version" > "$tmpDir/$N/version.txt"
+
+  # Copy data
+  cp -a res                                                        $tmpDir/$N/res
 
   (
     cd $tmpDir
