@@ -269,75 +269,6 @@ private:
     m_display->setFullscreen(m_fullscreen);
   }
 
-  void onKeyDown(SDL_Event* evt)
-  {
-    keys[evt->key.keysym.scancode] = 1;
-
-    if(evt->key.repeat > 0)
-      return;
-    switch(evt->key.keysym.sym)
-    {
-    case SDLK_ESCAPE:
-      {
-        onQuit();
-        break;
-      }
-
-    case SDLK_F2:
-      {
-        m_scene.reset(createGame(this, m_args));
-        break;
-      }
-
-    case SDLK_TAB:
-      {
-        m_slowMotion = !m_slowMotion;
-        break;
-      }
-
-    case SDLK_PRINTSCREEN:
-      {
-        if(evt->key.keysym.mod & KMOD_CTRL)
-        {
-          toggleVideoCapture();
-        }
-        else
-        {
-          m_mustScreenshot = true;
-        }
-
-        break;
-      }
-
-    case SDLK_RETURN:
-      {
-        if(evt->key.keysym.mod & KMOD_LALT)
-          toggleFullScreen();
-
-        break;
-      }
-
-    case SDLK_SCROLLLOCK:
-      {
-        m_debugMode = !m_debugMode;
-
-        break;
-      }
-
-    case SDLK_PAUSE:
-      {
-        m_audio->playSound(0);
-        m_paused = !m_paused;
-        break;
-      }
-    }
-  }
-
-  void onKeyUp(SDL_Event* evt)
-  {
-    keys[evt->key.keysym.scancode] = 0;
-  }
-
   // View implementation
   void setTitle(char const* gameTitle) override
   {
@@ -393,7 +324,6 @@ private:
     m_actors.push_back(actor);
   }
 
-  int keys[SDL_NUM_SCANCODES] {};
   int m_running = 1;
   int m_fixedDisplayFramePeriod = 0;
   FILE* m_captureFile = nullptr;
