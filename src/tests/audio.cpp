@@ -7,6 +7,8 @@
 #include "audio/audio_channel.h"
 #include "tests.h"
 
+#include <cstdio> // fprintf
+
 struct DummySource : IAudioSource
 {
   DummySource(int length) : m_length(length)

@@ -7,7 +7,7 @@
 #pragma once
 
 ///////////////////////////////////////////////////////////////////////////////
-// Unit test framework: API
+// User-code API
 
 #include <sstream>
 
@@ -21,30 +21,16 @@
   assertEqualsFunc(__FILE__, __LINE__, # actual, expected, actual)
 
 #define assertThrown(expr) \
-  do { try{ expr; failUnitTest(__FILE__, __LINE__, "No exception was thrown: " # expr); }catch(...){} \
+  do { \
+    try \
+    { \
+      expr; \
+      failUnitTest(__FILE__, __LINE__, "No exception was thrown: " # expr); \
+    } \
+    catch(...){} \
   } while (0)
 
-int RegisterTest(void (* f)(), const char* testName);
-void RunTests(const char* filter);
-
-struct Registrator
-{
-  Registrator(void(*f)(), char const* name)
-  {
-    RegisterTest(f, name);
-  }
-};
-
-static inline
-std::ostream& operator << (std::ostream& o, const std::pair<int, int>& p)
-{
-  o << "(";
-  o << p.first;
-  o << ", ";
-  o << p.second;
-  o << ")";
-  return o;
-}
+void runTests(const char* filter);
 
 // match std::vector
 template<typename T, typename = decltype(((T*)nullptr)->emplace({}))>
@@ -83,21 +69,18 @@ struct Test
 #define unittest2(counter, name) \
   static void g_myTest ## counter(); \
   static Test g_myTestInfo ## counter = { &g_myTest ## counter, name }; \
-  static auto g_registration ## counter = RegisterTest(g_myTestInfo ## counter); \
+  static auto g_registration ## counter = registerTest(g_myTestInfo ## counter); \
   static void g_myTest ## counter()
 
 struct Registration {};
-Registration RegisterTest(Test& test);
+Registration registerTest(Test& test);
 
 void failUnitTest(char const* file, int line, const char* msg);
 
-template<typename T>
-inline void assertTrueFunc(char const* file, int line, const char* caption, T const& expr)
+inline void assertTrueFunc(char const* file, int line, const char* caption, bool expr)
 {
-  if(expr)
-    return;
-
-  failUnitTest(file, line, caption);
+  if(!expr)
+    failUnitTest(file, line, caption);
 }
 
 template<typename T, typename U>

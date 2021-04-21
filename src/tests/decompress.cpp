@@ -6,6 +6,7 @@
 
 #include "misc/decompress.h"
 #include "tests.h"
+#include <string>
 #include <vector>
 using namespace std;
 

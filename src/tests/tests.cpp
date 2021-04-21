@@ -21,14 +21,14 @@ void failUnitTest(char const* file, int line, const char* msg)
   abort();
 }
 
-Registration RegisterTest(Test& test)
+Registration registerTest(Test& test)
 {
   test.next = g_first;
   g_first = &test;
   return {};
 }
 
-void RunTests(const char* filter)
+void runTests(const char* filter)
 {
   if(!g_sorted) // reverse list
   {

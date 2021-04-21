@@ -10,6 +10,17 @@
 #include <vector>
 using namespace std;
 
+static
+std::ostream& operator << (std::ostream& o, const std::pair<int, int>& p)
+{
+  o << "(";
+  o << p.first;
+  o << ", ";
+  o << p.second;
+  o << ")";
+  return o;
+}
+
 unittest("Util: allPairs(1)")
 {
   auto expected = vector<pair<int, int>>({});

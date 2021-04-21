@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
   try
   {
-    RunTests(filter);
+    runTests(filter);
     return 0;
   }
   catch(const Error& e)
