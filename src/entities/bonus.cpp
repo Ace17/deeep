@@ -6,7 +6,6 @@
 
 // Bonus entity
 
-#include <algorithm>
 #include <cmath> // sin
 
 #include "base/scene.h"

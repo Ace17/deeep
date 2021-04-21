@@ -4,8 +4,6 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-#include <algorithm>
-
 #include "base/scene.h"
 #include "base/util.h"
 

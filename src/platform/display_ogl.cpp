@@ -6,7 +6,7 @@
 
 // OpenGL stuff
 
-#include <algorithm> // sort
+#include "base/my_algorithm.h" // sort
 #include <cassert>
 #include <cstdio>
 #include <stdexcept>
@@ -342,7 +342,7 @@ struct OpenglDisplay : Display
         return a.texture < b.texture;
       };
 
-    std::sort(m_quads.begin(), m_quads.end(), byPriority);
+    my::sort<Quad>(m_quads, byPriority);
 
 #define OFFSET(a) \
   ((GLvoid*)(&((Vertex*)nullptr)->a))

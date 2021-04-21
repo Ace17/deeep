@@ -22,11 +22,13 @@ struct Span
 
   // construction from vector/string
   template<typename U, typename = decltype(((U*)0)->data())>
-  Span(U const& s)
+  Span(U& s)
   {
     data = s.data();
     len = s.size();
   }
+
+  operator Span<const T>() { return { data, len }; }
 
   T* begin() const { return data; }
   T* end() const { return data + len; }

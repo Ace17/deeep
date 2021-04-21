@@ -7,7 +7,6 @@
 #include "base/util.h"
 #include "misc/util.h"
 #include "tests.h"
-#include <algorithm>
 #include <vector>
 using namespace std;
 
