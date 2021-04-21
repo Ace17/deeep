@@ -22,6 +22,7 @@ using namespace std;
 #include "base/span.h"
 #include "base/util.h" // clamp
 #include "engine/display.h"
+#include "engine/stats.h"
 #include "misc/file.h"
 #include "misc/util.h"
 #include "render/matrix3.h"
@@ -407,8 +408,7 @@ struct OpenglDisplay : Display
 
     flush();
 
-    if(0)
-      printf("drawCalls: %d\n", drawCalls);
+    Stat("Draw calls", drawCalls);
 
     SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
     SAFE_GL(glBindTexture(GL_TEXTURE_2D, 0));
