@@ -7,8 +7,8 @@
 // Game logic
 
 #include <map>
-#include <stdexcept>
 
+#include "base/error.h"
 #include "base/scene.h"
 #include "base/util.h"
 #include "base/view.h"
@@ -301,7 +301,7 @@ struct GameState : Scene, private IGame
     m_physics->setEdifice(bind(&GameState::isBoxSolid, this, placeholders::_1));
 
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
-      throw runtime_error("No such level");
+      throw Error("No such level");
 
     m_currRoom = &m_quest.rooms[levelIdx];
 

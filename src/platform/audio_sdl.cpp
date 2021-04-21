@@ -6,17 +6,18 @@
 
 // SDL audio output
 
+#include "base/error.h"
+#include "base/span.h"
+#include "base/util.h"
+
 #include "audio/audio_backend.h"
 #include "audio/audio_channel.h"
 #include "audio/sound.h"
 
 #include <memory>
-#include <stdexcept>
-#include <SDL.h>
 #include <vector>
 
-#include "base/span.h"
-#include "base/util.h"
+#include <SDL.h>
 
 using namespace std;
 
@@ -32,7 +33,7 @@ struct SdlAudioBackend : IAudioBackend
     auto ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
 
     if(ret == -1)
-      throw runtime_error("Can't init audio subsystem");
+      throw Error("Can't init audio subsystem");
 
     SDL_AudioSpec desired {};
     desired.freq = 22050;
@@ -47,7 +48,7 @@ struct SdlAudioBackend : IAudioBackend
     if(audioDevice == 0)
     {
       printf("[audio] %s\n", SDL_GetError());
-      throw runtime_error("Can't open audio");
+      throw Error("Can't open audio");
     }
 
     printf("[audio] %d Hz %d channels\n",

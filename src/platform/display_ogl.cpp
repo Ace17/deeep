@@ -6,10 +6,8 @@
 
 // OpenGL stuff
 
-#include "base/my_algorithm.h" // sort
 #include <cassert>
 #include <cstdio>
-#include <stdexcept>
 #include <unordered_map>
 #include <vector>
 using namespace std;
@@ -17,7 +15,9 @@ using namespace std;
 #include "glad.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 
+#include "base/error.h"
 #include "base/geom.h"
+#include "base/my_algorithm.h" // sort
 #include "base/scene.h"
 #include "base/span.h"
 #include "base/util.h" // clamp
@@ -55,7 +55,7 @@ void ensureGl(char const* expr, int line)
   ss += "Expr: " + string(expr) + "\n";
   ss += "Line: " + to_string(line) + "\n";
   ss += "Code: " + to_string(errorCode) + "\n";
-  throw runtime_error(ss);
+  throw Error(ss);
 }
 
 int compileShader(Span<uint8_t> code, int type)
@@ -63,7 +63,7 @@ int compileShader(Span<uint8_t> code, int type)
   auto shaderId = glCreateShader(type);
 
   if(!shaderId)
-    throw runtime_error("Can't create shader");
+    throw Error("Can't create shader");
 
   printf("[display] compiling %s shader ... ", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
   auto srcPtr = (const char*)code.data;
@@ -83,7 +83,7 @@ int compileShader(Span<uint8_t> code, int type)
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
     fprintf(stderr, "%s\n", msg.data());
 
-    throw runtime_error("Can't compile shader");
+    throw Error("Can't compile shader");
   }
 
   printf("OK\n");
@@ -114,7 +114,7 @@ int linkShaders(vector<int> ids)
     glGetProgramInfoLog(ProgramID, logLength, nullptr, msg.data());
     fprintf(stderr, "%s\n", msg.data());
 
-    throw runtime_error("Can't link shader");
+    throw Error("Can't link shader");
   }
 
   printf("OK\n");
@@ -200,7 +200,7 @@ struct OpenglDisplay : Display
   OpenglDisplay(Size2i resolution)
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
-      throw runtime_error(string("Can't init SDL video: ") + SDL_GetError());
+      throw Error(string("Can't init SDL video: ") + SDL_GetError());
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -220,16 +220,16 @@ struct OpenglDisplay : Display
       );
 
     if(!m_window)
-      throw runtime_error(string("Can't create SDL window: ") + SDL_GetError());
+      throw Error(string("Can't create SDL window: ") + SDL_GetError());
 
     // Create our opengl context and attach it to our window
     m_context = SDL_GL_CreateContext(m_window);
 
     if(!m_context)
-      throw runtime_error(string("Can't create OpenGL context: ") + SDL_GetError());
+      throw Error(string("Can't create OpenGL context: ") + SDL_GetError());
 
     if(!gladLoadGLES2Loader(&SDL_GL_GetProcAddress))
-      throw runtime_error("Can't load OpenGL");
+      throw Error("Can't load OpenGL");
 
     printOpenGlVersion();
 
@@ -466,15 +466,15 @@ private:
   void pushQuad(Rect2f where, float angle, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
   {
     if(model.actions.empty())
-      throw runtime_error("model has no actions");
+      throw Error("model has no actions");
 
     if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
-      throw runtime_error("invalid action index");
+      throw Error("invalid action index");
 
     auto const& action = model.actions[actionIdx];
 
     if(action.textures.empty())
-      throw runtime_error("action has no textures");
+      throw Error("action has no textures");
 
     auto const N = (int)action.textures.size();
     auto const idx = ::clamp<int>(ratio * N, 0, N - 1);

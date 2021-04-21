@@ -7,15 +7,15 @@
 // Tiny base64 decoder
 
 #include "base64.h"
-#include <array>
-#include <stdexcept>
+
+#include "base/error.h"
 
 static const string base64_map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 vector<uint8_t> decodeBase64(string const& input)
 {
   if(input.length() % 4 != 0)
-    throw runtime_error("invalid base64 input");
+    throw Error("invalid base64 input");
 
   vector<uint8_t> decoded;
 

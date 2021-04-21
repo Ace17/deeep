@@ -13,7 +13,6 @@
 
 #include "stb_vorbis.c"
 #include <cassert>
-#include <stdexcept>
 #include <string.h> // memcpy
 
 using namespace std;

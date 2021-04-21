@@ -9,9 +9,9 @@
 // - create blockers around rooms
 // - add some display randomness to the tiles
 
+#include "base/error.h"
 #include "quest.h"
 #include <cstdlib> // rand
-#include <stdexcept>
 
 static
 void addRandomWidgets(Matrix2<int>& tiles)
@@ -202,7 +202,7 @@ vector<string> parseCall(string content)
   auto expect = [&] (char what)
     {
       if(!accept(what))
-        throw runtime_error(string("Expected '") + what + "'");
+        throw Error(string("Expected '") + what + "'");
     };
 
   auto parseString = [&] ()

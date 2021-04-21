@@ -4,14 +4,13 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+#include "base/error.h"
 #include "base/geom.h"
 #include "base/string.h"
 #include "misc/file.h"
 #include "misc/json.h"
 #include "misc/util.h" // dirName
 #include "model.h"
-
-#include <stdexcept>
 
 extern int loadTexture(String path, Rect2f rect);
 
@@ -85,7 +84,7 @@ Model loadAnimatedModel(String jsonPath)
     }
   }
   else
-    throw runtime_error("Unknown model type: '" + type + "'");
+    throw Error("Unknown model type: '" + type + "'");
 
   return r;
 }
@@ -139,12 +138,12 @@ Model loadModel(String path)
     }
     else
     {
-      throw runtime_error("unknown format for '" + string(path.data, path.len) + "'");
+      throw Error("unknown format for '" + string(path.data, path.len) + "'");
     }
   }
-  catch(std::exception const& e)
+  catch(const Error& e)
   {
-    throw runtime_error("When loading '" + string(path.data, path.len) + "': " + e.what());
+    throw Error("When loading '" + string(path.data, path.len) + "': " + string(e.message().data, e.message().len));
   }
 }
 

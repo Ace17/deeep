@@ -1,7 +1,7 @@
+#include "base/error.h"
 #include "load_quest.h"
 #include "preprocess_quest.h"
 
-#include <stdexcept>
 #include <stdio.h>
 
 Quest loadTmxQuest(string path);
@@ -43,7 +43,7 @@ void dumpQuest(Quest const& q, const char* filename)
   FILE* fp = fopen(filename, "wb");
 
   if(!fp)
-    throw std::runtime_error("Can't open file for writing");
+    throw Error("Can't open file for writing");
 
   fprintf(fp, "{\n");
   fprintf(fp, "  \"layers\":\n");

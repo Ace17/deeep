@@ -21,11 +21,11 @@
 
 #include "png.h"
 
+#include "base/error.h"
 #include "base/span.h"
 #include "misc/decompress.h"
 #include <climits>
 #include <cstdint>
-#include <stdexcept>
 #include <vector>
 
 namespace
@@ -37,10 +37,10 @@ struct Info
   std::vector<uint8_t> palette;
 };
 
-void enforce(bool condition, const char* msg)
+void enforce(bool condition, String msg)
 {
   if(!condition)
-    throw runtime_error(msg);
+    throw Error(msg);
 }
 
 unsigned long read32bitInt(const uint8_t* buffer)
@@ -75,7 +75,7 @@ Info readPngHeader(Span<const uint8_t> in) // read the information from the head
   info.colorType = in[25];
 
   if(!isColorValid(info.colorType, info.bitDepth))
-    throw std::runtime_error("invalid combination of colorType and bitDepth");
+    throw Error("invalid combination of colorType and bitDepth");
 
   enforce(in[26] == 0, "unexpected compression method");
   info.compressionMethod = in[26];
@@ -166,7 +166,7 @@ void unFilterScanline(uint8_t* recon, const uint8_t* scanline, const uint8_t* pr
 
     break;
   default:
-    throw std::runtime_error("unexisting filter type given");
+    throw Error("unexisting filter type given");
   }
 }
 
@@ -303,7 +303,7 @@ Info decode(std::vector<uint8_t>& out, Span<const uint8_t> in)
       }
       else
       {
-        throw std::runtime_error("tRNS chunk not allowed for other color models");
+        throw Error("tRNS chunk not allowed for other color models");
       }
     }
     else // it's not an implemented chunk type, so ignore it: skip over the data

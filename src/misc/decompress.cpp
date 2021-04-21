@@ -4,8 +4,8 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+#include "base/error.h"
 #include "decompress.h"
-#include <stdexcept>
 #include <vector>
 
 // Copyright (c) 2005-2010 Lode Vandevenne
@@ -466,20 +466,20 @@ using namespace std;
 vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
 {
   if(in.len < 2)
-    throw runtime_error("zlibDecompress: zlib data too small");
+    throw Error("zlibDecompress: zlib data too small");
 
   if((in[0] * 256 + in[1]) % 31 != 0)
-    throw runtime_error("zlibDecompress: invalid header");
+    throw Error("zlibDecompress: invalid header");
 
   const int CM = (in[0] >> 0) & 15;
   const int CINFO = (in[0] >> 4) & 15;
   const int FDICT = (in[1] >> 5) & 1;
 
   if(CM != 8 || CINFO > 7)
-    throw runtime_error("zlibDecompress: unsupported compression method");
+    throw Error("zlibDecompress: unsupported compression method");
 
   if(FDICT != 0)
-    throw runtime_error("zlibDecompress: unsupported preset directory");
+    throw Error("zlibDecompress: unsupported preset directory");
 
   vector<uint8_t> out;
   Inflator inflator;
@@ -487,7 +487,7 @@ vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
   // skip adler32 checksum
 
   if(inflator.error)
-    throw runtime_error("zlibDecompress: decompression error");
+    throw Error("zlibDecompress: decompression error");
 
   return out;
 }
@@ -505,20 +505,20 @@ vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
 vector<uint8_t> gzipDecompress(Span<const uint8_t> in)
 {
   if(in.len < 10)
-    throw runtime_error("gzipDecompress: gzip data too small");
+    throw Error("gzipDecompress: gzip data too small");
 
   if(in[0] != 0x1F || in[1] != 0x8B)
-    throw runtime_error("gzipDecompress: invalid header");
+    throw Error("gzipDecompress: invalid header");
 
   const int CM = in[2];
 
   if(CM != 8)
-    throw runtime_error("gzipDecompress: unsupported compression method");
+    throw Error("gzipDecompress: unsupported compression method");
 
   const int flags = in[3];
 
   if(flags != 0)
-    throw runtime_error("gzipDecompress: unsupported flags");
+    throw Error("gzipDecompress: unsupported flags");
 
   vector<uint8_t> out;
   Inflator inflator;
@@ -526,7 +526,7 @@ vector<uint8_t> gzipDecompress(Span<const uint8_t> in)
   // skip crc32 and input size
 
   if(inflator.error)
-    throw runtime_error("gzipDecompress: decompression error");
+    throw Error("gzipDecompress: decompression error");
 
   return out;
 }

@@ -1,9 +1,9 @@
+#include "base/error.h"
 #include "misc/file.h"
 #include "picture.h"
 #include "png.h"
 #include <cstring> // memcpy
 #include <map>
-#include <stdexcept>
 
 namespace
 {
@@ -39,7 +39,7 @@ Picture loadPicture(String path, Rect2f frect)
       frect = Rect2f(0, 0, 1, 1);
 
     if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.width > 1 || frect.pos.y + frect.size.height > 1)
-      throw runtime_error("Invalid boundaries for '" + string(path.data, path.len) + "'");
+      throw Error("Invalid boundaries for '" + string(path.data, path.len) + "'");
 
     auto const bpp = 4;
 
@@ -71,9 +71,9 @@ Picture loadPicture(String path, Rect2f frect)
 
     return r;
   }
-  catch(std::exception const& e)
+  catch(const Error& e)
   {
-    printf("[display] can't load texture: %s\n", e.what());
+    printf("[display] can't load texture: %.*s\n", e.message().len, e.message().data);
     printf("[display] falling back on generated texture\n");
 
     Picture r;

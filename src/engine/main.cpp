@@ -7,8 +7,8 @@
 // Entry point.
 // This is the only file where emscripten-specific stuff can appear.
 
+#include "base/error.h"
 #include <cstdio>
-#include <exception>
 
 #include "app.h"
 
@@ -54,10 +54,11 @@ int main(int argc, char* argv[])
     runMainLoop(app.get());
     return 0;
   }
-  catch(exception const& e)
+  catch(Error const& e)
   {
+    const auto msg = e.message();
     fflush(stdout);
-    fprintf(stderr, "Fatal: %s\n", e.what());
+    fprintf(stderr, "Fatal: %.*s\n", msg.len, msg.data);
     return 1;
   }
 }

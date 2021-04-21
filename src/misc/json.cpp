@@ -7,7 +7,8 @@
 // Simplistic standalone JSON-parser
 
 #include "json.h"
-#include <stdexcept>
+
+#include "base/error.h"
 
 namespace json
 {
@@ -17,7 +18,7 @@ Value const& Value::operator [] (const char* name) const
   auto it = members.find(name);
 
   if(it == members.end())
-    throw runtime_error("Member '" + string(name) + "' was not found");
+    throw Error("Member '" + string(name) + "' was not found");
 
   return it->second;
 }
@@ -25,7 +26,7 @@ Value const& Value::operator [] (const char* name) const
 void Value::enforceType(Type expected) const
 {
   if(type != expected)
-    throw runtime_error("Type error");
+    throw Error("Type error");
 }
 }
 
@@ -167,7 +168,7 @@ private:
         string msg = "Unknown char '";
         msg += frontChar();
         msg += "'";
-        throw runtime_error(msg);
+        throw Error(msg);
       }
     }
   }
@@ -175,7 +176,7 @@ private:
   void expect(char c)
   {
     if(frontChar() != c)
-      throw runtime_error("Unexpected character");
+      throw Error("Unexpected character");
 
     accept();
   }
@@ -310,7 +311,7 @@ string expect(Tokenizer& tk, Token::Type type)
       msg += " instead of " + to_string(type);
     }
 
-    throw runtime_error(msg);
+    throw Error(msg);
   }
 
   string r = front.lexem;

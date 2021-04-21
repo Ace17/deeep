@@ -17,7 +17,7 @@ bool jsonOk(string text)
     json::parse(text.c_str(), text.size());
     return true;
   }
-  catch(exception const &)
+  catch(...)
   {
     return false;
   }

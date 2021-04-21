@@ -6,10 +6,10 @@
 
 // Pluggable entity factory, registration side.
 
+#include "base/error.h"
 #include "entity.h"
 #include "entity_factory.h"
 #include <map>
-#include <stdexcept>
 
 using namespace std;
 
@@ -33,7 +33,7 @@ unique_ptr<Entity> createEntity(string name, IEntityConfig* args)
   auto i_func = g_registry().find(name);
 
   if(i_func == g_registry().end())
-    throw runtime_error("unknown entity type: '" + name + "'");
+    throw Error("unknown entity type: '" + name + "'");
 
   return (*i_func).second(args);
 }

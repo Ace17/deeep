@@ -10,6 +10,7 @@
 #include "audio_backend.h"
 #include "sound.h"
 
+#include "base/error.h"
 #include "misc/file.h" // exists
 
 #include <cmath> // sin
@@ -59,9 +60,9 @@ struct HighLevelAudio : Audio
     {
       sounds[id] = loadSoundFile(path);
     }
-    catch(std::exception const& e)
+    catch(const Error& e)
     {
-      printf("[audio] can't load sound '%.*s' (%s)\n", path.len, path.data, e.what());
+      printf("[audio] can't load sound '%.*s' (%.*s)\n", path.len, path.data, e.message().len, e.message().data);
       printf("[audio] falling back on generated sound\n");
       sounds[id] = make_unique<BleepSound>();
     }
