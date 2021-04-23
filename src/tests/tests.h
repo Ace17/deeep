@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // User-code API
 
-#include <sstream>
+#include <string>
 
 #define unittest(name) \
   unittestWithCounter(__COUNTER__, name)
@@ -31,27 +31,6 @@
   } while (0)
 
 void runTests(const char* filter);
-
-// match std::vector
-template<typename T, typename = decltype(((T*)nullptr)->emplace({}))>
-std::ostream& operator << (std::ostream& o, const T& container)
-{
-  bool comma = false;
-  o << "[";
-
-  for(auto& element : container)
-  {
-    if(comma)
-      o << ", ";
-
-    o << element;
-    comma = true;
-  }
-
-  o << "]";
-
-  return o;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // implementation details
@@ -77,6 +56,90 @@ Registration registerTest(Test& test);
 
 void failUnitTest(char const* file, int line, const char* msg);
 
+template<typename U, typename dummy = void>
+struct ToStringImpl;
+
+template<typename T>
+std::string testValueToString(const T& val)
+{
+  return ToStringImpl<T>::call(val);
+}
+
+// match std::vector
+template<typename T>
+struct ToStringImpl < T, decltype(((T*)nullptr)->push_back((typename T::value_type) {})) >
+{
+  static std::string call(const T& val)
+  {
+    std::string r;
+
+    bool first = true;
+    r += "[";
+
+    for(auto& element : val)
+    {
+      if(!first)
+        r += ", ";
+
+      r += testValueToString(element);
+      first = false;
+    }
+
+    r += "]";
+
+    return r;
+  }
+};
+
+// match std::string
+template<>
+struct ToStringImpl<std::string>
+{
+  static std::string call(const std::string& val) { return val; }
+};
+
+template<>
+struct ToStringImpl<char>
+{
+  static std::string call(const char& val) { return std::to_string(val); }
+};
+
+template<>
+struct ToStringImpl<float>
+{
+  static std::string call(const float& val) { return std::to_string(val); }
+};
+
+template<>
+struct ToStringImpl<unsigned char>
+{
+  static std::string call(const unsigned char& val) { return std::to_string(val); }
+};
+
+template<>
+struct ToStringImpl<unsigned int>
+{
+  static std::string call(const unsigned int& val) { return std::to_string(val); }
+};
+
+template<>
+struct ToStringImpl<bool>
+{
+  static std::string call(const bool& val) { return val ? "true" : "false"; }
+};
+
+template<>
+struct ToStringImpl<int>
+{
+  static std::string call(const int& val) { return std::to_string(val); }
+};
+
+template<>
+struct ToStringImpl<size_t>
+{
+  static std::string call(const size_t& val) { return std::to_string(val); }
+};
+
 inline void assertTrueFunc(char const* file, int line, const char* caption, bool expr)
 {
   if(!expr)
@@ -89,10 +152,10 @@ inline void assertEqualsFunc(const char* file, int line, const char* caption, T 
   if(expected == actual)
     return;
 
-  std::stringstream ss;
-  ss << "'" << caption << "' has an invalid value\n";
-  ss << "  Expect: '" << expected << "'\n";
-  ss << "  Actual: '" << actual << "'\n";
-  failUnitTest(file, line, ss.str().c_str());
+  std::string ss;
+  ss += "'" + std::string(caption) + "' has an invalid value\n";
+  ss += "  Expect: '" + testValueToString(expected) + "'\n";
+  ss += "  Actual: '" + testValueToString(actual) + "'\n";
+  failUnitTest(file, line, ss.c_str());
 }
 

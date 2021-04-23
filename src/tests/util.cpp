@@ -10,16 +10,14 @@
 #include <vector>
 using namespace std;
 
-static
-std::ostream& operator << (std::ostream& o, const std::pair<int, int>& p)
+template<>
+struct ToStringImpl<std::pair<int, int>>
 {
-  o << "(";
-  o << p.first;
-  o << ", ";
-  o << p.second;
-  o << ")";
-  return o;
-}
+  static std::string call(const std::pair<int, int>& val)
+  {
+    return "(" + std::to_string(val.first) + ", " + std::to_string(val.second) + ")";
+  }
+};
 
 unittest("Util: allPairs(1)")
 {
@@ -78,7 +76,7 @@ unittest("Util: endsWith")
 
 unittest("Util: setExtension")
 {
-  assertEquals("test.obj", setExtension("test.source", "obj"));
+  assertEquals(std::string("test.obj"), setExtension("test.source", "obj"));
 }
 
 static bool operator == (const String& a, const String& b)
@@ -89,17 +87,17 @@ static bool operator == (const String& a, const String& b)
   return memcmp(a.data, b.data, a.len) == 0;
 }
 
-static
-std::ostream& operator << (std::ostream& o, const String& v)
+template<>
+struct ToStringImpl<String>
 {
-  for(auto& c : v)
-    o << c;
-
-  return o;
-}
+  static std::string call(const String& val)
+  {
+    return std::string(val.data, val.len);
+  }
+};
 
 unittest("Util: dirName")
 {
-  assertEquals("Hello/World", dirName("Hello/World/Goodbye.txt"));
+  assertEquals(std::string("Hello/World"), dirName("Hello/World/Goodbye.txt"));
 }
 

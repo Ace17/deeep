@@ -91,7 +91,7 @@ unittest("Json parser: returned value")
     auto o = jsonParse("{ \"N\" : \"hello\"}");
     assertEquals(1u, o.members.size());
     auto s = o.members["N"];
-    assertEquals("hello", s.stringValue);
+    assertEquals(std::string("hello"), s.stringValue);
   }
   {
     auto o = jsonParse("{ \"N\" : -1234 }");

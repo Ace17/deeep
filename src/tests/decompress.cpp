@@ -23,7 +23,7 @@ unittest("ZLIB decompress: simple")
     0x51, 0x28, 0xCF, 0x2F, 0xCA, 0x49, 0x01, 0x00,
     0x1B, 0xD4, 0x04, 0x69,
   };
-  assertEquals("Hello, world",
+  assertEquals(std::string("Hello, world"),
                toString(zlibDecompress(input)));
 }
 
@@ -55,7 +55,7 @@ unittest("GZIP decompress: simple")
     0x86, 0xa6, 0x10, 0x36,
     0x05, 0x00, 0x00, 0x00
   };
-  assertEquals("hello",
+  assertEquals(std::string("hello"),
                toString(gzipDecompress(input)));
 }
 

@@ -6,11 +6,11 @@
 
 // Loader for the quest file and room files.
 // (using the TMX JSON+gzip format)
+#include "base/error.h"
 #include "base/geom.h"
 #include "base/util.h"
 #include <cassert>
 #include <map>
-#include <sstream>
 #include <string>
 
 #include "misc/base64.h"
@@ -111,7 +111,7 @@ Matrix2<int> parseTileLayer(json::Value& json)
   auto const size = getSize(json);
 
   if(size.width * size.height != (int)buff.size())
-    throw runtime_error("invalid TMX file: width x height doesn't match data length");
+    throw Error("invalid TMX file: width x height doesn't match data length");
 
   tiles.resize(size);
 
@@ -290,12 +290,14 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   if(actualSize != room.size)
   {
     char buffer[256];
-    sprintf(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
-            room.pos.x, room.pos.y,
-            path.c_str(), room.theme,
-            room.size.width, room.size.height,
-            actualSize.width, actualSize.height);
-    throw runtime_error(buffer);
+    String s;
+    s.data = buffer;
+    s.len = sprintf(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
+                    room.pos.x, room.pos.y,
+                    path.c_str(), room.theme,
+                    room.size.width, room.size.height,
+                    actualSize.width, actualSize.height);
+    throw Error(s);
   }
 
   return room;
@@ -322,19 +324,34 @@ Quest loadTmxQuest(string path) // tiled TMX format
   return r;
 }
 
-Matrix2<int> parseMatrix(Size2i size, const std::string& s)
+Matrix2<int> parseMatrix(Size2i size, String s)
 {
-  std::stringstream is(s);
   auto parseInteger = [&] () -> int
     {
-      int r;
-      is >> std::ws >> r;
+      while(s[0] == ' ')
+        s += 1;
 
-      char c;
-      is >> c;
-      assert(c == ',');
+      assert(s.len > 0);
+      int result = 0;
+      int sign = 1;
 
-      return r;
+      if(s[0] == '-')
+      {
+        sign = -1;
+        s += 1;
+      }
+
+      while(s[0] >= '0' && s[0] <= '9')
+      {
+        result *= 10;
+        result += s[0] - '0';
+        s += 1;
+      }
+
+      assert(s[0] == ',');
+      s += 1;
+
+      return result * sign;
     };
 
   Matrix2<int> r(size);
@@ -374,8 +391,8 @@ Quest loadQuest(string path)
     room.start.y = int(jsonRoom["start_y"]);
     room.size.width = int(jsonRoom["width"]);
     room.size.height = int(jsonRoom["height"]);
-    room.tiles = parseMatrix(room.size * CELL_SIZE, jsonRoom["tiles"]);
-    room.tilesForDisplay = parseMatrix(room.size * CELL_SIZE * 2, jsonRoom["tilesForDisplay"]);
+    room.tiles = parseMatrix(room.size * CELL_SIZE, std::string(jsonRoom["tiles"]));
+    room.tilesForDisplay = parseMatrix(room.size * CELL_SIZE * 2, std::string(jsonRoom["tilesForDisplay"]));
 
     for(auto& jsonSpawner : jsonRoom["entities"].elements)
     {

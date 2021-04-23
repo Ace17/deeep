@@ -162,7 +162,7 @@ unittest("Entity: hero falls")
   player->pos.y = 10;
   player->tick();
 
-  assertEquals(ACTION_FALL, getActor(player).action);
+  assertEquals((int)ACTION_FALL, (int)getActor(player).action);
 }
 
 unittest("Entity: hero stands on ground, then walks")
@@ -178,7 +178,7 @@ unittest("Entity: hero stands on ground, then walks")
   for(int i = 0; i < 10; ++i)
     player->tick();
 
-  assertEquals(ACTION_STAND, getActor(player).action);
+  assertEquals((int)ACTION_STAND, (int)getActor(player).action);
 
   {
     Control cmd {};
@@ -188,7 +188,7 @@ unittest("Entity: hero stands on ground, then walks")
 
   player->tick();
 
-  assertEquals(ACTION_WALK, getActor(player).action);
+  assertEquals((int)ACTION_WALK, (int)getActor(player).action);
   assert(getActor(player).scale.width > 0);
 
   {
@@ -199,7 +199,7 @@ unittest("Entity: hero stands on ground, then walks")
 
   player->tick();
 
-  assertEquals(ACTION_WALK, getActor(player).action);
+  assertEquals((int)ACTION_WALK, (int)getActor(player).action);
   assert(getActor(player).scale.width < 0);
 }
 
