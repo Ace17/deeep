@@ -14,7 +14,6 @@
 #include <string>
 #include <vector>
 
-#include "audio/audio.h"
 #include "base/geom.h"
 #include "base/resource.h"
 #include "base/scene.h"
@@ -22,6 +21,8 @@
 #include "misc/file.h"
 #include "misc/time.h"
 
+#include "audio.h"
+#include "audio_backend.h"
 #include "display.h"
 #include "input.h"
 #include "ratecounter.h"
@@ -33,7 +34,7 @@ auto const TIMESTEP = 10;
 auto const RESOLUTION = Size2i(768, 768);
 
 Display* createDisplay(Size2i resolution);
-Audio* createAudio();
+MixableAudio* createAudio();
 UserInput* createUserInput();
 
 Scene* createGame(View* view, vector<string> argv);
@@ -46,6 +47,7 @@ public:
   {
     m_display.reset(createDisplay(RESOLUTION));
     m_audio.reset(createAudio());
+    m_audioBackend.reset(createAudioBackend(m_audio.get()));
     m_input.reset(createUserInput());
 
     m_scene.reset(createGame(this, m_args));
@@ -167,7 +169,7 @@ private:
     m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(this, m_args)); });
     m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
     m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) m_debugMode = !m_debugMode; });
-    m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ m_audio->playSound(0); m_paused = !m_paused; } });
+    m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ playSound(0); m_paused = !m_paused; } });
   }
 
   void draw()
@@ -288,19 +290,44 @@ private:
     m_textboxDelay = 60 * 2;
   }
 
-  void playMusic(MUSIC id) override
+  void playMusic(MUSIC musicName) override
   {
-    m_audio->playMusic(id);
+    if(m_currMusicName == musicName)
+      return;
+
+    stopMusic();
+
+    char buffer[256];
+    String path;
+    path.data = buffer;
+    path.len = sprintf(buffer, "res/music/music-%02d.ogg", musicName);
+    m_audio->loadSound(1024, path);
+
+    m_musicVoice = m_audio->createVoice();
+    printf("playing music #%d on voice %d\n", musicName, m_musicVoice);
+
+    m_audio->playVoice(m_musicVoice, 1024, true);
+    m_currMusicName = musicName;
   }
 
-  void stopMusic() override
+  void stopMusic()
   {
-    m_audio->stopMusic();
+    if(m_musicVoice == -1)
+      return;
+
+    m_audio->stopVoice(m_musicVoice); // maybe add a fade out here?
+    m_audio->releaseVoice(m_musicVoice, true);
+    m_musicVoice = -1;
   }
 
-  void playSound(SOUND sound) override
+  Audio::VoiceId m_musicVoice = -1;
+  int m_currMusicName = -1;
+
+  void playSound(SOUND soundId) override
   {
-    m_audio->playSound(sound);
+    auto voiceId = m_audio->createVoice();
+    m_audio->playVoice(voiceId, soundId);
+    m_audio->releaseVoice(voiceId, true);
   }
 
   void setCameraPos(Vector2f pos) override
@@ -334,7 +361,8 @@ private:
   bool m_slowMotion = false;
   bool m_fullscreen = false;
   bool m_paused = false;
-  unique_ptr<Audio> m_audio;
+  unique_ptr<MixableAudio> m_audio;
+  unique_ptr<IAudioBackend> m_audioBackend;
   unique_ptr<Display> m_display;
   vector<Actor> m_actors;
   unique_ptr<UserInput> m_input;

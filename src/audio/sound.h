@@ -14,6 +14,9 @@
 struct IAudioSource
 {
   virtual ~IAudioSource() = default;
+
+  // returns the number of samples : unless EOS is reached,
+  // the return value will be equal to output.len.
   virtual int read(Span<float> output) = 0;
 };
 
