@@ -100,3 +100,21 @@ unittest("Physics: left move, blocked by a bigger body")
   assertNearlyEquals(Vector2f(100, 10), fix.mover.pos);
 }
 
+unittest("Physics: left move, blocked by a smaller body")
+{
+  Fixture fix;
+  fix.mover.pos = Vector2f(100, 10);
+  fix.mover.size = Size2f(3, 3);
+
+  Body blocker;
+  blocker.pos = Vector2f(200, 11);
+  blocker.size = Size2f(1, 1);
+  blocker.solid = true;
+  fix.physics->addBody(&blocker);
+
+  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(100, 0));
+  assert(!allowed);
+
+  assertNearlyEquals(Vector2f(100, 10), fix.mover.pos);
+}
+
