@@ -6,6 +6,7 @@
 
 // OpenGL stuff
 
+#include <array>
 #include <cassert>
 #include <cstdio>
 #include <unordered_map>
