@@ -339,6 +339,9 @@ struct OpenglDisplay : Display
         if(a.zOrder != b.zOrder)
           return a.zOrder < b.zOrder;
 
+        if(a.light != b.light)
+          return a.light < b.light;
+
         return a.texture < b.texture;
       };
 
