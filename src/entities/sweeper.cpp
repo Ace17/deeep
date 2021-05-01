@@ -9,6 +9,7 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/move.h"
 #include "gameplay/sounds.h"
@@ -16,9 +17,11 @@
 
 #include "explosion.h"
 
+namespace
+{
 struct Sweeper : Entity, Damageable
 {
-  Sweeper()
+  Sweeper(IEntityConfig*)
   {
     size = Size(0.8, 0.8);
     collisionGroup = CG_WALLS;
@@ -89,6 +92,6 @@ struct Sweeper : Entity, Damageable
   Vector vel;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("sweeper", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Sweeper>(); });
+DECLARE_ENTITY("sweeper", Sweeper);
+}
 

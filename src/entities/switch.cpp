@@ -11,13 +11,17 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h"
 
+namespace
+{
 struct Switch : Entity
 {
-  Switch(int id_) : id(id_)
+  Switch(IEntityConfig* cfg)
+    : id(cfg->getInt("0"))
   {
     size = UnitSize * 0.75;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
@@ -64,11 +68,6 @@ struct Switch : Entity
   const int id;
 };
 
-unique_ptr<Entity> makeSwitch(int id)
-{
-  return make_unique<Switch>(id);
+DECLARE_ENTITY("switch", Switch);
 }
-
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("switch", [] (IEntityConfig* cfg) { auto arg = cfg->getInt("0"); return makeSwitch(arg); });
 

@@ -7,15 +7,17 @@
 #include <cmath> // sin
 
 #include "base/scene.h" // Actor
-
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h" // decrement
 
 #include "explosion.h"
 
+namespace
+{
 struct SpiderBullet : Entity
 {
   SpiderBullet()
@@ -59,7 +61,7 @@ struct SpiderBullet : Entity
 
 struct Spider : Entity, Damageable
 {
-  Spider()
+  Spider(IEntityConfig*)
   {
     dir = -1.0f;
     size = Size(1, 1);
@@ -149,11 +151,6 @@ struct Spider : Entity, Damageable
   float dir;
 };
 
-unique_ptr<Entity> makeSpider()
-{
-  return make_unique<Spider>();
+DECLARE_ENTITY("spider", Spider);
 }
-
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("spider", [] (IEntityConfig*) { extern unique_ptr<Entity> makeSpider(); return makeSpider(); });
 

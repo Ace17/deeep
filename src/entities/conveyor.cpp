@@ -8,11 +8,14 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 
+namespace
+{
 struct Conveyor : Entity
 {
-  Conveyor()
+  Conveyor(const IEntityConfig*)
   {
     size = UnitSize;
     collisionGroup = CG_WALLS;
@@ -45,6 +48,6 @@ struct Conveyor : Entity
   bool noRecurse = false;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("conveyor", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Conveyor>(); });
+DECLARE_ENTITY("conveyor", Conveyor);
+}
 

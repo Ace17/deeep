@@ -9,14 +9,17 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/player.h"
 #include "gameplay/toggle.h"
 #include "gameplay/vec.h"
 
+namespace
+{
 struct FragileBlock : Entity, Damageable
 {
-  FragileBlock()
+  FragileBlock(IEntityConfig*)
   {
     size = UnitSize;
     reappear();
@@ -96,6 +99,6 @@ struct FragileBlock : Entity, Damageable
   int timer = 0;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("fragile_block", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<FragileBlock>(); });
+DECLARE_ENTITY("fragile_block", FragileBlock);
+}
 

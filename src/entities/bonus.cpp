@@ -13,10 +13,13 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/player.h"
 #include "gameplay/sounds.h"
 
+namespace
+{
 struct Bonus : Entity
 {
   Bonus(int modelAction_, int type_, char const* msg_)
@@ -79,17 +82,43 @@ struct Bonus : Entity
   char const* msg;
 };
 
+template<int action_, int upgradeType_, const char msg_[]>
+struct ConcreteBonus : Bonus
+{
+  ConcreteBonus(IEntityConfig*) : Bonus(action_, upgradeType_, msg_) {}
+};
+
+const char UpgradeShootMsg[] = "press Z";
+using UpgradeBonus_Shoot = ConcreteBonus<3, UPGRADE_SHOOT, UpgradeShootMsg>;
+DECLARE_ENTITY("upgrade_shoot", UpgradeBonus_Shoot);
+
+const char UpgradeClimbMsg[] = "jump while against wall";
+using UpgradeBonus_Climb = ConcreteBonus<4, UPGRADE_CLIMB, UpgradeClimbMsg>;
+DECLARE_ENTITY("upgrade_climb", UpgradeBonus_Climb);
+
+const char UpgradeDashMsg[] = "press Z";
+using UpgradeBonus_Dash = ConcreteBonus<5, UPGRADE_DASH, UpgradeDashMsg>;
+DECLARE_ENTITY("upgrade_dash", UpgradeBonus_Dash);
+
+const char UpgradeDjumpMsg[] = "double jump";
+using UpgradeBonus_Djump = ConcreteBonus<6, UPGRADE_DJUMP, UpgradeDjumpMsg>;
+DECLARE_ENTITY("upgrade_djump", UpgradeBonus_Djump);
+
+const char UpgradeBallMsg[] = "press down";
+using UpgradeBonus_Ball = ConcreteBonus<7, UPGRADE_BALL, UpgradeBallMsg>;
+DECLARE_ENTITY("upgrade_ball", UpgradeBonus_Ball);
+
+const char UpgradeSlideMsg[] = "go against wall while falling";
+using UpgradeBonus_Slide = ConcreteBonus<8, UPGRADE_SLIDE, UpgradeSlideMsg>;
+DECLARE_ENTITY("upgrade_slide", UpgradeBonus_Slide);
+
+const char UpgradeLifeMsg[] = "life up";
+using UpgradeBonus_Life = ConcreteBonus<0, 0, UpgradeLifeMsg>;
+DECLARE_ENTITY("bonus_life", UpgradeBonus_Life);
+}
+
 std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg)
 {
   return make_unique<Bonus>(action, upgradeType, msg);
 }
-
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("upgrade_climb", [] (IEntityConfig*) { return makeBonus(4, UPGRADE_CLIMB, "jump while against wall"); });
-static auto const reg2 = registerEntity("upgrade_shoot", [] (IEntityConfig*) { return makeBonus(3, UPGRADE_SHOOT, "press Z"); });
-static auto const reg3 = registerEntity("upgrade_dash", [] (IEntityConfig*) { return makeBonus(5, UPGRADE_DASH, "press C while walking"); });
-static auto const reg4 = registerEntity("upgrade_djump", [] (IEntityConfig*) { return makeBonus(6, UPGRADE_DJUMP, "jump while airborne"); });
-static auto const reg5 = registerEntity("upgrade_ball", [] (IEntityConfig*) { return makeBonus(7, UPGRADE_BALL, "press down"); });
-static auto const reg6 = registerEntity("upgrade_slide", [] (IEntityConfig*) { return makeBonus(8, UPGRADE_SLIDE, "go against wall while falling"); });
-static auto const reg7 = registerEntity("bonus_life", [] (IEntityConfig*) { return makeBonus(0, 0, "life up"); });
 

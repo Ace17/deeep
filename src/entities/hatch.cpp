@@ -9,14 +9,17 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h" // MDL_BLOCK
 #include "gameplay/sounds.h" // SND_HATCH
 #include "gameplay/toggle.h" // decrement
 #include "gameplay/vec.h"
 
+namespace
+{
 struct Hatch : Entity
 {
-  Hatch()
+  Hatch(IEntityConfig*)
   {
     size = UnitSize;
     collisionGroup = CG_WALLS;
@@ -67,7 +70,7 @@ struct Hatch : Entity
   enum { OPEN_DURATION = 100 };
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("hatch", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Hatch>(); });
-static auto const reg2 = registerEntity("crumble_block", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Hatch>(); });
+DECLARE_ENTITY("hatch", Hatch);
+DECLARE_ENTITY("crumble_block", Hatch);
+}
 

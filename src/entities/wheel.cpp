@@ -9,6 +9,7 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/move.h"
 #include "gameplay/sounds.h"
@@ -16,9 +17,11 @@
 
 #include "explosion.h"
 
+namespace
+{
 struct Wheel : Entity, Damageable
 {
-  Wheel()
+  Wheel(IEntityConfig*)
   {
     vel = NullVector;
     dir = -1.0f;
@@ -95,6 +98,6 @@ struct Wheel : Entity, Damageable
   Vector vel;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("wheel", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Wheel>(); });
+DECLARE_ENTITY("wheel", Wheel);
+}
 

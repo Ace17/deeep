@@ -9,6 +9,7 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/move.h"
 #include "gameplay/sounds.h"
@@ -18,9 +19,11 @@
 
 #include <cstdlib> // rand
 
+namespace
+{
 struct Hopper : Entity, Damageable
 {
-  Hopper()
+  Hopper(IEntityConfig*)
   {
     vel = NullVector;
     dir = -1.0f;
@@ -111,6 +114,6 @@ struct Hopper : Entity, Damageable
   Vector vel;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("hopper", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Hopper>(); });
+DECLARE_ENTITY("hopper", Hopper);
+}
 

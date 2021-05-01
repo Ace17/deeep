@@ -9,16 +9,20 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
+
 #include "gameplay/models.h"
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h"
 
+namespace
+{
 struct RoomBoundaryDetector : Entity
 {
-  RoomBoundaryDetector(int targetLevel_, Vector transform_)
+  RoomBoundaryDetector(IEntityConfig* cfg)
   {
-    targetLevel = targetLevel_;
-    transform = transform_;
+    targetLevel = cfg->getInt("target_level");
+    transform = Vector(cfg->getInt("transform_x"), cfg->getInt("transform_y"));
     size = UnitSize * 16;
     solid = false;
     collisionGroup = 0;
@@ -49,12 +53,12 @@ struct RoomBoundaryDetector : Entity
 
 struct RoomBoundaryBlocker : Entity
 {
-  RoomBoundaryBlocker(int groupsToBlock)
+  RoomBoundaryBlocker(const IEntityConfig*)
   {
     size = UnitSize * 16;
     solid = true;
     collisionGroup = CG_WALLS;
-    collidesWith = groupsToBlock;
+    collidesWith = -1;
   }
 
   virtual void addActors(vector<Actor>& actors) const override
@@ -66,15 +70,7 @@ struct RoomBoundaryBlocker : Entity
   }
 };
 
-#include "gameplay/entity_factory.h"
-
-static unique_ptr<Entity> makeBoundaryDetector(IEntityConfig* cfg)
-{
-  auto targetLevel = cfg->getInt("target_level");
-  auto transform = Vector(cfg->getInt("transform_x"), cfg->getInt("transform_y"));
-  return make_unique<RoomBoundaryDetector>(targetLevel, transform);
+DECLARE_ENTITY("room_boundary_detector", RoomBoundaryDetector);
+DECLARE_ENTITY("blocker", RoomBoundaryBlocker);
 }
-
-static auto const reg1 = registerEntity("room_boundary_detector", &makeBoundaryDetector);
-static auto const reg2 = registerEntity("blocker", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<RoomBoundaryBlocker>(-1); });
 

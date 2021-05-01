@@ -18,6 +18,8 @@
 
 #include "hero.h"
 
+namespace
+{
 auto const WALK_SPEED = 0.075f;
 auto const MAX_HORZ_SPEED = 0.2f;
 auto const MAX_FALL_SPEED = 0.2f;
@@ -545,10 +547,11 @@ struct Rockman : Player, Damageable
   int upgrades = 0;
 };
 
+DECLARE_ENTITY("Hero", Rockman);
+}
+
 std::unique_ptr<Player> makeRockman()
 {
   return make_unique<Rockman>(nullptr);
 }
-
-DECLARE_ENTITY("Hero", Rockman);
 

@@ -11,14 +11,17 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/move.h"
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h"
 
+namespace
+{
 struct Elevator : Entity
 {
-  Elevator()
+  Elevator(IEntityConfig*)
   {
     solid = true;
     pusher = true;
@@ -113,7 +116,6 @@ struct Elevator : Entity
   Vector initialPos;
 };
 
-#include "gameplay/entity_factory.h"
-
-static auto const reg2 = registerEntity("elevator", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<Elevator>(); });
+DECLARE_ENTITY("elevator", Elevator);
+}
 

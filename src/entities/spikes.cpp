@@ -9,11 +9,14 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 
+namespace
+{
 struct Spikes : Entity
 {
-  Spikes()
+  Spikes(IEntityConfig*)
   {
     size = Size(1, 0.95);
     solid = 1;
@@ -37,6 +40,6 @@ struct Spikes : Entity
   }
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("spikes", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Spikes>(); });
+DECLARE_ENTITY("spikes", Spikes);
+}
 

@@ -8,13 +8,18 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h" // decrement
 
+#include "explosion.h"
+
+namespace
+{
 struct Door : Entity
 {
-  Door(int id_) : id(id_)
+  Door(IEntityConfig* args) : id(args->getInt("0"))
   {
     size = Size(1, 3);
     solid = true;
@@ -73,18 +78,9 @@ struct Door : Entity
   unique_ptr<Handle> subscription;
 };
 
-unique_ptr<Entity> makeDoor(int id)
-{
-  return make_unique<Door>(id);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-#include "explosion.h"
-
 struct BreakableDoor : Entity, Damageable
 {
-  BreakableDoor()
+  BreakableDoor(IEntityConfig*)
   {
     size = Size(1, 3);
     solid = true;
@@ -136,7 +132,7 @@ struct BreakableDoor : Entity, Damageable
   int life = 130;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("fragile_door", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<BreakableDoor>(); });
-static auto const reg2 = registerEntity("door", [] (IEntityConfig* args) -> unique_ptr<Entity> { auto arg = args->getInt("0"); return makeDoor(arg); });
+DECLARE_ENTITY("fragile_door", BreakableDoor);
+DECLARE_ENTITY("door", Door);
+}
 

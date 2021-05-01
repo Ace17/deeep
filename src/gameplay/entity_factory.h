@@ -28,7 +28,10 @@ using CreationFunc = unique_ptr<Entity>(*)(IEntityConfig* args);
 int registerEntity(string type, CreationFunc func);
 
 #define DECLARE_ENTITY(Name, Class) \
-  DECLARE_ENTITY_COUNTER(Name, Class, __LINE__)
+  DECLARE_ENTITY_COUNTER_PRE(Name, Class, __LINE__)
+
+#define DECLARE_ENTITY_COUNTER_PRE(Name, Class, Counter) \
+  DECLARE_ENTITY_COUNTER(Name, Class, Counter)
 
 #define DECLARE_ENTITY_COUNTER(Name, Class, Counter) \
   static auto const reg_ ## Counter = registerEntity(Name, [] (IEntityConfig* cfg)  -> unique_ptr<Entity> { return make_unique<Class>(cfg); })

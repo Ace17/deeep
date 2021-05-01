@@ -9,15 +9,18 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h" // MDL_BLOCK
 #include "gameplay/player.h"
 #include "gameplay/sounds.h" // SND_HATCH
 #include "gameplay/toggle.h"
 #include "gameplay/vec.h"
 
+namespace
+{
 struct SavePoint : Entity
 {
-  SavePoint()
+  SavePoint(IEntityConfig*)
   {
     solid = 0;
     size = UnitSize;
@@ -58,6 +61,6 @@ struct SavePoint : Entity
   int timer = 0;
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("savepoint", [] (IEntityConfig*)  -> unique_ptr<Entity> { return make_unique<SavePoint>(); });
+DECLARE_ENTITY("savepoint", SavePoint);
+}
 

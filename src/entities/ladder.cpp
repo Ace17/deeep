@@ -9,11 +9,14 @@
 
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
+#include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 
+namespace
+{
 struct Ladder : Entity, Climbable
 {
-  Ladder()
+  Ladder(IEntityConfig*)
   {
     size = UnitSize;
     solid = 0;
@@ -30,6 +33,6 @@ struct Ladder : Entity, Climbable
   }
 };
 
-#include "gameplay/entity_factory.h"
-static auto const reg1 = registerEntity("ladder", [] (IEntityConfig*) -> unique_ptr<Entity> { return make_unique<Ladder>(); });
+DECLARE_ENTITY("ladder", Ladder);
+}
 
