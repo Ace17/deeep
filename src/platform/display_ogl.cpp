@@ -374,7 +374,8 @@ struct OpenglDisplay : Display
       };
 
     GLuint currTexture = -1;
-    std::array<float, 3> currLight;
+    std::array<float, 3> currLight {};
+    currLight[0] = 0.0f / 0.0f;
 
     for(auto const& q : m_quads)
     {
