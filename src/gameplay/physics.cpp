@@ -16,19 +16,11 @@
 
 using namespace std;
 
+namespace
+{
 int roundCoord(float x)
 {
   return round((double)x * PRECISION);
-}
-
-IntBox roundBox(Box b)
-{
-  IntBox r;
-  r.pos.x = roundCoord(b.pos.x);
-  r.pos.y = roundCoord(b.pos.y);
-  r.size.width = roundCoord(b.size.width);
-  r.size.height = roundCoord(b.size.height);
-  return r;
 }
 
 struct Physics : IPhysics
@@ -170,9 +162,20 @@ private:
   vector<Body*> m_bodies;
   function<bool(IntBox)> m_isSolid;
 };
+}
 
 unique_ptr<IPhysics> createPhysics()
 {
   return make_unique<Physics>();
+}
+
+IntBox roundBox(Box b)
+{
+  IntBox r;
+  r.pos.x = roundCoord(b.pos.x);
+  r.pos.y = roundCoord(b.pos.y);
+  r.size.width = roundCoord(b.size.width);
+  r.size.height = roundCoord(b.size.height);
+  return r;
 }
 
