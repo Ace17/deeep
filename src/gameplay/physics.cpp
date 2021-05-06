@@ -18,11 +18,6 @@ using namespace std;
 
 namespace
 {
-int roundCoord(float x)
-{
-  return round((double)x * PRECISION);
-}
-
 struct Physics : IPhysics
 {
   void addBody(Body* body)
@@ -68,15 +63,15 @@ struct Physics : IPhysics
     if(!body->pusher)
     {
       auto feet = body->getBox();
-      feet.size.height = 16;
-      feet.pos.y -= feet.size.height;
+      feet.size.height = 0.1;
+      feet.pos.y = body->getBox().pos.y - feet.size.height;
       body->floor = getSolidBodyInBox(feet, -1, body);
     }
 
     return !blocked;
   }
 
-  void pushOthers(Body* body, IntBox rect, Vector delta)
+  void pushOthers(Body* body, Box rect, Vector delta)
   {
     // move stacked bodies
     for(auto otherBody : m_bodies)
@@ -91,7 +86,7 @@ struct Physics : IPhysics
         moveBody(other, delta);
   }
 
-  bool isSolid(const Body* except, IntBox rect) const
+  bool isSolid(const Body* except, Box rect) const
   {
     if(getSolidBodyInBox(rect, except->collidesWith, except))
       return true;
@@ -126,12 +121,12 @@ struct Physics : IPhysics
       me.onCollision(&other);
   }
 
-  void setEdifice(function<bool(IntBox)> edifice)
+  void setEdifice(function<bool(Box)> edifice)
   {
     m_isSolid = edifice;
   }
 
-  Body* getBodiesInBox(IntBox myBox, int collisionGroup, bool onlySolid, const Body* except) const
+  Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid, const Body* except) const
   {
     for(auto& body : m_bodies)
     {
@@ -154,13 +149,13 @@ struct Physics : IPhysics
   }
 
 private:
-  Body* getSolidBodyInBox(IntBox myBox, int collisionGroup, const Body* except) const
+  Body* getSolidBodyInBox(Box myBox, int collisionGroup, const Body* except) const
   {
     return getBodiesInBox(myBox, collisionGroup, true, except);
   }
 
   vector<Body*> m_bodies;
-  function<bool(IntBox)> m_isSolid;
+  function<bool(Box)> m_isSolid;
 };
 }
 
@@ -169,13 +164,8 @@ unique_ptr<IPhysics> createPhysics()
   return make_unique<Physics>();
 }
 
-IntBox roundBox(Box b)
+Box roundBox(Box b)
 {
-  IntBox r;
-  r.pos.x = roundCoord(b.pos.x);
-  r.pos.y = roundCoord(b.pos.y);
-  r.size.width = roundCoord(b.size.width);
-  r.size.height = roundCoord(b.size.height);
-  return r;
+  return b;
 }
 

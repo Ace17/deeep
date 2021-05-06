@@ -84,12 +84,12 @@ struct NullPhysicsProbe : IPhysicsProbe
     return true;
   }
 
-  bool isSolid(const Body* /*body*/, IntBox rect) const
+  bool isSolid(const Body* /*body*/, Box rect) const
   {
     return rect.pos.y < 0;
   }
 
-  Body* getBodiesInBox(IntBox, int, bool, const Body*) const
+  Body* getBodiesInBox(Box, int, bool, const Body*) const
   {
     return nullptr;
   }
