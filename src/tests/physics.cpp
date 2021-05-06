@@ -44,7 +44,7 @@ void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file
 ///////////////////////////////////////////////////////////////////////////////
 
 static
-bool isSolid(IntBox rect)
+bool isSolid(Box rect)
 {
   return rect.pos.y < 0 || rect.pos.x < 0;
 }

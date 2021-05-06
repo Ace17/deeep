@@ -14,7 +14,7 @@
 
 using namespace std;
 
-IntBox roundBox(Box b);
+Box roundBox(Box b);
 
 struct Body
 {
@@ -39,6 +39,6 @@ struct Body
   function<void(Body*)> onCollision = [] (Body*) {};
 
   Box getFBox() const { return Box { pos, size }; }
-  IntBox getBox() const { return roundBox(getFBox()); }
+  Box getBox() const { return roundBox(getFBox()); }
 };
 

@@ -7,6 +7,7 @@
 // Game logic
 
 #include <map>
+#include <cmath>
 
 #include "base/error.h"
 #include "base/scene.h"
@@ -431,17 +432,17 @@ struct GameState : Scene, private IGame
   vector<unique_ptr<Entity>> m_entities;
   vector<unique_ptr<Entity>> m_spawned;
 
-  bool isBoxSolid(IntBox box)
+  bool isBoxSolid(Box box)
   {
     auto const x1 = box.pos.x;
     auto const y1 = box.pos.y;
     auto const x2 = box.pos.x + box.size.width;
     auto const y2 = box.pos.y + box.size.height;
 
-    auto const col1 = x1 / PRECISION;
-    auto const col2 = x2 / PRECISION;
-    auto const row1 = y1 / PRECISION;
-    auto const row2 = y2 / PRECISION;
+    auto const col1 = int(floor(x1));
+    auto const col2 = int(floor(x2));
+    auto const row1 = int(floor(y1));
+    auto const row2 = int(floor(y2));
 
     for(int row = row1; row <= row2; row++)
       for(int col = col1; col <= col2; col++)
