@@ -21,7 +21,7 @@
    {
       "desc" : "Game-specific entities",
       "name" : "entities",
-      "deps" : [ "base", "gameplay" ]
+      "deps" : [ "base", "gameplay", "misc" ]
    },
    {
       "desc" : "Render subsystem",

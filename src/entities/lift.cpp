@@ -14,22 +14,10 @@
 #include "gameplay/move.h"
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h"
-
-#include <cmath> // sqrt
+#include "misc/math.h"
 
 namespace
 {
-float dotProduct(Vector a, Vector b)
-{
-  return a.x * b.x + a.y * b.y;
-}
-
-Vector normalize(Vector a)
-{
-  auto const magnitude = sqrt(dotProduct(a, a));
-  return a * 1.0 / magnitude;
-}
-
 struct Lift : Entity
 {
   Lift(IEntityConfig* cfg)

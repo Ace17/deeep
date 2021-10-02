@@ -51,6 +51,7 @@ SRCS_ENGINE:=\
 	src/misc/decompress.cpp\
 	src/misc/file.cpp\
 	src/misc/json.cpp\
+	src/misc/math.cpp\
 	src/misc/time.cpp\
 	src/render/model.cpp\
 	src/render/picture.cpp\
