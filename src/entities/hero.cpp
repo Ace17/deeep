@@ -386,7 +386,7 @@ struct Rockman : Player, Damageable
       box.pos.y = pos.y - 0.1;
       box.size.width = size.width;
       box.size.height = 0.1;
-      ground = physics->isSolid(this, roundBox(box));
+      ground = physics->isSolid(this, box);
     }
 
     if(ground && !wasOnGround)
@@ -446,7 +446,7 @@ struct Rockman : Player, Damageable
     box.size.width = 0.01;
     box.size.height = 0.9;
 
-    if(physics->isSolid(this, roundBox(box)))
+    if(physics->isSolid(this, box))
       return true;
 
     return false;
@@ -515,7 +515,7 @@ struct Rockman : Player, Damageable
       box.size = NORMAL_SIZE;
       box.pos = pos;
 
-      if(!physics->isSolid(this, roundBox(box)))
+      if(!physics->isSolid(this, box))
       {
         ball = false;
         size = NORMAL_SIZE;

@@ -456,7 +456,7 @@ struct GameState : Scene, private IGame
 
   static Actor getDebugActor(Entity* entity)
   {
-    auto box = entity->getFBox();
+    auto box = entity->getBox();
     auto r = Actor { box.pos, MDL_RECT };
     r.scale = box.size;
     r.zOrder = 10;

@@ -73,11 +73,11 @@ struct NullPhysicsProbe : IPhysicsProbe
   // called by entities
   bool moveBody(Body* body, Vector2f delta)
   {
-    auto rect = body->getFBox();
+    auto rect = body->getBox();
     rect.pos.x += delta.x;
     rect.pos.y += delta.y;
 
-    if(isSolid(body, roundBox(rect)))
+    if(isSolid(body, rect))
       return false;
 
     body->pos += delta;

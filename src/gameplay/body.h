@@ -14,8 +14,6 @@
 
 using namespace std;
 
-Box roundBox(Box b);
-
 struct Body
 {
   // make type polymorphic
@@ -38,7 +36,6 @@ struct Body
   // only called if (this->collidesWith & other->collisionGroup)
   function<void(Body*)> onCollision = [] (Body*) {};
 
-  Box getFBox() const { return Box { pos, size }; }
-  Box getBox() const { return roundBox(getFBox()); }
+  Box getBox() const { return Box { pos, size }; }
 };
 

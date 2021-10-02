@@ -34,10 +34,10 @@ struct Physics : IPhysics
 
   bool moveBody(Body* body, Vector delta)
   {
-    auto frect = body->getFBox();
+    auto frect = body->getBox();
     frect.pos += delta;
 
-    auto const irect = roundBox(frect);
+    auto const irect = frect;
 
     auto const blocked = isSolid(body, irect);
 
@@ -162,10 +162,5 @@ private:
 unique_ptr<IPhysics> createPhysics()
 {
   return make_unique<Physics>();
-}
-
-Box roundBox(Box b)
-{
-  return b;
 }
 
