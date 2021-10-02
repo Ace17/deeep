@@ -6,8 +6,8 @@
 
 // Game logic
 
-#include <map>
 #include <cmath>
+#include <map>
 
 #include "base/error.h"
 #include "base/scene.h"
