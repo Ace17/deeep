@@ -10,22 +10,17 @@
 #include "base/view.h"
 #include "state_machine.h"
 #include <string>
-#include <vector>
 
 using namespace std;
 
 Span<const Resource> getResources();
 
-void preloadResources(View* view)
-{
-  for(auto res : getResources())
-    view->preload(res);
-}
-
 Scene* createGame(View* view, Span<const string> args)
 {
   view->setTitle("Deeep");
-  preloadResources(view);
+
+  for(auto res : getResources())
+    view->preload(res);
 
   if(args.len == 1)
   {
