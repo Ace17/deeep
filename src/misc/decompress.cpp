@@ -1,4 +1,4 @@
-// Copyright (C) 2018 - Sebastien Alaiwan
+// Copyright (C) 2021 - Sebastien Alaiwan
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
@@ -8,7 +8,7 @@
 #include "decompress.h"
 #include <vector>
 
-// Copyright (c) 2005-2010 Lode Vandevenne
+// Copyright (C) 2021 - Sebastien Alaiwan
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
