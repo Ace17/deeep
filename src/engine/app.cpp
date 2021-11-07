@@ -248,7 +248,6 @@ private:
     m_paused = !m_paused;
   }
 
-
   // View implementation
   void setTitle(String gameTitle) override
   {
