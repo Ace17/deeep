@@ -270,10 +270,7 @@ private:
     stopMusic();
 
     char buffer[256];
-    String path;
-    path.data = buffer;
-    path.len = sprintf(buffer, "res/music/music-%02d.ogg", musicName);
-    m_audio->loadSound(1024, path);
+    m_audio->loadSound(1024, format(buffer, "res/music/music-%02d.ogg", musicName));
 
     m_musicVoice = m_audio->createVoice();
     printf("playing music #%d on voice %d\n", musicName, m_musicVoice);
