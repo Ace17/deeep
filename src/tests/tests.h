@@ -65,9 +65,12 @@ std::string testValueToString(const T& val)
   return ToStringImpl<T>::call(val);
 }
 
+template<typename T>
+extern T* DummyInstance();
+
 // match std::vector
 template<typename T>
-struct ToStringImpl < T, decltype(((T*)nullptr)->push_back((typename T::value_type) {})) >
+struct ToStringImpl < T, decltype(DummyInstance<T>()->push_back((typename T::value_type) {})) >
 {
   static std::string call(const T& val)
   {
