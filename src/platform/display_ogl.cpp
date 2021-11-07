@@ -349,7 +349,7 @@ struct OpenglDisplay : Display
     my::sort<Quad>(m_quads, byPriority);
 
 #define OFFSET(a) \
-  ((GLvoid*)(&((Vertex*)nullptr)->a))
+  ((GLvoid*)offsetof(Vertex, a))
 
     vector<Vertex> vboData;
 
