@@ -27,11 +27,13 @@
 #include "input.h"
 #include "ratecounter.h"
 #include "stats.h"
+#include "video_capture.h"
 
 using namespace std;
 
 auto const TIMESTEP = 10;
 auto const RESOLUTION = Size2i(768, 768);
+auto const CAPTURE_FRAME_PERIOD = 40;
 
 Display* createDisplay(Size2i resolution);
 MixableAudio* createAudio();
@@ -101,28 +103,6 @@ private:
 
     m_fps.tick(now);
     Stat("FPS", m_fps.slope());
-
-    captureDisplayFrameIfNeeded();
-  }
-
-  void captureDisplayFrameIfNeeded()
-  {
-    if(m_captureFile || m_mustScreenshot)
-    {
-      vector<uint8_t> pixels(RESOLUTION.width * RESOLUTION.height * 4);
-      m_display->readPixels({ pixels.data(), (int)pixels.size() });
-
-      if(m_captureFile)
-        fwrite(pixels.data(), 1, pixels.size(), m_captureFile);
-
-      if(m_mustScreenshot)
-      {
-        File::write("screenshot.rgba", pixels);
-        fprintf(stderr, "Saved screenshot to 'screenshot.rgba'\n");
-
-        m_mustScreenshot = false;
-      }
-    }
   }
 
   void tickGameplay()
@@ -145,6 +125,7 @@ private:
     m_input->listenToQuit([&] () { m_running = 0; });
 
     m_input->listenToKey(Key::PrintScreen, [&] (bool isDown) { if(isDown) toggleVideoCapture(); }, true);
+    m_input->listenToKey(Key::PrintScreen, [&] (bool isDown) { if(isDown) m_recorder.takeScreenshot(); }, false);
     m_input->listenToKey(Key::Return, [&] (bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
 
     m_input->listenToKey(Key::Y, [&] (bool isDown) { if(isDown && m_running == 2) m_running = 0; });
@@ -213,6 +194,8 @@ private:
     }
 
     m_display->endDraw();
+
+    m_recorder.captureDisplayFrameIfNeeded(m_display.get(), RESOLUTION);
   }
 
   void onQuit()
@@ -225,37 +208,26 @@ private:
 
   void toggleVideoCapture()
   {
-    if(!m_captureFile)
+    if(m_fullscreen)
     {
-      if(m_fullscreen)
-      {
-        fprintf(stderr, "Can't capture video in fullscreen mode\n");
-        return;
-      }
+      fprintf(stderr, "Can't capture video in fullscreen mode\n");
+      return;
+    }
 
-      m_captureFile = fopen("capture.rgba", "wb");
-
-      if(!m_captureFile)
-      {
-        fprintf(stderr, "Can't start video capture!\n");
-        return;
-      }
-
-      m_fixedDisplayFramePeriod = 40;
-      fprintf(stderr, "Capturing video at %d Hz...\n", 1000 / m_fixedDisplayFramePeriod);
+    if(m_recorder.toggleVideoCapture())
+    {
+      m_fixedDisplayFramePeriod = CAPTURE_FRAME_PERIOD;
+      fprintf(stderr, "Capturing video at %d Hz...\n", 1000 / CAPTURE_FRAME_PERIOD);
     }
     else
     {
-      fprintf(stderr, "Stopped video capture\n");
-      fclose(m_captureFile);
-      m_captureFile = nullptr;
       m_fixedDisplayFramePeriod = 0;
     }
   }
 
   void toggleFullScreen()
   {
-    if(m_captureFile)
+    if(m_fixedDisplayFramePeriod)
     {
       fprintf(stderr, "Can't toggle full-screen during video capture\n");
       return;
@@ -347,8 +319,8 @@ private:
 
   int m_running = 1;
   int m_fixedDisplayFramePeriod = 0;
-  FILE* m_captureFile = nullptr;
-  bool m_mustScreenshot = false;
+
+  VideoCapture m_recorder;
 
   bool m_debugMode = false;
 
