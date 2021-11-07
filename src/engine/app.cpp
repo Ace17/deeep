@@ -39,7 +39,7 @@ Display* createDisplay(Size2i resolution);
 MixableAudio* createAudio();
 UserInput* createUserInput();
 
-Scene* createGame(View* view, vector<string> argv);
+Scene* createGame(View* view, Span<const string> argv);
 
 class App : View, public IApp
 {
