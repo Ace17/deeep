@@ -22,12 +22,12 @@ void preloadResources(View* view)
     view->preload(res);
 }
 
-Scene* createGame(View* view, vector<string> args)
+Scene* createGame(View* view, Span<const string> args)
 {
   view->setTitle("Deeep");
   preloadResources(view);
 
-  if(args.size() == 1)
+  if(args.len == 1)
   {
     int level = atoi(args[0].c_str());
     return createPlayingStateAtLevel(view, level);
