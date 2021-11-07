@@ -41,9 +41,9 @@ struct View
 {
   virtual ~View() = default;
 
-  virtual void setTitle(char const* gameTitle) = 0;
+  virtual void setTitle(String gameTitle) = 0;
   virtual void preload(Resource res) = 0;
-  virtual void textBox(char const* msg) = 0;
+  virtual void textBox(String msg) = 0;
   virtual void playMusic(MUSIC id) = 0;
   virtual void stopMusic() = 0;
   virtual void playSound(SOUND id) = 0;

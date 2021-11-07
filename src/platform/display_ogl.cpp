@@ -278,9 +278,9 @@ struct OpenglDisplay : Display
     SDL_SetWindowFullscreen(m_window, flags);
   }
 
-  void setCaption(const char* caption) override
+  void setCaption(String caption) override
   {
-    SDL_SetWindowTitle(m_window, caption);
+    SDL_SetWindowTitle(m_window, caption.data);
   }
 
   void loadModel(int id, String path) override

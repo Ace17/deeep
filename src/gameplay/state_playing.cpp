@@ -7,6 +7,7 @@
 // Game logic
 
 #include <cmath>
+#include <cstring> // strlen
 #include <map>
 
 #include "base/error.h"
@@ -409,7 +410,10 @@ struct GameState : Scene, private IGame
 
   void textBox(char const* msg) override
   {
-    m_view->textBox(msg);
+    String s;
+    s.data = msg;
+    s.len = strlen(msg);
+    m_view->textBox(s);
   }
 
   void setAmbientLight(float light) override

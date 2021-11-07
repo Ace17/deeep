@@ -238,7 +238,7 @@ private:
   }
 
   // View implementation
-  void setTitle(char const* gameTitle) override
+  void setTitle(String gameTitle) override
   {
     m_display->setCaption(gameTitle);
   }
@@ -256,9 +256,9 @@ private:
     }
   }
 
-  void textBox(char const* msg) override
+  void textBox(String msg) override
   {
-    m_textbox = msg;
+    m_textbox.assign(msg.data, msg.len);
     m_textboxDelay = 60 * 2;
   }
 
