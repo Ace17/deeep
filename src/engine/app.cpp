@@ -149,8 +149,8 @@ private:
     // Debug keys
     m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(this, m_args)); });
     m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
-    m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) m_debugMode = !m_debugMode; });
-    m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ playSound(0); m_paused = !m_paused; } });
+    m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) toggleDebug(); });
+    m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ playSound(0); togglePause(); } });
   }
 
   void draw()
@@ -236,6 +236,18 @@ private:
     m_fullscreen = !m_fullscreen;
     m_display->setFullscreen(m_fullscreen);
   }
+
+  void toggleDebug()
+  {
+    m_debugMode = !m_debugMode;
+  }
+
+  void togglePause()
+  {
+    playSound(0);
+    m_paused = !m_paused;
+  }
+
 
   // View implementation
   void setTitle(String gameTitle) override
