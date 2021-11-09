@@ -139,6 +139,14 @@ GLuint sendToOpengl(PictureView pic)
 
   return texture;
 }
+
+Vector2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
+{
+  Vector2f r;
+  r.x = mat[0][0] * v0 + mat[0][1] * v1 + mat[0][2] * v2;
+  r.y = mat[1][0] * v0 + mat[1][1] * v1 + mat[1][2] * v2;
+  return r;
+}
 }
 
 // exported to Model
@@ -512,17 +520,10 @@ private:
     auto const m1x = 1;
     auto const m1y = 1;
 
-    q.pos[0].x = mat[0][0] * m0x + mat[0][1] * m0y + mat[0][2];
-    q.pos[0].y = mat[1][0] * m0x + mat[1][1] * m0y + mat[1][2];
-
-    q.pos[1].x = mat[0][0] * m0x + mat[0][1] * m1y + mat[0][2];
-    q.pos[1].y = mat[1][0] * m0x + mat[1][1] * m1y + mat[1][2];
-
-    q.pos[2].x = mat[0][0] * m1x + mat[0][1] * m1y + mat[0][2];
-    q.pos[2].y = mat[1][0] * m1x + mat[1][1] * m1y + mat[1][2];
-
-    q.pos[3].x = mat[0][0] * m1x + mat[0][1] * m0y + mat[0][2];
-    q.pos[3].y = mat[1][0] * m1x + mat[1][1] * m0y + mat[1][2];
+    q.pos[0] = multiplyMatrix(mat, m0x, m0y, 1);
+    q.pos[1] = multiplyMatrix(mat, m0x, m1y, 1);
+    q.pos[2] = multiplyMatrix(mat, m1x, m1y, 1);
+    q.pos[3] = multiplyMatrix(mat, m1x, m0y, 1);
 
     // lighting
     {
