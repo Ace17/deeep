@@ -498,18 +498,15 @@ private:
     if(where.size.height < 0)
       where.pos.y -= where.size.height;
 
-    auto const relPos = where.pos - cam.pos;
-
     auto const sx = where.size.width;
     auto const sy = where.size.height;
 
-    auto mat = scale(Vector2f(sx, sy));
-    mat = rotate(angle) * mat;
-    mat = translate(relPos) * mat;
-    mat = rotate(-cam.angle) * mat;
+    const auto worldTransform = translate(where.pos) * rotate(angle) * scale(Vector2f(sx, sy));
 
-    auto shrink = scale(0.125 * Vector2f(1, 1));
-    mat = shrink * mat;
+    static const auto shrink = scale(0.125 * Vector2f(1, 1));
+    const auto viewTransform = shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
+
+    const auto transform = viewTransform * worldTransform;
 
     Quad q;
     q.zOrder = zOrder;
@@ -520,10 +517,10 @@ private:
     auto const m1x = 1;
     auto const m1y = 1;
 
-    q.pos[0] = multiplyMatrix(mat, m0x, m0y, 1);
-    q.pos[1] = multiplyMatrix(mat, m0x, m1y, 1);
-    q.pos[2] = multiplyMatrix(mat, m1x, m1y, 1);
-    q.pos[3] = multiplyMatrix(mat, m1x, m0y, 1);
+    q.pos[0] = multiplyMatrix(transform, m0x, m0y, 1);
+    q.pos[1] = multiplyMatrix(transform, m0x, m1y, 1);
+    q.pos[2] = multiplyMatrix(transform, m1x, m1y, 1);
+    q.pos[3] = multiplyMatrix(transform, m1x, m0y, 1);
 
     // lighting
     {
