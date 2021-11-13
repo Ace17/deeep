@@ -1,3 +1,6 @@
+#-----------------------------------
+# Sound & Music
+
 SOUNDS_SRC+=$(wildcard assets/sounds/*.ogg)
 SOUNDS_SRC+=$(wildcard assets/music/*.ogg)
 TARGETS+=$(SOUNDS_SRC:assets/%.ogg=res/%.ogg)
@@ -10,7 +13,13 @@ SPRITES_SRC+=$(wildcard assets/sprites/*.json)
 TARGETS+=$(SPRITES_SRC:assets/%.json=res/%.model)
 TARGETS+=$(SPRITES_SRC:assets/%.json=res/%.png)
 
+#-----------------------------------
+# ROOMS
+
 ROOMS_SRC+=$(wildcard assets/rooms/*.json)
+
+#-----------------------------------
+# Fonts
 
 TARGETS+=res/font.png
 TARGETS+=res/font.model
@@ -35,9 +44,28 @@ res/%.png: assets/%.xcf
 	@echo "Render $<"
 	@xcf2png "$<" -o "$@"
 
+#-----------------------------------
+# Shaders
+
+SHADERS_SRC+=$(wildcard assets/shaders/*.vert)
+SHADERS_SRC+=$(wildcard assets/shaders/*.frag)
+TARGETS+=$(SHADERS_SRC:assets/%=res/%)
+
+res/%.frag: assets/%.frag
+	@mkdir -p $(dir $@)
+	@mkdir -p $(dir $(BIN)/$*)
+	glslangValidator -G -o "$(BIN)/$*.spv" "$<"
+	@cp "$<" "$@"
+
+res/%.vert: assets/%.vert
+	@mkdir -p $(dir $@)
+	@mkdir -p $(dir $(BIN)/$*)
+	glslangValidator -G -o "$(BIN)/$*.spv" "$<"
+	@cp "$<" "$@"
+
+#-----------------------------------
 # fallback copy
 res/%: assets/%
 	@mkdir -p $(dir $@)
-#@echo "Copy $<"
 	@cp "$<" "$@"
 
