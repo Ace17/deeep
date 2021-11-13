@@ -12,6 +12,8 @@
 
 struct Matrix3f
 {
+  Matrix3f() = default;
+
   Matrix3f(float init)
   {
     for(int row = 0; row < 3; ++row)
@@ -21,7 +23,7 @@ struct Matrix3f
 
   struct row
   {
-    float elements[3+1]; // +1: slight speedup
+    float elements[3+1] {}; // +1: slight speedup
 
     operator float* () { return elements; }
     operator const float* () const { return elements; }
@@ -30,7 +32,7 @@ struct Matrix3f
   operator row* () { return m_rows; }
   operator const row* () const { return m_rows; }
 
-  row m_rows[3];
+  row m_rows[3] {};
 };
 
 Matrix3f operator * (Matrix3f const& A, Matrix3f const& B);

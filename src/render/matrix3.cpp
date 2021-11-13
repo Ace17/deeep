@@ -4,7 +4,7 @@
 
 Matrix3f operator * (Matrix3f const& A, Matrix3f const& B)
 {
-  Matrix3f r(0);
+  Matrix3f r;
 
   for(int row = 0; row < 3; ++row)
     for(int col = 0; col < 3; ++col)
@@ -22,7 +22,7 @@ Matrix3f operator * (Matrix3f const& A, Matrix3f const& B)
 
 Matrix3f translate(Vector2f v)
 {
-  Matrix3f r(0);
+  Matrix3f r;
   r[0][0] = 1;
   r[0][1] = 0;
   r[0][2] = v.x;
@@ -40,7 +40,7 @@ Matrix3f rotate(float angle)
   auto const ca = cos(angle);
   auto const sa = sin(angle);
 
-  Matrix3f r(0);
+  Matrix3f r;
   r[0][0] = ca;
   r[0][1] = -sa;
   r[1][0] = sa;
@@ -51,7 +51,7 @@ Matrix3f rotate(float angle)
 
 Matrix3f scale(Vector2f v)
 {
-  Matrix3f r(0);
+  Matrix3f r;
   r[0][0] = v.x;
   r[1][1] = v.y;
   r[2][2] = 1;
