@@ -23,7 +23,7 @@ struct Matrix3f
 
   struct row
   {
-    float elements[3+1] {}; // +1: slight speedup
+    float elements[3 + 1] {}; // +1: slight speedup
 
     operator float* () { return elements; }
     operator const float* () const { return elements; }
