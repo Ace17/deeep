@@ -121,7 +121,7 @@ struct Renderer : Display
     backend->useGpuProgram(m_shader.get());
     backend->clear();
 
-    auto byPriority = [] (Quad const& a, Quad const& b)
+    auto byPriority = [&] (Quad const& a, Quad const& b)
       {
         if(a.zOrder != b.zOrder)
           return a.zOrder < b.zOrder;
@@ -129,7 +129,7 @@ struct Renderer : Display
         if(a.light != b.light)
           return a.light < b.light;
 
-        return a.texture < b.texture;
+        return m_tiles[a.tile].texture < m_tiles[b.tile].texture;
       };
 
     my::sort<Quad>(m_quads, byPriority);
@@ -151,7 +151,7 @@ struct Renderer : Display
         vboData.clear();
       };
 
-    int currTexture = -1;
+    ITexture* currTexture = nullptr;
     std::array<float, 3> currLight {};
     currLight[0] = 0.0f / 0.0f;
 
@@ -160,13 +160,13 @@ struct Renderer : Display
       if(vboData.size() * 6 >= MAX_VERTICES)
         flush();
 
-      if(q.texture != currTexture)
+      if(m_tiles[q.tile].texture != currTexture)
       {
         flush();
 
+        currTexture = m_tiles[q.tile].texture;
         // Bind our diffuse texture in Texture Unit 0
-        m_textures[q.texture]->bind(0);
-        currTexture = q.texture;
+        currTexture->bind(0);
       }
 
       if(q.light != currLight)
@@ -177,13 +177,19 @@ struct Renderer : Display
         currLight = q.light;
       }
 
-      vboData.push_back({ q.pos[0].x, q.pos[0].y, 0, 0 });
-      vboData.push_back({ q.pos[1].x, q.pos[1].y, 0, 1 });
-      vboData.push_back({ q.pos[2].x, q.pos[2].y, 1, 1 });
+      const auto& tile = m_tiles[q.tile];
+      const float u0 = tile.uv[0].x;
+      const float v0 = 1 - tile.uv[1].y;
+      const float u1 = tile.uv[1].x;
+      const float v1 = 1 - tile.uv[0].y;
 
-      vboData.push_back({ q.pos[0].x, q.pos[0].y, 0, 0 });
-      vboData.push_back({ q.pos[2].x, q.pos[2].y, 1, 1 });
-      vboData.push_back({ q.pos[3].x, q.pos[3].y, 1, 0 });
+      vboData.push_back({ q.pos[0].x, q.pos[0].y, u0, v0 });
+      vboData.push_back({ q.pos[1].x, q.pos[1].y, u0, v1 });
+      vboData.push_back({ q.pos[2].x, q.pos[2].y, u1, v1 });
+
+      vboData.push_back({ q.pos[0].x, q.pos[0].y, u0, v0 });
+      vboData.push_back({ q.pos[2].x, q.pos[2].y, u1, v1 });
+      vboData.push_back({ q.pos[3].x, q.pos[3].y, u1, v0 });
     }
 
     flush();
@@ -249,7 +255,7 @@ private:
 
     Quad q;
     q.zOrder = zOrder;
-    q.texture = action.textures[idx];
+    q.tile = action.textures[idx];
 
     auto const m0x = 0;
     auto const m0y = 0;
@@ -290,15 +296,22 @@ private:
   {
     int zOrder;
     std::array<float, 3> light {};
-    int texture;
+    int tile;
     Vector2f pos[4];
+  };
+
+  struct Tile
+  {
+    ITexture* texture;
+    Vector2f uv[2];
   };
 
   vector<Quad> m_quads;
   std::unique_ptr<IVertexBuffer> m_batchVbo;
-  std::vector<std::unique_ptr<ITexture>> m_textures;
 
   unordered_map<int, Model> m_Models;
+  unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
+  std::vector<Tile> m_tiles;
   Model m_fontModel;
 
   float m_ambientLight = 0;
@@ -309,10 +322,25 @@ private:
 public:
   int loadTexture(String path, Rect2f frect)
   {
-    const int id = (int)m_textures.size();
-    auto pic = loadPicture(path, frect);
-    m_textures.push_back(backend->createTexture());
-    m_textures.back()->upload(pic);
+    const std::string sPath(path.data, path.len);
+
+    if(m_textures.find(sPath) == m_textures.end())
+    {
+      auto pic = loadPicture(path, Rect2f(0, 0, 1, 1));
+      m_textures[sPath] = backend->createTexture();
+      m_textures[sPath]->upload(pic);
+
+      if(0)
+        printf("[renderer] loaded '%.*s'\n", path.len, path.data);
+    }
+
+    const float left = frect.pos.x;
+    const float right = frect.pos.x + frect.size.width;
+    const float top = frect.pos.y;
+    const float bottom = frect.pos.y + frect.size.height;
+
+    const int id = (int)m_tiles.size();
+    m_tiles.push_back({ m_textures[sPath].get(), { { left, top }, { right, bottom } } });
     return id;
   }
 };
