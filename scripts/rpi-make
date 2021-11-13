@@ -8,13 +8,13 @@ set -euo pipefail
 # (libudev is for input. Be sure to have libudev-dev installed).
 #
 # ./configure \
-#   --prefix=/opt/env/rpi \
+#   --prefix=/opt/envs/rpi \
 #   --enable-alsa --enable-video-rpi --enable-libudev \
 #   --disable-video-vulkan --disable-video-opengl --disable-video-opengles1 \
 #   --disable-diskaudio --disable-oss \
 #
 
-readonly SYSROOT=/opt/env/rpi
+readonly SYSROOT=/opt/envs/rpi
 
 export CROSS_COMPILE=arm-linux-gnueabihf-
 export PKG_CONFIG_LIBDIR=$SYSROOT/lib/pkgconfig

@@ -138,7 +138,7 @@ struct ToStringImpl<int>
 };
 
 template<>
-struct ToStringImpl<size_t>
+struct ToStringImpl<uint64_t>
 {
   static std::string call(const size_t& val) { return std::to_string(val); }
 };
