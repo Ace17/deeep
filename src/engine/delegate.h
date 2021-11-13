@@ -12,6 +12,7 @@ struct Delegate<void(Args...)>
   void operator () (Args... args) { invokable->call(args...); }
 
   Delegate() = default;
+  Delegate(Delegate &&) = default;
 
   Delegate(void(*f)(Args...))
   {
