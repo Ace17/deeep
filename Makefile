@@ -52,6 +52,7 @@ SRCS_ENGINE:=\
 	src/misc/math.cpp\
 	src/misc/string.cpp\
 	src/misc/time.cpp\
+	src/render/matrix3.cpp\
 	src/render/model.cpp\
 	src/render/picture.cpp\
 	src/render/png.cpp\
