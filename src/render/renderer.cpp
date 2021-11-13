@@ -26,7 +26,7 @@ using namespace std;
 
 namespace
 {
-const int MAX_VERTICES = 8192;
+const int MAX_QUADS = 32678;
 
 Vector2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
@@ -157,7 +157,7 @@ struct Renderer : Display
 
     for(auto const& q : m_quads)
     {
-      if(vboData.size() * 6 >= MAX_VERTICES)
+      if(vboData.size() * 6 >= MAX_QUADS)
         flush();
 
       if(m_tiles[q.tile].texture != currTexture)
