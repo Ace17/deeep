@@ -24,6 +24,7 @@
 #include "audio.h"
 #include "audio_backend.h"
 #include "display.h"
+#include "graphics_backend.h"
 #include "input.h"
 #include "ratecounter.h"
 #include "stats.h"
@@ -35,7 +36,8 @@ auto const TIMESTEP = 10;
 auto const RESOLUTION = Size2i(768, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
-Display* createDisplay(Size2i resolution);
+IGraphicsBackend* createGraphicsBackend(Size2i resolution);
+Display* createRenderer(IGraphicsBackend* backend);
 MixableAudio* createAudio();
 UserInput* createUserInput();
 
@@ -47,7 +49,8 @@ public:
   App(Span<char*> args)
     : m_args({ args.data, args.data + args.len })
   {
-    m_display.reset(createDisplay(RESOLUTION));
+    m_graphicsBackend.reset(createGraphicsBackend(RESOLUTION));
+    m_display.reset(createRenderer(m_graphicsBackend.get()));
     m_audio.reset(createAudio());
     m_audioBackend.reset(createAudioBackend(m_audio.get()));
     m_input.reset(createUserInput());
@@ -195,7 +198,7 @@ private:
 
     m_display->endDraw();
 
-    m_recorder.captureDisplayFrameIfNeeded(m_display.get(), RESOLUTION);
+    m_recorder.captureDisplayFrameIfNeeded(m_graphicsBackend.get(), RESOLUTION);
   }
 
   void onQuit()
@@ -234,7 +237,7 @@ private:
     }
 
     m_fullscreen = !m_fullscreen;
-    m_display->setFullscreen(m_fullscreen);
+    m_graphicsBackend->setFullscreen(m_fullscreen);
   }
 
   void toggleDebug()
@@ -251,7 +254,7 @@ private:
   // View implementation
   void setTitle(String gameTitle) override
   {
-    m_display->setCaption(gameTitle);
+    m_graphicsBackend->setCaption(gameTitle);
   }
 
   void preload(Resource res) override
@@ -351,6 +354,7 @@ private:
   unique_ptr<MixableAudio> m_audio;
   unique_ptr<IAudioBackend> m_audioBackend;
   unique_ptr<Display> m_display;
+  unique_ptr<IGraphicsBackend> m_graphicsBackend;
   vector<Actor> m_actors;
   unique_ptr<UserInput> m_input;
 

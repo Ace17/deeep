@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <cmath> // sin, cos
+
 struct Matrix3f
 {
   Matrix3f(float init)

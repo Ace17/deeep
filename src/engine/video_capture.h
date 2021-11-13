@@ -4,7 +4,7 @@
 
 struct VideoCapture
 {
-  void captureDisplayFrameIfNeeded(Display* backend, Size2i dim)
+  void captureDisplayFrameIfNeeded(IGraphicsBackend* backend, Size2i dim)
   {
     if(m_captureFile || m_mustScreenshot)
     {

@@ -4,47 +4,37 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+///////////////////////////////////////////////////////////////////////////////
 // OpenGL stuff
 
-#include <array>
+#include "engine/display.h"
+
 #include <cassert>
 #include <cstdio>
-#include <unordered_map>
+#include <memory>
+#include <stdexcept>
 #include <vector>
-using namespace std;
+
+#include "base/geom.h"
+#include "base/span.h"
+#include "engine/graphics_backend.h"
+#include "engine/stats.h"
+#include "misc/file.h"
+#include "render/picture.h"
 
 #include "glad.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 
-#include "base/error.h"
-#include "base/geom.h"
-#include "base/my_algorithm.h" // sort
-#include "base/scene.h"
-#include "base/span.h"
-#include "base/util.h" // clamp
-#include "engine/display.h"
-#include "engine/stats.h"
-#include "misc/file.h"
-#include "misc/util.h"
-#include "render/matrix3.h"
-#include "render/model.h"
-#include "render/picture.h"
-
-extern const Span<uint8_t> VertexShaderCode;
-extern const Span<uint8_t> FragmentShaderCode;
+using namespace std;
 
 #ifdef NDEBUG
 #define SAFE_GL(a) a
 #else
 #define SAFE_GL(a) \
-  do { a; ensureGl(# a, __LINE__); } while (0)
+  do { a; ensureGl(# a, __FILE__, __LINE__); } while (0)
 #endif
 
-namespace
-{
-const int MAX_VERTICES = 8192;
-
-void ensureGl(char const* expr, int line)
+void ensureGl(char const* expr, const char* file, int line)
 {
   auto const errorCode = glGetError();
 
@@ -53,20 +43,20 @@ void ensureGl(char const* expr, int line)
 
   string ss;
   ss += "OpenGL error\n";
-  ss += "Expr: " + string(expr) + "\n";
-  ss += "Line: " + to_string(line) + "\n";
-  ss += "Code: " + to_string(errorCode) + "\n";
-  throw Error(ss);
+  ss += string(file) + "(" + to_string(line) + "): " + string(expr) + "\n";
+  ss += "Error code: " + to_string(errorCode) + "\n";
+  throw runtime_error(ss);
 }
 
-int compileShader(Span<uint8_t> code, int type)
+namespace
+{
+GLuint compileShader(Span<const uint8_t> code, int type)
 {
   auto shaderId = glCreateShader(type);
 
   if(!shaderId)
-    throw Error("Can't create shader");
+    throw runtime_error("Can't create shader");
 
-  printf("[display] compiling %s shader ... ", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
   auto srcPtr = (const char*)code.data;
   auto length = (GLint)code.len;
   SAFE_GL(glShaderSource(shaderId, 1, &srcPtr, &length));
@@ -84,18 +74,15 @@ int compileShader(Span<uint8_t> code, int type)
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
     fprintf(stderr, "%s\n", msg.data());
 
-    throw Error("Can't compile shader");
+    throw runtime_error("Can't compile shader");
   }
-
-  printf("OK\n");
 
   return shaderId;
 }
 
-int linkShaders(vector<int> ids)
+GLuint linkShaders(vector<GLuint> ids)
 {
   // Link the program
-  printf("[display] Linking shaders ... ");
   auto ProgramID = glCreateProgram();
 
   for(auto id : ids)
@@ -115,55 +102,18 @@ int linkShaders(vector<int> ids)
     glGetProgramInfoLog(ProgramID, logLength, nullptr, msg.data());
     fprintf(stderr, "%s\n", msg.data());
 
-    throw Error("Can't link shader");
+    throw runtime_error("Can't link shader");
   }
-
-  printf("OK\n");
 
   return ProgramID;
 }
 
-GLuint sendToOpengl(PictureView pic)
+GLuint loadShaders(Span<const uint8_t> vsCode, Span<const uint8_t> fsCode)
 {
-  GLuint texture;
+  auto const vertexId = compileShader(vsCode, GL_VERTEX_SHADER);
+  auto const fragmentId = compileShader(fsCode, GL_FRAGMENT_SHADER);
 
-  glGenTextures(1, &texture);
-
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.width, pic.dim.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pic.pixels);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-  return texture;
-}
-
-Vector2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
-{
-  Vector2f r;
-  r.x = mat[0][0] * v0 + mat[0][1] * v1 + mat[0][2] * v2;
-  r.y = mat[1][0] * v0 + mat[1][1] * v1 + mat[1][2] * v2;
-  return r;
-}
-}
-
-// exported to Model
-int loadTexture(String path, Rect2f frect)
-{
-  auto pic = loadPicture(path, frect);
-  return sendToOpengl(pic);
-}
-
-namespace
-{
-GLuint loadShaders()
-{
-  auto const vertexId = compileShader(VertexShaderCode, GL_VERTEX_SHADER);
-  auto const fragmentId = compileShader(FragmentShaderCode, GL_FRAGMENT_SHADER);
-
-  auto const progId = linkShaders(vector<int>({ vertexId, fragmentId }));
+  auto const progId = linkShaders({ vertexId, fragmentId });
 
   SAFE_GL(glDeleteShader(vertexId));
   SAFE_GL(glDeleteShader(fragmentId));
@@ -171,45 +121,156 @@ GLuint loadShaders()
   return progId;
 }
 
-struct Camera
-{
-  Vector2f pos = Vector2f(0, 0);
-  float angle = 0;
-};
-
 void printOpenGlVersion()
 {
-  auto sVersion = (char const*)glGetString(GL_VERSION);
-  auto sLangVersion = (char const*)glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-  auto notNull = [] (char const* s) -> char const*
+  auto notNull = [] (const void* s) -> char const*
     {
-      return s ? s : "<null>";
+      return s ? (const char*)s : "<null>";
     };
 
-  printf("[display] OpenGL version: %s (shading version: %s)\n",
-         notNull(sVersion),
-         notNull(sLangVersion));
+  printf("[display] %s [%s]\n",
+         notNull(glGetString(GL_VERSION)),
+         notNull(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+
+  printf("[display] GPU: %s [%s]\n",
+         notNull(glGetString(GL_RENDERER)),
+         notNull(glGetString(GL_VENDOR)));
 }
 
-// VBO format
-struct Vertex
+struct OpenGlProgram : IGpuProgram
 {
-  float x, y, u, v;
+  OpenGlProgram(GLuint program_, bool zTest_) : program(program_), zTest(zTest_)
+  {
+  }
+
+  ~OpenGlProgram()
+  {
+    glDeleteProgram(program);
+  }
+
+  const GLuint program;
+  const bool zTest;
 };
 
-template<typename T>
-T blend(T a, T b, float alpha)
+struct OpenGlTexture : ITexture
 {
-  return a * (1 - alpha) + b * alpha;
-}
+  OpenGlTexture()
+  {
+    SAFE_GL(glGenTextures(1, &texture));
+  }
 
-struct OpenglDisplay : Display
+  ~OpenGlTexture()
+  {
+    glDeleteTextures(1, &texture);
+  }
+
+  void upload(PictureView pic) override
+  {
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.width, pic.dim.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pic.pixels);
+    SAFE_GL(glGenerateMipmap(GL_TEXTURE_2D));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, 0);
+  }
+
+  void setNoRepeat() override
+  {
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  }
+
+  void bind(int unit) override
+  {
+    SAFE_GL(glActiveTexture(GL_TEXTURE0 + unit));
+    SAFE_GL(glBindTexture(GL_TEXTURE_2D, texture));
+  }
+
+  GLuint texture;
+};
+
+struct OpenGlFrameBuffer : IFrameBuffer
 {
-  OpenglDisplay(Size2i resolution)
+  OpenGlFrameBuffer(Size2i resolution, bool depth) : resolution(resolution)
+  {
+    SAFE_GL(glGenFramebuffers(1, &framebuffer));
+    SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
+
+    // Z-buffer
+    if(depth)
+    {
+      auto depthTexture = std::make_unique<OpenGlTexture>();
+
+      SAFE_GL(glBindTexture(GL_TEXTURE_2D, depthTexture->texture));
+      SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, resolution.width, resolution.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL));
+      SAFE_GL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthTexture->texture, 0));
+
+      this->depthTexture = std::move(depthTexture);
+    }
+
+    // color buffer
+    {
+      auto colorTexture = std::make_unique<OpenGlTexture>();
+
+      SAFE_GL(glBindTexture(GL_TEXTURE_2D, colorTexture->texture));
+      SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, resolution.width, resolution.height, 0, GL_RGBA, GL_FLOAT, nullptr));
+      SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+      SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+      SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+      SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+      SAFE_GL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTexture->texture, 0));
+
+      this->colorTexture = std::move(colorTexture);
+    }
+  }
+
+  ~OpenGlFrameBuffer()
+  {
+    SAFE_GL(glDeleteFramebuffers(1, &framebuffer));
+  }
+
+  ITexture* getColorTexture() override
+  {
+    return colorTexture.get();
+  }
+
+  const Size2i resolution;
+  GLuint framebuffer;
+  std::unique_ptr<ITexture> colorTexture;
+  std::unique_ptr<ITexture> depthTexture;
+};
+
+struct OpenGlVertexBuffer : IVertexBuffer
+{
+  OpenGlVertexBuffer()
+  {
+    SAFE_GL(glGenBuffers(1, &vbo));
+  }
+
+  ~OpenGlVertexBuffer()
+  {
+    glDeleteBuffers(1, &vbo);
+  }
+
+  void upload(const void* data, size_t len) override
+  {
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+    SAFE_GL(glBufferData(GL_ARRAY_BUFFER, len, data, GL_DYNAMIC_DRAW));
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+  }
+
+  GLuint vbo;
+};
+
+struct OpenGlGraphicsBackend : IGraphicsBackend
+{
+  OpenGlGraphicsBackend(Size2i resolution)
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
-      throw Error(string("Can't init SDL video: ") + SDL_GetError());
+      throw runtime_error(string("Can't init SDL video: ") + SDL_GetError());
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -229,16 +290,16 @@ struct OpenglDisplay : Display
       );
 
     if(!m_window)
-      throw Error(string("Can't create SDL window: ") + SDL_GetError());
+      throw runtime_error(string("Can't create SDL window: ") + SDL_GetError());
 
     // Create our opengl context and attach it to our window
     m_context = SDL_GL_CreateContext(m_window);
 
     if(!m_context)
-      throw Error(string("Can't create OpenGL context: ") + SDL_GetError());
+      throw runtime_error(string("Can't create OpenGL context: ") + SDL_GetError());
 
     if(!gladLoadGLES2Loader(&SDL_GL_GetProcAddress))
-      throw Error("Can't load OpenGL");
+      throw runtime_error("Can't load OpenGL");
 
     printOpenGlVersion();
 
@@ -250,29 +311,18 @@ struct OpenglDisplay : Display
     SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
     SAFE_GL(glBindVertexArray(VertexArrayID));
 
-    m_shader.programId = loadShaders();
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_fontModel = ::loadModel("res/font.model");
+    updateScreenSize();
 
-    m_shader.colorId = glGetUniformLocation(m_shader.programId, "fragOffset");
-    assert(m_shader.colorId >= 0);
-
-    m_shader.positionLoc = glGetAttribLocation(m_shader.programId, "vertexPos_model");
-    assert(m_shader.positionLoc >= 0);
-
-    m_shader.texCoordLoc = glGetAttribLocation(m_shader.programId, "vertexUV");
-    assert(m_shader.texCoordLoc >= 0);
-
-    SAFE_GL(glGenBuffers(1, &m_batchVbo));
-
-    printf("[display] init OK\n");
+    printf("[display] init OK ( %dx%d )\n", m_screenSize.width, m_screenSize.height);
   }
 
-  ~OpenglDisplay()
+  ~OpenGlGraphicsBackend()
   {
+    SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+
     SDL_GL_DeleteContext(m_context);
     SDL_DestroyWindow(m_window);
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -289,145 +339,6 @@ struct OpenglDisplay : Display
   void setCaption(String caption) override
   {
     SDL_SetWindowTitle(m_window, caption.data);
-  }
-
-  void loadModel(int id, String path) override
-  {
-    m_Models[id] = ::loadModel(path);
-  }
-
-  void setCamera(Vector2f pos) override
-  {
-    auto cam = Camera { pos, 0 };
-
-    if(!m_cameraValid)
-    {
-      m_camera = cam;
-      m_cameraValid = true;
-    }
-
-    // avoid big camera jumps
-    {
-      auto delta = m_camera.pos - pos;
-
-      if(abs(delta.x) > 2 || abs(delta.y) > 2)
-        m_camera = cam;
-    }
-
-    m_camera.pos = blend(m_camera.pos, cam.pos, 0.3f);
-    m_camera.angle = cam.angle;
-  }
-
-  void setAmbientLight(float ambientLight) override
-  {
-    m_ambientLight = ambientLight;
-  }
-
-  void beginDraw() override
-  {
-    m_frameCount++;
-    m_quads.clear();
-  }
-
-  void endDraw() override
-  {
-    {
-      int w, h;
-      SDL_GL_GetDrawableSize(m_window, &w, &h);
-      auto size = min(w, h);
-      SAFE_GL(glViewport((w - size) / 2, (h - size) / 2, size, size));
-    }
-
-    SAFE_GL(glUseProgram(m_shader.programId));
-
-    SAFE_GL(glClearColor(0, 0, 0, 1));
-    SAFE_GL(glClear(GL_COLOR_BUFFER_BIT));
-
-    auto byPriority = [] (Quad const& a, Quad const& b)
-      {
-        if(a.zOrder != b.zOrder)
-          return a.zOrder < b.zOrder;
-
-        if(a.light != b.light)
-          return a.light < b.light;
-
-        return a.texture < b.texture;
-      };
-
-    my::sort<Quad>(m_quads, byPriority);
-
-#define OFFSET(a) \
-  ((GLvoid*)offsetof(Vertex, a))
-
-    vector<Vertex> vboData;
-
-    // Bind our diffuse texture in Texture Unit 0
-    SAFE_GL(glActiveTexture(GL_TEXTURE0));
-
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, m_batchVbo));
-
-    SAFE_GL(glEnableVertexAttribArray(m_shader.positionLoc));
-    SAFE_GL(glVertexAttribPointer(m_shader.positionLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(x)));
-
-    SAFE_GL(glEnableVertexAttribArray(m_shader.texCoordLoc));
-    SAFE_GL(glVertexAttribPointer(m_shader.texCoordLoc, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), OFFSET(u)));
-
-    int drawCalls = 0;
-
-    auto flush = [&] ()
-      {
-        if(vboData.empty())
-          return;
-
-        SAFE_GL(glBufferData(GL_ARRAY_BUFFER, sizeof(vboData[0]) * vboData.size(), vboData.data(), GL_STREAM_DRAW));
-        SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, vboData.size()));
-        vboData.clear();
-        ++drawCalls;
-      };
-
-    GLuint currTexture = -1;
-    std::array<float, 3> currLight {};
-    currLight[0] = 0.0f / 0.0f;
-
-    for(auto const& q : m_quads)
-    {
-      if(vboData.size() * 6 >= MAX_VERTICES)
-        flush();
-
-      if(q.texture != currTexture)
-      {
-        flush();
-
-        SAFE_GL(glBindTexture(GL_TEXTURE_2D, q.texture));
-        currTexture = q.texture;
-      }
-
-      if(q.light != currLight)
-      {
-        flush();
-
-        SAFE_GL(glUniform4f(m_shader.colorId, q.light[0], q.light[1], q.light[2], 0));
-        currLight = q.light;
-      }
-
-      vboData.push_back({ q.pos[0].x, q.pos[0].y, 0, 0 });
-      vboData.push_back({ q.pos[1].x, q.pos[1].y, 0, 1 });
-      vboData.push_back({ q.pos[2].x, q.pos[2].y, 1, 1 });
-
-      vboData.push_back({ q.pos[0].x, q.pos[0].y, 0, 0 });
-      vboData.push_back({ q.pos[2].x, q.pos[2].y, 1, 1 });
-      vboData.push_back({ q.pos[3].x, q.pos[3].y, 1, 0 });
-    }
-
-    flush();
-
-    Stat("Draw calls", drawCalls);
-
-    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    SAFE_GL(glBindTexture(GL_TEXTURE_2D, 0));
-
-    SDL_GL_SwapWindow(m_window);
-#undef OFFSET
   }
 
   void readPixels(Span<uint8_t> dstRgbPixels) override
@@ -452,134 +363,159 @@ struct OpenglDisplay : Display
     }
   }
 
-  void drawActor(Rect2f where, float angle, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
+  void enableGrab(bool enable) override
   {
-    auto& model = m_Models.at(modelId);
-    auto cam = useWorldRefFrame ? m_camera : Camera();
-    pushQuad(where, angle, cam, model, blinking, actionIdx, ratio, zOrder);
+    SDL_SetRelativeMouseMode(enable ? SDL_TRUE : SDL_FALSE);
+    SDL_SetWindowGrab(m_window, enable ? SDL_TRUE : SDL_FALSE);
+    SDL_ShowCursor(enable ? 0 : 1);
   }
 
-  void drawText(Vector2f pos, char const* text) override
+  std::unique_ptr<ITexture> createTexture() override
   {
-    Rect2f rect;
-    rect.size.width = 0.5;
-    rect.size.height = 0.5;
-    rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
-    rect.pos.y = pos.y;
+    return std::make_unique<OpenGlTexture>();
+  }
 
-    while(*text)
+  std::unique_ptr<IGpuProgram> createGpuProgram(String name_, bool zTest) override
+  {
+    const std::string name(name_.data, name_.len);
+    printf("[display] loading shader '%s'\n", name.c_str());
+    auto vsCode = File::read("res/shaders/" + name + ".vert");
+    auto fsCode = File::read("res/shaders/" + name + ".frag");
+
+    auto toSpan = [] (const std::string& s)
+      {
+        return Span<const uint8_t>((const uint8_t*)s.c_str(), s.size());
+      };
+
+    return std::make_unique<OpenGlProgram>(loadShaders(toSpan(vsCode), toSpan(fsCode)), zTest);
+  }
+
+  void useGpuProgram(IGpuProgram* iprogram) override
+  {
+    auto program = dynamic_cast<OpenGlProgram*>(iprogram);
+    SAFE_GL(glUseProgram(program->program));
+    enableZTest(program->zTest);
+  }
+
+  void useVertexBuffer(IVertexBuffer* ivb) override
+  {
+    auto vb = dynamic_cast<OpenGlVertexBuffer*>(ivb);
+    SAFE_GL(glBindBuffer(GL_ARRAY_BUFFER, vb->vbo));
+  }
+
+  void enableVertexAttribute(int id, int dim, int stride, int offset) override
+  {
+    SAFE_GL(glEnableVertexAttribArray(id));
+    SAFE_GL(glVertexAttribPointer(id, dim, GL_FLOAT, GL_FALSE, stride, (void*)(uintptr_t)offset));
+  }
+
+  void setUniformInt(int id, int value) override
+  {
+    SAFE_GL(glUniform1i(id, value));
+  }
+
+  void setUniformFloat3(int id, float x, float y, float z) override
+  {
+    SAFE_GL(glUniform3f(id, x, y, z));
+  }
+
+  void setUniformFloat4(int id, float x, float y, float z, float w) override
+  {
+    SAFE_GL(glUniform4f(id, x, y, z, w));
+  }
+
+  void setUniformMatrixFloat4(int id, float* matrix) override
+  {
+    SAFE_GL(glUniformMatrix4fv(id, 1, GL_FALSE, matrix));
+  }
+
+  std::unique_ptr<IVertexBuffer> createVertexBuffer() override
+  {
+    return std::make_unique<OpenGlVertexBuffer>();
+  }
+
+  std::unique_ptr<IFrameBuffer> createFrameBuffer(Size2i resolution, bool depth) override
+  {
+    return std::make_unique<OpenGlFrameBuffer>(resolution, depth);
+  }
+
+  void setRenderTarget(IFrameBuffer* ifb) override
+  {
+    auto fb = dynamic_cast<OpenGlFrameBuffer*>(ifb);
+
+    if(!fb)
     {
-      pushQuad(rect, 0, {}, m_fontModel, false, *text, 0, 100);
-      rect.pos.x += rect.size.width;
-      ++text;
+      auto screenSize = m_screenSize;
+      SAFE_GL(glViewport(0, 0, screenSize.width, screenSize.height));
+      SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     }
+    else
+    {
+      SAFE_GL(glViewport(0, 0, fb->resolution.width, fb->resolution.height));
+      SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, fb->framebuffer));
+    }
+  }
+
+  void enableZTest(bool enable)
+  {
+    if(enable)
+      SAFE_GL(glEnable(GL_DEPTH_TEST));
+    else
+      SAFE_GL(glDisable(GL_DEPTH_TEST));
+  }
+
+  void draw(int vertexCount) override
+  {
+    SAFE_GL(glDrawArrays(GL_TRIANGLES, 0, vertexCount));
+    ++m_drawCallCount;
+  }
+
+  void clear() override
+  {
+    SAFE_GL(glClearColor(0, 0, 0, 1));
+    SAFE_GL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+  }
+
+  void swap() override
+  {
+    SDL_GL_SwapWindow(m_window);
+    updateScreenSize();
+    Stat("Draw calls", m_drawCallCount);
+    m_drawCallCount = 0;
+  }
+
+  void updateScreenSize()
+  {
+    Size2i screenSize {};
+    SDL_GL_GetDrawableSize(m_window, &screenSize.width, &screenSize.height);
+
+    if(screenSize != m_screenSize)
+    {
+      m_screenSize = screenSize;
+
+      if(m_screenSizeListener)
+        m_screenSizeListener->onScreenSizeChanged(screenSize);
+    }
+  }
+
+  void setScreenSizeListener(IScreenSizeListener* listener) override
+  {
+    m_screenSizeListener = listener;
+    updateScreenSize();
+    m_screenSizeListener->onScreenSizeChanged(m_screenSize);
   }
 
 private:
-  void pushQuad(Rect2f where, float angle, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
-  {
-    if(model.actions.empty())
-      throw Error("model has no actions");
-
-    if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
-      throw Error("invalid action index");
-
-    auto const& action = model.actions[actionIdx];
-
-    if(action.textures.empty())
-      throw Error("action has no textures");
-
-    auto const N = (int)action.textures.size();
-    auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
-
-    if(where.size.width < 0)
-      where.pos.x -= where.size.width;
-
-    if(where.size.height < 0)
-      where.pos.y -= where.size.height;
-
-    auto const sx = where.size.width;
-    auto const sy = where.size.height;
-
-    const auto worldTransform = translate(where.pos) * rotate(angle) * scale(Vector2f(sx, sy));
-
-    static const auto shrink = scale(0.125 * Vector2f(1, 1));
-    const auto viewTransform = shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
-
-    const auto transform = viewTransform * worldTransform;
-
-    Quad q;
-    q.zOrder = zOrder;
-    q.texture = action.textures[idx];
-
-    auto const m0x = 0;
-    auto const m0y = 0;
-    auto const m1x = 1;
-    auto const m1y = 1;
-
-    q.pos[0] = multiplyMatrix(transform, m0x, m0y, 1);
-    q.pos[1] = multiplyMatrix(transform, m0x, m1y, 1);
-    q.pos[2] = multiplyMatrix(transform, m1x, m1y, 1);
-    q.pos[3] = multiplyMatrix(transform, m1x, m0y, 1);
-
-    // lighting
-    {
-      q.light[0] = m_ambientLight;
-      q.light[1] = m_ambientLight;
-      q.light[2] = m_ambientLight;
-
-      if(blinking)
-      {
-        if((m_frameCount / 4) % 2)
-        {
-          q.light[0] = 0.8;
-          q.light[1] = 0.4;
-          q.light[2] = 0.4;
-        }
-      }
-    }
-
-    m_quads.push_back(q);
-  }
-
+  int m_drawCallCount = 0;
+  Size2i m_screenSize {};
+  IScreenSizeListener* m_screenSizeListener {};
   SDL_Window* m_window;
   SDL_GLContext m_context;
-
-  Camera m_camera;
-  bool m_cameraValid = false;
-
-  // shader attribute/uniform locations
-  struct Shader
-  {
-    GLuint programId;
-    GLint colorId;
-    GLint positionLoc;
-    GLint texCoordLoc;
-  };
-
-  Shader m_shader;
-
-  struct Quad
-  {
-    int zOrder;
-    std::array<float, 3> light {};
-    GLuint texture;
-    Vector2f pos[4];
-  };
-
-  vector<Quad> m_quads;
-  GLuint m_batchVbo;
-
-  unordered_map<int, Model> m_Models;
-  Model m_fontModel;
-
-  float m_ambientLight = 0;
-  int m_frameCount = 0;
 };
 }
 
-Display* createDisplay(Size2i resolution)
+IGraphicsBackend* createGraphicsBackend(Size2i resolution)
 {
-  return new OpenglDisplay(resolution);
+  return new OpenGlGraphicsBackend(resolution);
 }
 

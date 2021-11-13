@@ -40,8 +40,6 @@ LDFLAGS+=$(DBGFLAGS)
 #------------------------------------------------------------------------------
 
 SRCS_ENGINE:=\
-	$(BIN)/src/render/fragment.glsl.cpp\
-	$(BIN)/src/render/vertex.glsl.cpp\
 	src/engine/app.cpp\
 	src/engine/main.cpp\
 	src/engine/stats.cpp\
@@ -57,19 +55,13 @@ SRCS_ENGINE:=\
 	src/render/model.cpp\
 	src/render/picture.cpp\
 	src/render/png.cpp\
+	src/render/renderer.cpp\
 
 SRCS_ENGINE+=\
 	src/platform/audio_sdl.cpp\
 	src/platform/input_sdl.cpp\
 	src/platform/display_ogl.cpp\
 	src/platform/glad.cpp\
-
-$(BIN)/src/render/vertex.glsl.cpp: NAME=VertexShaderCode
-$(BIN)/src/render/fragment.glsl.cpp: NAME=FragmentShaderCode
-
-$(BIN)/%.glsl.cpp: %.glsl
-	@mkdir -p $(dir $@)
-	scripts/embed.sh "$<" "$@" "$(NAME)"
 
 #------------------------------------------------------------------------------
 
