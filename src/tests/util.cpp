@@ -101,3 +101,8 @@ unittest("Util: dirName")
   assertEquals(std::string("Hello/World"), dirName("Hello/World/Goodbye.txt"));
 }
 
+unittest("Util: baseName")
+{
+  assertEquals(std::string("Goodbye.txt"), baseName("Hello/World/Goodbye.txt"));
+}
+

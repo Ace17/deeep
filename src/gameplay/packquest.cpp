@@ -4,21 +4,29 @@
 
 #include <stdio.h>
 
-Quest loadTmxQuest(string path);
+Quest loadTiledWorld(string path);
 void dumpQuest(Quest const& q, const char* filename);
 
 int main(int argc, const char* argv[])
 {
   if(argc != 3)
   {
-    fprintf(stderr, "Usage: %s <quest.json> <packedquest.json>\n", argv[0]);
+    fprintf(stderr, "Usage: %s <quest.world> <packedquest.json>\n", argv[0]);
     return 1;
   }
 
-  auto q = loadTmxQuest(argv[1]);
-  preprocessQuest(q);
-  dumpQuest(q, argv[2]);
-  return 0;
+  try
+  {
+    auto q = loadTiledWorld(argv[1]);
+    preprocessQuest(q);
+    dumpQuest(q, argv[2]);
+    return 0;
+  }
+  catch(const Error& e)
+  {
+    fprintf(stderr, "Fatal: %s\n", e.msg);
+    return 1;
+  }
 }
 
 std::string serializeMatrix(Matrix2<int> const& m)

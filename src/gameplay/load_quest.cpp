@@ -17,6 +17,7 @@
 #include "misc/decompress.h"
 #include "misc/file.h"
 #include "misc/json.h"
+#include "misc/util.h" // baseName, removeExtension
 
 #include "quest.h"
 
@@ -257,21 +258,22 @@ static void removeVersion(string& data)
 static
 Room loadAbstractRoom(json::Value const& jsonRoom)
 {
-  auto const PELS_PER_TILE = 4;
+  auto const PELS_PER_TILE = 256;
 
   auto box = getRect(jsonRoom);
   box = convertRect(box, PELS_PER_TILE, 64);
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
+  auto const path = "assets/" + (string)jsonRoom["fileName"];
+  auto const base = removeExtension(baseName(path));
+
   Room room;
-  room.name = (string)jsonRoom["name"];
+  room.name = string(base.data, base.len);
   room.pos = box.pos;
   room.size = box.size;
   room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
-  room.theme = atoi(string(jsonRoom["type"]).c_str());
-
-  auto const path = "assets/rooms/" + room.name + ".json";
+  room.theme = 3;// atoi(string(jsonRoom["type"]).c_str());
 
   if(File::exists(path))
   {
@@ -303,19 +305,15 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   return room;
 }
 
-Quest loadTmxQuest(string path) // tiled TMX format
+Quest loadTiledWorld(string path) // tiled JSON ".world" format
 {
   auto data = File::read(path);
   removeVersion(data);
   auto js = json::parse(data.c_str(), data.size());
 
-  auto layers = getAllLayers(js);
-
-  auto layer = layers["rooms"];
-
   Quest r;
 
-  for(auto& roomValue : layer["objects"].elements)
+  for(auto& roomValue : js["maps"].elements)
   {
     auto room = loadAbstractRoom(roomValue);
     r.rooms.push_back(move(room));
