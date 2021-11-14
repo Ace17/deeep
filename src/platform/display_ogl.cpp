@@ -445,8 +445,8 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     if(!fb)
     {
-      auto screenSize = m_screenSize;
-      SAFE_GL(glViewport(0, 0, screenSize.width, screenSize.height));
+      auto size = min(m_screenSize.width, m_screenSize.height);
+      SAFE_GL(glViewport((m_screenSize.width - size) / 2, (m_screenSize.height - size) / 2, size, size));
       SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     }
     else

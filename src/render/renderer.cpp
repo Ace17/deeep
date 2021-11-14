@@ -109,15 +109,7 @@ struct Renderer : Display
 
   void endDraw() override
   {
-#if 0
-    {
-      int w, h;
-      SDL_GL_GetDrawableSize(m_window, &w, &h);
-      auto size = min(w, h);
-      SAFE_GL(glViewport((w - size) / 2, (h - size) / 2, size, size));
-    }
-#endif
-
+    backend->setRenderTarget(nullptr); // draw to screen
     backend->useGpuProgram(m_shader.get());
     backend->clear();
 
