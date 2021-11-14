@@ -51,6 +51,17 @@ struct Vertex
   float x, y, u, v;
 };
 
+const Vertex quadVertices[] =
+{
+  { -1, -1, 0, 0 },
+  { +1, -1, 1, 0 },
+  { +1, +1, 1, 1 },
+
+  { -1, -1, 0, 0 },
+  { +1, +1, 1, 1 },
+  { -1, +1, 0, 1 },
+};
+
 template<typename T>
 T blend(T a, T b, float alpha)
 {
@@ -65,6 +76,10 @@ struct Renderer : Display
     g_Renderer = this;
     m_shader = backend->createGpuProgram("standard", false);
     m_batchVbo = backend->createVertexBuffer();
+    m_fb = backend->createFrameBuffer(Size2i(256, 256), false);
+
+    m_quadVbo = backend->createVertexBuffer();
+    m_quadVbo->upload(quadVertices, sizeof quadVertices);
 
     m_fontModel = ::loadModel("res/font.model");
   }
@@ -109,7 +124,8 @@ struct Renderer : Display
 
   void endDraw() override
   {
-    backend->setRenderTarget(nullptr); // draw to screen
+    // draw to internal framebuffer, with fixed resolution
+    backend->setRenderTarget(m_fb.get());
     backend->useGpuProgram(m_shader.get());
     backend->clear();
 
@@ -185,6 +201,15 @@ struct Renderer : Display
     }
 
     flush();
+
+    // draw to screen
+    backend->setRenderTarget(nullptr);
+    backend->clear();
+    backend->useVertexBuffer(m_quadVbo.get());
+    m_fb->getColorTexture()->bind(0);
+    backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+    backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+    backend->draw(6);
 
     backend->swap();
   }
@@ -300,6 +325,8 @@ private:
 
   vector<Quad> m_quads;
   std::unique_ptr<IVertexBuffer> m_batchVbo;
+  std::unique_ptr<IVertexBuffer> m_quadVbo;
+  std::unique_ptr<IFrameBuffer> m_fb;
 
   unordered_map<int, Model> m_Models;
   unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
