@@ -133,10 +133,10 @@ struct GameState : Scene, private IGame
     }
 
     {
-      Actor lifebar { Vector(-7, 3.5), MDL_LIFEBAR };
+      Actor lifebar { Vector(-7, 1.5), MDL_LIFEBAR };
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
-      lifebar.scale = Size(0.7, 3);
+      lifebar.scale = Size(1, 5);
       lifebar.screenRefFrame = true;
       lifebar.zOrder = 10;
       m_view->sendActor(lifebar);

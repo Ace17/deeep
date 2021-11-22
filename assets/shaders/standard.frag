@@ -16,7 +16,6 @@ layout(location = 0) out vec4 color;
 void main()
 {
   color = texture(DiffuseTextureSampler, UV) + fragOffset;
-  color += vec4(vertexPos_world.y, vertexPos_world.y, vertexPos_world.y, 0) * 0.2;
 }
 
 // vim: syntax=glsl

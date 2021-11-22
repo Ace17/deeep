@@ -33,7 +33,7 @@
 using namespace std;
 
 auto const TIMESTEP = 10;
-auto const RESOLUTION = Size2i(256, 256);
+auto const RESOLUTION = Size2i(768, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
 IGraphicsBackend* createGraphicsBackend(Size2i resolution);
