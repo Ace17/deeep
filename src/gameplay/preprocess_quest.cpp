@@ -274,6 +274,28 @@ void replaceLegacyEntityNames(Room& room)
 }
 
 static
+void addFragileBlocks(Room& room)
+{
+  for(auto& spawner : room.spawners)
+  {
+    if(spawner.name != "fragile_block")
+      continue;
+
+    if(!room.tiles.isInside(spawner.pos.x, spawner.pos.y))
+      continue;
+
+    if(room.tiles.get(spawner.pos.x, spawner.pos.y))
+    {
+      int tile = room.tilesForDisplay.get(spawner.pos.x, spawner.pos.y);
+      spawner.config["tile"] = to_string(tile);
+      spawner.config["theme"] = to_string(room.theme);
+      room.tiles.set(spawner.pos.x, spawner.pos.y, 0);
+      room.tilesForDisplay.set(spawner.pos.x, spawner.pos.y, -1);
+    }
+  }
+}
+
+static
 void preprocessRoom(Room& room, vector<Room> const& quest)
 {
   room.tilesForDisplay = applySmartTiling(room.tiles);
@@ -281,6 +303,7 @@ void preprocessRoom(Room& room, vector<Room> const& quest)
   addRandomWidgets(room.tiles);
   addBoundaryDetectors(room, quest);
   replaceLegacyEntityNames(room);
+  addFragileBlocks(room);
 }
 
 void preprocessQuest(Quest& quest)

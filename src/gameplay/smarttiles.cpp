@@ -114,6 +114,7 @@ int computeTileComposition(int nb)
   case 0b11011111: return 15;
   case 0b01111111: return 7;
   }
+
   return 1;
 }
 

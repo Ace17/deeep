@@ -19,8 +19,10 @@ namespace
 {
 struct FragileBlock : Entity, Damageable
 {
-  FragileBlock(IEntityConfig*)
+  FragileBlock(IEntityConfig* cfg)
   {
+    theme = cfg->getInt("theme", 0);
+    tile = cfg->getInt("tile", 0);
     size = UnitSize;
     reappear();
   }
@@ -30,7 +32,7 @@ struct FragileBlock : Entity, Damageable
     if(state == 2)
       return;
 
-    auto r = Actor { pos, MDL_BLOCK };
+    auto r = Actor { pos, MDL_TILES_00 + theme };
     r.scale = size;
 
     if(state == 0)
@@ -38,7 +40,7 @@ struct FragileBlock : Entity, Damageable
     else
       r.ratio = 1.0f - (timer / 50.0f);
 
-    r.action = 3;
+    r.action = tile;
 
     actors.push_back(r);
   }
@@ -64,7 +66,7 @@ struct FragileBlock : Entity, Damageable
         solid = 0;
 
         state = 2;
-        timer = 300;
+        timer = 600;
       }
     }
     else if(state == 2)
@@ -91,12 +93,15 @@ struct FragileBlock : Entity, Damageable
 
   void disappear()
   {
-    timer = 50;
+    timer = 1;
     state = 1;
   }
 
   int state = 0; // 0: solid, 1:disapearing, 2: disapeared
   int timer = 0;
+
+  int theme;
+  int tile;
 };
 
 DECLARE_ENTITY("fragile_block", FragileBlock);
