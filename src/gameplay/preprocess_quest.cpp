@@ -145,14 +145,13 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 }
 
 // from smarttiles
-#include <array>
-array<int, 4> computeTileFor(Matrix2<int> const& m, int x, int y);
+int computeTileFor(Matrix2<int> const& m, int x, int y);
 
 static
 Matrix2<int> applySmartTiling(Matrix2<int> const& tiles)
 {
   Matrix2<int> r;
-  r.resize(tiles.size * 2);
+  r.resize(tiles.size);
 
   for(int row = 0; row < r.size.height; ++row)
     for(int col = 0; col < r.size.width; ++col)
@@ -166,10 +165,7 @@ Matrix2<int> applySmartTiling(Matrix2<int> const& tiles)
         continue;
 
       auto composition = computeTileFor(tiles, col, row);
-      r.set(col * 2 + 0, row * 2 + 0, composition[0]);
-      r.set(col * 2 + 1, row * 2 + 0, composition[1]);
-      r.set(col * 2 + 0, row * 2 + 1, composition[2]);
-      r.set(col * 2 + 1, row * 2 + 1, composition[3]);
+      r.set(col, row, composition);
     }
   }
 

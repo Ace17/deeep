@@ -390,7 +390,7 @@ Quest loadQuest(string path)
     room.size.width = int(jsonRoom["width"]);
     room.size.height = int(jsonRoom["height"]);
     room.tiles = parseMatrix(room.size * CELL_SIZE, std::string(jsonRoom["tiles"]));
-    room.tilesForDisplay = parseMatrix(room.size * CELL_SIZE * 2, std::string(jsonRoom["tilesForDisplay"]));
+    room.tilesForDisplay = parseMatrix(room.size * CELL_SIZE, std::string(jsonRoom["tilesForDisplay"]));
 
     for(auto& jsonSpawner : jsonRoom["entities"].elements)
     {

@@ -10,16 +10,19 @@
 
 #include "base/geom.h"
 #include "base/util.h"
-#include <array>
 #include <cassert>
 
 using namespace std;
 
 typedef Matrix2<int> TileMap;
 
+// .-------.
+// | 5 4 3 |
+// | 6 . 2 |
+// | 7 0 1 |
+// ._______.
 static const Vector2i dirs[] =
 {
-  Vector2i(-1, -1),
   Vector2i(0, -1),
   Vector2i(+1, -1),
   Vector2i(+1, 0),
@@ -27,6 +30,7 @@ static const Vector2i dirs[] =
   Vector2i(0, +1),
   Vector2i(-1, +1),
   Vector2i(-1, 0),
+  Vector2i(-1, -1),
 };
 
 static
@@ -50,126 +54,70 @@ int computeNeighboors(TileMap const& occupancy, int x, int y)
 
   auto const c = Vector2i(x, y);
 
-  for(int i = 0; i < 8; ++i)
+  uint32_t mask = 1;
+
+  for(auto dir : dirs)
   {
-    if(hasNeighboor(occupancy, c, dirs[i]))
-      neighboors |= (1 << i);
+    if(hasNeighboor(occupancy, c, dir))
+      neighboors |= mask;
+
+    mask <<= 1;
   }
 
   return neighboors;
 }
 
-enum
-{
-  LB, // left bottom
-  MB, // bottom
-  RB, // right bottom
-  RM, // right
-  RT, // right top
-  MT, // top
-  LT, // left top
-  LM, // left
-};
-
-enum TILECLASS
-{
-  TILECLASS_CORNER,
-  TILECLASS_VERT_WALL,
-  TILECLASS_HORZ_WALL,
-  TILECLASS_INNER_CORNER,
-  TILECLASS_PLAIN,
-};
-
-static
-TILECLASS classify(int horz, int vert, int nb)
-{
-  // find the diagonal between horz and vert
-  auto const diag = (horz + 1) % 8 == (vert + 8 - 1) % 8 ? (horz + 1) % 8 : (horz + 8 - 1) % 8;
-
-  auto const horzMask = (1 << horz);
-  auto const vertMask = (1 << vert);
-  auto const diagMask = (1 << diag);
-
-  if(nb & horzMask)
-  {
-    if(nb & vertMask)
-    {
-      if(nb & diagMask)
-        return TILECLASS_PLAIN;
-      else
-        return TILECLASS_INNER_CORNER;
-    }
-    else
-    {
-      return TILECLASS_HORZ_WALL;
-    }
-  }
-  else
-  {
-    if(nb & vertMask)
-      return TILECLASS_VERT_WALL;
-    else
-      return TILECLASS_CORNER;
-  }
-}
-
+// .-------.
+// | 5 4 3 |
+// | 6 . 2 |
+// | 7 0 1 |
+// ._______.
 //
-// Returns the composition of one tile, given its neighboors,
-// as the array of its four sub-tiles:
-// .---.---.
-// | 2 | 3 |
-// |---|---|
-// | 0 | 1 |
-// .---.---.
 static
-array<int, 4> computeTileComposition(int nb)
+int computeTileComposition(int nb)
 {
-  array<int, 4> r;
-
-  // bottom left sub-tile
+  switch(nb)
   {
-    auto const cls = classify(LM, MB, nb);
-    int const tiles[] =
-    {
-      10, 13, 12, 7, 0
-    };
-    r[0] = tiles[cls];
-  }
+  case 0b00000000: return 1;
+  case 0b11111111: return 0;
 
-  // bottom right sub-tile
-  {
-    auto const cls = classify(RM, MB, nb);
-    int const tiles[] =
-    {
-      11, 5, 12, 6, 0
-    };
-    r[1] = tiles[cls];
-  }
+  // ground
+  case 0b11000111: return 4;
+  case 0b11001111: return 4;
+  case 0b11100111: return 4;
 
-  // top left sub-tile
-  {
-    auto const cls = classify(LM, MT, nb);
-    int const tiles[] =
-    {
-      2, 13, 4, 15, 0
-    };
-    r[2] = tiles[cls];
-  }
+  // right wall
+  case 0b00011111: return 13;
+  case 0b10011111: return 13;
+  case 0b00111111: return 13;
 
-  // top right sub-tile
-  {
-    auto const cls = classify(RM, MT, nb);
-    int const tiles[] =
-    {
-      3, 5, 4, 14, 0
-    };
-    r[3] = tiles[cls];
-  }
+  // left wall
+  case 0b11110001: return 5;
+  case 0b11110011: return 5;
 
-  return r;
+  // ceiling
+  case 0b01111100: return 12;
+
+  // outer corners
+  case 0b00000111: return 2;
+  case 0b00001111: return 2;
+  case 0b10000111: return 2;
+
+  case 0b11000001: return 3;
+  case 0b11100001: return 3;
+  case 0b11100011: return 3;
+  case 0b11000011: return 3;
+
+  // inner corners
+  case 0b11111101: return 6;
+  case 0b11110111: return 14;
+  case 0b11011111: return 15;
+  case 0b01111111: return 7;
+  }
+  return 1;
 }
 
-array<int, 4> computeTileFor(TileMap const& occupancy, int x, int y)
+int computeTileFor(TileMap const& occupancy, int x, int y)
 {
   auto const neighboors = computeNeighboors(occupancy, x, y);
 

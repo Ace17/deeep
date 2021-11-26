@@ -224,11 +224,11 @@ struct GameState : Scene, private IGame
           return;
 
         {
-          auto const posX = (x * 0.5);
-          auto const posY = (y * 0.5);
+          const float posX = x;
+          const float posY = y;
           auto actor = Actor { Vector(posX, posY), model };
           actor.action = tile;
-          actor.scale = UnitSize * 0.5;
+          actor.scale = UnitSize;
           actor.zOrder = -1;
           m_view->sendActor(actor);
         }
