@@ -152,7 +152,7 @@ struct Rockman : Player, Damageable
     r.scale = Size(3, 3);
 
     // re-center
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.1);
+    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.0);
 
     if(ball)
     {
@@ -548,7 +548,7 @@ struct Rockman : Player, Damageable
         {
           auto b = make_unique<Bullet>();
           auto sign = (dir == LEFT ? -1 : 1);
-          auto offsetV = vel.x ? Vector(0, 1) : Vector(0, 0.9);
+          auto offsetV = Vector(0, 1);
           auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);
 
           if(sliding)

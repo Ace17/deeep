@@ -21,8 +21,8 @@ struct FragileBlock : Entity, Damageable
 {
   FragileBlock(IEntityConfig* cfg)
   {
-    theme = cfg->getInt("theme", 0);
-    tile = cfg->getInt("tile", 0);
+    model = MDL_TILES_00 + cfg->getInt("theme", 0);
+    tile = cfg->getInt("tile", 1);
     size = UnitSize;
     reappear();
   }
@@ -32,7 +32,7 @@ struct FragileBlock : Entity, Damageable
     if(state == 2)
       return;
 
-    auto r = Actor { pos, MDL_TILES_00 + theme };
+    auto r = Actor { pos, model };
     r.scale = size;
 
     if(state == 0)
@@ -74,7 +74,13 @@ struct FragileBlock : Entity, Damageable
       decrement(timer);
 
       if(canReapear && timer == 0)
+      {
+        // reveal block
+        model = MDL_BLOCK;
+        tile = 5;
+
         reappear();
+      }
     }
     else if(state == 0)
     {
@@ -100,10 +106,75 @@ struct FragileBlock : Entity, Damageable
   int state = 0; // 0: solid, 1:disapearing, 2: disapeared
   int timer = 0;
 
-  int theme;
+  int model;
+  int tile;
+};
+
+struct CrumbleBlock : Entity
+{
+  CrumbleBlock(IEntityConfig* cfg)
+  {
+    model = MDL_TILES_00 + cfg->getInt("theme", 0);
+    tile = cfg->getInt("tile", 0);
+
+    size = UnitSize;
+    collisionGroup = CG_WALLS;
+    Body::onCollision = [this] (Body* other) { onCollide(other); };
+  }
+
+  virtual void addActors(vector<Actor>& actors) const override
+  {
+    if(solid)
+    {
+      auto r = Actor { pos, model };
+      r.scale = size;
+      r.action = tile;
+
+      actors.push_back(r);
+    }
+  }
+
+  void onCollide(Body* other)
+  {
+    if(openingTimer)
+      return;
+
+    if(other->pos.y > pos.y + size.height * 0.9)
+    {
+      openingTimer = OPEN_DURATION;
+
+      // reveal block
+      model = MDL_BLOCK;
+      tile = 4;
+    }
+  }
+
+  void tick() override
+  {
+    decrement(openingTimer);
+
+    if(openingTimer > 0)
+    {
+      collidesWith = 0;
+
+      if(openingTimer < (OPEN_DURATION * 9) / 10)
+        solid = 0;
+    }
+    else if(!physics->getBodiesInBox(getBox(), CG_PLAYER, false, this))
+    {
+      collidesWith = CG_PLAYER;
+      solid = 1;
+    }
+  }
+
+  int openingTimer = 0;
+  enum { OPEN_DURATION = 40 };
+
+  int model;
   int tile;
 };
 
 DECLARE_ENTITY("fragile_block", FragileBlock);
+DECLARE_ENTITY("crumble_block", CrumbleBlock);
 }
 

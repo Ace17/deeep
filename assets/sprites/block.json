@@ -18,6 +18,14 @@
     {
       "name": "fragile",
       "frames": [ 16 ]
+    },
+    {
+      "name": "revealed_crumble",
+      "frames": [ 1 ]
+    },
+    {
+      "name": "revealed_fragile",
+      "frames": [ 2 ]
     }
   ]
 }

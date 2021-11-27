@@ -278,7 +278,7 @@ void addFragileBlocks(Room& room)
 {
   for(auto& spawner : room.spawners)
   {
-    if(spawner.name != "fragile_block")
+    if(spawner.name != "fragile_block" && spawner.name != "crumble_block")
       continue;
 
     if(!room.tiles.isInside(spawner.pos.x, spawner.pos.y))

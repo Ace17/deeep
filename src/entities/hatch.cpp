@@ -71,6 +71,5 @@ struct Hatch : Entity
 };
 
 DECLARE_ENTITY("hatch", Hatch);
-DECLARE_ENTITY("crumble_block", Hatch);
 }
 

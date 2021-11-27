@@ -4,7 +4,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJztm9uKhDAMhit7tfP+D7x4MYuUJs05rc0HgWG05v\/UKs7haq1dVVVVVVVVVf\/FQTruyUcxFsPbve8hxcv\/i7UztG0p3v49Wud+W+W\/tn+fbZR1teufxTGCsq12T4H8vfqv7u\/dP9v3BH9Opk9grwa8hxHh79kH86eM886V7Q\/h7f+l\/H3dd\/D37CP1xzjdH8vLReJPzeLpD\/Xl8pz\/1D4aqP7aPlS4z38e\/qP9C\/WhHAPOcYp+\/r+BvCn7AZtT2P6EtqHxl84Hzhjr62\/fn+LPue6Nlnk4afz7LDNfzI3bP9od84fmGXXczv798tl58nZ\/Div6e+a3zLaCP0T57+3\/86jT\/DnnRmb\/8udl3RWJ\/xuZ+Z9GhvMFvM4gu380o\/N\/tI7HfJBujzJutk7U\/U\/rMcv+O6hZ78j7P8WDQ\/b939Jfwm7+1P2CrROZhXvcInJl+VPGvd0fovzL\/2R\/jNP9scwY0HddGh\/K+NG6bbCMi7U\/tY8GS38uGn8rop2fSP0zscyV8VsHLVbz7ibiv07Ye6NlmRWVZ0X3u\/rPM07zz6o\/nhAKiQ==",
+         "data":"eJztm9uKhDAMhit7tfP+D7x4MYuUJs05rc0HgWG05v\/UKs7haq1dVVVVVVVVVf\/FQTruyUcxFsPbve8hxcv\/i7UztG0p3v49Wud+W+W\/tn+fbZR1teufxTGCsq12T4H8vfqv7u\/dP9v3BH9Opk9grwa8hxHh79kH86eM886V7Q\/h7f+l\/H3dd\/D37CP1xzjdH8vLReJPzeLpD\/Xl8pz\/1D4aqP7aPlS4z38e\/qP9C\/WhHAPOcYp+\/r+BvCn7AZtT2P6EtqHxl84Hzhjr62\/fn+LPue6Nlnk4afz7LDNfzI3bP9od84fmGXXczv798tl58nZ\/Div6e+a3zLaCP0T57+3\/86jT\/DnnRmb\/8udl3RWJ\/xuZ+Z9GhvMFvM4gu380o\/N\/tI7HfJBujzJutk7U\/U\/rMcv+O6hZ78j7P8WDQ\/b939Jfwm7+1P2CrROZhXvcInJl+VPGvd0fovzL\/2R\/jNP9scwY0HddGh\/K+NG6bbCMi6U\/p48GS38uGn8rop2fSP0zscyW8VsHLVbz7ibiv07Ye6NlmRWVZ0X3u\/rPM07zz6o\/iswKhg==",
          "encoding":"base64",
          "height":64,
          "id":1,
@@ -156,7 +156,7 @@
                 {
                  "height":16,
                  "id":17,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -167,7 +167,7 @@
                 {
                  "height":16,
                  "id":18,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -178,7 +178,7 @@
                 {
                  "height":16,
                  "id":19,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -189,7 +189,7 @@
                 {
                  "height":16,
                  "id":20,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -200,7 +200,7 @@
                 {
                  "height":16,
                  "id":21,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -211,7 +211,7 @@
                 {
                  "height":16,
                  "id":22,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -222,7 +222,7 @@
                 {
                  "height":16,
                  "id":23,
-                 "name":"crumble_block",
+                 "name":"hatch",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -639,13 +639,101 @@
                 {
                  "height":16,
                  "id":58,
-                 "name":"fragile_block",
+                 "name":"crumble_block",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":384,
                  "y":224
+                }, 
+                {
+                 "height":16,
+                 "id":59,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":768
+                }, 
+                {
+                 "height":16,
+                 "id":60,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":784
+                }, 
+                {
+                 "height":16,
+                 "id":61,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":800
+                }, 
+                {
+                 "height":16,
+                 "id":62,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":816
+                }, 
+                {
+                 "height":16,
+                 "id":63,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":832
+                }, 
+                {
+                 "height":16,
+                 "id":64,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":848
+                }, 
+                {
+                 "height":16,
+                 "id":65,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":864
+                }, 
+                {
+                 "height":16,
+                 "id":66,
+                 "name":"crumble_block",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":880
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -654,7 +742,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":59,
+ "nextobjectid":67,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
