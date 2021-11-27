@@ -96,7 +96,7 @@ const char UpgradeClimbMsg[] = "jump while against wall";
 using UpgradeBonus_Climb = ConcreteBonus<4, UPGRADE_CLIMB, UpgradeClimbMsg>;
 DECLARE_ENTITY("upgrade_climb", UpgradeBonus_Climb);
 
-const char UpgradeDashMsg[] = "press Z";
+const char UpgradeDashMsg[] = "press C";
 using UpgradeBonus_Dash = ConcreteBonus<5, UPGRADE_DASH, UpgradeDashMsg>;
 DECLARE_ENTITY("upgrade_dash", UpgradeBonus_Dash);
 
@@ -111,6 +111,10 @@ DECLARE_ENTITY("upgrade_ball", UpgradeBonus_Ball);
 const char UpgradeSlideMsg[] = "go against wall while falling";
 using UpgradeBonus_Slide = ConcreteBonus<8, UPGRADE_SLIDE, UpgradeSlideMsg>;
 DECLARE_ENTITY("upgrade_slide", UpgradeBonus_Slide);
+
+const char UpgradeBombMsg[] = "press Z in ball mode";
+using UpgradeBonus_Bomb = ConcreteBonus<9, UPGRADE_BOMB, UpgradeBombMsg>;
+DECLARE_ENTITY("upgrade_bomb", UpgradeBonus_Bomb);
 
 const char UpgradeLifeMsg[] = "life up";
 using UpgradeBonus_Life = ConcreteBonus<0, 0, UpgradeLifeMsg>;

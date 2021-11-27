@@ -550,28 +550,6 @@
                 }, 
                 {
                  "height":16,
-                 "id":44,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":320,
-                 "y":176
-                }, 
-                {
-                 "height":16,
-                 "id":45,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":320,
-                 "y":144
-                }, 
-                {
-                 "height":16,
                  "id":46,
                  "name":"fragile_block",
                  "rotation":0,
@@ -591,28 +569,6 @@
                  "width":16,
                  "x":288,
                  "y":192
-                }, 
-                {
-                 "height":16,
-                 "id":48,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":288,
-                 "y":176
-                }, 
-                {
-                 "height":16,
-                 "id":49,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":288,
-                 "y":144
                 }, 
                 {
                  "height":16,
@@ -638,28 +594,6 @@
                 }, 
                 {
                  "height":16,
-                 "id":52,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":304,
-                 "y":176
-                }, 
-                {
-                 "height":16,
-                 "id":53,
-                 "name":"fragile_block",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":304,
-                 "y":144
-                }, 
-                {
-                 "height":16,
                  "id":54,
                  "name":"fragile_block",
                  "rotation":0,
@@ -668,6 +602,28 @@
                  "width":16,
                  "x":304,
                  "y":160
+                }, 
+                {
+                 "height":16,
+                 "id":55,
+                 "name":"upgrade_bomb",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":480,
+                 "y":240
+                }, 
+                {
+                 "height":16,
+                 "id":56,
+                 "name":"upgrade_ball",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":416,
+                 "y":416
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -676,7 +632,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":55,
+ "nextobjectid":57,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",

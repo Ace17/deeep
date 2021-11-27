@@ -23,5 +23,6 @@ enum
   UPGRADE_DJUMP = 8,
   UPGRADE_BALL = 16,
   UPGRADE_SLIDE = 32,
+  UPGRADE_BOMB = 64,
 };
 

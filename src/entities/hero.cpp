@@ -75,6 +75,57 @@ struct Bullet : Entity
   Vector vel;
 };
 
+struct Bomb : Entity
+{
+  Bomb()
+  {
+    size = Size(0.4, 0.4);
+
+    collidesWith = CG_WALLS;
+  }
+
+  virtual void addActors(vector<Actor>& actors) const override
+  {
+    if(life == 0)
+      return;
+
+    auto r = Actor { pos, MDL_RECT };
+    r.scale = size;
+    r.zOrder = 2;
+
+    actors.push_back(r);
+  }
+
+  void tick() override
+  {
+    if(decrement(life))
+    {
+      game->playSound(SND_EXPLODE);
+
+      const auto center = getCenter();
+      size = UnitSize * 1.5;
+      pos = center - size * 0.5;
+
+      Body::onCollision = [this] (Body* other) { onCollide(other); };
+    }
+
+    if(life == 0)
+    {
+      if(decrement(exploding))
+        dead = true;
+    }
+  }
+
+  void onCollide(Body* other)
+  {
+    if(auto damageable = dynamic_cast<Damageable*>(other))
+      damageable->onDamage(10);
+  }
+
+  int life = 70;
+  int exploding = 2;
+};
+
 static auto const NORMAL_SIZE = Size(0.7, 1.9);
 
 struct Rockman : Player, Damageable
@@ -476,27 +527,43 @@ struct Rockman : Player, Damageable
 
   void handleShooting()
   {
-    if(upgrades & UPGRADE_SHOOT && !ball)
+    if(ball)
     {
-      if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
+      if(upgrades & UPGRADE_BOMB)
       {
-        auto b = make_unique<Bullet>();
-        auto sign = (dir == LEFT ? -1 : 1);
-        auto offsetV = vel.x ? Vector(0, 1) : Vector(0, 0.9);
-        auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);
-
-        if(sliding)
+        if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
         {
-          sign = -sign;
+          auto b = make_unique<Bomb>();
+          b->pos = getCenter() - b->size * 0.5;
+          game->spawn(b.release());
+          game->playSound(SND_FIRE);
         }
-        else if(!ground)
-          offsetV.y += 0.25;
+      }
+    }
+    else
+    {
+      if(upgrades & UPGRADE_SHOOT)
+      {
+        if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
+        {
+          auto b = make_unique<Bullet>();
+          auto sign = (dir == LEFT ? -1 : 1);
+          auto offsetV = vel.x ? Vector(0, 1) : Vector(0, 0.9);
+          auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);
 
-        b->pos = pos + offsetV + offsetH * sign;
-        b->vel = Vector(0.25, 0) * sign;
-        game->spawn(b.release());
-        game->playSound(SND_FIRE);
-        shootDelay = 30;
+          if(sliding)
+          {
+            sign = -sign;
+          }
+          else if(!ground)
+            offsetV.y += 0.25;
+
+          b->pos = pos + offsetV + offsetH * sign;
+          b->vel = Vector(0.25, 0) * sign;
+          game->spawn(b.release());
+          game->playSound(SND_FIRE);
+          shootDelay = 30;
+        }
       }
     }
   }
