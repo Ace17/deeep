@@ -50,7 +50,7 @@ struct NullVariable : IVariable
 {
   int get() { return 0; }
   void set(int) {}
-  unique_ptr<Handle> observe(Observer) { return nullptr; }
+  unique_ptr<Handle> observe(Observer&&) { return nullptr; }
 };
 
 static NullVariable nullVariable;

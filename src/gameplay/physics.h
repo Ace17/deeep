@@ -18,7 +18,7 @@ struct IPhysics : IPhysicsProbe
   virtual void addBody(Body* body) = 0;
   virtual void removeBody(Body* body) = 0;
   virtual void checkForOverlaps() = 0;
-  virtual void setEdifice(function<bool(Box)> isSolid) = 0;
+  virtual void setEdifice(Delegate<bool(Box)> isSolid) = 0;
 };
 
 #include <memory>

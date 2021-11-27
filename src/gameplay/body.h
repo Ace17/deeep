@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "base/delegate.h"
 #include "vec.h"
-#include <functional>
 
 using namespace std;
 
@@ -34,7 +34,7 @@ struct Body
   Body* floor = nullptr;
 
   // only called if (this->collidesWith & other->collisionGroup)
-  function<void(Body*)> onCollision = [] (Body*) {};
+  Delegate<void(Body*)> onCollision = [] (Body*) {};
 
   Box getBox() const { return Box { pos, size }; }
 };

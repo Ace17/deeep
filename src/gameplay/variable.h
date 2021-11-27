@@ -1,15 +1,16 @@
 #pragma once
 
+#include "base/delegate.h"
 #include "game.h"
 #include <list>
 
 struct HandleWithDeleter : Handle
 {
-  HandleWithDeleter(function<void(void)> deleter_) : deleter(deleter_) {}
+  HandleWithDeleter(Delegate<void(void)> deleter_) : deleter(std::move(deleter_)) {}
 
   ~HandleWithDeleter() { deleter(); }
 
-  function<void(void)> deleter;
+  Delegate<void(void)> deleter;
 };
 
 struct Variable : IVariable
@@ -32,9 +33,9 @@ struct Variable : IVariable
       observer(newValue);
   }
 
-  virtual unique_ptr<Handle> observe(Observer observer) override
+  virtual unique_ptr<Handle> observe(Observer&& observer) override
   {
-    auto it = observers.insert(observers.begin(), observer);
+    auto it = observers.insert(observers.begin(), std::move(observer));
 
     auto removeObserver = [ = ] () { observers.erase(it); };
 

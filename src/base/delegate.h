@@ -9,7 +9,7 @@ template<typename RetType, typename... Args>
 struct Delegate<RetType(Args...)>
 {
   // invokes the delegate
-  RetType operator () (Args... args) { return invokable->call(args...); }
+  RetType operator () (Args... args) const { return invokable->call(args...); }
 
   Delegate() = default;
   Delegate(Delegate &&) = default;

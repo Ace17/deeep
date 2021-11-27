@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "base/delegate.h"
 #include "base/geom.h"
 #include "base/scene.h"
 #include "base/view.h"
@@ -62,11 +63,11 @@ struct IVariable
 {
   virtual ~IVariable() = default;
 
-  typedef function<void (int newValue)> Observer;
+  typedef Delegate<void (int newValue)> Observer;
 
   virtual int get() = 0;
   virtual void set(int) = 0;
-  virtual unique_ptr<Handle> observe(Observer observer) = 0;
+  virtual unique_ptr<Handle> observe(Observer&& observer) = 0;
 };
 
 struct IGame

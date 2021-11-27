@@ -121,9 +121,9 @@ struct Physics : IPhysics
       me.onCollision(&other);
   }
 
-  void setEdifice(function<bool(Box)> edifice)
+  void setEdifice(Delegate<bool(Box)> edifice)
   {
-    m_isSolid = edifice;
+    m_isSolid = std::move(edifice);
   }
 
   Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid, const Body* except) const
@@ -155,7 +155,7 @@ private:
   }
 
   vector<Body*> m_bodies;
-  function<bool(Box)> m_isSolid;
+  Delegate<bool(Box)> m_isSolid;
 };
 }
 
