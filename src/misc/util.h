@@ -2,8 +2,8 @@
 
 #include "base/string.h"
 
+#include <cstring> // memcmp
 #include <string>
-#include <string.h> // memcmp
 
 using namespace std;
 
