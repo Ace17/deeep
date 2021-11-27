@@ -5,27 +5,27 @@
 template<class>
 struct Delegate;
 
-template<typename... Args>
-struct Delegate<void(Args...)>
+template<typename RetType, typename... Args>
+struct Delegate<RetType(Args...)>
 {
   // invokes the delegate
-  void operator () (Args... args) { invokable->call(args...); }
+  RetType operator () (Args... args) { return invokable->call(args...); }
 
   Delegate() = default;
   Delegate(Delegate &&) = default;
 
-  Delegate(void(*f)(Args...))
+  Delegate(RetType(*f)(Args...))
   {
     invokable = std::make_unique<StaticInvokable>(f);
   }
 
-  void operator = (Delegate<void(Args...)>&& other)
+  void operator = (Delegate<RetType(Args...)>&& other)
   {
     invokable.reset(other.invokable.get());
     other.invokable.release();
   }
 
-  void operator = (void (* f)(Args...))
+  void operator = (RetType (* f)(Args...))
   {
     invokable = std::make_unique<StaticInvokable>(f);
   }
@@ -48,7 +48,7 @@ private:
   struct Invokable
   {
     virtual ~Invokable() = default;
-    virtual void call(Args... args) = 0;
+    virtual RetType call(Args... args) = 0;
   };
 
   std::unique_ptr<Invokable> invokable;
@@ -56,16 +56,16 @@ private:
   // concrete invokable types
   struct StaticInvokable : Invokable
   {
-    StaticInvokable(void(*f)(Args...)) : funcPtr(f) {}
-    void call(Args... args) override { (*funcPtr)(args...); }
-    void (* funcPtr)(Args...) = nullptr;
+    StaticInvokable(RetType(*f)(Args...)) : funcPtr(f) {}
+    RetType call(Args... args) override { return (*funcPtr)(args...); }
+    RetType (* funcPtr)(Args...) = nullptr;
   };
 
   template<typename Lambda>
   struct LambdaInvokable : Invokable
   {
     LambdaInvokable(Lambda f) : funcPtr(f) {}
-    void call(Args... args) override { funcPtr(args...); }
+    RetType call(Args... args) override { return funcPtr(args...); }
     Lambda funcPtr {};
   };
 };

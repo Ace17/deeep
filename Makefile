@@ -123,6 +123,7 @@ SRCS_TESTS:=\
 	src/tests/audio.cpp\
 	src/tests/base64.cpp\
 	src/tests/decompress.cpp\
+	src/tests/delegate.cpp\
 	src/tests/json.cpp\
 	src/tests/util.cpp\
 	src/tests/png.cpp\
