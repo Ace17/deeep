@@ -94,9 +94,13 @@ int computeTileComposition(int nb)
   // left wall
   case 0b11110001: return 5;
   case 0b11110011: return 5;
+  case 0b11111011: return 5;
 
   // ceiling
   case 0b01111100: return 12;
+  case 0b11111110: return 12;
+  case 0b11111100: return 12;
+  case 0b01111110: return 12;
 
   // outer corners
   case 0b00000111: return 2;
