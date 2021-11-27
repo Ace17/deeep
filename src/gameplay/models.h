@@ -8,6 +8,8 @@
 
 enum
 {
+  MDL_ENGINE,
+
   MDL_TILES_00,
   MDL_TILES_01,
   MDL_TILES_02,
@@ -18,7 +20,6 @@ enum
   MDL_TILES_07,
 
   MDL_RECT,
-  MDL_CHEST,
   MDL_SPLASH,
   MDL_ENDING,
   MDL_PAUSED,
@@ -40,6 +41,5 @@ enum
   MDL_LADDER,
   MDL_BACKGROUND,
   MDL_HOPPER,
-  MDL_SKELETON,
 };
 

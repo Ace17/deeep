@@ -1,0 +1,36 @@
+{
+  "type" : "sheet",
+  "rows" : 1,
+  "cols" : 8,
+  "actions": [
+    {
+      "name": "0",
+      "frames": [ 0 ]
+    },
+    {
+      "name": "1",
+      "frames": [ 1 ]
+    },
+    {
+      "name": "2",
+      "frames": [ 2 ]
+    },
+    {
+      "name": "3",
+      "frames": [ 3 ]
+    },
+    {
+      "name": "4",
+      "frames": [ 4 ]
+    },
+    {
+      "name": "5",
+      "frames": [ 5 ]
+    },
+    {
+      "name": "6",
+      "frames": [ 6 ]
+    }
+  ]
+}
+

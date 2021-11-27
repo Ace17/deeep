@@ -167,7 +167,12 @@ private:
     }
 
     if(m_running == AppState::ConfirmExit)
-      m_display->drawText(Vector2f(0, 0), "QUIT? [Y/N]");
+    {
+      auto where = Rect2f(-8, -8, 16, 16);
+      int modelId = 0;
+      m_display->drawActor(where, 0, false, modelId, 0, 0, 0, 99);
+      m_display->drawText(Vector2f(0, 0.5), "QUIT? [Y/N]");
+    }
     else if(m_paused)
       m_display->drawText(Vector2f(0, 0), "PAUSE");
     else if(m_slowMotion)
