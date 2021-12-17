@@ -15,6 +15,7 @@
 #include "base/util.h"
 #include "base/view.h"
 
+#include "collision_groups.h"
 #include "entity_factory.h"
 #include "game.h"
 #include "load_quest.h"
@@ -300,12 +301,17 @@ struct GameState : Scene, private IGame
     ///////////////////////////////////////////////////////////////////////////
 
     m_physics = createPhysics();
-    m_physics->setEdifice(bind(&GameState::isBoxSolid, this, placeholders::_1));
 
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
       throw Error("No such level");
 
     m_currRoom = &m_quest.rooms[levelIdx];
+
+    m_tilemapBody.solid = true;
+    m_tilemapBody.collisionGroup = CG_WALLS;
+    m_tilemapBody.shape = &m_tilemapShape;
+    m_tilemapShape.tiles = &m_currRoom->tiles;
+    m_physics->addBody(&m_tilemapBody);
 
     auto& level = m_quest.rooms[levelIdx];
     spawnEntities(level, this, levelIdx);
@@ -427,6 +433,8 @@ struct GameState : Scene, private IGame
   View* const m_view;
   unique_ptr<IPhysics> m_physics;
   bool m_gameFinished = false;
+  Body m_tilemapBody {};
+  ShapeTilemap m_tilemapShape {};
 
   const Matrix2<int>* m_tilesForDisplay;
   bool m_debug;
@@ -435,26 +443,6 @@ struct GameState : Scene, private IGame
 
   vector<unique_ptr<Entity>> m_entities;
   vector<unique_ptr<Entity>> m_spawned;
-
-  bool isBoxSolid(Box box)
-  {
-    auto const x1 = box.pos.x;
-    auto const y1 = box.pos.y;
-    auto const x2 = box.pos.x + box.size.width;
-    auto const y2 = box.pos.y + box.size.height;
-
-    auto const col1 = int(floor(x1));
-    auto const col2 = int(floor(x2));
-    auto const row1 = int(floor(y1));
-    auto const row2 = int(floor(y2));
-
-    for(int row = row1; row <= row2; row++)
-      for(int col = col1; col <= col2; col++)
-        if(m_currRoom->tiles.isInside(col, row) && m_currRoom->tiles.get(col, row))
-          return true;
-
-    return false;
-  }
 
   // static stuff
 

@@ -43,22 +43,31 @@ void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static
-bool isSolid(Box rect)
+struct CornerShape : Shape
 {
-  return rect.pos.y < 0 || rect.pos.x < 0;
-}
+  bool probe(Body* /*owner*/, Box rect) const
+  {
+    return rect.pos.y < 0 || rect.pos.x < 0;
+  }
+};
 
 struct Fixture
 {
   Fixture() : physics(createPhysics())
   {
-    physics->setEdifice(&isSolid);
+    walls.solid = true;
+    walls.collisionGroup = 1;
+    walls.shape = &cornerShape;
+    physics->addBody(&walls);
+
+    mover.collidesWith = 1;
     physics->addBody(&mover);
   }
 
   unique_ptr<IPhysics> physics;
   Body mover;
+  Body walls;
+  CornerShape cornerShape;
 };
 
 unittest("Physics: simple move")

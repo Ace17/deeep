@@ -25,7 +25,8 @@ struct Sweeper : Entity, Damageable
   {
     size = Size(0.8, 0.8);
     collisionGroup = CG_WALLS;
-    collidesWith = CG_SOLIDPLAYER;
+    collisionGroup = CG_ENEMIES;
+    collidesWith = CG_WALLS | CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
 
     vel.x = 0.03;

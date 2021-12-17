@@ -40,7 +40,7 @@ struct Bullet : Entity
   {
     size = Size(0.5, 0.4);
     collisionGroup = 0;
-    collidesWith = CG_WALLS;
+    collidesWith = CG_WALLS | CG_ENEMIES;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
@@ -81,7 +81,7 @@ struct Bomb : Entity
   {
     size = Size(0.4, 0.4);
 
-    collidesWith = CG_WALLS;
+    collidesWith = CG_WALLS | CG_ENEMIES;
   }
 
   virtual void addActors(vector<Actor>& actors) const override

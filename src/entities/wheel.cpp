@@ -26,8 +26,8 @@ struct Wheel : Entity, Damageable
     vel = NullVector;
     dir = -1.0f;
     size = Size(1.5, 1.5);
-    collisionGroup = CG_WALLS;
-    collidesWith = CG_SOLIDPLAYER;
+    collisionGroup = CG_ENEMIES;
+    collidesWith = CG_SOLIDPLAYER | CG_WALLS;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 

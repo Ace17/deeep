@@ -14,8 +14,17 @@
 
 using namespace std;
 
+struct Body;
+
+struct Shape
+{
+  virtual ~Shape() = default;
+  virtual bool probe(Body* owner, Box otherBox) const = 0;
+};
+
 struct Body
 {
+  Body();
   // make type polymorphic
   virtual ~Body() = default;
 
@@ -25,6 +34,7 @@ struct Body
 
   // shape used for collision detection
   Size size = UnitSize;
+  const Shape* shape;
 
   // collision masks
   int collisionGroup = 1;
@@ -37,5 +47,16 @@ struct Body
   Delegate<void(Body*)> onCollision = [] (Body*) {};
 
   Box getBox() const { return Box { pos, size }; }
+};
+
+struct ShapeBox : Shape
+{
+  bool probe(Body* owner, Box otherBox) const override;
+};
+
+struct ShapeTilemap : Shape
+{
+  bool probe(Body* /*owner*/, Box otherBox) const override;
+  Matrix2<int>* tiles;
 };
 

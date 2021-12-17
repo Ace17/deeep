@@ -16,6 +16,13 @@
 
 using namespace std;
 
+static const ShapeBox shapeBox;
+
+Body::Body()
+  : shape(&shapeBox)
+{
+}
+
 namespace
 {
 struct Physics : IPhysics
@@ -91,9 +98,6 @@ struct Physics : IPhysics
     if(getSolidBodyInBox(rect, except->collidesWith, except))
       return true;
 
-    if(m_isSolid(rect))
-      return true;
-
     return false;
   }
 
@@ -121,11 +125,6 @@ struct Physics : IPhysics
       me.onCollision(&other);
   }
 
-  void setEdifice(Delegate<bool(Box)> edifice)
-  {
-    m_isSolid = std::move(edifice);
-  }
-
   Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid, const Body* except) const
   {
     for(auto& body : m_bodies)
@@ -139,9 +138,7 @@ struct Physics : IPhysics
       if(!(body->collisionGroup & collisionGroup))
         continue;
 
-      auto rect = body->getBox();
-
-      if(overlaps(rect, myBox))
+      if(body->shape->probe(body, myBox))
         return body;
     }
 
@@ -155,12 +152,36 @@ private:
   }
 
   vector<Body*> m_bodies;
-  Delegate<bool(Box)> m_isSolid;
 };
 }
 
 unique_ptr<IPhysics> createPhysics()
 {
   return make_unique<Physics>();
+}
+
+bool ShapeBox::probe(Body* owner, Box otherBox) const
+{
+  return overlaps({ owner->pos, owner->size }, otherBox);
+}
+
+bool ShapeTilemap::probe(Body* /*owner*/, Box otherBox) const
+{
+  auto const x1 = otherBox.pos.x;
+  auto const y1 = otherBox.pos.y;
+  auto const x2 = otherBox.pos.x + otherBox.size.width;
+  auto const y2 = otherBox.pos.y + otherBox.size.height;
+
+  auto const col1 = int(floor(x1));
+  auto const col2 = int(floor(x2));
+  auto const row1 = int(floor(y1));
+  auto const row2 = int(floor(y2));
+
+  for(int row = row1; row <= row2; row++)
+    for(int col = col1; col <= col2; col++)
+      if(tiles->isInside(col, row) && tiles->get(col, row))
+        return true;
+
+  return false;
 }
 

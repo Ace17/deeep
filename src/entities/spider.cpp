@@ -23,7 +23,7 @@ struct SpiderBullet : Entity
   SpiderBullet()
   {
     size = Size(0.3, 0.3);
-    collisionGroup = CG_WALLS;
+    collisionGroup = CG_ENEMIES;
     collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
