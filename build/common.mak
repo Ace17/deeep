@@ -74,21 +74,18 @@ $(BIN)/%.a:
 $(BIN)/%.d.o: %.d
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(Q)$(DC) -fdeps="$@.fdeps" -c "$<" -o "$@" $(DINCS) $(DFLAGS)
-	@$(THIS)/convert_deps "$@.fdeps" "$@.deps" "$@"
-	@rm "$@.fdeps"
+	$(Q)$(DC) -c "$<" -o "$@" $(DINCS) $(DFLAGS)
+	@$(DC) -MP -MM "$<" -MT "$@" -o "$@" $(DINCS) $(DFLAGS) -w -O0 -MF "$@.deps"
 
 $(BIN)/%.cpp.o: %.cpp
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^) $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(Q)$(CXX) -c "$<" -o "$@" $(DINCS) $(CXXFLAGS)
-	@$(CXX) -MP -MM "$<" -MT "$@" -o "$@.deps" $(DINCS) $(CXXFLAGS)
+	$(Q)$(CXX) -MMD -MT "$@" -MF "$@.deps" -c $(CXXFLAGS) -o "$@" "$<"
 
 $(BIN)/%.c.o: %.c
 	@echo "$(CLR_INFO)Compiling $@ $(CLR_DBG)(depends on $^)  $(CLR_OFF)"
 	@mkdir -p "$(dir $@)"
-	$(Q)$(CC) -c  "$<" -o  "$@" $(DINCS) $(CXXFLAGS)
-	@$(CC) -MP -MM "$<" -MT "$@" -o "$@.deps" $(DINCS) $(CXXFLAGS)
+	$(Q)$(CXX) -MMD -MT "$@" -MF "$@.deps" -c $(CXXFLAGS) -o "$@" "$<"
 
 # Dependency generation
 
@@ -107,6 +104,6 @@ clean:
 	mkdir $(BIN)
 	@echo "exclude /*" > $(BIN)/.rsync-filter
 
-REPO_URL?=http://bazaar.mooo.com/~alaiwans/bzr
+REPO_URL?=http://code.alaiwan.org/bzr
 
 true_all: $(TARGETS)
