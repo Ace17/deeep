@@ -71,17 +71,17 @@ struct NullGame : IGame
 struct NullPhysicsProbe : IPhysicsProbe
 {
   // called by entities
-  bool moveBody(Body* body, Vector2f delta)
+  float moveBody(Body* body, Vector2f delta)
   {
     auto rect = body->getBox();
     rect.pos.x += delta.x;
     rect.pos.y += delta.y;
 
     if(isSolid(body, rect))
-      return false;
+      return 0;
 
     body->pos += delta;
-    return true;
+    return 1;
   }
 
   bool isSolid(const Body* /*body*/, Box rect) const

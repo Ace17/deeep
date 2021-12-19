@@ -19,8 +19,8 @@ Trace slideMove(Entity* ent, Vector vel)
 {
   Trace r;
 
-  r.horz = ent->physics->moveBody(ent, Vector(vel.x, 0));
-  r.vert = ent->physics->moveBody(ent, Vector(0, vel.y));
+  r.horz = ent->physics->moveBody(ent, Vector(vel.x, 0)) == 1.0;
+  r.vert = ent->physics->moveBody(ent, Vector(0, vel.y)) == 1.0;
 
   return r;
 }

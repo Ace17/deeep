@@ -12,7 +12,7 @@
 
 struct IPhysicsProbe
 {
-  virtual bool moveBody(Body* body, Vector delta) = 0;
+  virtual float moveBody(Body* body, Vector delta) = 0;
   virtual bool isSolid(const Body* body, Box) const = 0;
   virtual Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid = false, const Body* except = nullptr) const = 0;
 };

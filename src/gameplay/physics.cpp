@@ -39,19 +39,16 @@ struct Physics : IPhysics
     unstableRemove(m_bodies, isItTheOne);
   }
 
-  bool moveBody(Body* body, Vector delta)
+  float moveBody(Body* body, Vector delta)
   {
-    auto frect = body->getBox();
-    frect.pos += delta;
+    auto myBox = body->getBox();
+    myBox.pos += delta;
 
-    auto const irect = frect;
+    auto const blocker = getSolidBodyInBox(myBox, body->collidesWith, body);
 
-    auto const blocked = isSolid(body, irect);
-
-    if(blocked)
+    if(blocker)
     {
-      if(auto blocker = getSolidBodyInBox(irect, -1, body))
-        collideBodies(*body, *blocker);
+      collideBodies(*body, *blocker);
     }
     else
     {
@@ -59,11 +56,10 @@ struct Physics : IPhysics
       body->solid = false; // make pusher non-solid, so stacked bodies can move down
 
       if(body->pusher)
-        pushOthers(body, irect, delta);
+        pushOthers(body, myBox, delta);
 
-      body->pos = frect.pos;
+      body->pos = myBox.pos;
       body->solid = oldSolid;
-      // assert(!getSolidBodyInBox(body->getBox(), -1, body));
     }
 
     // update floor
@@ -72,10 +68,10 @@ struct Physics : IPhysics
       auto feet = body->getBox();
       feet.size.height = 0.1;
       feet.pos.y = body->getBox().pos.y - feet.size.height;
-      body->floor = getSolidBodyInBox(feet, -1, body);
+      body->floor = getSolidBodyInBox(feet, body->collidesWith, body);
     }
 
-    return !blocked;
+    return blocker ? 0 : 1;
   }
 
   void pushOthers(Body* body, Box rect, Vector delta)
@@ -95,10 +91,7 @@ struct Physics : IPhysics
 
   bool isSolid(const Body* except, Box rect) const
   {
-    if(getSolidBodyInBox(rect, except->collidesWith, except))
-      return true;
-
-    return false;
+    return getSolidBodyInBox(rect, except->collidesWith, except);
   }
 
   void checkForOverlaps()
