@@ -10,6 +10,7 @@
 
 #include "base/util.h"
 #include "body.h"
+#include "misc/math.h"
 #include "physics.h"
 #include <memory>
 #include <vector>
@@ -42,16 +43,16 @@ struct Physics : IPhysics
   float moveBody(Body* body, Vector delta)
   {
     auto myBox = body->getBox();
-    myBox.pos += delta;
 
-    auto const blocker = getSolidBodyInBox(myBox, body->collidesWith, body);
+    auto const rc = castBox(myBox, delta, body->collidesWith, true, body);
 
-    if(blocker)
+    if(rc.blocker)
+      collideBodies(*body, *rc.blocker);
+
+    if(rc.fraction > 0)
     {
-      collideBodies(*body, *blocker);
-    }
-    else
-    {
+      myBox.pos += rc.fraction * delta;
+
       auto oldSolid = body->solid;
       body->solid = false; // make pusher non-solid, so stacked bodies can move down
 
@@ -71,7 +72,7 @@ struct Physics : IPhysics
       body->floor = getSolidBodyInBox(feet, body->collidesWith, body);
     }
 
-    return blocker ? 0 : 1;
+    return rc.fraction;
   }
 
   void pushOthers(Body* body, Box rect, Vector delta)
@@ -118,6 +119,39 @@ struct Physics : IPhysics
       me.onCollision(&other);
   }
 
+  struct Raycast
+  {
+    float fraction = 1.0;
+    Body* blocker = nullptr;
+  };
+
+  Raycast castBox(Box box, Vector2f delta, int collisionGroup, bool onlySolid, const Body* except) const
+  {
+    Raycast r;
+
+    for(auto& body : m_bodies)
+    {
+      if(onlySolid && !body->solid)
+        continue;
+
+      if(body == except)
+        continue;
+
+      if(!(body->collisionGroup & collisionGroup))
+        continue;
+
+      const auto fraction = body->shape->raycast(body, box, delta);
+
+      if(fraction < r.fraction)
+      {
+        r.fraction = fraction;
+        r.blocker = body;
+      }
+    }
+
+    return r;
+  }
+
   Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid, const Body* except) const
   {
     for(auto& body : m_bodies)
@@ -146,7 +180,70 @@ private:
 
   vector<Body*> m_bodies;
 };
+
+Vector2f rotateLeft(Vector2f v) { return Vector2f(-v.y, v.x); }
+
+// The obstacle is an AABB, whose position and halfSize are given as parameters.
+// The return value represents the allowed move, as a fraction of the desired
+// move (delta).
+float raycast(Vector2f pos, Vector2f delta, Vector2f obstaclePos, Vector2f obstacleHalfSize)
+{
+  const Vector2f axes[] = {
+    { 1, 0 },
+    { 0, 1 },
+    rotateLeft(normalize(delta)),
+  };
+
+  float fraction = 0;
+
+  for(auto axis : axes)
+  {
+    // make the move always increase the position along the axis
+    if(dotProduct(axis, delta) < 0)
+      axis = axis * -1;
+
+    const float obstacleExtent =
+      fabs(obstacleHalfSize.x * axis.x) + fabs(obstacleHalfSize.y * axis.y);
+
+    // compute projections on the axis
+    const float startPos = dotProduct(axis, pos);
+    const float targetPos = dotProduct(axis, pos + delta);
+    const float obstacleMin = dotProduct(axis, obstaclePos) - obstacleExtent;
+    const float obstacleMax = dotProduct(axis, obstaclePos) + obstacleExtent;
+
+    if(targetPos < obstacleMin)
+      return 1; // all the axis-projected move is before the obstacle
+
+    if(startPos >= obstacleMax)
+      return 1; // all the axis-projected move is after the obstacle
+
+    // don't update 'fraction' if the move is parallel to the separating axis
+    if(fabs(startPos - targetPos) > 0.0001)
+    {
+      float f = (obstacleMin - 0.001 - startPos) / (targetPos - startPos);
+
+      if(f > fraction)
+        fraction = f;
+    }
+  }
+
+  return fraction;
 }
+
+struct BoundingBox
+{
+  BoundingBox(Vector2f p) { min = max = p; }
+  void add(Vector2f p)
+  {
+    min.x = std::min(min.x, p.x);
+    max.x = std::max(max.x, p.x);
+    min.y = std::min(min.y, p.y);
+    max.y = std::max(max.y, p.y);
+  }
+
+  Vector2f min, max;
+};
+} // namespace
 
 unique_ptr<IPhysics> createPhysics()
 {
@@ -156,6 +253,17 @@ unique_ptr<IPhysics> createPhysics()
 bool ShapeBox::probe(Body* owner, Box otherBox) const
 {
   return overlaps({ owner->pos, owner->size }, otherBox);
+}
+
+float ShapeBox::raycast(Body* shapeOwner, Box otherBox, Vector2f delta) const
+{
+  auto otherBoxHalfSize =
+    Vector2f(otherBox.size.width, otherBox.size.height) * 0.5;
+  auto obstacleHalfSize =
+    Vector2f(shapeOwner->size.width, shapeOwner->size.height) * 0.5;
+  return ::raycast(otherBox.pos + otherBoxHalfSize, delta,
+                   shapeOwner->pos + obstacleHalfSize,
+                   obstacleHalfSize + otherBoxHalfSize);
 }
 
 bool ShapeTilemap::probe(Body* /*owner*/, Box otherBox) const
@@ -176,5 +284,44 @@ bool ShapeTilemap::probe(Body* /*owner*/, Box otherBox) const
         return true;
 
   return false;
+}
+
+float ShapeTilemap::raycast(Body* /*shapeOwner*/, Box otherBox, Vector2f delta) const
+{
+  const auto boxSize = Vector2f(otherBox.size.width, otherBox.size.height);
+
+  BoundingBox bb(otherBox.pos);
+
+  bb.add(otherBox.pos);
+  bb.add(otherBox.pos + boxSize);
+  bb.add(delta + otherBox.pos);
+  bb.add(delta + otherBox.pos + boxSize);
+
+  auto const col1 = int(floor(bb.min.x));
+  auto const col2 = int(floor(bb.max.x));
+  auto const row1 = int(floor(bb.min.y));
+  auto const row2 = int(floor(bb.max.y));
+
+  const auto boxHalfSize = boxSize * 0.5;
+  const auto tileHalfSize = UnitSize * 0.5;
+
+  float fraction = 1;
+
+  for(int row = row1; row <= row2; row++)
+  {
+    for(int col = col1; col <= col2; col++)
+    {
+      if(tiles->isInside(col, row) && tiles->get(col, row))
+      {
+        const auto tilePos = Vector2f(col, row) + tileHalfSize;
+        float f = ::raycast(otherBox.pos + boxHalfSize, delta, tilePos, boxHalfSize + tileHalfSize);
+
+        if(f < fraction)
+          fraction = f;
+      }
+    }
+  }
+
+  return fraction;
 }
 

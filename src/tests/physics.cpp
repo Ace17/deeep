@@ -45,9 +45,42 @@ void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file
 
 struct CornerShape : Shape
 {
-  bool probe(Body* /*owner*/, Box rect) const
+  bool probe(Body* /*owner*/, Box rect) const override
   {
     return rect.pos.y < 0 || rect.pos.x < 0;
+  }
+
+  float raycast(Body* /*shapeOwner*/, Box otherBox, Vector2f delta) const override
+  {
+    float fraction = 1;
+
+    {
+      float x1 = otherBox.pos.x;
+      float x2 = otherBox.pos.x + delta.x;
+
+      if(x1 > 0 && x2 < 0)
+      {
+        float fractionX = (0 - x1) / (x2 - x1);
+
+        if(fractionX < fraction)
+          fraction = fractionX;
+      }
+    }
+
+    {
+      float y1 = otherBox.pos.y;
+      float y2 = otherBox.pos.y + delta.y;
+
+      if(y1 > 0 && y2 < 0)
+      {
+        float fractionY = (0 - y1) / (y2 - y1);
+
+        if(fractionY < fraction)
+          fraction = fractionY;
+      }
+    }
+
+    return fraction;
   }
 };
 
@@ -86,9 +119,9 @@ unittest("Physics: left move, blocked by vertical wall at x=0")
   fix.mover.pos = Vector2f(10, 10);
 
   auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(-20, 0));
-  assert(!allowed);
+  assert(allowed <= 0.5);
 
-  assertNearlyEquals(Vector2f(10, 10), fix.mover.pos);
+  assertNearlyEquals(Vector2f(0, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by a bigger body")
@@ -104,9 +137,9 @@ unittest("Physics: left move, blocked by a bigger body")
   fix.physics->addBody(&blocker);
 
   auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(100, 0));
-  assert(!allowed);
+  assert(allowed < 1);
 
-  assertNearlyEquals(Vector2f(100, 10), fix.mover.pos);
+  assertNearlyEquals(Vector2f(199, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by a smaller body")
@@ -122,8 +155,8 @@ unittest("Physics: left move, blocked by a smaller body")
   fix.physics->addBody(&blocker);
 
   auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(100, 0));
-  assert(!allowed);
+  assert(allowed < 1);
 
-  assertNearlyEquals(Vector2f(100, 10), fix.mover.pos);
+  assertNearlyEquals(Vector2f(197, 10), fix.mover.pos);
 }
 
