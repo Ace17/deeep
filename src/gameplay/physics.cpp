@@ -257,11 +257,10 @@ bool ShapeBox::probe(Body* owner, Box otherBox) const
 
 float ShapeBox::raycast(Body* shapeOwner, Box otherBox, Vector2f delta) const
 {
-  auto otherBoxHalfSize =
-    Vector2f(otherBox.size.width, otherBox.size.height) * 0.5;
-  auto obstacleHalfSize =
-    Vector2f(shapeOwner->size.width, shapeOwner->size.height) * 0.5;
-  return ::raycast(otherBox.pos + otherBoxHalfSize, delta,
+  auto otherBoxHalfSize = Vector2f(otherBox.size.width, otherBox.size.height) * 0.5;
+  auto obstacleHalfSize = Vector2f(shapeOwner->size.width, shapeOwner->size.height) * 0.5;
+  return ::raycast(otherBox.pos + otherBoxHalfSize,
+                   delta,
                    shapeOwner->pos + obstacleHalfSize,
                    obstacleHalfSize + otherBoxHalfSize);
 }

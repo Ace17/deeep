@@ -582,7 +582,7 @@ static int error(vorb* f, enum STBVorbisError e)
 // alloca(); otherwise, provide a temp buffer and it will
 // allocate out of those.
 
-#define array_size_required(count, size) (count* (sizeof(void*) + (size)))
+#define array_size_required(count, size) (count * (sizeof(void*) + (size)))
 
 #define temp_alloc(f, size) (f->alloc.alloc_buffer ? setup_temp_malloc(f, size) : alloca(size))
 #define temp_free(f, p) (void)0
