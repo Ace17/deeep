@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # This scripts builds the project for the Windows 64-bits target,
-# by injectiing the proper parameters into the Makefile.
+# by injecting the proper parameters into the Makefile.
 #
 
 set -euo pipefail
 
-readonly PREFIX=/opt/envs/win64
+readonly PREFIX=/opt/envs/x86_64-w64-mingw32
 
 export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
 export CROSS_COMPILE="x86_64-w64-mingw32-"
