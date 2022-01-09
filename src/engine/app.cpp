@@ -96,7 +96,11 @@ private:
       m_lastTime += timeStep;
 
       if(!m_paused && m_running == AppState::Running)
+      {
         tickGameplay();
+        m_tps.tick(now);
+        Stat("TPS", m_tps.slope());
+      }
     }
 
     // draw the frame
@@ -110,6 +114,8 @@ private:
 
   void tickGameplay()
   {
+    auto const t0 = (int)GetSteadyClockMs();
+
     m_control.debug = m_debugMode;
 
     auto next = m_scene->tick(m_control);
@@ -120,6 +126,9 @@ private:
       m_scene.reset(next);
       printf("Entering: %s\n", typeid(*next).name());
     }
+
+    auto const t1 = (int)GetSteadyClockMs();
+    Stat("Tick duration", t1-t0);
   }
 
   void registerUserInputActions()
@@ -350,6 +359,7 @@ private:
   int m_lastTime;
   int m_lastDisplayFrameTime;
   RateCounter m_fps;
+  RateCounter m_tps;
   Control m_control {};
   vector<string> m_args;
   unique_ptr<Scene> m_scene;
