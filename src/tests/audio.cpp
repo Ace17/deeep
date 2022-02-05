@@ -8,6 +8,7 @@
 #include "tests.h"
 #include <memory>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 MixableAudio* createAudio();
@@ -34,8 +35,8 @@ unittest("Audio: sound loops without discontinuity")
       float left = buffer[2 * i + 0];
       float right = buffer[2 * i + 1];
 
-      maxDiffLeft = std::max<float>(maxDiffLeft, std::abs(left - prevLeft));
-      maxDiffRight = std::max<float>(maxDiffRight, std::abs(right - prevRight));
+      maxDiffLeft = std::max<float>(maxDiffLeft, fabs(left - prevLeft));
+      maxDiffRight = std::max<float>(maxDiffRight, fabs(right - prevRight));
 
       prevLeft = left;
       prevRight = right;

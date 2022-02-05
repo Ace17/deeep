@@ -128,7 +128,7 @@ private:
     }
 
     auto const t1 = (int)GetSteadyClockMs();
-    Stat("Tick duration", t1-t0);
+    Stat("Tick duration", t1 - t0);
   }
 
   void registerUserInputActions()

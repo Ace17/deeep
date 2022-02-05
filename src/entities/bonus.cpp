@@ -88,35 +88,35 @@ struct ConcreteBonus : Bonus
   ConcreteBonus(IEntityConfig*) : Bonus(action_, upgradeType_, msg_) {}
 };
 
-const char UpgradeShootMsg[] = "press Z";
+constexpr char UpgradeShootMsg[] = "press Z";
 using UpgradeBonus_Shoot = ConcreteBonus<3, UPGRADE_SHOOT, UpgradeShootMsg>;
 DECLARE_ENTITY("upgrade_shoot", UpgradeBonus_Shoot);
 
-const char UpgradeClimbMsg[] = "jump while against wall";
+constexpr char UpgradeClimbMsg[] = "jump while against wall";
 using UpgradeBonus_Climb = ConcreteBonus<4, UPGRADE_CLIMB, UpgradeClimbMsg>;
 DECLARE_ENTITY("upgrade_climb", UpgradeBonus_Climb);
 
-const char UpgradeDashMsg[] = "press C";
+constexpr char UpgradeDashMsg[] = "press C";
 using UpgradeBonus_Dash = ConcreteBonus<5, UPGRADE_DASH, UpgradeDashMsg>;
 DECLARE_ENTITY("upgrade_dash", UpgradeBonus_Dash);
 
-const char UpgradeDjumpMsg[] = "double jump";
+constexpr char UpgradeDjumpMsg[] = "double jump";
 using UpgradeBonus_Djump = ConcreteBonus<6, UPGRADE_DJUMP, UpgradeDjumpMsg>;
 DECLARE_ENTITY("upgrade_djump", UpgradeBonus_Djump);
 
-const char UpgradeBallMsg[] = "press down";
+constexpr char UpgradeBallMsg[] = "press down";
 using UpgradeBonus_Ball = ConcreteBonus<7, UPGRADE_BALL, UpgradeBallMsg>;
 DECLARE_ENTITY("upgrade_ball", UpgradeBonus_Ball);
 
-const char UpgradeSlideMsg[] = "go against wall while falling";
+constexpr char UpgradeSlideMsg[] = "go against wall while falling";
 using UpgradeBonus_Slide = ConcreteBonus<8, UPGRADE_SLIDE, UpgradeSlideMsg>;
 DECLARE_ENTITY("upgrade_slide", UpgradeBonus_Slide);
 
-const char UpgradeBombMsg[] = "press Z in ball mode";
+constexpr char UpgradeBombMsg[] = "press Z in ball mode";
 using UpgradeBonus_Bomb = ConcreteBonus<9, UPGRADE_BOMB, UpgradeBombMsg>;
 DECLARE_ENTITY("upgrade_bomb", UpgradeBonus_Bomb);
 
-const char UpgradeLifeMsg[] = "life up";
+constexpr char UpgradeLifeMsg[] = "life up";
 using UpgradeBonus_Life = ConcreteBonus<0, 0, UpgradeLifeMsg>;
 DECLARE_ENTITY("bonus_life", UpgradeBonus_Life);
 }
