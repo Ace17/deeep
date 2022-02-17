@@ -403,7 +403,9 @@ struct Rockman : Player, Damageable
       decrement(dashDelay);
 
     if(hurtDelay || life <= 0)
+    {
       control = Control {};
+    }
 
     if(restartbutton.toggle(control.restart))
       life = 0;
