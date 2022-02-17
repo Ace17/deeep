@@ -6,9 +6,9 @@
 
 #include "engine/audio.h"
 #include "tests.h"
+#include <cmath>
 #include <memory>
 #include <vector>
-#include <cmath>
 using namespace std;
 
 MixableAudio* createAudio();
