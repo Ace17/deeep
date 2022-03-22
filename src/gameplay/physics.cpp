@@ -6,7 +6,7 @@
  * License, or (at your option) any later version.
  */
 
-#include <cmath> // round
+#include <cmath> // fabs
 
 #include "base/util.h"
 #include "body.h"
