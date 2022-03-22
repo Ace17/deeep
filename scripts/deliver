@@ -43,7 +43,7 @@ function deliverBinaryVersion
   cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll                 $tmpDir/$N
   cp /usr/lib/gcc/x86_64-w64-mingw32/$gccVersion/libstdc++-6.dll     $tmpDir/$N
   cp /usr/lib/gcc/x86_64-w64-mingw32/$gccVersion/libgcc_s_seh-1.dll  $tmpDir/$N
-  cp /opt/envs/win64/bin/SDL2.dll                                    $tmpDir/$N
+  cp /opt/envs/x86_64-w64-mingw32/bin/SDL2.dll                       $tmpDir/$N
 
   # GNU/Linux binaries
   CXXFLAGS="-include extra/glibc_version.h -O3" \
