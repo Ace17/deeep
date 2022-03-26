@@ -10,10 +10,16 @@
 
 struct String : Span<const char>
 {
-  String() = default;
+  constexpr String() = default;
+
+  constexpr String(const char* data_, int len_)
+  {
+    data = data_;
+    len = len_;
+  }
 
   template<size_t N>
-  String(const char (& stringLiteral)[N])
+  constexpr String(const char (& stringLiteral)[N])
   {
     data = stringLiteral;
     len = N - 1; // remove NUL terminator
@@ -21,7 +27,7 @@ struct String : Span<const char>
 
   // construction from std::string
   template<typename U, typename = decltype(((U*)0)->c_str())>
-  String(U const& s)
+  constexpr String(U const& s)
   {
     data = s.c_str();
     len = s.size();

@@ -46,10 +46,7 @@ inline String removeExtension(String path)
   while(i > 0 && path.data[i] != '.')
     --i;
 
-  String r;
-  r.data = path.data;
-  r.len = i;
-  return r;
+  return String(path.data, i);
 }
 
 inline String baseName(String path)
@@ -59,9 +56,6 @@ inline String baseName(String path)
   while(s - 1 > path.data && s[-1] != '/')
     --s;
 
-  String r;
-  r.data = s;
-  r.len = path.data + path.len - s;
-  return r;
+  return String(s, path.data + path.len - s);
 }
 
