@@ -4,6 +4,7 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+#include "base/box.h"
 #include "base/error.h"
 #include "base/geom.h"
 #include "base/string.h"

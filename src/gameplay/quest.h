@@ -7,6 +7,7 @@
 #pragma once
 
 #include "base/geom.h"
+#include "base/matrix.h"
 #include "vec.h"
 #include <map>
 #include <string>

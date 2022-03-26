@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "base/box.h"
 #include "base/geom.h"
 
 struct PictureView

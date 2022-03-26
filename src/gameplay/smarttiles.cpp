@@ -9,6 +9,7 @@
 // Auto-connecting tiles.
 
 #include "base/geom.h"
+#include "base/matrix.h"
 #include "base/util.h"
 #include <cassert>
 

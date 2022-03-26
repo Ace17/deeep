@@ -1,5 +1,6 @@
 #pragma once
 
+#include "base/box.h"
 #include "base/geom.h"
 
 typedef GenericVector<float> Vector;

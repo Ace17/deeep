@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+#include "base/box.h"
 #include "base/geom.h"
 #include "base/span.h"
 #include "base/string.h"
