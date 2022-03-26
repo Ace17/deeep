@@ -30,8 +30,8 @@ struct Span
 
   operator Span<const T>() { return { data, len }; }
 
-  T* begin() const { return data; }
-  T* end() const { return data + len; }
+  constexpr T* begin() const { return data; }
+  constexpr T* end() const { return data + len; }
   T& operator [] (int i) { return data[i]; }
   void operator += (int i) { data += i; len -= i; }
 };
