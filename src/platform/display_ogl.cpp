@@ -7,7 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // OpenGL stuff
 
-#include "engine/display.h"
+#include "engine/graphics_backend.h"
 
 #include <cassert>
 #include <cstdio>
@@ -17,7 +17,6 @@
 
 #include "base/geom.h"
 #include "base/span.h"
-#include "engine/graphics_backend.h"
 #include "engine/stats.h"
 #include "misc/file.h"
 #include "render/picture.h"
