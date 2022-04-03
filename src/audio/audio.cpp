@@ -329,6 +329,22 @@ struct HighLevelAudio : MixableAudio
         m_voices[cmd.id].sound = cmd.sound;
         m_voices[cmd.id].source.reset();
         m_voices[cmd.id].finished = false;
+
+        // silence ourselves if we're a redundant voice
+        for(auto& pair : m_voices)
+        {
+          if(pair.first == cmd.id)
+            continue;
+
+          if(pair.second.sound == cmd.sound && !pair.second.source && !pair.second.finished)
+          {
+            m_voices[cmd.id].vol.target = 0;
+            m_voices[cmd.id].vol.speed = 1;
+            m_voices[cmd.id].finished = true;
+            break;
+          }
+        }
+
         break;
       case Opcode::StopVoice:
         m_voices[cmd.id].vol.target = 0;
