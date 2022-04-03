@@ -126,8 +126,25 @@ struct Renderer : IRenderer
   {
     // draw to internal framebuffer, with fixed resolution
     backend->setRenderTarget(m_fb.get());
-    backend->useGpuProgram(m_shader.get());
     backend->clear();
+
+    processQuads();
+
+    // draw to screen
+    backend->setRenderTarget(nullptr);
+    backend->clear();
+    backend->useVertexBuffer(m_quadVbo.get());
+    m_fb->getColorTexture()->bind(0);
+    backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+    backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+    backend->draw(6);
+
+    backend->swap();
+  }
+
+  void processQuads()
+  {
+    backend->useGpuProgram(m_shader.get());
 
     auto byPriority = [&] (Quad const& a, Quad const& b)
       {
@@ -201,17 +218,6 @@ struct Renderer : IRenderer
     }
 
     flush();
-
-    // draw to screen
-    backend->setRenderTarget(nullptr);
-    backend->clear();
-    backend->useVertexBuffer(m_quadVbo.get());
-    m_fb->getColorTexture()->bind(0);
-    backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
-    backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
-    backend->draw(6);
-
-    backend->swap();
   }
 
   void drawActor(Rect2f where, float angle, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
