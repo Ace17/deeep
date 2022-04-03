@@ -318,6 +318,7 @@ struct HighLevelAudio : MixableAudio
         m_voices[cmd.id].vol.value = 1;
         m_voices[cmd.id].vol.target = 1;
         m_voices[cmd.id].vol.speed = 0.1;
+        m_voices[cmd.id].finished = true;
         break;
       case Opcode::PlayVoiceLooped:
         m_voices[cmd.id].loop = true;
