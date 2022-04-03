@@ -27,6 +27,7 @@ using namespace std;
 namespace
 {
 const int MAX_QUADS = 32678;
+const float SCALE = 0.125f;
 
 Vector2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
@@ -271,7 +272,7 @@ private:
 
     const auto worldTransform = translate(where.pos) * rotate(angle) * scale(Vector2f(sx, sy));
 
-    static const auto shrink = scale(0.125 * Vector2f(1, 1));
+    static const auto shrink = scale(SCALE * Vector2f(1, 1));
     const auto viewTransform = shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
 
     const auto transform = viewTransform * worldTransform;
