@@ -15,9 +15,9 @@
 #include "base/span.h"
 #include "base/string.h"
 
-struct Display
+struct IRenderer
 {
-  virtual ~Display() = default;
+  virtual ~IRenderer() = default;
 
   virtual void loadModel(int id, String imagePath) = 0;
   virtual void setCamera(Vector2f pos) = 0;

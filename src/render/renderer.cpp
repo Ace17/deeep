@@ -15,8 +15,8 @@ using namespace std;
 #include "base/scene.h"
 #include "base/span.h"
 #include "base/util.h" // clamp
-#include "engine/display.h"
 #include "engine/graphics_backend.h"
+#include "engine/renderer.h"
 #include "engine/stats.h"
 #include "matrix3.h"
 #include "misc/file.h"
@@ -68,7 +68,7 @@ T blend(T a, T b, float alpha)
   return a * (1 - alpha) + b * alpha;
 }
 
-struct Renderer : Display
+struct Renderer : IRenderer
 {
   Renderer(IGraphicsBackend* backend_)
     : backend(backend_)
@@ -371,7 +371,7 @@ int loadTexture(String path, Rect2f frect)
   return g_Renderer->loadTexture(path, frect);
 }
 
-Display* createRenderer(IGraphicsBackend* gfxBackend)
+IRenderer* createRenderer(IGraphicsBackend* gfxBackend)
 {
   return new Renderer(gfxBackend);
 }

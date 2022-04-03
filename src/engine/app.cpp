@@ -23,10 +23,10 @@
 
 #include "audio.h"
 #include "audio_backend.h"
-#include "display.h"
 #include "graphics_backend.h"
 #include "input.h"
 #include "ratecounter.h"
+#include "renderer.h"
 #include "stats.h"
 #include "video_capture.h"
 
@@ -37,7 +37,7 @@ auto const RESOLUTION = Size2i(768, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
 IGraphicsBackend* createGraphicsBackend(Size2i resolution);
-Display* createRenderer(IGraphicsBackend* backend);
+IRenderer* createRenderer(IGraphicsBackend* backend);
 MixableAudio* createAudio();
 UserInput* createUserInput();
 
@@ -50,7 +50,7 @@ public:
     : m_args({ args.data, args.data + args.len })
   {
     m_graphicsBackend.reset(createGraphicsBackend(RESOLUTION));
-    m_display.reset(createRenderer(m_graphicsBackend.get()));
+    m_renderer.reset(createRenderer(m_graphicsBackend.get()));
     m_audio.reset(createAudio());
     m_audioBackend.reset(createAudioBackend(m_audio.get()));
     m_input.reset(createUserInput());
@@ -167,25 +167,25 @@ private:
 
   void draw()
   {
-    m_display->beginDraw();
+    m_renderer->beginDraw();
 
     for(auto& actor : m_actors)
     {
       auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
-      m_display->drawActor(where, actor.angle, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
+      m_renderer->drawActor(where, actor.angle, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
     }
 
     if(m_running == AppState::ConfirmExit)
     {
       auto where = Rect2f(-8, -8, 16, 16);
       int modelId = 0;
-      m_display->drawActor(where, 0, false, modelId, 0, 0, 0, 99);
-      m_display->drawText(Vector2f(0, 0.5), "QUIT? [Y/N]");
+      m_renderer->drawActor(where, 0, false, modelId, 0, 0, 0, 99);
+      m_renderer->drawText(Vector2f(0, 0.5), "QUIT? [Y/N]");
     }
     else if(m_paused)
-      m_display->drawText(Vector2f(0, 0), "PAUSE");
+      m_renderer->drawText(Vector2f(0, 0), "PAUSE");
     else if(m_slowMotion)
-      m_display->drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
+      m_renderer->drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
 
     if(m_control.debug)
     {
@@ -194,7 +194,7 @@ private:
         char txt[256];
         auto stat = getStat(i);
         snprintf(txt, sizeof txt, "%s: %.2f", stat.name, stat.val);
-        m_display->drawText(Vector2f(0, 4 - i), txt);
+        m_renderer->drawText(Vector2f(0, 4 - i), txt);
       }
     }
 
@@ -206,11 +206,11 @@ private:
       if(m_textboxDelay < DELAY)
         y += 16 * (DELAY - m_textboxDelay) / DELAY;
 
-      m_display->drawText(Vector2f(0, y), m_textbox.c_str());
+      m_renderer->drawText(Vector2f(0, y), m_textbox.c_str());
       m_textboxDelay--;
     }
 
-    m_display->endDraw();
+    m_renderer->endDraw();
 
     m_recorder.captureDisplayFrameIfNeeded(m_graphicsBackend.get(), RESOLUTION);
   }
@@ -279,7 +279,7 @@ private:
       m_audio->loadSound(res.id, res.path);
       break;
     case ResourceType::Model:
-      m_display->loadModel(res.id, res.path);
+      m_renderer->loadModel(res.id, res.path);
       break;
     }
   }
@@ -329,12 +329,12 @@ private:
 
   void setCameraPos(Vector2f pos) override
   {
-    m_display->setCamera(pos);
+    m_renderer->setCamera(pos);
   }
 
   void setAmbientLight(float amount) override
   {
-    m_display->setAmbientLight(amount);
+    m_renderer->setAmbientLight(amount);
   }
 
   void sendActor(Actor const& actor) override
@@ -368,7 +368,7 @@ private:
   bool m_paused = false;
   unique_ptr<MixableAudio> m_audio;
   unique_ptr<IAudioBackend> m_audioBackend;
-  unique_ptr<Display> m_display;
+  unique_ptr<IRenderer> m_renderer;
   unique_ptr<IGraphicsBackend> m_graphicsBackend;
   vector<Actor> m_actors;
   unique_ptr<UserInput> m_input;
