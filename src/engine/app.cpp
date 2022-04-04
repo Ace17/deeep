@@ -307,7 +307,7 @@ private:
     m_currMusicName = musicName;
   }
 
-  void stopMusic()
+  void stopMusic() override
   {
     if(m_musicVoice == -1)
       return;

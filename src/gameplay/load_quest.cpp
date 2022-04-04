@@ -316,7 +316,7 @@ Quest loadTiledWorld(string path) // tiled JSON ".world" format
   for(auto& roomValue : js["maps"].elements)
   {
     auto room = loadAbstractRoom(roomValue);
-    r.rooms.push_back(move(room));
+    r.rooms.push_back(std::move(room));
   }
 
   return r;
@@ -408,7 +408,7 @@ Quest loadQuest(string path)
       room.spawners.push_back(s);
     }
 
-    r.rooms.push_back(move(room));
+    r.rooms.push_back(std::move(room));
   }
 
   return r;

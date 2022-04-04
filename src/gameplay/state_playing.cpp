@@ -188,7 +188,7 @@ struct GameState : Scene, private IGame
 
   void processEvents()
   {
-    auto events = move(m_eventQueue);
+    auto events = std::move(m_eventQueue);
 
     for(auto& event : events)
     {
@@ -258,7 +258,7 @@ struct GameState : Scene, private IGame
       spawned->enter();
 
       m_physics->addBody(spawned.get());
-      m_entities.push_back(move(spawned));
+      m_entities.push_back(std::move(spawned));
     }
 
     m_spawned.clear();
@@ -383,7 +383,7 @@ struct GameState : Scene, private IGame
 
   void postEvent(unique_ptr<Event> event) override
   {
-    m_eventQueue.push_back(move(event));
+    m_eventQueue.push_back(std::move(event));
   }
 
   Vector getPlayerPosition() override

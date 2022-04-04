@@ -37,7 +37,7 @@ Vector2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
   return r;
 }
 
-class Renderer;
+struct Renderer;
 Renderer* g_Renderer;
 
 struct Camera
