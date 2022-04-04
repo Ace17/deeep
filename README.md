@@ -15,7 +15,7 @@ Description
 -----------
 
 This is a demo of a platform-independent C++14 game project.
-It uses SDL2, and the OpenGL core profile.
+It uses SDL2, and OpenGL ES 3.0.
 
 It's meant as an example of a platformer/metroidvania game
 which can be compiled to native code, or, using Emscripten, to Javascript,
@@ -58,19 +58,11 @@ $ make
 The binaries will be generated to a 'bin' directory
 (This can be overriden using the BIN makefile variable).
 
-It can also be compiled to Javascript, using Emscripten.
-In theory, it's as simple as:
+It can also be compiled to WebAssembly, using the Emscripten SDK.
 
 ```
-$ CXX=emcc make
-```
-
-However, in practice, more options need to be injected to the makefile,
-like setting EXT (program extension) to ".html", etc.
-There's a make wrapper that does exactly that:
-
-```
-$ ./scripts/asmjs-make
+$ source /path/to/your/emsdk_env.sh
+$ ./scripts/deliver
 ```
 
 Run the game
