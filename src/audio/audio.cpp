@@ -116,20 +116,20 @@ struct HighLevelAudio : MixableAudio
 
   void loadSound(int id, String path) override
   {
-    try
-    {
-      auto i = m_sounds.find(id);
+    auto i = m_sounds.find(id);
 
-      if(i != m_sounds.end())
-        m_sounds.erase(i);
+    if(i != m_sounds.end())
+      m_sounds.erase(i);
 
-      m_sounds.insert({ id, loadSoundFile(path) });
-    }
-    catch(const Error& e)
+    // if the file doesn't exist, don't try to load it:
+    // this would cause an exception, crashing the wasm-version of the program.
+    if(!File::exists(path))
     {
-      printf("[audio] can't load sound '%.*s' (%.*s)\n", path.len, path.data, e.message().len, e.message().data);
-      printf("[audio] default sound will be used instead.\n");
+      printf("[audio] sound '%.*s' was not found, fallback on default sound\n", path.len, path.data);
+      return;
     }
+
+    m_sounds.insert({ id, loadSoundFile(path) });
   }
 
   VoiceId createVoice() override
