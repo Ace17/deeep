@@ -12,9 +12,9 @@
 #include <cassert>
 #include <cstdio>
 #include <memory>
-#include <stdexcept>
 #include <vector>
 
+#include "base/error.h"
 #include "base/geom.h"
 #include "base/span.h"
 #include "engine/stats.h"
@@ -44,7 +44,7 @@ void ensureGl(char const* expr, const char* file, int line)
   ss += "OpenGL error\n";
   ss += string(file) + "(" + to_string(line) + "): " + string(expr) + "\n";
   ss += "Error code: " + to_string(errorCode) + "\n";
-  throw runtime_error(ss);
+  throw Error(ss);
 }
 
 namespace
@@ -54,7 +54,7 @@ GLuint compileShader(Span<const uint8_t> code, int type)
   auto shaderId = glCreateShader(type);
 
   if(!shaderId)
-    throw runtime_error("Can't create shader");
+    throw Error("Can't create shader");
 
   auto srcPtr = (const char*)code.data;
   auto length = (GLint)code.len;
@@ -73,7 +73,7 @@ GLuint compileShader(Span<const uint8_t> code, int type)
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
     fprintf(stderr, "%s\n", msg.data());
 
-    throw runtime_error("Can't compile shader");
+    throw Error("Can't compile shader");
   }
 
   return shaderId;
@@ -101,7 +101,7 @@ GLuint linkShaders(vector<GLuint> ids)
     glGetProgramInfoLog(ProgramID, logLength, nullptr, msg.data());
     fprintf(stderr, "%s\n", msg.data());
 
-    throw runtime_error("Can't link shader");
+    throw Error("Can't link shader");
   }
 
   return ProgramID;
@@ -269,7 +269,10 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   OpenGlGraphicsBackend(Size2i resolution)
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
-      throw runtime_error(string("Can't init SDL video: ") + SDL_GetError());
+    {
+      char buffer[256];
+      throw Error(format(buffer, "Can't init SDL video: %s", SDL_GetError()));
+    }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -289,16 +292,22 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
       );
 
     if(!m_window)
-      throw runtime_error(string("Can't create SDL window: ") + SDL_GetError());
+    {
+      char buffer[256];
+      throw Error(format(buffer, "Can't create SDL window: %s", SDL_GetError()));
+    }
 
     // Create our opengl context and attach it to our window
     m_context = SDL_GL_CreateContext(m_window);
 
     if(!m_context)
-      throw runtime_error(string("Can't create OpenGL context: ") + SDL_GetError());
+    {
+      char buffer[256];
+      throw Error(format(buffer, "Can't create OpenGL context: %s", SDL_GetError()));
+    }
 
     if(!gladLoadGLES2Loader(&SDL_GL_GetProcAddress))
-      throw runtime_error("Can't load OpenGL");
+      throw Error("Can't load OpenGL");
 
     printOpenGlVersion();
 
