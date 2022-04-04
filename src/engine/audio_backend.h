@@ -6,7 +6,7 @@
 
 #pragma once
 
-const int SAMPLERATE = 22050;
+const int SAMPLERATE = 48000;
 
 // An audio backend doesn't receive messages.
 // It continuously pulls from an IAudioMixer.

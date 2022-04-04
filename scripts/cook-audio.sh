@@ -5,7 +5,7 @@ readonly output="$1"
 readonly input="$2"
 
 args=()
-args+=(-ar 22050 -ac 2)
+args+=(-ar 48000 -ac 2)
 
 readonly descFile="$2.desc"
 if test -f "$2.desc" ; then
