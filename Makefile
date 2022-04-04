@@ -108,6 +108,8 @@ $(BIN)/rel/game$(EXT): $(SRCS:%=$(BIN)/%.o)
 
 TARGETS+=$(BIN)/rel/game$(EXT)
 
+game: $(BIN)/rel/game$(EXT)
+
 #------------------------------------------------------------------------------
 include assets/project.mk
 

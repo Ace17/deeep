@@ -3,15 +3,15 @@
 
 SOUNDS_SRC+=$(wildcard assets/sounds/*.ogg)
 SOUNDS_SRC+=$(wildcard assets/music/*.ogg)
-TARGETS+=$(SOUNDS_SRC:assets/%.ogg=res/%.ogg)
+RESOURCES+=$(SOUNDS_SRC:assets/%.ogg=res/%.ogg)
 
 res/%.ogg: assets/%.ogg
 	@mkdir -p $(dir $@)
 	./scripts/cook-audio.sh "$@" "$<"
 
 SPRITES_SRC+=$(wildcard assets/sprites/*.json)
-TARGETS+=$(SPRITES_SRC:assets/%.json=res/%.model)
-TARGETS+=$(SPRITES_SRC:assets/%.json=res/%.png)
+RESOURCES+=$(SPRITES_SRC:assets/%.json=res/%.model)
+RESOURCES+=$(SPRITES_SRC:assets/%.json=res/%.png)
 
 #-----------------------------------
 # ROOMS
@@ -21,11 +21,11 @@ ROOMS_SRC+=$(wildcard assets/rooms/*.json)
 #-----------------------------------
 # Fonts
 
-TARGETS+=res/font.png
-TARGETS+=res/font.model
+RESOURCES+=res/font.png
+RESOURCES+=res/font.model
 
 TILES_SRC+=$(wildcard assets/tiles/*.xcf)
-TARGETS+=$(TILES_SRC:assets/%.xcf=res/%.png)
+RESOURCES+=$(TILES_SRC:assets/%.xcf=res/%.png)
 
 $(BIN)/res/quest.json: assets/quest.world $(BIN_HOST)/packquest.exe $(ROOMS_SRC)
 	@mkdir -p $(dir $@)
@@ -49,7 +49,7 @@ res/%.png: assets/%.xcf
 
 SHADERS_SRC+=$(wildcard assets/shaders/*.vert)
 SHADERS_SRC+=$(wildcard assets/shaders/*.frag)
-TARGETS+=$(SHADERS_SRC:assets/%=res/%)
+RESOURCES+=$(SHADERS_SRC:assets/%=res/%)
 
 res/%.frag: assets/%.frag
 	@mkdir -p $(dir $@)
@@ -70,4 +70,8 @@ res/%.vert: assets/%.vert
 res/%: assets/%
 	@mkdir -p $(dir $@)
 	@cp "$<" "$@"
+
+resources: $(RESOURCES)
+
+TARGETS+=$(RESOURCES)
 

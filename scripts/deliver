@@ -13,7 +13,15 @@ function main
   echo "Delivering [$NAME]"
   #make clean
   #./check
-  deliverBinaryVersion
+
+  echo "-------------------------------------"
+  echo "Building resources"
+  rm -rf res
+  make -j`nproc` resources >/dev/null
+
+  (deliverBinaryVersion)
+  (deliverWebVersion)
+  echo OK
 }
 
 function deliverBinaryVersion
@@ -75,6 +83,46 @@ function deliverBinaryVersion
 
   cp $tmpDir/$N.zip /tmp/
   du -hs /tmp/$N.zip
+}
+
+function deliverWebVersion
+{
+  echo "-------------------------------------"
+  echo "Building web version"
+
+  if ! which emcc >/dev/null ; then
+    echo "emcc was not found in PATH" >&2
+    echo "Did you forget to: source ~/source/emsdk/emsdk_env.sh" ? >&2
+    return 1
+  fi
+
+  mkdir $tmpDir/pkgconfig
+
+  genPkgConfigSdl2 > $tmpDir/pkgconfig/sdl2.pc
+
+  export BIN=$tmpDir/bin/web
+  export PKG_CONFIG_LIBDIR=$tmpDir/pkgconfig
+  export CXX=emcc
+  export EXT=".html"
+  export DBGFLAGS=""
+  export CXXFLAGS="-O3 -g0 -DNDEBUG"
+  export LDFLAGS="-O3 -g0 --use-preload-plugins --pre-js \"my-pre.js\" --preload-file res -s USE_WEBGL2=1 -s TOTAL_MEMORY=$((64 * 1024 * 1024)) -s PRECISE_F32=1"
+
+  make -j`nproc` game >/dev/null
+
+  rm -f /tmp/$NAME-web.zip
+  (cd $tmpDir/bin/web/rel && zip /tmp/$NAME-web.zip -r . )
+
+  du -hs /tmp/$NAME-web.zip
+}
+
+function genPkgConfigSdl2
+{
+  echo "Name: sdl2"
+  echo "Version: 2.0.0"
+  echo "Description: placeholder pc file"
+  echo "Libs: -s USE_SDL=2"
+  echo "Cflags:  -s USE_SDL=2"
 }
 
 main
