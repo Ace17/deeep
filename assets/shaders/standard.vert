@@ -1,12 +1,12 @@
-#version 310 es
+#version 300 es
 
 // Attributes
-layout(location = 0) in vec2 vertexPos_model;
-layout(location = 1) in vec2 vertexUV;
+in vec2 vertexPos_model;
+in vec2 vertexUV;
 
 // Output data; will be interpolated for each fragment
-layout(location = 0) out vec4 vertexPos_world;
-layout(location = 1) out vec2 UV;
+out vec4 vertexPos_world;
+out vec2 UV;
 
 void main()
 {

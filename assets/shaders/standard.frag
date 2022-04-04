@@ -1,17 +1,17 @@
-#version 310 es
+#version 300 es
 
 precision mediump float;
 
 // Uniforms
-layout(location = 0) uniform vec4 fragOffset;
-layout(location = 1) uniform sampler2D DiffuseTextureSampler;
+uniform vec4 fragOffset;
+uniform sampler2D DiffuseTextureSampler;
 
 // Interpolated values from the vertex shader
-layout(location = 0) in vec4 vertexPos_world;
-layout(location = 1) in vec2 UV;
+in vec4 vertexPos_world;
+in vec2 UV;
 
 // Ouput data
-layout(location = 0) out vec4 color;
+out vec4 color;
 
 void main()
 {

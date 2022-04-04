@@ -54,13 +54,15 @@ TARGETS+=$(SHADERS_SRC:assets/%=res/%)
 res/%.frag: assets/%.frag
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(BIN)/$*)
-	glslangValidator -G -o "$(BIN)/$*.spv" "$<"
+	@#glslangValidator -G -o "$(BIN)/$*.spv" "$<"
+	glslangValidator "$<"
 	@cp "$<" "$@"
 
 res/%.vert: assets/%.vert
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(BIN)/$*)
-	glslangValidator -G -o "$(BIN)/$*.spv" "$<"
+	@#glslangValidator -G -o "$(BIN)/$*.spv" "$<"
+	glslangValidator "$<"
 	@cp "$<" "$@"
 
 #-----------------------------------
