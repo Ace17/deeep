@@ -15,6 +15,25 @@
 #include "base/span.h"
 #include "base/string.h"
 
+struct RenderSprite
+{
+  Vector2f pos;
+  bool useWorldRefFrame;
+  int zOrder;
+  float angle;
+  Vector2f halfSize;
+  bool blinking;
+  int modelId;
+  int actionIdx;
+  float frame;
+};
+
+struct RenderText
+{
+  Vector2f pos;
+  String text;
+};
+
 struct IRenderer
 {
   virtual ~IRenderer() = default;
@@ -26,7 +45,7 @@ struct IRenderer
   // draw functions
   virtual void beginDraw() = 0;
   virtual void endDraw() = 0;
-  virtual void drawActor(Rect2f where, float angle, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float frame, int zOrder) = 0;
-  virtual void drawText(Vector2f pos, char const* text) = 0;
+  virtual void drawSprite(const RenderSprite& sprite) = 0;
+  virtual void drawText(const RenderText& text) = 0;
 };
 

@@ -221,31 +221,31 @@ struct Renderer : IRenderer
     flush();
   }
 
-  void drawActor(Rect2f where, float angle, bool useWorldRefFrame, int modelId, bool blinking, int actionIdx, float ratio, int zOrder) override
+  void drawSprite(const RenderSprite& sprite) override
   {
-    auto& model = m_Models.at(modelId);
-    auto cam = useWorldRefFrame ? m_camera : Camera();
-    pushQuad(where, angle, cam, model, blinking, actionIdx, ratio, zOrder);
+    auto& model = m_Models.at(sprite.modelId);
+    auto cam = sprite.useWorldRefFrame ? m_camera : Camera();
+    pushQuad(sprite.pos, sprite.halfSize, sprite.angle, cam, model, sprite.blinking, sprite.actionIdx, sprite.frame, sprite.zOrder);
   }
 
-  void drawText(Vector2f pos, char const* text) override
+  void drawText(const RenderText& text) override
   {
-    Rect2f rect;
-    rect.size.width = 0.5;
-    rect.size.height = 0.5;
-    rect.pos.x = pos.x - strlen(text) * rect.size.width / 2;
-    rect.pos.y = pos.y;
+    Vector2f size = { 0.5, 0.5 };
 
-    while(*text)
+    auto pos = text.pos;
+
+    pos.x = pos.x - text.text.len * size.x * 0.5;
+    pos.y = pos.y;
+
+    for(auto& c : text.text)
     {
-      pushQuad(rect, 0, {}, m_fontModel, false, *text, 0, 100);
-      rect.pos.x += rect.size.width;
-      ++text;
+      pushQuad(pos, size, 0, {}, m_fontModel, false, c, 0, 100);
+      pos.x += size.x;
     }
   }
 
 private:
-  void pushQuad(Rect2f where, float angle, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
+  void pushQuad(Vector2f pos, Vector2f halfSize, float angle, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
   {
     if(model.actions.empty())
       throw Error("model has no actions");
@@ -261,16 +261,16 @@ private:
     auto const N = (int)action.textures.size();
     auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
 
-    if(where.size.width < 0)
-      where.pos.x -= where.size.width;
+    if(halfSize.x < 0)
+      pos.x -= halfSize.x;
 
-    if(where.size.height < 0)
-      where.pos.y -= where.size.height;
+    if(halfSize.y < 0)
+      pos.y -= halfSize.y;
 
-    auto const sx = where.size.width;
-    auto const sy = where.size.height;
+    auto const sx = halfSize.x;
+    auto const sy = halfSize.y;
 
-    const auto worldTransform = translate(where.pos) * rotate(angle) * scale(Vector2f(sx, sy));
+    const auto worldTransform = translate(pos) * rotate(angle) * scale(Vector2f(sx, sy));
 
     static const auto shrink = scale(SCALE * Vector2f(1, 1));
     const auto viewTransform = shrink * rotate(-cam.angle) * translate(-1 * cam.pos);

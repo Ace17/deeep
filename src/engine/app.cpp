@@ -104,7 +104,7 @@ private:
     }
 
     // draw the frame
-    m_actors.clear();
+    m_sprites.clear();
     m_scene->draw();
     draw();
 
@@ -169,23 +169,23 @@ private:
   {
     m_renderer->beginDraw();
 
-    for(auto& actor : m_actors)
-    {
-      auto where = Rect2f(actor.pos.x, actor.pos.y, actor.scale.width, actor.scale.height);
-      m_renderer->drawActor(where, actor.angle, !actor.screenRefFrame, (int)actor.model, actor.effect == Effect::Blinking, actor.action, actor.ratio, actor.zOrder);
-    }
+    for(auto& sprite : m_sprites)
+      m_renderer->drawSprite(sprite);
 
     if(m_running == AppState::ConfirmExit)
     {
-      auto where = Rect2f(-8, -8, 16, 16);
-      int modelId = 0;
-      m_renderer->drawActor(where, 0, false, modelId, 0, 0, 0, 99);
-      m_renderer->drawText(Vector2f(0, 0.5), "QUIT? [Y/N]");
+      RenderSprite s {};
+      s.pos = { -8, -8 };
+      s.halfSize = { 16, 16 };
+      s.modelId = 0;
+      s.zOrder = 99;
+      m_renderer->drawSprite(s);
+      m_renderer->drawText({ Vector2f(0, 0.5), "QUIT? [Y/N]" });
     }
     else if(m_paused)
-      m_renderer->drawText(Vector2f(0, 0), "PAUSE");
+      m_renderer->drawText({ Vector2f(0, 0), "PAUSE" });
     else if(m_slowMotion)
-      m_renderer->drawText(Vector2f(0, 0), "SLOW-MOTION MODE");
+      m_renderer->drawText({ Vector2f(0, 0), "SLOW-MOTION MODE" });
 
     if(m_control.debug)
     {
@@ -193,8 +193,8 @@ private:
       {
         char txt[256];
         auto stat = getStat(i);
-        snprintf(txt, sizeof txt, "%s: %.2f", stat.name, stat.val);
-        m_renderer->drawText(Vector2f(0, 4 - i), txt);
+        auto s = format(txt, "%s: %.2f", stat.name, stat.val);
+        m_renderer->drawText({ Vector2f(0, 4 - i), s });
       }
     }
 
@@ -206,7 +206,7 @@ private:
       if(m_textboxDelay < DELAY)
         y += 16 * (DELAY - m_textboxDelay) / DELAY;
 
-      m_renderer->drawText(Vector2f(0, y), m_textbox.c_str());
+      m_renderer->drawText({ Vector2f(0, y), m_textbox });
       m_textboxDelay--;
     }
 
@@ -339,7 +339,19 @@ private:
 
   void sendActor(Actor const& actor) override
   {
-    m_actors.push_back(actor);
+    RenderSprite s;
+
+    s.pos = actor.pos;
+    s.halfSize = actor.scale;
+    s.angle = actor.angle;
+    s.useWorldRefFrame = !actor.screenRefFrame;
+    s.modelId = (int)actor.model;
+    s.blinking = actor.effect == Effect::Blinking;
+    s.actionIdx = actor.action;
+    s.frame = actor.ratio;
+    s.zOrder = actor.zOrder;
+
+    m_sprites.push_back(s);
   }
 
   enum class AppState
@@ -370,9 +382,10 @@ private:
   unique_ptr<IAudioBackend> m_audioBackend;
   unique_ptr<IRenderer> m_renderer;
   unique_ptr<IGraphicsBackend> m_graphicsBackend;
-  vector<Actor> m_actors;
   unique_ptr<UserInput> m_input;
 
+  // cleared at each frame
+  vector<RenderSprite> m_sprites;
   string m_textbox;
   int m_textboxDelay = 0;
 };
