@@ -6,6 +6,7 @@
 
 // User input event source: SDL implementation
 
+#include "base/error.h"
 #include "engine/input.h"
 #include "SDL.h"
 #include <map>
@@ -66,7 +67,18 @@ struct SdlUserInput : UserInput
 {
   SdlUserInput()
   {
+    if(SDL_InitSubSystem(SDL_INIT_EVENTS))
+    {
+      char buffer[256];
+      throw Error(format(buffer, "Can't init input: %s", SDL_GetError()));
+    }
+
     m_quitDelegate = &unbound;
+  }
+
+  ~SdlUserInput()
+  {
+    SDL_QuitSubSystem(SDL_INIT_EVENTS);
   }
 
   void process() override
