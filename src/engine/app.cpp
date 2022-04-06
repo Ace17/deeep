@@ -104,8 +104,6 @@ private:
     }
 
     // draw the frame
-    m_sprites.clear();
-    m_scene->draw();
     draw();
 
     m_fps.tick(now);
@@ -170,8 +168,7 @@ private:
   {
     m_renderer->beginDraw();
 
-    for(auto& sprite : m_sprites)
-      m_renderer->drawSprite(sprite);
+    m_scene->draw();
 
     if(m_running == AppState::ConfirmExit)
     {
@@ -353,7 +350,7 @@ private:
     s.frame = actor.ratio;
     s.zOrder = actor.zOrder;
 
-    m_sprites.push_back(s);
+    m_renderer->drawSprite(s);
   }
 
   enum class AppState
@@ -387,8 +384,6 @@ private:
   unique_ptr<IGraphicsBackend> m_graphicsBackend;
   unique_ptr<UserInput> m_input;
 
-  // cleared at each frame
-  vector<RenderSprite> m_sprites;
   string m_textbox;
   int m_textboxDelay = 0;
 };
