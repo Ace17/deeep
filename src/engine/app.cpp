@@ -315,6 +315,7 @@ private:
     m_audio->stopVoice(m_musicVoice); // maybe add a fade out here?
     m_audio->releaseVoice(m_musicVoice, true);
     m_musicVoice = -1;
+    m_currMusicName = -1;
   }
 
   Audio::VoiceId m_musicVoice = -1;
