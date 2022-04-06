@@ -54,6 +54,9 @@ function deliverBinaryVersion
   cp /opt/envs/x86_64-w64-mingw32/bin/SDL2.dll                       $tmpDir/$N
 
   # GNU/Linux binaries
+  export PATH="/opt/toolchains/x86_64-ace-linux-gnu/bin:$PATH"
+  CROSS_COMPILE=x86_64-ace-linux-gnu- \
+  PKG_CONFIG_LIBDIR="/opt/envs/x86_64-ace-linux-gnu/lib/pkgconfig" \
   CXXFLAGS="-include extra/glibc_version.h -O3" \
   BIN=$tmpDir/bin/gnu \
     make -j`nproc` \
