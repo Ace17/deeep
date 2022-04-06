@@ -20,6 +20,7 @@ enum class Key
   Up,
   Down,
   ScrollLock,
+  Backtick,
   Tab,
   CapsLock,
   C,

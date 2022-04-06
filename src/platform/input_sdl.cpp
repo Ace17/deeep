@@ -36,6 +36,7 @@ Uint32 translateToSdlKey(Key key)
   case Key::Right: return SDLK_RIGHT;
   case Key::Up: return SDLK_UP;
   case Key::Down: return SDLK_DOWN;
+  case Key::Backtick: return SDLK_BACKQUOTE;
   case Key::Tab: return SDLK_TAB;
   case Key::CapsLock: return SDLK_CAPSLOCK;
   case Key::ScrollLock: return SDLK_SCROLLLOCK;

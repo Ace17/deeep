@@ -89,7 +89,7 @@ public:
 private:
   void tickOneDisplayFrame(int now)
   {
-    const auto timeStep = m_slowMotion ? TIMESTEP * 10 : TIMESTEP;
+    const auto timeStep = m_slowMotion ? TIMESTEP * 10 : m_fastForward ? 1 : TIMESTEP;
 
     while(m_lastTime + timeStep < now)
     {
@@ -161,6 +161,7 @@ private:
     // Debug keys
     m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(this, m_args)); });
     m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
+    m_input->listenToKey(Key::Backtick, [&] (bool isDown) { m_fastForward = isDown; });
     m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) toggleDebug(); });
     m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ playSound(0); togglePause(); } });
   }
@@ -377,6 +378,7 @@ private:
   vector<string> m_args;
   unique_ptr<Scene> m_scene;
   bool m_slowMotion = false;
+  bool m_fastForward = false;
   bool m_fullscreen = false;
   bool m_paused = false;
   unique_ptr<MixableAudio> m_audio;
