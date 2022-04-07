@@ -11,14 +11,14 @@
 #include "state_machine.h"
 #include <string>
 
+extern const String GAME_NAME = "Deeep";
+
 using namespace std;
 
 Span<const Resource> getResources();
 
 Scene* createGame(View* view, Span<const string> args)
 {
-  view->setTitle("Deeep");
-
   for(auto res : getResources())
     view->preload(res);
 
