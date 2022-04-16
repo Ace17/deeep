@@ -120,7 +120,6 @@ struct Renderer : IRenderer
   void beginDraw() override
   {
     m_frameCount++;
-    m_quads.clear();
   }
 
   void endDraw() override
@@ -160,22 +159,7 @@ struct Renderer : IRenderer
 
     my::sort<Quad>(m_quads, byPriority);
 
-    vector<Vertex> vboData;
-
-    auto flush = [&] ()
-      {
-        if(vboData.empty())
-          return;
-
-        m_batchVbo->upload(vboData.data(), vboData.size() * sizeof(vboData[0]));
-
-        backend->useVertexBuffer(m_batchVbo.get());
-        backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
-        backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
-        backend->draw(vboData.size());
-
-        vboData.clear();
-      };
+    vboData.clear();
 
     ITexture* currTexture = nullptr;
     std::array<float, 3> currLight {};
@@ -184,11 +168,11 @@ struct Renderer : IRenderer
     for(auto const& q : m_quads)
     {
       if(vboData.size() * 6 >= MAX_QUADS)
-        flush();
+        flushBatch();
 
       if(m_tiles[q.tile].texture != currTexture)
       {
-        flush();
+        flushBatch();
 
         currTexture = m_tiles[q.tile].texture;
         // Bind our diffuse texture in Texture Unit 0
@@ -197,7 +181,7 @@ struct Renderer : IRenderer
 
       if(q.light != currLight)
       {
-        flush();
+        flushBatch();
 
         backend->setUniformFloat4(0 /* colorLoc */, q.light[0], q.light[1], q.light[2], 0);
         currLight = q.light;
@@ -218,7 +202,23 @@ struct Renderer : IRenderer
       vboData.push_back({ q.pos[3].x, q.pos[3].y, u1, v0 });
     }
 
-    flush();
+    flushBatch();
+
+    m_quads.clear();
+  }
+
+  void flushBatch()
+  {
+    if(vboData.empty())
+      return;
+
+    m_batchVbo->upload(vboData.data(), vboData.size() * sizeof(vboData[0]));
+    backend->useVertexBuffer(m_batchVbo.get());
+    backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+    backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+    backend->draw(vboData.size());
+
+    vboData.clear();
   }
 
   void drawText(const RenderText& text) override
@@ -351,6 +351,8 @@ private:
   unordered_map<int, Model> m_Models;
   unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
   std::vector<Tile> m_tiles;
+
+  std::vector<Vertex> vboData; // VBO scratch buffer
 
   float m_ambientLight = 0;
   int m_frameCount = 0;
