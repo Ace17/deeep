@@ -82,7 +82,7 @@ struct Renderer : IRenderer
     m_quadVbo = backend->createVertexBuffer();
     m_quadVbo->upload(quadVertices, sizeof quadVertices);
 
-    m_fontModel = ::loadModel("res/font.model");
+    m_Models[-1] = ::loadModel("res/font.model");
   }
 
   void loadModel(int id, String path) override
@@ -239,7 +239,7 @@ struct Renderer : IRenderer
 
     for(auto& c : text.text)
     {
-      pushQuad(pos, size, 0, {}, m_fontModel, false, c, 0, 100);
+      pushQuad(pos, size, 0, {}, m_Models[-1], false, c, 0, 100);
       pos.x += size.x;
     }
   }
@@ -338,7 +338,6 @@ private:
   unordered_map<int, Model> m_Models;
   unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
   std::vector<Tile> m_tiles;
-  Model m_fontModel;
 
   float m_ambientLight = 0;
   int m_frameCount = 0;
