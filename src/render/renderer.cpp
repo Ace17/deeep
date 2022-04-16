@@ -239,7 +239,15 @@ struct Renderer : IRenderer
 
     for(auto& c : text.text)
     {
-      pushQuad(pos, size, 0, {}, m_Models[-1], false, c, 0, 100);
+      RenderSprite s {};
+      s.pos = pos;
+      s.halfSize = size;
+      s.modelId = -1;
+      s.zOrder = 100;
+      s.actionIdx = c;
+      s.frame = 0;
+
+      drawSprite(s);
       pos.x += size.x;
     }
   }
