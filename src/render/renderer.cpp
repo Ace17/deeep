@@ -12,11 +12,11 @@ using namespace std;
 #include "base/error.h"
 #include "base/geom.h"
 #include "base/my_algorithm.h" // sort
+#include "base/renderer.h"
 #include "base/scene.h"
 #include "base/span.h"
 #include "base/util.h" // clamp
 #include "engine/graphics_backend.h"
-#include "engine/renderer.h"
 #include "engine/stats.h"
 #include "matrix3.h"
 #include "misc/file.h"

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "base/scene.h"
-#include "base/view.h"
-
+struct View;
+struct Scene;
 struct Quest;
 
 Scene* createSplashState(View* view);

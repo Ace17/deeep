@@ -7,13 +7,13 @@
 // ending screen
 
 #include "base/scene.h"
-#include "base/view.h"
 #include <memory>
 
 #include "models.h" // MDL_ENDING
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
+#include "view.h"
 
 struct EndingState : Scene
 {

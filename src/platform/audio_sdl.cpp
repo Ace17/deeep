@@ -11,7 +11,7 @@
 #include "base/util.h"
 
 #include "audio/sound.h"
-#include "engine/audio.h" // IAudioMixer
+#include "base/audio.h" // IAudioMixer
 #include "engine/audio_backend.h"
 
 #include <memory>

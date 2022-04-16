@@ -6,9 +6,13 @@
 
 // main FSM: dispatching between various game states
 
+#include "base/audio.h"
+#include "base/renderer.h"
+#include "base/scene.h"
 #include "base/span.h"
-#include "base/view.h"
 #include "state_machine.h"
+#include "view.h"
+#include <memory>
 #include <string>
 
 extern const String GAME_NAME = "Deeep";
@@ -16,9 +20,15 @@ extern const String GAME_NAME = "Deeep";
 using namespace std;
 
 Span<const Resource> getResources();
+View* createPresenter(IRenderer* renderer, Audio* audio);
 
-Scene* createGame(View* view, Span<const string> args)
+std::unique_ptr<View> g_Presenter;
+
+Scene* createGame(IRenderer* renderer, Audio* audio, Span<const std::string> args)
 {
+  g_Presenter.reset(createPresenter(renderer, audio));
+  auto view = g_Presenter.get();
+
   for(auto res : getResources())
     view->preload(res);
 

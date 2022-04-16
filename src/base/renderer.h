@@ -10,10 +10,10 @@
 
 #include <stdint.h>
 
-#include "base/box.h"
-#include "base/geom.h"
-#include "base/span.h"
-#include "base/string.h"
+#include "box.h"
+#include "geom.h"
+#include "span.h"
+#include "string.h"
 
 struct RenderSprite
 {

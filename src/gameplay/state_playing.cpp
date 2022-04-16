@@ -13,7 +13,6 @@
 #include "base/error.h"
 #include "base/scene.h"
 #include "base/util.h"
-#include "base/view.h"
 
 #include "collision_groups.h"
 #include "entity_factory.h"
@@ -26,6 +25,7 @@
 #include "state_machine.h"
 #include "toggle.h"
 #include "variable.h"
+#include "view.h"
 
 using namespace std;
 
@@ -150,6 +150,8 @@ struct GameState : Scene, private IGame
       background.zOrder = -2;
       m_view->sendActor(background);
     }
+
+    m_view->flushFrame();
   }
 
   ////////////////////////////////////////////////////////////////

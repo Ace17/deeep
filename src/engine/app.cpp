@@ -14,19 +14,18 @@
 #include <string>
 #include <vector>
 
+#include "base/audio.h"
 #include "base/geom.h"
+#include "base/renderer.h"
 #include "base/resource.h"
 #include "base/scene.h"
-#include "base/view.h"
 #include "misc/file.h"
 #include "misc/time.h"
 
-#include "audio.h"
 #include "audio_backend.h"
 #include "graphics_backend.h"
 #include "input.h"
 #include "ratecounter.h"
-#include "renderer.h"
 #include "stats.h"
 #include "video_capture.h"
 
@@ -42,121 +41,8 @@ MixableAudio* createAudio();
 UserInput* createUserInput();
 
 // Implemented by the game-specific part
-Scene* createGame(View* view, Span<const string> argv);
+Scene* createGame(IRenderer* renderer, Audio* audio, Span<const string> argv);
 extern const String GAME_NAME;
-
-struct GamePresenter : View
-{
-  GamePresenter(IRenderer* renderer, Audio* audio) :
-    m_renderer(renderer),
-    m_audio(audio)
-  {
-  }
-
-  void flushFrame()
-  {
-    if(m_textboxDelay > 0)
-    {
-      auto y = 2.0f;
-      auto const DELAY = 90.0f;
-
-      if(m_textboxDelay < DELAY)
-        y += 16 * (DELAY - m_textboxDelay) / DELAY;
-
-      m_renderer->drawText({ Vector2f(0, y), m_textbox });
-      m_textboxDelay--;
-    }
-  }
-
-  void textBox(String msg) override
-  {
-    m_textbox.assign(msg.data, msg.len);
-    m_textboxDelay = 60 * 2;
-  }
-
-  void preload(Resource res) override
-  {
-    switch(res.type)
-    {
-    case ResourceType::Sound:
-      m_audio->loadSound(res.id, res.path);
-      break;
-    case ResourceType::Model:
-      m_renderer->loadModel(res.id, res.path);
-      break;
-    }
-  }
-
-  void playMusic(MUSIC musicName) override
-  {
-    if(m_currMusicName == musicName)
-      return;
-
-    stopMusic();
-
-    char buffer[256];
-    m_audio->loadSound(1024, format(buffer, "res/music/music-%02d.ogg", musicName));
-
-    m_musicVoice = m_audio->createVoice();
-    printf("playing music #%d on voice %d\n", musicName, m_musicVoice);
-
-    m_audio->playVoice(m_musicVoice, 1024, true);
-    m_currMusicName = musicName;
-  }
-
-  void stopMusic() override
-  {
-    if(m_musicVoice == -1)
-      return;
-
-    m_audio->stopVoice(m_musicVoice); // maybe add a fade out here?
-    m_audio->releaseVoice(m_musicVoice, true);
-    m_musicVoice = -1;
-    m_currMusicName = -1;
-  }
-
-  void playSound(SOUND soundId) override
-  {
-    auto voiceId = m_audio->createVoice();
-    m_audio->playVoice(voiceId, soundId);
-    m_audio->releaseVoice(voiceId, true);
-  }
-
-  void setCameraPos(Vector2f pos) override
-  {
-    m_renderer->setCamera(pos);
-  }
-
-  void setAmbientLight(float amount) override
-  {
-    m_renderer->setAmbientLight(amount);
-  }
-
-  void sendActor(Actor const& actor) override
-  {
-    RenderSprite s;
-
-    s.pos = actor.pos;
-    s.halfSize = actor.scale;
-    s.angle = actor.angle;
-    s.useWorldRefFrame = !actor.screenRefFrame;
-    s.modelId = (int)actor.model;
-    s.blinking = actor.effect == Effect::Blinking;
-    s.actionIdx = actor.action;
-    s.frame = actor.ratio;
-    s.zOrder = actor.zOrder;
-
-    m_renderer->drawSprite(s);
-  }
-
-private:
-  IRenderer* const m_renderer;
-  Audio* const m_audio;
-  Audio::VoiceId m_musicVoice = -1;
-  int m_currMusicName = -1;
-  string m_textbox;
-  int m_textboxDelay = 0;
-};
 
 class App : public IApp
 {
@@ -172,9 +58,7 @@ public:
 
     m_graphicsBackend->setCaption(GAME_NAME);
 
-    m_presenter.reset(new GamePresenter(m_renderer.get(), m_audio.get()));
-
-    m_scene.reset(createGame(m_presenter.get(), m_args));
+    m_scene.reset(createGame(m_renderer.get(), m_audio.get(), m_args));
 
     m_lastTime = GetSteadyClockMs();
     m_lastDisplayFrameTime = GetSteadyClockMs();
@@ -276,7 +160,7 @@ private:
     m_input->listenToKey(Key::R, [&] (bool isDown) { m_control.restart = isDown; });
 
     // Debug keys
-    m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(m_presenter.get(), m_args)); });
+    m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(m_renderer.get(), m_audio.get(), m_args)); });
     m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
     m_input->listenToKey(Key::Backtick, [&] (bool isDown) { m_fastForward = isDown; });
     m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) toggleDebug(); });
@@ -288,7 +172,6 @@ private:
     m_renderer->beginDraw();
 
     m_scene->draw();
-    m_presenter->flushFrame();
 
     if(m_running == AppState::ConfirmExit)
     {
@@ -367,7 +250,11 @@ private:
 
   void togglePause()
   {
-    m_presenter->playSound(0);
+    // playSound(0)
+    auto voiceId = m_audio->createVoice();
+    m_audio->playVoice(voiceId, 0);
+    m_audio->releaseVoice(voiceId, true);
+
     m_paused = !m_paused;
   }
 
@@ -391,7 +278,6 @@ private:
   RateCounter m_tps;
   Control m_control {};
   vector<string> m_args;
-  unique_ptr<Scene> m_scene;
   bool m_slowMotion = false;
   bool m_fastForward = false;
   bool m_fullscreen = false;
@@ -401,7 +287,8 @@ private:
   unique_ptr<IRenderer> m_renderer;
   unique_ptr<IGraphicsBackend> m_graphicsBackend;
   unique_ptr<UserInput> m_input;
-  unique_ptr<GamePresenter> m_presenter;
+
+  unique_ptr<Scene> m_scene;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -6,11 +6,10 @@
 
 // Playlist management, sound loading
 
-#include "engine/audio.h"
+#include "base/audio.h"
+#include "base/error.h"
 #include "engine/audio_backend.h"
 #include "engine/stats.h"
-
-#include "base/error.h"
 #include "misc/file.h" // exists
 #include "sound.h"
 

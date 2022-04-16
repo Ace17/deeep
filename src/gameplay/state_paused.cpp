@@ -7,7 +7,6 @@
 // minimap paused state
 
 #include "base/scene.h"
-#include "base/view.h"
 #include <memory>
 
 #include "models.h" // MDL_PAUSED
@@ -15,6 +14,7 @@
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
+#include "view.h"
 
 struct PausedState : Scene
 {

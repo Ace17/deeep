@@ -89,6 +89,7 @@ SRCS_GAME:=\
 	src/gameplay/entity_factory.cpp\
 	src/gameplay/game.cpp\
 	src/gameplay/physics.cpp\
+	src/gameplay/presenter.cpp\
 	src/gameplay/load_quest.cpp\
 	src/gameplay/resources.cpp\
 	src/gameplay/state_ending.cpp\

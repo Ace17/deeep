@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "geom.h"
-#include "resource.h"
+#include "base/geom.h"
+#include "base/resource.h"
 
 typedef int SOUND;
 typedef int MUSIC;
@@ -51,5 +51,7 @@ struct View
 
   // adds a displayable object to the current frame
   virtual void sendActor(Actor const& actor) = 0;
+
+  virtual void flushFrame() = 0;
 };
 
