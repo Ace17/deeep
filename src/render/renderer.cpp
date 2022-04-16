@@ -128,11 +128,13 @@ struct Renderer : IRenderer
     backend->setRenderTarget(m_fb.get());
     backend->clear();
 
-    processQuads();
+    processCommands();
 
     // draw to screen
     backend->setRenderTarget(nullptr);
     backend->clear();
+
+    backend->useGpuProgram(m_shader.get());
     backend->useVertexBuffer(m_quadVbo.get());
     m_fb->getColorTexture()->bind(0);
     backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
@@ -142,8 +144,10 @@ struct Renderer : IRenderer
     backend->swap();
   }
 
-  void processQuads()
+  void processCommands()
   {
+    batchCount = 0;
+
     backend->useGpuProgram(m_shader.get());
 
     auto byPriority = [&] (Quad const& a, Quad const& b)
@@ -204,8 +208,14 @@ struct Renderer : IRenderer
 
     flushBatch();
 
+    Stat("sprites", m_quads.size());
+    Stat("batches", batchCount);
+    Stat("VBO capacity", (int)vboData.capacity());
+
     m_quads.clear();
   }
+
+  int batchCount = 0;
 
   void flushBatch()
   {
@@ -219,6 +229,8 @@ struct Renderer : IRenderer
     backend->draw(vboData.size());
 
     vboData.clear();
+
+    ++batchCount;
   }
 
   void drawText(const RenderText& text) override
