@@ -221,13 +221,6 @@ struct Renderer : IRenderer
     flush();
   }
 
-  void drawSprite(const RenderSprite& sprite) override
-  {
-    auto& model = m_Models.at(sprite.modelId);
-    auto cam = sprite.useWorldRefFrame ? m_camera : Camera();
-    pushQuad(sprite.pos, sprite.halfSize, sprite.angle, cam, model, sprite.blinking, sprite.actionIdx, sprite.frame, sprite.zOrder);
-  }
-
   void drawText(const RenderText& text) override
   {
     Vector2f size = { 0.5, 0.5 };
@@ -252,33 +245,45 @@ struct Renderer : IRenderer
     }
   }
 
-private:
-  void pushQuad(Vector2f pos, Vector2f halfSize, float angle, Camera cam, Model const& model, bool blinking, int actionIdx, float ratio, int zOrder)
+  void drawSprite(const RenderSprite& sprite) override
   {
+    m_quads.push_back(spriteToQuad(sprite));
+  }
+
+private:
+  struct Quad;
+
+  Quad spriteToQuad(const RenderSprite& sprite) const
+  {
+    auto cam = sprite.useWorldRefFrame ? m_camera : Camera();
+    auto& model = m_Models.at(sprite.modelId);
+
     if(model.actions.empty())
       throw Error("model has no actions");
 
-    if(actionIdx < 0 || actionIdx >= (int)model.actions.size())
+    if(sprite.actionIdx < 0 || sprite.actionIdx >= (int)model.actions.size())
       throw Error("invalid action index");
 
-    auto const& action = model.actions[actionIdx];
+    auto const& action = model.actions[sprite.actionIdx];
 
     if(action.textures.empty())
       throw Error("action has no textures");
 
     auto const N = (int)action.textures.size();
-    auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
+    auto const idx = ::clamp<int>(sprite.frame * N, 0, N - 1);
 
-    if(halfSize.x < 0)
-      pos.x -= halfSize.x;
+    Vector2f pos = sprite.pos;
 
-    if(halfSize.y < 0)
-      pos.y -= halfSize.y;
+    if(sprite.halfSize.x < 0)
+      pos.x -= sprite.halfSize.x;
 
-    auto const sx = halfSize.x;
-    auto const sy = halfSize.y;
+    if(sprite.halfSize.y < 0)
+      pos.y -= sprite.halfSize.y;
 
-    const auto worldTransform = translate(pos) * rotate(angle) * scale(Vector2f(sx, sy));
+    auto const sx = sprite.halfSize.x;
+    auto const sy = sprite.halfSize.y;
+
+    const auto worldTransform = translate(pos) * rotate(sprite.angle) * scale(Vector2f(sx, sy));
 
     static const auto shrink = scale(SCALE * Vector2f(1, 1));
     const auto viewTransform = shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
@@ -286,7 +291,7 @@ private:
     const auto transform = viewTransform * worldTransform;
 
     Quad q;
-    q.zOrder = zOrder;
+    q.zOrder = sprite.zOrder;
     q.tile = action.textures[idx];
 
     auto const m0x = 0;
@@ -305,7 +310,7 @@ private:
       q.light[1] = m_ambientLight;
       q.light[2] = m_ambientLight;
 
-      if(blinking)
+      if(sprite.blinking)
       {
         if((m_frameCount / 4) % 2)
         {
@@ -316,7 +321,7 @@ private:
       }
     }
 
-    m_quads.push_back(q);
+    return q;
   }
 
   Camera m_camera;
