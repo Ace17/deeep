@@ -10,15 +10,15 @@
 #include <memory>
 
 #include "models.h" // MDL_PAUSED
+#include "presenter.h"
 #include "quest.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
-#include "view.h"
 
 struct PausedState : Scene
 {
-  PausedState(View* view_, Scene* sub_, Quest* quest_, int roomIdx) : view(view_), sub(sub_), quest(quest_), m_roomIdx(roomIdx)
+  PausedState(IPresenter* view_, Scene* sub_, Quest* quest_, int roomIdx) : view(view_), sub(sub_), quest(quest_), m_roomIdx(roomIdx)
   {
   }
 
@@ -76,13 +76,13 @@ struct PausedState : Scene
 private:
   int pauseDelay = 10;
   Toggle startButton;
-  View* const view;
+  IPresenter* const view;
   std::unique_ptr<Scene> sub;
   Quest* const quest;
   int const m_roomIdx;
 };
 
-Scene* createPausedState(View* view, Scene* sub, Quest* quest, int roomIdx)
+Scene* createPausedState(IPresenter* view, Scene* sub, Quest* quest, int roomIdx)
 {
   return new PausedState(view, sub, quest, roomIdx);
 }

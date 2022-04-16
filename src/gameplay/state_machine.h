@@ -1,12 +1,12 @@
 #pragma once
 
-struct View;
+struct IPresenter;
 struct Scene;
 struct Quest;
 
-Scene* createSplashState(View* view);
-Scene* createPausedState(View* view, Scene* sub, Quest* quest, int room);
-Scene* createPlayingState(View* view);
-Scene* createEndingState(View* view);
-Scene* createPlayingStateAtLevel(View* view, int level);
+Scene* createSplashState(IPresenter* view);
+Scene* createPausedState(IPresenter* view, Scene* sub, Quest* quest, int room);
+Scene* createPlayingState(IPresenter* view);
+Scene* createEndingState(IPresenter* view);
+Scene* createPlayingStateAtLevel(IPresenter* view, int level);
 

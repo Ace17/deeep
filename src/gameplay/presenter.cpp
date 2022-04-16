@@ -3,13 +3,13 @@
 #include "base/audio.h"
 #include "base/renderer.h"
 
-#include "view.h"
+#include "presenter.h"
 
 #include <string>
 
 namespace
 {
-struct GamePresenter : View
+struct GamePresenter : IPresenter
 {
   GamePresenter(IRenderer* renderer, Audio* audio) :
     m_renderer(renderer),
@@ -123,7 +123,7 @@ private:
 };
 }
 
-View* createPresenter(IRenderer* renderer, Audio* audio)
+IPresenter* createPresenter(IRenderer* renderer, Audio* audio)
 {
   return new GamePresenter(renderer, audio);
 }

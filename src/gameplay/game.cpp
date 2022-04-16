@@ -10,8 +10,8 @@
 #include "base/renderer.h"
 #include "base/scene.h"
 #include "base/span.h"
+#include "presenter.h"
 #include "state_machine.h"
-#include "view.h"
 #include <memory>
 #include <string>
 
@@ -20,9 +20,9 @@ extern const String GAME_NAME = "Deeep";
 using namespace std;
 
 Span<const Resource> getResources();
-View* createPresenter(IRenderer* renderer, Audio* audio);
+IPresenter* createPresenter(IRenderer* renderer, Audio* audio);
 
-std::unique_ptr<View> g_Presenter;
+std::unique_ptr<IPresenter> g_Presenter;
 
 Scene* createGame(IRenderer* renderer, Audio* audio, Span<const std::string> args)
 {

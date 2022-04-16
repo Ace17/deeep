@@ -10,14 +10,14 @@
 #include <memory>
 
 #include "models.h" // MDL_SPLASH
+#include "presenter.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
-#include "view.h"
 
 struct SplashState : Scene
 {
-  SplashState(View* view_) : view(view_)
+  SplashState(IPresenter* view_) : view(view_)
   {
   }
 
@@ -67,12 +67,12 @@ struct SplashState : Scene
   }
 
 private:
-  View* const view;
+  IPresenter* const view;
   bool activated = false;
   int delay = 0;
 };
 
-Scene* createSplashState(View* view)
+Scene* createSplashState(IPresenter* view)
 {
   return new SplashState(view);
 }

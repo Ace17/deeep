@@ -10,14 +10,14 @@
 #include <memory>
 
 #include "models.h" // MDL_ENDING
+#include "presenter.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
-#include "view.h"
 
 struct EndingState : Scene
 {
-  EndingState(View* view_) : view(view_)
+  EndingState(IPresenter* view_) : view(view_)
   {
   }
 
@@ -65,12 +65,12 @@ struct EndingState : Scene
   }
 
 private:
-  View* const view;
+  IPresenter* const view;
   bool activated = false;
   int delay = 0;
 };
 
-Scene* createEndingState(View* view)
+Scene* createEndingState(IPresenter* view)
 {
   return new EndingState(view);
 }

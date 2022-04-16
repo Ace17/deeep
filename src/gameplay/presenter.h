@@ -37,9 +37,9 @@ struct Actor
 
 // This interface should act as a message sink.
 // It should provide no way to query anything about the outside world.
-struct View
+struct IPresenter
 {
-  virtual ~View() = default;
+  virtual ~IPresenter() = default;
 
   virtual void preload(Resource res) = 0;
   virtual void textBox(String msg) = 0;

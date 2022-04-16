@@ -21,11 +21,11 @@
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
 #include "player.h"
+#include "presenter.h"
 #include "quest.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "variable.h"
-#include "view.h"
 
 using namespace std;
 
@@ -76,7 +76,7 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
 
 struct GameState : Scene, private IGame
 {
-  GameState(View* view) :
+  GameState(IPresenter* view) :
     m_view(view)
   {
     m_shouldLoadLevel = true;
@@ -432,7 +432,7 @@ struct GameState : Scene, private IGame
   Quest m_quest;
   Room* m_currRoom = nullptr;
   Player* m_player = nullptr;
-  View* const m_view;
+  IPresenter* const m_view;
   unique_ptr<IPhysics> m_physics;
   bool m_gameFinished = false;
   Body m_tilemapBody {};
@@ -458,14 +458,14 @@ struct GameState : Scene, private IGame
   }
 };
 
-Scene* createPlayingStateAtLevel(View* view, int level)
+Scene* createPlayingStateAtLevel(IPresenter* view, int level)
 {
   auto gameState = make_unique<GameState>(view);
   gameState->m_level = level;
   return gameState.release();
 }
 
-Scene* createPlayingState(View* view)
+Scene* createPlayingState(IPresenter* view)
 {
   return createPlayingStateAtLevel(view, 1);
 }
