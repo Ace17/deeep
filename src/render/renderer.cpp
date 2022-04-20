@@ -263,7 +263,18 @@ struct Renderer : IRenderer
   }
 
 private:
-  struct Quad;
+  Camera m_camera;
+  bool m_cameraValid = false;
+
+  std::unique_ptr<IGpuProgram> m_quadShader;
+
+  struct Quad
+  {
+    int zOrder;
+    std::array<float, 3> light {};
+    int tile;
+    Vector2f pos[4];
+  };
 
   Quad spriteToQuad(const RenderSprite& sprite) const
   {
@@ -336,26 +347,13 @@ private:
     return q;
   }
 
-  Camera m_camera;
-  bool m_cameraValid = false;
-
-  std::unique_ptr<IGpuProgram> m_quadShader;
-
-  struct Quad
-  {
-    int zOrder;
-    std::array<float, 3> light {};
-    int tile;
-    Vector2f pos[4];
-  };
-
   struct Tile
   {
     ITexture* texture;
     Vector2f uv[2];
   };
 
-  vector<Quad> m_quads;
+  std::vector<Quad> m_quads;
   std::unique_ptr<IVertexBuffer> m_batchVbo;
   std::unique_ptr<IVertexBuffer> m_quadVbo;
   std::unique_ptr<IFrameBuffer> m_fb;
