@@ -75,7 +75,7 @@ struct Renderer : IRenderer
     : backend(backend_)
   {
     g_Renderer = this;
-    m_shader = backend->createGpuProgram("standard", false);
+    m_quadShader = backend->createGpuProgram("standard", false);
     m_batchVbo = backend->createVertexBuffer();
     m_fb = backend->createFrameBuffer(Size2i(256, 256), false);
 
@@ -134,7 +134,7 @@ struct Renderer : IRenderer
     backend->setRenderTarget(nullptr);
     backend->clear();
 
-    backend->useGpuProgram(m_shader.get());
+    backend->useGpuProgram(m_quadShader.get());
     backend->useVertexBuffer(m_quadVbo.get());
     m_fb->getColorTexture()->bind(0);
     backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
@@ -148,7 +148,7 @@ struct Renderer : IRenderer
   {
     batchCount = 0;
 
-    backend->useGpuProgram(m_shader.get());
+    backend->useGpuProgram(m_quadShader.get());
 
     auto byPriority = [&] (Quad const& a, Quad const& b)
       {
@@ -339,7 +339,7 @@ private:
   Camera m_camera;
   bool m_cameraValid = false;
 
-  std::unique_ptr<IGpuProgram> m_shader;
+  std::unique_ptr<IGpuProgram> m_quadShader;
 
   struct Quad
   {
