@@ -263,6 +263,12 @@ struct Renderer : IRenderer
   }
 
 private:
+  static Matrix3f getCameraMatrix(const Camera& cam)
+  {
+    static const auto shrink = scale(SCALE * Vector2f(1, 1));
+    return shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
+  }
+
   Camera m_camera;
   bool m_cameraValid = false;
 
@@ -307,11 +313,7 @@ private:
     auto const sy = sprite.halfSize.y;
 
     const auto worldTransform = translate(pos) * rotate(sprite.angle) * scale(Vector2f(sx, sy));
-
-    static const auto shrink = scale(SCALE * Vector2f(1, 1));
-    const auto viewTransform = shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
-
-    const auto transform = viewTransform * worldTransform;
+    const auto transform = getCameraMatrix(cam) * worldTransform;
 
     Quad q;
     q.zOrder = sprite.zOrder;
