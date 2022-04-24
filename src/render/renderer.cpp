@@ -148,8 +148,6 @@ struct Renderer : IRenderer
   {
     batchCount = 0;
 
-    backend->useGpuProgram(m_quadShader.get());
-
     auto byPriority = [&] (Quad const& a, Quad const& b)
       {
         if(a.zOrder != b.zOrder)
@@ -168,11 +166,25 @@ struct Renderer : IRenderer
     ITexture* currTexture = nullptr;
     std::array<float, 3> currLight {};
     currLight[0] = 0.0f / 0.0f;
+    IGpuProgram* currShader = nullptr;
+
+    backend->useVertexBuffer(m_batchVbo.get());
 
     for(auto const& q : m_quads)
     {
       if(vboData.size() * 6 >= MAX_QUADS)
         flushBatch();
+
+      if(currShader != m_quadShader.get())
+      {
+        flushBatch();
+
+        backend->useGpuProgram(m_quadShader.get());
+        backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+        backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+
+        currShader = m_quadShader.get();
+      }
 
       if(m_tiles[q.tile].texture != currTexture)
       {
@@ -224,8 +236,6 @@ struct Renderer : IRenderer
 
     m_batchVbo->upload(vboData.data(), vboData.size() * sizeof(vboData[0]));
     backend->useVertexBuffer(m_batchVbo.get());
-    backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
-    backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
     backend->draw(vboData.size());
 
     vboData.clear();
