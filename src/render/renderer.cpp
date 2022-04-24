@@ -309,10 +309,7 @@ private:
     if(sprite.halfSize.y < 0)
       pos.y -= sprite.halfSize.y;
 
-    auto const sx = sprite.halfSize.x;
-    auto const sy = sprite.halfSize.y;
-
-    const auto worldTransform = translate(pos) * rotate(sprite.angle) * scale(Vector2f(sx, sy));
+    const auto worldTransform = translate(pos) * rotate(sprite.angle) * scale(sprite.halfSize);
     const auto transform = getCameraMatrix(cam) * worldTransform;
 
     Quad q;
