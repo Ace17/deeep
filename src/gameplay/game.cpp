@@ -22,22 +22,55 @@ using namespace std;
 Span<const Resource> getResources();
 IPresenter* createPresenter(IRenderer* renderer, Audio* audio);
 
-std::unique_ptr<IPresenter> g_Presenter;
+namespace
+{
+struct RootScene : Scene
+{
+  RootScene(IRenderer* renderer, Audio* audio, Span<const std::string> args)
+  {
+    m_presenter.reset(createPresenter(renderer, audio));
+
+    for(auto res : getResources())
+      m_presenter->preload(res);
+
+    if(args.len == 1)
+    {
+      int level = atoi(args[0].c_str());
+      m_scene.reset(createPlayingStateAtLevel(m_presenter.get(), level));
+    }
+    else
+    {
+      m_scene.reset(createSplashState(m_presenter.get()));
+    }
+  }
+
+  Scene* tick(Control c) override
+  {
+    auto next = m_scene->tick(c);
+
+    if(next != m_scene.get())
+    {
+      m_scene.release();
+      m_scene.reset(next);
+      printf("Entering scene: %s\n", typeid(*next).name());
+    }
+
+    return nullptr;
+  }
+
+  void draw() override
+  {
+    m_scene->draw();
+    m_presenter->flushFrame();
+  }
+
+  std::unique_ptr<IPresenter> m_presenter;
+  std::unique_ptr<Scene> m_scene;
+};
+}
 
 Scene* createGame(IRenderer* renderer, Audio* audio, Span<const std::string> args)
 {
-  g_Presenter.reset(createPresenter(renderer, audio));
-  auto view = g_Presenter.get();
-
-  for(auto res : getResources())
-    view->preload(res);
-
-  if(args.len == 1)
-  {
-    int level = atoi(args[0].c_str());
-    return createPlayingStateAtLevel(view, level);
-  }
-
-  return createSplashState(view);
+  return new RootScene(renderer, audio, args);
 }
 

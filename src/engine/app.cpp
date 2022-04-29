@@ -115,18 +115,11 @@ private:
 
   void tickGameplay()
   {
-    auto const t0 = (int)GetSteadyClockMs();
-
     m_control.debug = m_debugMode;
 
-    auto next = m_scene->tick(m_control);
+    auto const t0 = (int)GetSteadyClockMs();
 
-    if(next != m_scene.get())
-    {
-      m_scene.release();
-      m_scene.reset(next);
-      printf("Entering: %s\n", typeid(*next).name());
-    }
+    m_scene->tick(m_control);
 
     auto const t1 = (int)GetSteadyClockMs();
     Stat("Tick duration", t1 - t0);

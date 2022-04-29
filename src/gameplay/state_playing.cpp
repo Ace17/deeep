@@ -74,9 +74,9 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
   }
 }
 
-struct GameState : Scene, private IGame
+struct InGameScene : Scene, private IGame
 {
-  GameState(IPresenter* view) :
+  InGameScene(IPresenter* view) :
     m_view(view)
   {
     m_shouldLoadLevel = true;
@@ -150,8 +150,6 @@ struct GameState : Scene, private IGame
       background.zOrder = -2;
       m_view->sendActor(background);
     }
-
-    m_view->flushFrame();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -460,7 +458,7 @@ struct GameState : Scene, private IGame
 
 Scene* createPlayingStateAtLevel(IPresenter* view, int level)
 {
-  auto gameState = make_unique<GameState>(view);
+  auto gameState = make_unique<InGameScene>(view);
   gameState->m_level = level;
   return gameState.release();
 }
