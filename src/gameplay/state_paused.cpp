@@ -12,6 +12,7 @@
 #include "models.h" // MDL_PAUSED
 #include "presenter.h"
 #include "quest.h"
+#include "sounds.h"
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
@@ -20,6 +21,7 @@ struct PausedState : Scene
 {
   PausedState(IPresenter* view_, Scene* sub_, Quest* quest_, int roomIdx) : view(view_), sub(sub_), quest(quest_), m_roomIdx(roomIdx)
   {
+    view->playSound(SND_PAUSE);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -31,6 +33,7 @@ struct PausedState : Scene
 
     if(startButton.toggle(c.start) && !pauseDelay)
     {
+      view->playSound(SND_PAUSE);
       std::unique_ptr<Scene> deleteMeOnReturn(this);
       return sub.release();
     }
@@ -54,10 +57,10 @@ struct PausedState : Scene
       cell.action = 5;
       cell.scale.width = room.size.width * cellSize;
       cell.scale.height = room.size.height * cellSize;
-      cell.pos.x = cellSize * (col - 20);
+      cell.pos.x = cellSize * (col - 18);
       cell.pos.y = cellSize * (row - 24);
       cell.screenRefFrame = true;
-      cell.zOrder = 5;
+      cell.zOrder = 11;
 
       if(idx == m_roomIdx)
         cell.action = 0;
@@ -65,11 +68,11 @@ struct PausedState : Scene
       view->sendActor(cell);
     }
 
-    auto overlay = Actor { NullVector, MDL_PAUSED };
-    overlay.scale = Size2f(12, 12);
-    overlay.pos -= Vector2f(6, 6);
+    auto overlay = Actor { NullVector, MDL_MINIMAP_BG };
+    overlay.scale = Size2f(16, 16);
+    overlay.pos -= Vector2f(8, 8);
     overlay.screenRefFrame = true;
-    overlay.zOrder = 4;
+    overlay.zOrder = 10;
     view->sendActor(overlay);
   }
 

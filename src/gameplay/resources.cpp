@@ -47,7 +47,7 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_BLOCK, "res/sprites/block.model" },
   { ResourceType::Model, MDL_SPLASH, "res/sprites/splash.model" },
   { ResourceType::Model, MDL_ENDING, "res/sprites/ending.model" },
-  { ResourceType::Model, MDL_PAUSED, "res/sprites/minimap.model" },
+  { ResourceType::Model, MDL_PAUSED, "res/sprites/pause_menu.model" },
   { ResourceType::Model, MDL_ELEVATOR, "res/sprites/elevator.model" },
   { ResourceType::Model, MDL_RECT, "res/sprites/rect.model" },
   { ResourceType::Model, MDL_SWITCH, "res/sprites/switch.model" },
@@ -63,6 +63,7 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_EXPLOSION, "res/sprites/explosion.model" },
   { ResourceType::Model, MDL_SPIKES, "res/sprites/spikes.model" },
   { ResourceType::Model, MDL_HOPPER, "res/sprites/hopper.model" },
+  { ResourceType::Model, MDL_MINIMAP_BG, "res/sprites/minimap_menu.model" },
 };
 
 Span<const Resource> getResources()

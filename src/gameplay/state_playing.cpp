@@ -139,7 +139,7 @@ struct InGameScene : Scene, private IGame
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(1, 5);
       lifebar.screenRefFrame = true;
-      lifebar.zOrder = 10;
+      lifebar.zOrder = 9;
       m_view->sendActor(lifebar);
     }
 
