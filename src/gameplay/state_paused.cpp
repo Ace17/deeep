@@ -153,6 +153,19 @@ struct PausedState : Scene
       }
     }
 
+    {
+      auto& currRoom = quest->rooms[m_roomIdx];
+      auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
+      cell.action = 17;
+      cell.scale.width = cellSize * currRoom.size.width;
+      cell.scale.height = cellSize * currRoom.size.height;
+      cell.pos.x = cellSize * (currRoom.pos.x - m_scroll.x);
+      cell.pos.y = cellSize * (currRoom.pos.y - m_scroll.y);
+      cell.screenRefFrame = true;
+      cell.zOrder = 12;
+      view->sendActor(cell);
+    }
+
     auto overlay = Actor { NullVector, MDL_MINIMAP_BG };
     overlay.scale = Size2f(16, 16);
     overlay.pos -= Vector2f(8, 8);

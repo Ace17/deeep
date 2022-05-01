@@ -1,6 +1,6 @@
 {
   "type" : "sheet",
-  "rows" : 4,
+  "rows" : 8,
   "cols" : 4,
   "actions": [
     { "name": "plain", "frames": [ 0 ] },
@@ -18,6 +18,8 @@
     { "name": "vert-corridor", "frames": [ 2 ] },
     { "name": "horz-corridor", "frames": [ 3 ] },
     { "name": "top-corner", "frames": [ 13 ] },
-    { "name": "bot-corner", "frames": [ 15 ] }
+    { "name": "bot-corner", "frames": [ 15 ] },
+    { "name": "you-are-here", "frames": [ 16 ] },
+    { "name": "you-are-here2", "frames": [ 17 ] }
   ]
 }
