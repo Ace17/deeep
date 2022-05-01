@@ -1,0 +1,23 @@
+{
+  "type" : "sheet",
+  "rows" : 4,
+  "cols" : 4,
+  "actions": [
+    { "name": "plain", "frames": [ 0 ] },
+    { "name": "empty", "frames": [ 1 ] },
+    { "name": "top-left-corner",  "frames": [ 4 ] },
+    { "name": "top-right-corner", "frames": [ 5 ] },
+    { "name": "bot-left-corner", "frames": [ 8 ] },
+    { "name": "bot-right-corner", "frames": [ 9 ] },
+    { "name": "left-wall", "frames": [ 6 ] },
+    { "name": "bot-wall", "frames": [ 7 ] },
+    { "name": "right-wall", "frames": [ 10 ] },
+    { "name": "top-wall", "frames": [ 11 ] },
+    { "name": "left-corner", "frames": [ 12 ] },
+    { "name": "right-corner", "frames": [ 14 ] },
+    { "name": "vert-corridor", "frames": [ 2 ] },
+    { "name": "horz-corridor", "frames": [ 3 ] },
+    { "name": "top-corner", "frames": [ 13 ] },
+    { "name": "bot-corner", "frames": [ 15 ] }
+  ]
+}
