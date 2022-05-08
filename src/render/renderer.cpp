@@ -139,6 +139,7 @@ struct Renderer : IRenderer
     m_fb->getColorTexture()->bind(0);
     backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
     backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+    backend->setUniformFloat4(0 /* colorLoc */, 0, 0, 0, 0);
     backend->draw(6);
 
     backend->swap();
@@ -153,10 +154,13 @@ struct Renderer : IRenderer
         if(a.zOrder != b.zOrder)
           return a.zOrder < b.zOrder;
 
+        if(m_tiles[a.tile].texture != m_tiles[b.tile].texture)
+          return m_tiles[a.tile].texture < m_tiles[b.tile].texture;
+
         if(a.light != b.light)
           return a.light < b.light;
 
-        return m_tiles[a.tile].texture < m_tiles[b.tile].texture;
+        return true;
       };
 
     my::sort<Quad>(m_quads, byPriority);
