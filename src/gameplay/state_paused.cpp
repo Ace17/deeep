@@ -163,6 +163,7 @@ struct PausedState : Scene
       cell.pos.y = cellSize * (currRoom.pos.y - m_scroll.y);
       cell.screenRefFrame = true;
       cell.zOrder = 12;
+      cell.effect = Effect::Blinking;
       view->sendActor(cell);
     }
 
