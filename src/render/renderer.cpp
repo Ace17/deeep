@@ -29,9 +29,9 @@ namespace
 const int MAX_QUADS = 32678;
 const float SCALE = 0.125f;
 
-Vector2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
+Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
-  Vector2f r;
+  Vec2f r;
   r.x = mat[0][0] * v0 + mat[0][1] * v1 + mat[0][2] * v2;
   r.y = mat[1][0] * v0 + mat[1][1] * v1 + mat[1][2] * v2;
   return r;
@@ -42,7 +42,7 @@ Renderer* g_Renderer;
 
 struct Camera
 {
-  Vector2f pos = Vector2f(0, 0);
+  Vec2f pos = Vec2f(0, 0);
   float angle = 0;
 };
 
@@ -90,7 +90,7 @@ struct Renderer : IRenderer
     m_Models[id] = ::loadModel(path);
   }
 
-  void setCamera(Vector2f pos) override
+  void setCamera(Vec2f pos) override
   {
     auto cam = Camera { pos, 0 };
 
@@ -249,7 +249,7 @@ struct Renderer : IRenderer
 
   void drawText(const RenderText& text) override
   {
-    Vector2f size = { 0.5, 0.5 };
+    Vec2f size = { 0.5, 0.5 };
 
     auto pos = text.pos;
 
@@ -279,7 +279,7 @@ struct Renderer : IRenderer
 private:
   static Matrix3f getCameraMatrix(const Camera& cam)
   {
-    static const auto shrink = scale(SCALE * Vector2f(1, 1));
+    static const auto shrink = scale(SCALE * Vec2f(1, 1));
     return shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
   }
 
@@ -293,7 +293,7 @@ private:
     int zOrder;
     std::array<float, 3> light {};
     int tile;
-    Vector2f pos[4];
+    Vec2f pos[4];
   };
 
   Quad spriteToQuad(const RenderSprite& sprite) const
@@ -315,7 +315,7 @@ private:
     auto const N = (int)action.textures.size();
     auto const idx = ::clamp<int>(sprite.frame * N, 0, N - 1);
 
-    Vector2f pos = sprite.pos;
+    Vec2f pos = sprite.pos;
 
     if(sprite.halfSize.x < 0)
       pos.x -= sprite.halfSize.x;
@@ -363,7 +363,7 @@ private:
   struct Tile
   {
     ITexture* texture;
-    Vector2f uv[2];
+    Vec2f uv[2];
   };
 
   std::vector<Quad> m_quads;

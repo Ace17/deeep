@@ -117,6 +117,6 @@ struct GenericVector
   T x, y;
 };
 
-using Vector2f = GenericVector<float>;
+using Vec2f = GenericVector<float>;
 using Vector2i = GenericVector<int>;
 

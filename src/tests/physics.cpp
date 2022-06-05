@@ -18,15 +18,15 @@
   assertNearlyEqualsFunc(u, v, __FILE__, __LINE__)
 
 template<>
-struct ToStringImpl<Vector2f>
+struct ToStringImpl<Vec2f>
 {
-  static std::string call(const Vector2f& val)
+  static std::string call(const Vec2f& val)
   {
     return "(" + std::to_string(val.x) + ", " + std::to_string(val.y) + ")";
   }
 };
 
-void assertNearlyEqualsFunc(Vector2f expected, Vector2f actual, const char* file, int line)
+void assertNearlyEqualsFunc(Vec2f expected, Vec2f actual, const char* file, int line)
 {
   auto delta = expected - actual;
 
@@ -50,7 +50,7 @@ struct CornerShape : Shape
     return rect.pos.y < 0 || rect.pos.x < 0;
   }
 
-  float raycast(Body* /*shapeOwner*/, Box otherBox, Vector2f delta) const override
+  float raycast(Body* /*shapeOwner*/, Box otherBox, Vec2f delta) const override
   {
     float fraction = 1;
 
@@ -106,57 +106,57 @@ struct Fixture
 unittest("Physics: simple move")
 {
   Fixture fix;
-  fix.mover.pos = Vector2f(10, 10);
+  fix.mover.pos = Vec2f(10, 10);
 
-  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(10, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vec2f(10, 0));
   assert(allowed);
-  assertNearlyEquals(Vector2f(20, 10), fix.mover.pos);
+  assertNearlyEquals(Vec2f(20, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by vertical wall at x=0")
 {
   Fixture fix;
-  fix.mover.pos = Vector2f(10, 10);
+  fix.mover.pos = Vec2f(10, 10);
 
-  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(-20, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vec2f(-20, 0));
   assert(allowed <= 0.5);
 
-  assertNearlyEquals(Vector2f(0, 10), fix.mover.pos);
+  assertNearlyEquals(Vec2f(0, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by a bigger body")
 {
   Fixture fix;
-  fix.mover.pos = Vector2f(100, 10);
+  fix.mover.pos = Vec2f(100, 10);
   fix.mover.size = Size2f(1, 1);
 
   Body blocker;
-  blocker.pos = Vector2f(200, 5);
+  blocker.pos = Vec2f(200, 5);
   blocker.size = Size2f(10, 10);
   blocker.solid = true;
   fix.physics->addBody(&blocker);
 
-  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(100, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vec2f(100, 0));
   assert(allowed < 1);
 
-  assertNearlyEquals(Vector2f(199, 10), fix.mover.pos);
+  assertNearlyEquals(Vec2f(199, 10), fix.mover.pos);
 }
 
 unittest("Physics: left move, blocked by a smaller body")
 {
   Fixture fix;
-  fix.mover.pos = Vector2f(100, 10);
+  fix.mover.pos = Vec2f(100, 10);
   fix.mover.size = Size2f(3, 3);
 
   Body blocker;
-  blocker.pos = Vector2f(200, 11);
+  blocker.pos = Vec2f(200, 11);
   blocker.size = Size2f(1, 1);
   blocker.solid = true;
   fix.physics->addBody(&blocker);
 
-  auto allowed = fix.physics->moveBody(&fix.mover, Vector2f(100, 0));
+  auto allowed = fix.physics->moveBody(&fix.mover, Vec2f(100, 0));
   assert(allowed < 1);
 
-  assertNearlyEquals(Vector2f(197, 10), fix.mover.pos);
+  assertNearlyEquals(Vec2f(197, 10), fix.mover.pos);
 }
 

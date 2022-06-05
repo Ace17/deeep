@@ -125,7 +125,7 @@ struct Physics : IPhysics
     Body* blocker = nullptr;
   };
 
-  Raycast castBox(Box box, Vector2f delta, int collisionGroup, bool onlySolid, const Body* except) const
+  Raycast castBox(Box box, Vec2f delta, int collisionGroup, bool onlySolid, const Body* except) const
   {
     Raycast r;
 
@@ -181,14 +181,14 @@ private:
   vector<Body*> m_bodies;
 };
 
-Vector2f rotateLeft(Vector2f v) { return Vector2f(-v.y, v.x); }
+Vec2f rotateLeft(Vec2f v) { return Vec2f(-v.y, v.x); }
 
 // The obstacle is an AABB, whose position and halfSize are given as parameters.
 // The return value represents the allowed move, as a fraction of the desired
 // move (delta).
-float raycast(Vector2f pos, Vector2f delta, Vector2f obstaclePos, Vector2f obstacleHalfSize)
+float raycast(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstacleHalfSize)
 {
-  const Vector2f axes[] = {
+  const Vec2f axes[] = {
     { 1, 0 },
     { 0, 1 },
     rotateLeft(normalize(delta)),
@@ -232,8 +232,8 @@ float raycast(Vector2f pos, Vector2f delta, Vector2f obstaclePos, Vector2f obsta
 
 struct BoundingBox
 {
-  BoundingBox(Vector2f p) { min = max = p; }
-  void add(Vector2f p)
+  BoundingBox(Vec2f p) { min = max = p; }
+  void add(Vec2f p)
   {
     min.x = std::min(min.x, p.x);
     max.x = std::max(max.x, p.x);
@@ -241,7 +241,7 @@ struct BoundingBox
     max.y = std::max(max.y, p.y);
   }
 
-  Vector2f min, max;
+  Vec2f min, max;
 };
 } // namespace
 
@@ -255,10 +255,10 @@ bool ShapeBox::probe(Body* owner, Box otherBox) const
   return overlaps({ owner->pos, owner->size }, otherBox);
 }
 
-float ShapeBox::raycast(Body* shapeOwner, Box otherBox, Vector2f delta) const
+float ShapeBox::raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const
 {
-  auto otherBoxHalfSize = Vector2f(otherBox.size.width, otherBox.size.height) * 0.5;
-  auto obstacleHalfSize = Vector2f(shapeOwner->size.width, shapeOwner->size.height) * 0.5;
+  auto otherBoxHalfSize = Vec2f(otherBox.size.width, otherBox.size.height) * 0.5;
+  auto obstacleHalfSize = Vec2f(shapeOwner->size.width, shapeOwner->size.height) * 0.5;
   return ::raycast(otherBox.pos + otherBoxHalfSize,
                    delta,
                    shapeOwner->pos + obstacleHalfSize,
@@ -285,9 +285,9 @@ bool ShapeTilemap::probe(Body* /*owner*/, Box otherBox) const
   return false;
 }
 
-float ShapeTilemap::raycast(Body* /*shapeOwner*/, Box otherBox, Vector2f delta) const
+float ShapeTilemap::raycast(Body* /*shapeOwner*/, Box otherBox, Vec2f delta) const
 {
-  const auto boxSize = Vector2f(otherBox.size.width, otherBox.size.height);
+  const auto boxSize = Vec2f(otherBox.size.width, otherBox.size.height);
 
   BoundingBox bb(otherBox.pos);
 
@@ -312,7 +312,7 @@ float ShapeTilemap::raycast(Body* /*shapeOwner*/, Box otherBox, Vector2f delta) 
     {
       if(tiles->isInside(col, row) && tiles->get(col, row))
       {
-        const auto tilePos = Vector2f(col, row) + tileHalfSize;
+        const auto tilePos = Vec2f(col, row) + tileHalfSize;
         float f = ::raycast(otherBox.pos + boxHalfSize, delta, tilePos, boxHalfSize + tileHalfSize);
 
         if(f < fraction)

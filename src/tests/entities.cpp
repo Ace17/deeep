@@ -62,7 +62,7 @@ struct NullGame : IGame
   virtual void spawn(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(unique_ptr<Event>) {}
-  virtual Vector2f getPlayerPosition() { return Vector2f(0, 0); }
+  virtual Vec2f getPlayerPosition() { return Vec2f(0, 0); }
   virtual void textBox(char const*) {}
   virtual void setAmbientLight(float) {}
   virtual void respawn() {}
@@ -71,7 +71,7 @@ struct NullGame : IGame
 struct NullPhysicsProbe : IPhysicsProbe
 {
   // called by entities
-  float moveBody(Body* body, Vector2f delta)
+  float moveBody(Body* body, Vec2f delta)
   {
     auto rect = body->getBox();
     rect.pos.x += delta.x;

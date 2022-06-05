@@ -24,7 +24,7 @@ enum class Effect
 // a displayable object (= a game object, as seen by the user-interface)
 struct Actor
 {
-  Vector2f pos = Vector2f(0, 0); // object position, in logical units
+  Vec2f pos = Vec2f(0, 0); // object position, in logical units
   MODEL model = 0; // what sprite to display
   int action = 0; // what sprite action to use
   float ratio = 0; // in [0 .. 1]. 0 for action beginning, 1 for action end
@@ -46,7 +46,7 @@ struct IPresenter
   virtual void playMusic(MUSIC id) = 0;
   virtual void stopMusic() = 0;
   virtual void playSound(SOUND id) = 0;
-  virtual void setCameraPos(Vector2f pos) = 0;
+  virtual void setCameraPos(Vec2f pos) = 0;
   virtual void setAmbientLight(float amount) = 0;
 
   // adds a displayable object to the current frame

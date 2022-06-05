@@ -17,11 +17,11 @@
 
 struct RenderSprite
 {
-  Vector2f pos;
+  Vec2f pos;
   bool useWorldRefFrame;
   int zOrder;
   float angle;
-  Vector2f halfSize;
+  Vec2f halfSize;
   bool blinking;
   int modelId;
   int actionIdx;
@@ -30,7 +30,7 @@ struct RenderSprite
 
 struct RenderText
 {
-  Vector2f pos;
+  Vec2f pos;
   String text;
 };
 
@@ -39,7 +39,7 @@ struct IRenderer
   virtual ~IRenderer() = default;
 
   virtual void loadModel(int id, String imagePath) = 0;
-  virtual void setCamera(Vector2f pos) = 0;
+  virtual void setCamera(Vec2f pos) = 0;
   virtual void setAmbientLight(float ambientLight) = 0;
 
   // draw functions

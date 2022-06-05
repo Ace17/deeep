@@ -61,7 +61,7 @@ struct SplashState : Scene
     {
       auto splash = Actor { NullVector, MDL_SPLASH };
       splash.scale = Size2f(16, 16);
-      splash.pos -= Vector2f(8, 8);
+      splash.pos -= Vec2f(8, 8);
       view->sendActor(splash);
     }
   }

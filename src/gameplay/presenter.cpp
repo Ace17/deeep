@@ -27,7 +27,7 @@ struct GamePresenter : IPresenter
       if(m_textboxDelay < DELAY)
         y += 16 * (DELAY - m_textboxDelay) / DELAY;
 
-      m_renderer->drawText({ Vector2f(0, y), m_textbox });
+      m_renderer->drawText({ Vec2f(0, y), m_textbox });
       m_textboxDelay--;
     }
   }
@@ -86,7 +86,7 @@ struct GamePresenter : IPresenter
     m_audio->releaseVoice(voiceId, true);
   }
 
-  void setCameraPos(Vector2f pos) override
+  void setCameraPos(Vec2f pos) override
   {
     m_renderer->setCamera(pos);
   }

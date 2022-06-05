@@ -21,7 +21,7 @@ struct Shape
 {
   virtual ~Shape() = default;
   virtual bool probe(Body* shapeOwner, Box otherBox) const = 0;
-  virtual float raycast(Body* shapeOwner, Box otherBox, Vector2f delta) const = 0;
+  virtual float raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const = 0;
 };
 
 struct Body
@@ -54,13 +54,13 @@ struct Body
 struct ShapeBox : Shape
 {
   bool probe(Body* shapeOwner, Box otherBox) const override;
-  float raycast(Body* shapeOwner, Box otherBox, Vector2f delta) const override;
+  float raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const override;
 };
 
 struct ShapeTilemap : Shape
 {
   bool probe(Body* shapeOwner, Box otherBox) const override;
-  float raycast(Body* shapeOwner, Box otherBox, Vector2f delta) const override;
+  float raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const override;
   Matrix2<int>* tiles;
 };
 

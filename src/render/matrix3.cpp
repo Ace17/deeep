@@ -20,7 +20,7 @@ Matrix3f operator * (Matrix3f const& A, Matrix3f const& B)
   return r;
 }
 
-Matrix3f translate(Vector2f v)
+Matrix3f translate(Vec2f v)
 {
   Matrix3f r;
   r[0][0] = 1;
@@ -49,7 +49,7 @@ Matrix3f rotate(float angle)
   return r;
 }
 
-Matrix3f scale(Vector2f v)
+Matrix3f scale(Vec2f v)
 {
   Matrix3f r;
   r[0][0] = v.x;

@@ -174,12 +174,12 @@ private:
       s.modelId = 0;
       s.zOrder = 99;
       m_renderer->drawSprite(s);
-      m_renderer->drawText({ Vector2f(0, 0.5), "QUIT? [Y/N]" });
+      m_renderer->drawText({ Vec2f(0, 0.5), "QUIT? [Y/N]" });
     }
     else if(m_paused)
-      m_renderer->drawText({ Vector2f(0, 0), "PAUSE" });
+      m_renderer->drawText({ Vec2f(0, 0), "PAUSE" });
     else if(m_slowMotion)
-      m_renderer->drawText({ Vector2f(0, 0), "SLOW-MOTION MODE" });
+      m_renderer->drawText({ Vec2f(0, 0), "SLOW-MOTION MODE" });
 
     if(m_control.debug)
     {
@@ -188,7 +188,7 @@ private:
         char txt[256];
         auto stat = getStat(i);
         auto s = format(txt, "%s: %.2f", stat.name, stat.val);
-        m_renderer->drawText({ Vector2f(0, 4 - i), s });
+        m_renderer->drawText({ Vec2f(0, 4 - i), s });
       }
     }
 

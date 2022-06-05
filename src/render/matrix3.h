@@ -37,7 +37,7 @@ struct Matrix3f
 
 Matrix3f operator * (Matrix3f const& A, Matrix3f const& B);
 
-Matrix3f translate(Vector2f v);
+Matrix3f translate(Vec2f v);
 Matrix3f rotate(float angle);
-Matrix3f scale(Vector2f v);
+Matrix3f scale(Vec2f v);
 
