@@ -311,8 +311,8 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     printOpenGlVersion();
 
-    // Enable vsync (disabled, at it seems to have the opposite effect (!))
-    // SDL_GL_SetSwapInterval(1);
+    // Enable vsync
+    SDL_GL_SetSwapInterval(1);
 
     // Create our unique vertex array
     GLuint VertexArrayID;
