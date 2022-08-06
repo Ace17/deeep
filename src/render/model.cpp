@@ -51,23 +51,19 @@ Model loadAnimatedModel(String jsonPath)
   auto data = File::read(jsonPath);
   Model r;
   auto obj = json::parse(data.c_str(), data.size());
-  auto dir = dirName(jsonPath);
 
-  auto type = string(obj["type"]);
   auto const cols = (int)obj["cols"];
   auto const rows = (int)obj["rows"];
 
-  if(type == "sheet")
-  {
-    std::string sheet = setExtension(jsonPath, "png");
+  std::string sheet = setExtension(jsonPath, "png");
 
+  if(obj.has("actions"))
+  {
     for(auto& action : obj["actions"].elements)
       r.actions.push_back(loadSheetAction(action, sheet, rows, cols));
   }
-  else if(type == "tiled")
+  else
   {
-    auto sheet = string(obj["sheet"]);
-
     for(int row = 0; row < rows; ++row)
     {
       for(int col = 0; col < rows; ++col)
@@ -79,13 +75,11 @@ Model loadAnimatedModel(String jsonPath)
         rect.size.width = 1.0 / float(cols);
         rect.size.height = 1.0 / float(rows);
 
-        addTexture(action, (string(dir.data, dir.len) + "/" + sheet), rect);
+        addTexture(action, sheet, rect);
         r.actions.push_back(action);
       }
     }
   }
-  else
-    throw Error("Unknown model type: '" + type + "'");
 
   return r;
 }

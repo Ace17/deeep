@@ -1,8 +1,4 @@
 {
-  "type" : "tiled",
-  "sheet" : "font.png",
-  "sheet_width" : 128,
-  "sheet_height" : 128,
   "rows" : 16,
   "cols" : 16
 }
