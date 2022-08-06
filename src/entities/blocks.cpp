@@ -157,7 +157,7 @@ struct CrumbleBlock : Entity
     {
       collidesWith = 0;
 
-      if(openingTimer < (OPEN_DURATION * 9) / 10)
+      if(openingTimer < (OPEN_DURATION * 95) / 100)
         solid = 0;
     }
     else if(!physics->getBodiesInBox(getBox(), CG_PLAYER, false, this))

@@ -299,7 +299,13 @@
                 {
                  "height":16,
                  "id":30,
-                 "name":"elevator",
+                 "name":"lift",
+                 "properties":[
+                        {
+                         "name":"delta_y",
+                         "type":"string",
+                         "value":"13"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -745,7 +751,7 @@
  "nextobjectid":67,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.7.2",
+ "tiledversion":"1.8.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -754,6 +760,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.6",
+ "version":"1.8",
  "width":64
 }
