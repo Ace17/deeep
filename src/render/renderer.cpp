@@ -28,6 +28,7 @@ namespace
 {
 const int MAX_QUADS = 32678;
 const float SCALE = 0.125f;
+const auto INTERNAL_RESOLUTION = Size2i(256, 256);
 
 Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
@@ -77,7 +78,7 @@ struct Renderer : IRenderer
     g_Renderer = this;
     m_quadShader = backend->createGpuProgram("standard", false);
     m_batchVbo = backend->createVertexBuffer();
-    m_fb = backend->createFrameBuffer(Size2i(256, 256), false);
+    m_fb = backend->createFrameBuffer(INTERNAL_RESOLUTION, false);
 
     m_quadVbo = backend->createVertexBuffer();
     m_quadVbo->upload(quadVertices, sizeof quadVertices);
