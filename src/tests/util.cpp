@@ -19,6 +19,31 @@ struct ToStringImpl<std::pair<int, int>>
   }
 };
 
+template<>
+struct ToStringImpl<std::vector<std::pair<int, int>>>
+{
+  static std::string call(const std::vector<std::pair<int, int>>& val)
+  {
+    std::string r;
+
+    bool first = true;
+    r += "[";
+
+    for(auto& element : val)
+    {
+      if(!first)
+        r += ", ";
+
+      r += testValueToString(element);
+      first = false;
+    }
+
+    r += "]";
+
+    return r;
+  }
+};
+
 unittest("Util: allPairs(1)")
 {
   auto expected = vector<pair<int, int>>({});
