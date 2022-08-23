@@ -10,6 +10,7 @@
 #include <memory>
 
 #include "models.h" // MDL_SPLASH
+#include "sounds.h" // SND_STARTUP
 #include "presenter.h"
 #include "state_machine.h"
 #include "toggle.h"
@@ -30,7 +31,7 @@ struct SplashState : Scene
 
     if(!activated)
     {
-      view->playMusic(6);
+      view->playMusic(0);
 
       delay = FADE_TIME;
 
@@ -38,6 +39,7 @@ struct SplashState : Scene
       {
         view->stopMusic();
         activated = true;
+        view->playSound(SND_STARTUP);
       }
     }
 
@@ -58,12 +60,10 @@ struct SplashState : Scene
 
   void draw() override
   {
-    {
-      auto splash = Actor { NullVector, MDL_SPLASH };
-      splash.scale = { 16, 16 };
-      splash.pos -= Vec2f(8, 8);
-      view->sendActor(splash);
-    }
+    auto splash = Actor { NullVector, MDL_SPLASH };
+    splash.scale = {8, 8};
+    splash.pos -= splash.scale * 0.5;
+    view->sendActor(splash);
   }
 
 private:
