@@ -50,7 +50,7 @@ namespace
 {
 Gauge ggDrawCalls("Draw calls");
 
-const float AspectRatio = 1; // square aspect ratio
+const float AspectRatio = 10.0 / 9.0; // gameboy aspect ratio
 
 GLuint compileShader(Span<const uint8_t> code, int type)
 {
