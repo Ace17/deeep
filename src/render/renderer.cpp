@@ -32,7 +32,7 @@ Gauge ggSpriteCount("sprites");
 Gauge ggBatchCount("batches");
 
 const int MAX_QUADS = 32678;
-const auto INTERNAL_RESOLUTION = Vec2i(256, 256);
+const auto INTERNAL_RESOLUTION = Vec2i(160, 144);
 const auto TILE_SIZE = 16.0f;
 
 Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
