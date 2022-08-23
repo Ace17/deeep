@@ -49,6 +49,8 @@ void ensureGl(char const* expr, const char* file, int line)
 
 namespace
 {
+const float AspectRatio = 1; // square aspect ratio
+
 GLuint compileShader(Span<const uint8_t> code, int type)
 {
   auto shaderId = glCreateShader(type);
@@ -453,8 +455,20 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     if(!fb)
     {
-      auto size = min(m_screenSize.width, m_screenSize.height);
-      SAFE_GL(glViewport((m_screenSize.width - size) / 2, (m_screenSize.height - size) / 2, size, size));
+      float cx, cy;
+
+      if(AspectRatio > float(m_screenSize.width) / m_screenSize.height)
+      {
+        cx = m_screenSize.width;
+        cy = cx / AspectRatio;
+      }
+      else
+      {
+        cy = m_screenSize.height;
+        cx = cy * AspectRatio;
+      }
+
+      SAFE_GL(glViewport((m_screenSize.width - cx) / 2, (m_screenSize.height - cy) / 2, cx, cy));
       SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     }
     else
