@@ -190,8 +190,8 @@ private:
     if(m_running == AppState::ConfirmExit)
     {
       RenderSprite s {};
-      s.pos = { -8, -8 };
-      s.halfSize = { 16, 16 };
+      s.pos = { -16, -16 };
+      s.halfSize = { 32, 32 };
       s.modelId = 0;
       s.zOrder = 99;
       m_renderer->drawSprite(s);

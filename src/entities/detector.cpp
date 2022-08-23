@@ -37,6 +37,7 @@ struct RoomBoundaryDetector : Entity
   {
     auto r = Actor { pos, MDL_RECT };
     r.scale = size;
+    r.effect = Effect::Blinking;
     actors.push_back(r);
   }
 
@@ -69,7 +70,6 @@ struct RoomBoundaryBlocker : Entity
   {
     auto r = Actor { pos, MDL_RECT };
     r.scale = size;
-    r.effect = Effect::Blinking;
     actors.push_back(r);
   }
 };
