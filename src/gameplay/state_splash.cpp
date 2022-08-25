@@ -61,7 +61,7 @@ struct SplashState : Scene
   void draw() override
   {
     auto splash = Actor { NullVector, MDL_SPLASH };
-    splash.scale = {8, 8};
+    splash.scale = {20, 18};
     splash.pos -= splash.scale * 0.5;
     view->sendActor(splash);
   }
