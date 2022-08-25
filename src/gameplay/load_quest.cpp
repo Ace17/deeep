@@ -267,8 +267,8 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   room.name = string(base.data, base.len);
   room.pos = box.pos;
   room.size = box.size;
-  room.start = Vec2i(sizeInTiles.x / 2, sizeInTiles.y / 4);
-  room.theme = 3;// atoi(string(jsonRoom["type"]).c_str());
+  room.start = Vec2i(sizeInTiles.x / 2, sizeInTiles.y / 2);
+  room.theme = 0;// atoi(string(jsonRoom["type"]).c_str());
 
   if(File::exists(path))
   {
