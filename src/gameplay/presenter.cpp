@@ -17,6 +17,16 @@ struct GamePresenter : IPresenter
   {
   }
 
+  ~GamePresenter()
+  {
+    if(m_musicVoice >= 0)
+    {
+      m_audio->stopVoice(m_musicVoice);
+      m_audio->releaseVoice(m_musicVoice, true);
+      m_musicVoice = -1;
+    }
+  }
+
   void flushFrame()
   {
     if(m_textboxDelay > 0)
