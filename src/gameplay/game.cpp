@@ -16,7 +16,7 @@
 #include <memory>
 #include <string>
 
-extern const String GAME_NAME = "Deeep";
+extern const String GAME_NAME = "Towwer";
 
 Span<const Resource> getResources();
 IPresenter* createPresenter(IRenderer* renderer, Audio* audio);
