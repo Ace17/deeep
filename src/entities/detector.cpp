@@ -15,6 +15,8 @@
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h"
 
+extern const Size2i CELL_SIZE;
+
 namespace
 {
 struct RoomBoundaryDetector : Entity
@@ -23,7 +25,8 @@ struct RoomBoundaryDetector : Entity
   {
     targetLevel = cfg->getInt("target_level");
     transform = Vector(cfg->getInt("transform_x"), cfg->getInt("transform_y"));
-    size = UnitSize * 16;
+    size.width = CELL_SIZE.width;
+    size.height = CELL_SIZE.height;
     solid = false;
     collisionGroup = 0;
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
@@ -55,7 +58,8 @@ struct RoomBoundaryBlocker : Entity
 {
   RoomBoundaryBlocker(const IEntityConfig*)
   {
-    size = UnitSize * 16;
+    size.width = CELL_SIZE.width;
+    size.height = CELL_SIZE.height;
     solid = true;
     collisionGroup = CG_WALLS;
     collidesWith = -1;

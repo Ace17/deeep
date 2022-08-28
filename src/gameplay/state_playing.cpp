@@ -74,6 +74,8 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
   }
 }
 
+extern const Size2i CELL_SIZE;
+
 struct InGameScene : Scene, private IGame
 {
   InGameScene(IPresenter* view) :
@@ -207,9 +209,9 @@ struct InGameScene : Scene, private IGame
     cameraPos.y += 1.5;
 
     // prevent camera from going outside the level
-    auto const limit = 8.0f;
-    cameraPos.x = ::clamp(cameraPos.x, limit, m_currRoom->size.width * 16.0f - limit);
-    cameraPos.y = ::clamp(cameraPos.y, limit, m_currRoom->size.height * 16.0f - limit);
+    auto const margin = Vec2f(8, 8);
+    cameraPos.x = ::clamp(cameraPos.x, margin.x, m_currRoom->size.width * CELL_SIZE.width - margin.x);
+    cameraPos.y = ::clamp(cameraPos.y, margin.y, m_currRoom->size.height * CELL_SIZE.height - margin.y);
 
     m_view->setCameraPos(cameraPos);
   }

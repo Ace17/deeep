@@ -71,15 +71,17 @@ Rect2i getRect(json::Value const& obj)
   return r;
 }
 
+static const int TiledPixelsPerTile = 16;
+
 static
-Rect2i convertRect(Rect2i rect, int pelsPerTile, int areaHeight)
+Rect2i transformTiledRect(Rect2i rect, int areaHeight)
 {
   // tiled stores dimensions as pixel units
   // convert them back to logical units (i.e tile units)
-  rect.pos.x /= pelsPerTile;
-  rect.pos.y /= pelsPerTile;
-  rect.size.width /= pelsPerTile;
-  rect.size.height /= pelsPerTile;
+  rect.pos.x /= TiledPixelsPerTile;
+  rect.pos.y /= TiledPixelsPerTile;
+  rect.size.width /= TiledPixelsPerTile;
+  rect.size.height /= TiledPixelsPerTile;
 
   // tiled uses a downwards pointing Y axis.
   // reverse it so it points upwards.
@@ -133,13 +135,13 @@ Matrix2<int> parseTileLayer(json::Value& json)
   return tiles;
 }
 
-static auto const CELL_SIZE = 16;
+extern const Size2i CELL_SIZE { 16, 16 };
 
 static
 void generateConcreteRoom(Room& room)
 {
-  auto const rect = room.size * CELL_SIZE;
-  room.tiles.resize(Size2i(rect.width, rect.height));
+  const Size2i rect { room.size.width * CELL_SIZE.width, room.size.height * CELL_SIZE.height };
+  room.tiles.resize(rect);
 
   for(int x = 0; x < rect.width; ++x)
   {
@@ -186,7 +188,7 @@ vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height
 
   for(auto& obj : objectLayer["objects"].elements)
   {
-    auto const objRect = convertRect(getRect(obj), 16, height);
+    auto const objRect = transformTiledRect(getRect(obj), height);
 
     Room::Spawner spawner;
 
@@ -216,7 +218,7 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
   room.tiles = parseTileLayer(layers["tiles"]);
 
   if(exists(layers, "things"))
-    room.spawners = parseThingLayer(layers["things"], room.size.height * 16);
+    room.spawners = parseThingLayer(layers["things"], room.size.height * CELL_SIZE.height);
 
   // add spikes and ladders
   for(auto pos : rasterScan(room.tiles.size.width, room.tiles.size.height))
@@ -255,13 +257,21 @@ static void removeVersion(string& data)
   data.erase(i, j - i + 1);
 }
 
+static Size2i operator * (Size2i a, Size2i b)
+{
+  return { a.width * b.width, a.height * b.height };
+}
+
 static
 Room loadAbstractRoom(json::Value const& jsonRoom)
 {
-  auto const PELS_PER_TILE = 256;
-
+  const int WorldMaxHeight = CELL_SIZE.height * 50;
   auto box = getRect(jsonRoom);
-  box = convertRect(box, PELS_PER_TILE, 64);
+  box = transformTiledRect(box, WorldMaxHeight);
+  box.pos.x /= CELL_SIZE.width;
+  box.pos.y /= CELL_SIZE.height;
+  box.size.width /= CELL_SIZE.width;
+  box.size.height /= CELL_SIZE.height;
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
@@ -287,9 +297,9 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
     generateConcreteRoom(room);
   }
 
-  auto const actualSize = room.tiles.size / CELL_SIZE;
+  auto const actualSize = room.tiles.size;
 
-  if(actualSize != room.size)
+  if(actualSize != room.size * CELL_SIZE)
   {
     char buffer[256];
     String s;
@@ -297,7 +307,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
     s.len = sprintf(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
                     room.pos.x, room.pos.y,
                     path.c_str(), room.theme,
-                    room.size.width, room.size.height,
+                    room.size.width * CELL_SIZE.width, room.size.height * CELL_SIZE.height,
                     actualSize.width, actualSize.height);
     throw Error(s);
   }

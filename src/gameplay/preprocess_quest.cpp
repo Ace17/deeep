@@ -75,17 +75,22 @@ int getRoomAt(vector<Room> const& quest, Vector2i absPos)
   return -1;
 }
 
+extern const Size2i CELL_SIZE;
+
 static
-Vector toVector(Vector2i v)
+Vector toTilePosition(Vector2i v)
 {
-  return Vector(v.x, v.y);
+  return Vector(v.x * CELL_SIZE.width, v.y * CELL_SIZE.height);
+}
+
+static Vector2i operator * (Vector2i a, Size2i b)
+{
+  return { a.x * b.width, a.y * b.height };
 }
 
 static
 void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 {
-  auto const CELL_SIZE = 16;
-
   auto tryToConnectRoom = [&] (Vector2i delta, Vector2i margin)
     {
       auto const neighboorPos = room.pos + delta;
@@ -93,7 +98,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 
       if(neighboorIdx < 0)
       {
-        auto pos = toVector(delta * CELL_SIZE);
+        auto pos = toTilePosition(delta);
         room.spawners.push_back({ pos, "blocker" });
         return;
       }
@@ -107,7 +112,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
       s.config["target_level"] = to_string(neighboorIdx);
       s.config["transform_x"] = to_string(transform.x);
       s.config["transform_y"] = to_string(transform.y);
-      s.pos = toVector(delta * CELL_SIZE);
+      s.pos = toTilePosition(delta);
       room.spawners.push_back(s);
     };
 
