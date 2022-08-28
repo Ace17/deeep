@@ -186,6 +186,7 @@ struct InGameScene : Scene, private IGame
       m_view->sendActor(lifebar);
     }
 
+    if(0)
     {
       Actor background = { Vector(-8, -8), MDL_BACKGROUND };
       background.scale = Size(16, 16);
