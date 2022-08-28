@@ -1,21 +1,24 @@
-{ "height":16,
+{ "compressionlevel":-1,
+ "height":14,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJxjZGBgYBxEGAYGylxq248LkKuOXPvItZ9WYNR+6sQbuWmAFD2UpEFcZhOynxZ5H5v55NiLC1A7TshNm9SwnxaA2PCmFWBEY1MrvIm1ezBiADxoAPg=",
+         "data":"eJxjZGBgYETCMMBIJYwLDDZz6GUutcCo+wan+6hlFjXdR4lZuMym1H2k6ifV77R0Fy5A7fSNLS6oYTY93EcLQKq59C5rGNHY1EzP1HDbcMQAuUwBFw==",
          "encoding":"base64",
-         "height":16,
+         "height":14,
+         "id":1,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":32,
+         "width":40,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "height":16,
+         "id":2,
          "name":"things",
          "objects":[
                 {
@@ -27,7 +30,7 @@
                  "visible":true,
                  "width":16,
                  "x":368,
-                 "y":224
+                 "y":192
                 }, 
                 {
                  "height":16,
@@ -38,7 +41,7 @@
                  "visible":true,
                  "width":16,
                  "x":448,
-                 "y":208
+                 "y":176
                 }, 
                 {
                  "height":16,
@@ -49,18 +52,19 @@
                  "visible":true,
                  "width":16,
                  "x":96,
-                 "y":224
+                 "y":192
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":32,
          "x":0,
          "y":0
         }],
+ "nextlayerid":3,
  "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.8.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -68,5 +72,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
- "width":32
+ "type":"map",
+ "version":"1.8",
+ "width":40
 }
