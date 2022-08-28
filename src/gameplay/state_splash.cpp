@@ -10,8 +10,8 @@
 #include <memory>
 
 #include "models.h" // MDL_SPLASH
-#include "sounds.h" // SND_STARTUP
 #include "presenter.h"
+#include "sounds.h" // SND_STARTUP
 #include "state_machine.h"
 #include "toggle.h"
 #include "vec.h"
@@ -39,7 +39,7 @@ struct SplashState : Scene
       {
         view->stopMusic();
         activated = true;
-        view->playSound(SND_STARTUP);
+        view->playSound(SND_CHIRP);
       }
     }
 

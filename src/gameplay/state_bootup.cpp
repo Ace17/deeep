@@ -34,6 +34,7 @@ struct BootupState : Scene
   {
     view->stopMusic();
     view->setCameraPos(NullVector);
+    view->setAmbientLight(0);
 
     ++timer;
 
@@ -51,14 +52,25 @@ struct BootupState : Scene
 
   void draw() override
   {
-    float ratio = std::min(timer / float(BEEPTIME), 1.0f);
-    auto splash = Actor { NullVector, MDL_BOOTUP };
-    splash.scale = { 16, 16 };
-    splash.pos.y = 0;
-    splash.pos -= splash.scale * 0.5;
-    splash.zOrder = 2;
-    view->sendActor(splash);
-    view->setAmbientLight(1 - ratio);
+    // Hack: clear screen with white
+    {
+      auto bg = Actor { NullVector, MDL_BOOTUP };
+      bg.scale = {48, 48};
+      bg.pos -= bg.scale * 0.5;
+      bg.pos.y -= 15;
+      bg.zOrder = 1;
+      view->sendActor(bg);
+    }
+
+    {
+      float ratio = std::min(timer / float(BEEPTIME), 1.0f);
+      auto splash = Actor { NullVector, MDL_BOOTUP };
+      splash.scale = {20, 18};
+      splash.pos.y = 12.0f * (1.0f - ratio);
+      splash.pos -= splash.scale * 0.5;
+      splash.zOrder = 2;
+      view->sendActor(splash);
+    }
   }
 
 private:

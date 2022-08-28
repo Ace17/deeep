@@ -30,7 +30,7 @@
 #include "video_capture.h"
 
 auto const GAMEPLAY_HZ = 60;
-auto const RESOLUTION = Vec2i(160 * 4, 144 * 4);
+auto const RESOLUTION = Vec2i(160, 144) * 4;
 auto const CAPTURE_FRAME_PERIOD = 40;
 
 IGraphicsBackend* createGraphicsBackend(Vec2i resolution);
