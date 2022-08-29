@@ -20,6 +20,7 @@ out vec4 color;
 void main()
 {
   color = texture(DiffuseTextureSampler, UV) + fragOffset;
+  color.b -= 0.1;
 }
 
 // vim: syntax=glsl
