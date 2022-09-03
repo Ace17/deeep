@@ -31,7 +31,7 @@
 
 using namespace std;
 
-auto const TIMESTEP = 10;
+auto const GAMEPLAY_HZ = 100;
 auto const RESOLUTION = Size2i(768, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
@@ -92,7 +92,15 @@ public:
 private:
   void tickOneDisplayFrame(int now)
   {
-    const auto timeStep = m_slowMotion ? TIMESTEP * 10 : m_fastForward ? 1 : TIMESTEP;
+    auto freq = GAMEPLAY_HZ;
+
+    if(m_fastForward)
+      freq *= 10;
+
+    if(m_slowMotion)
+      freq /= 10;
+
+    const auto timeStep = 1000 / freq;
 
     while(m_lastTime + timeStep < now)
     {
