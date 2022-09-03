@@ -100,6 +100,8 @@ private:
     if(m_slowMotion)
       freq /= 10;
 
+    int ticksPerFrame = 0;
+
     while(1)
     {
       const auto nextTime = m_lastTime + (1000 + m_lastRemainder) / freq;
@@ -116,7 +118,11 @@ private:
         m_tps.tick(now);
         Stat("TPS", m_tps.slope());
       }
+
+      ++ticksPerFrame;
     }
+
+    Stat("Ticks/Frame", ticksPerFrame);
 
     // draw the frame
     draw();
