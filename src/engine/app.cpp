@@ -29,7 +29,7 @@
 #include "stats.h"
 #include "video_capture.h"
 
-auto const GAMEPLAY_HZ = 100;
+auto const GAMEPLAY_HZ = 60;
 auto const RESOLUTION = Vec2i(768, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
