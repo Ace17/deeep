@@ -100,16 +100,15 @@ private:
     if(m_slowMotion)
       freq /= 10;
 
-    const auto timeStep = 1000 / freq;
-
     while(1)
     {
-      const auto nextTime = m_lastTime + timeStep;
+      const auto nextTime = m_lastTime + (1000 + m_lastRemainder) / freq;
 
       if(nextTime >= now)
         break;
 
       m_lastTime = nextTime;
+      m_lastRemainder = (1000 + m_lastRemainder) % freq;
 
       if(!m_paused && m_running == AppState::Running)
       {
@@ -279,6 +278,8 @@ private:
   bool m_debugMode = false;
 
   int m_lastTime;
+  int m_lastRemainder = 0;
+
   int m_lastDisplayFrameTime;
   RateCounter m_fps;
   RateCounter m_tps;
