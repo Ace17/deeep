@@ -102,9 +102,14 @@ private:
 
     const auto timeStep = 1000 / freq;
 
-    while(m_lastTime + timeStep < now)
+    while(1)
     {
-      m_lastTime += timeStep;
+      const auto nextTime = m_lastTime + timeStep;
+
+      if(nextTime >= now)
+        break;
+
+      m_lastTime = nextTime;
 
       if(!m_paused && m_running == AppState::Running)
       {
