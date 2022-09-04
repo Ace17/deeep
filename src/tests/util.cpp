@@ -4,6 +4,7 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+#include "base/my_algorithm.h"
 #include "base/util.h"
 #include "misc/util.h"
 #include "tests.h"
@@ -129,5 +130,32 @@ unittest("Util: dirName")
 unittest("Util: baseName")
 {
   assertEquals(std::string("Goodbye.txt"), baseName("Hello/World/Goodbye.txt"));
+}
+
+unittest("Base: sort: simple")
+{
+  std::vector<int> array = { 1, 2, 3, 4, 6, 5 };
+  std::vector<int> expected = { 1, 2, 3, 4, 5, 6 };
+
+  my::sort(Span<int>(array), [] (int a, int b) { return a < b; });
+  assertEquals(expected, array);
+}
+
+unittest("Base: sort: reversed")
+{
+  std::vector<int> array = { 60, 50, 40, 30, 20, 10 };
+  std::vector<int> expected = { 10, 20, 30, 40, 50, 60 };
+
+  my::sort(Span<int>(array), [] (int a, int b) { return a < b; });
+  assertEquals(expected, array);
+}
+
+unittest("Base: sort: random")
+{
+  std::vector<float> array = { 63.3, 9.3, -5.13, 3.14, 55.55 };
+  std::vector<float> expected = { 63.3, 55.55, 9.3, 3.14, -5.13 };
+
+  my::sort(Span<float>(array), [] (float a, float b) { return a > b; });
+  assertEquals(expected, array);
 }
 
