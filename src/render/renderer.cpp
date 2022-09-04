@@ -259,7 +259,7 @@ struct Renderer : IRenderer
 
   void drawText(const RenderText& text) override
   {
-    Vec2f size = { 0.5, 0.5 };
+    Vec2f size = { 1.0, 1.0 };
 
     auto pos = text.pos;
 
