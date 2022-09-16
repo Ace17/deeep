@@ -40,7 +40,7 @@ struct RootScene : Scene
     }
     else
     {
-      m_scene.reset(createSplashState(m_presenter.get()));
+      m_scene.reset(createBootupState(m_presenter.get()));
     }
   }
 

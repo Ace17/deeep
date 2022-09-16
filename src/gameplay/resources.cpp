@@ -45,6 +45,7 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_DOOR, "res/sprites/door.model" },
   { ResourceType::Model, MDL_SAVEPOINT, "res/sprites/savepoint.model" },
   { ResourceType::Model, MDL_BLOCK, "res/sprites/block.model" },
+  { ResourceType::Model, MDL_BOOTUP, "res/sprites/bootup_logo.model" },
   { ResourceType::Model, MDL_SPLASH, "res/sprites/splash.model" },
   { ResourceType::Model, MDL_ENDING, "res/sprites/ending.model" },
   { ResourceType::Model, MDL_PAUSED, "res/sprites/pause_menu.model" },
