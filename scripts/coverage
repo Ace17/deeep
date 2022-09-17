@@ -14,11 +14,11 @@ export LDFLAGS="--coverage"
 export DFLAGS="--coverage"
 make -j`nproc`
 
-lcov --capture -d "$tmpDir/src" -b src --no-external --initial > $tmpDir/reference.info
+lcov --capture -d "$tmpDir" -b . --no-external --initial > $tmpDir/reference.info
 
 # run tests
 $BIN/tests.exe
-lcov --capture -d "$tmpDir/src" -b src --no-external -o $tmpDir/stats.info
+lcov --capture -d "$tmpDir" -b . --no-external -o $tmpDir/stats.info
 
 # combine baseline and test coverage data
 lcov -a $tmpDir/reference.info -a $tmpDir/stats.info -o $tmpDir/profile.txt
