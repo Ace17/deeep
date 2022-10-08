@@ -142,6 +142,7 @@ struct OpenGlProgram : IGpuProgram
 {
   OpenGlProgram(GLuint program_, bool zTest_) : program(program_), zTest(zTest_)
   {
+    uniformBlockIndex = glGetUniformBlockIndex(program, "MyUniformBlock");
   }
 
   ~OpenGlProgram()
@@ -149,6 +150,7 @@ struct OpenGlProgram : IGpuProgram
     glDeleteProgram(program);
   }
 
+  int uniformBlockIndex = -1;
   const GLuint program;
   const bool zTest;
 };
@@ -321,6 +323,9 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     SAFE_GL(glGenVertexArrays(1, &VertexArrayID));
     SAFE_GL(glBindVertexArray(VertexArrayID));
 
+    // Create our unique uniform buffer
+    SAFE_GL(glGenBuffers(1, &m_uniformBuffer));
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -405,6 +410,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     auto program = dynamic_cast<OpenGlProgram*>(iprogram);
     SAFE_GL(glUseProgram(program->program));
     enableZTest(program->zTest);
+    m_currProgram = program;
   }
 
   void useVertexBuffer(IVertexBuffer* ivb) override
@@ -432,6 +438,13 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   void setUniformFloat4(int id, float x, float y, float z, float w) override
   {
     SAFE_GL(glUniform4f(id, x, y, z, w));
+  }
+
+  void setUniformBlock(void* ptr, size_t size) override
+  {
+    glBindBuffer(GL_UNIFORM_BUFFER, m_uniformBuffer);
+    glBufferData(GL_UNIFORM_BUFFER, size, ptr, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_UNIFORM_BUFFER, m_currProgram->uniformBlockIndex, m_uniformBuffer);
   }
 
   void setUniformMatrixFloat4(int id, float* matrix) override
@@ -533,6 +546,8 @@ private:
   IScreenSizeListener* m_screenSizeListener {};
   SDL_Window* m_window;
   SDL_GLContext m_context;
+  GLuint m_uniformBuffer {};
+  const OpenGlProgram* m_currProgram;
 };
 }
 

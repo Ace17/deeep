@@ -123,6 +123,11 @@ struct Renderer : IRenderer
     m_frameCount++;
   }
 
+  struct MyUniformBlock
+  {
+    float fragOffset[4];
+  };
+
   void endDraw() override
   {
     // draw to internal framebuffer, with fixed resolution
@@ -140,7 +145,8 @@ struct Renderer : IRenderer
     m_fb->getColorTexture()->bind(0);
     backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
     backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
-    backend->setUniformFloat4(0 /* colorLoc */, 0, 0, 0, 0);
+    MyUniformBlock block {};
+    backend->setUniformBlock(&block, sizeof block);
     backend->draw(6);
 
     backend->swap();
@@ -204,7 +210,8 @@ struct Renderer : IRenderer
       {
         flushBatch();
 
-        backend->setUniformFloat4(0 /* colorLoc */, q.light[0], q.light[1], q.light[2], 0);
+        MyUniformBlock block { q.light[0], q.light[1], q.light[2], 0 };
+        backend->setUniformBlock(&block, sizeof block);
         currLight = q.light;
       }
 

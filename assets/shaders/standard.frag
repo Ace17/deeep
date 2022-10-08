@@ -3,7 +3,11 @@
 precision mediump float;
 
 // Uniforms
-uniform vec4 fragOffset;
+layout(std140) uniform MyUniformBlock
+{
+  vec4 fragOffset;
+};
+
 uniform sampler2D DiffuseTextureSampler;
 
 // Interpolated values from the vertex shader
