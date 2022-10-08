@@ -278,7 +278,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    // require OpenGL 2.0, ES or Core. No compatibility mode.
+    // require GLES 3.0.
     {
       // SDL_GL_CONTEXT_PROFILE_ES: works in both browser and native
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
