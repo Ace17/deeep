@@ -7,6 +7,7 @@
 // splash menu
 
 #include "base/scene.h"
+#include <algorithm>
 #include <memory>
 
 #include "models.h" // MDL_BOOTUP
@@ -62,7 +63,6 @@ struct BootupState : Scene
 
 private:
   IPresenter* const view;
-  bool activated = false;
   int timer = 0;
 };
 

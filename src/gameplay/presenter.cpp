@@ -27,7 +27,7 @@ struct GamePresenter : IPresenter
     }
   }
 
-  void flushFrame()
+  void flushFrame() override
   {
     if(m_textboxDelay > 0)
     {
