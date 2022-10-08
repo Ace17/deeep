@@ -38,7 +38,7 @@ function deliverBinaryVersion
 
   # Windows binaries
   BIN_WIN=$tmpDir/bin/w64
-  CXXFLAGS+=-O3 \
+  CXXFLAGS="-O3" \
   BIN=$BIN_WIN \
     ./scripts/w64-make -j`nproc` \
     VERSION="$version" \
