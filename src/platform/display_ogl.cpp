@@ -7,8 +7,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // OpenGL stuff
 
-#include "engine/graphics_backend.h"
-
 #include <cassert>
 #include <cstdio>
 #include <memory>
@@ -17,6 +15,7 @@
 #include "base/error.h"
 #include "base/geom.h"
 #include "base/span.h"
+#include "engine/graphics_backend.h"
 #include "engine/stats.h"
 #include "misc/file.h"
 #include "render/picture.h"
@@ -336,6 +335,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
   ~OpenGlGraphicsBackend()
   {
+    SAFE_GL(glDeleteBuffers(1, &m_uniformBuffer));
     SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
     SDL_GL_DeleteContext(m_context);
