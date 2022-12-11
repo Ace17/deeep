@@ -29,6 +29,19 @@
 
 using namespace std;
 
+extern const Size2i CELL_SIZE;
+
+namespace
+{
+Actor getDebugActor(Entity* entity)
+{
+  auto box = entity->getBox();
+  auto r = Actor { box.pos, MDL_RECT };
+  r.scale = box.size;
+  r.zOrder = 10;
+  return r;
+}
+
 struct EntityConfigImpl : IEntityConfig
 {
   string getString(const char* varName, string defaultValue) override
@@ -73,8 +86,6 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
     ++id;
   }
 }
-
-extern const Size2i CELL_SIZE;
 
 struct InGameScene : Scene, private IGame
 {
@@ -445,18 +456,8 @@ struct InGameScene : Scene, private IGame
 
   vector<unique_ptr<Entity>> m_entities;
   vector<unique_ptr<Entity>> m_spawned;
-
-  // static stuff
-
-  static Actor getDebugActor(Entity* entity)
-  {
-    auto box = entity->getBox();
-    auto r = Actor { box.pos, MDL_RECT };
-    r.scale = box.size;
-    r.zOrder = 10;
-    return r;
-  }
 };
+}
 
 Scene* createPlayingStateAtLevel(IPresenter* view, int level)
 {
