@@ -45,12 +45,12 @@ void assertNearlyEqualsFunc(Vec2f expected, Vec2f actual, const char* file, int 
 
 struct CornerShape : Shape
 {
-  bool probe(Body* /*owner*/, Box rect) const override
+  bool probe(AffineTransform /* transform */, Box rect) const override
   {
     return rect.pos.y < 0 || rect.pos.x < 0;
   }
 
-  float raycast(Body* /*shapeOwner*/, Box otherBox, Vec2f delta) const override
+  float raycast(AffineTransform /* transform */, Box otherBox, Vec2f delta) const override
   {
     float fraction = 1;
 

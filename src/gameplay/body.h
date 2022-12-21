@@ -15,13 +15,17 @@
 
 using namespace std;
 
-struct Body;
+struct AffineTransform
+{
+  Vector translate;
+  Vector scale;
+};
 
 struct Shape
 {
   virtual ~Shape() = default;
-  virtual bool probe(Body* shapeOwner, Box otherBox) const = 0;
-  virtual float raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const = 0;
+  virtual bool probe(AffineTransform tx, Box otherBox) const = 0;
+  virtual float raycast(AffineTransform tx, Box otherBox, Vec2f delta) const = 0;
 };
 
 struct Body
@@ -53,14 +57,14 @@ struct Body
 
 struct ShapeBox : Shape
 {
-  bool probe(Body* shapeOwner, Box otherBox) const override;
-  float raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const override;
+  bool probe(AffineTransform transform, Box otherBox) const override;
+  float raycast(AffineTransform transform, Box otherBox, Vec2f delta) const override;
 };
 
 struct ShapeTilemap : Shape
 {
-  bool probe(Body* shapeOwner, Box otherBox) const override;
-  float raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const override;
+  bool probe(AffineTransform transform, Box otherBox) const override;
+  float raycast(AffineTransform transform, Box otherBox, Vec2f delta) const override;
   Matrix2<int>* tiles;
 };
 

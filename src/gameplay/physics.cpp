@@ -140,7 +140,11 @@ struct Physics : IPhysics
       if(!(body->collisionGroup & collisionGroup))
         continue;
 
-      const auto fraction = body->shape->raycast(body, box, delta);
+      AffineTransform transform;
+      transform.translate = body->pos;
+      transform.scale = body->size;
+
+      const auto fraction = body->shape->raycast(transform, box, delta);
 
       if(fraction < r.fraction)
       {
@@ -165,7 +169,11 @@ struct Physics : IPhysics
       if(!(body->collisionGroup & collisionGroup))
         continue;
 
-      if(body->shape->probe(body, myBox))
+      AffineTransform transform;
+      transform.translate = body->pos;
+      transform.scale = body->size;
+
+      if(body->shape->probe(transform, myBox))
         return body;
     }
 
@@ -250,22 +258,25 @@ unique_ptr<IPhysics> createPhysics()
   return make_unique<Physics>();
 }
 
-bool ShapeBox::probe(Body* owner, Box otherBox) const
+bool ShapeBox::probe(AffineTransform transform, Box otherBox) const
 {
-  return overlaps({ owner->pos, owner->size }, otherBox);
+  Box myBox;
+  myBox.pos = transform.translate;
+  myBox.size = { transform.scale.x, transform.scale.y };
+  return overlaps(myBox, otherBox);
 }
 
-float ShapeBox::raycast(Body* shapeOwner, Box otherBox, Vec2f delta) const
+float ShapeBox::raycast(AffineTransform transform, Box otherBox, Vec2f delta) const
 {
   auto otherBoxHalfSize = Vec2f(otherBox.size.width, otherBox.size.height) * 0.5;
-  auto obstacleHalfSize = Vec2f(shapeOwner->size.width, shapeOwner->size.height) * 0.5;
+  auto obstacleHalfSize = transform.scale * 0.5;
   return ::raycast(otherBox.pos + otherBoxHalfSize,
                    delta,
-                   shapeOwner->pos + obstacleHalfSize,
+                   transform.translate + obstacleHalfSize,
                    obstacleHalfSize + otherBoxHalfSize);
 }
 
-bool ShapeTilemap::probe(Body* /*owner*/, Box otherBox) const
+bool ShapeTilemap::probe(AffineTransform /* transform */, Box otherBox) const
 {
   auto const x1 = otherBox.pos.x;
   auto const y1 = otherBox.pos.y;
@@ -285,7 +296,7 @@ bool ShapeTilemap::probe(Body* /*owner*/, Box otherBox) const
   return false;
 }
 
-float ShapeTilemap::raycast(Body* /*shapeOwner*/, Box otherBox, Vec2f delta) const
+float ShapeTilemap::raycast(AffineTransform /* transform */, Box otherBox, Vec2f delta) const
 {
   const auto boxSize = Vec2f(otherBox.size.width, otherBox.size.height);
 
