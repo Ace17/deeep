@@ -1,26 +1,42 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env python3
+import os
+import subprocess
 
-echo "----------------------------------------------------------------"
-echo "Reformatting ..."
-scripts/reformat.sh "src"
+def main():
+    print("--- prebuild checks ---")
+    run(['scripts/reformat.sh', 'src'])
+    run(['scripts/CheckDeps.py', '-o', 'bin/archi.dot', 'scripts/archi.json', 'src'])
+    print("--- native build ---")
+    run(['make', '-j', '16'])
+    run(['bin/tests.exe'])
+    print("--- windows build ---")
+    os.environ['BIN'] = 'bin/w64'
+    run(['scripts/w64-make', '-j', '16'])
+    print("--- stats ---")
+    print("Kloc: % 2.2f kloc" % (compute_klock("src")/1000.0))
+    print("Code: % 5d kb" % (os.path.getsize("bin/rel/game.exe")/1024))
 
-echo "----------------------------------------------------------------"
-echo "Checking dependencies ..."
-./scripts/CheckDeps.py -o bin/archi.dot scripts/archi.json src
+def compute_klock(dir):
+    result = 0
+    for f in list_files(dir):
+        if f.endswith(".cpp") or f.endswith(".h"):
+            result += line_count(f)
+    return result
 
-echo "----------------------------------------------------------------"
-echo "Building native version"
+def list_files(dir):
+    return [os.path.join(dp, f) for dp, dn, fn in os.walk(dir) for f in fn]
 
-BIN=bin/native \
-  make -j`nproc`
+def line_count(filename):
+    result = 0
+    with open(filename, "r") as file:
+        for line in file:
+            result += 1
+    return result
 
-./bin/native/tests.exe
+def run(cmd):
+    print(f"run: {cmd}")
+    return subprocess.run(cmd, check=True)
 
-echo "----------------------------------------------------------------"
-echo "Building Windows version"
+if __name__ == "__main__":
+    main()
 
-BIN=bin/w64 \
-  ./scripts/w64-make -j`nproc`
-
-echo OK

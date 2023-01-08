@@ -19,6 +19,7 @@ void logMsg(String fmt, ...)
 
   // Dump logs to a persistent log file.
   static FILE* fp = fopen("log.txt", "ab");
+
   if(fp)
   {
     fwrite(buffer, 1, n + 1, fp);
