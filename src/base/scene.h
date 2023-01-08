@@ -23,8 +23,6 @@ struct Control
   bool debug; // toggle debug-mode
 };
 
-// game, seen by the outside world
-
 struct Scene
 {
   virtual ~Scene() = default;

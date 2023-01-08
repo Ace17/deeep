@@ -4,11 +4,9 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
-// Basic geometric types
+// Basic geometric types: Vec2f, Vec2i
 
 #pragma once
-
-#include <cassert>
 
 struct Vec2f
 {
