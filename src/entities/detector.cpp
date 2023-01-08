@@ -15,7 +15,7 @@
 #include "gameplay/sounds.h"
 #include "gameplay/toggle.h"
 
-extern const Size2i CELL_SIZE;
+extern const Vec2i CELL_SIZE;
 
 namespace
 {

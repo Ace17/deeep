@@ -53,7 +53,7 @@ struct BootupState : Scene
   {
     float ratio = std::min(timer / float(BEEPTIME), 1.0f);
     auto splash = Actor { NullVector, MDL_BOOTUP };
-    splash.scale = Size2f(16, 16);
+    splash.scale = { 16, 16 };
     splash.pos.y = 0;
     splash.pos -= splash.scale * 0.5;
     splash.zOrder = 2;

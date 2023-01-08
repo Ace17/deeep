@@ -32,10 +32,10 @@
 using namespace std;
 
 auto const GAMEPLAY_HZ = 100;
-auto const RESOLUTION = Size2i(768, 768);
+auto const RESOLUTION = Vec2i(768, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
-IGraphicsBackend* createGraphicsBackend(Size2i resolution);
+IGraphicsBackend* createGraphicsBackend(Vec2i resolution);
 IRenderer* createRenderer(IGraphicsBackend* backend);
 MixableAudio* createAudio();
 UserInput* createUserInput();

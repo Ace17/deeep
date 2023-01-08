@@ -16,14 +16,14 @@
 static
 void addRandomWidgets(Matrix2<int>& tiles)
 {
-  auto rect = [&] (Vec2i pos, Size2i size, int tile)
+  auto rect = [&] (Vec2i pos, Vec2i size, int tile)
     {
       for(int dy = 0; dy < size.y; ++dy)
         for(int dx = 0; dx < size.x; ++dx)
           tiles.set(dx + pos.x, dy + pos.y, tile);
     };
 
-  auto isFull = [&] (Vec2i pos, Size2i size)
+  auto isFull = [&] (Vec2i pos, Vec2i size)
     {
       for(int dy = 0; dy < size.y; ++dy)
         for(int dx = 0; dx < size.x; ++dx)
@@ -39,9 +39,9 @@ void addRandomWidgets(Matrix2<int>& tiles)
   for(int i = 0; i < (maxX * maxY) / 100; ++i)
   {
     auto pos = Vec2i(rand() % maxX + 1, rand() % maxY + 1);
-    auto size = Size2i(2, 2);
+    auto size = Vec2i(2, 2);
 
-    if(isFull(pos + Vec2i(-1, -1), Size2i(size.x + 2, size.y + 2)))
+    if(isFull(pos + Vec2i(-1, -1), Vec2i(size.x + 2, size.y + 2)))
       rect(pos, size, 3);
   }
 }
@@ -75,7 +75,7 @@ int getRoomAt(vector<Room> const& quest, Vec2i absPos)
   return -1;
 }
 
-extern const Size2i CELL_SIZE;
+extern const Vec2i CELL_SIZE;
 
 static
 Vector toTilePosition(Vec2i v)
@@ -83,7 +83,7 @@ Vector toTilePosition(Vec2i v)
   return Vector(v.x * CELL_SIZE.x, v.y * CELL_SIZE.y);
 }
 
-static Vec2i operator * (Vec2i a, Size2i b)
+static Vec2i operator * (Vec2i a, Vec2i b)
 {
   return { a.x * b.x, a.y * b.y };
 }

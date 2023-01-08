@@ -10,113 +10,60 @@
 
 #include <cassert>
 
-///////////////////////////////////////////////////////////////////////////////
-// Dimension
-///////////////////////////////////////////////////////////////////////////////
-
-template<typename T>
-struct GenericSize
+struct Vec2f
 {
-  typedef GenericSize<T> MyType;
+  float x = 0;
+  float y = 0;
 
-  GenericSize() : x(0), y(0)
+  Vec2f() = default;
+  Vec2f(const Vec2f &) = default;
+  Vec2f(float x_, float y_)
+    : x(x_)
+    , y(y_)
   {
   }
 
-  GenericSize(T w, T h) : x(w), y(h)
-  {
-  }
+  friend void operator += (Vec2f& a, Vec2f b) { a = a + b; }
+  friend void operator -= (Vec2f& a, Vec2f b) { a = a - b; }
+  friend void operator *= (Vec2f& a, float b) { a = a * b; }
+  friend void operator /= (Vec2f& a, float b) { a = a / b; }
 
-  template<typename F>
-  friend MyType operator * (MyType const& a, F val)
-  {
-    return MyType(a.x * val, a.y * val);
-  }
+  friend Vec2f operator - (Vec2f v) { return Vec2f{ -v.x, -v.y }; }
+  friend Vec2f operator + (Vec2f a, Vec2f b) { return Vec2f{ a.x + b.x, a.y + b.y }; }
+  friend Vec2f operator - (Vec2f a, Vec2f b) { return Vec2f{ a.x - b.x, a.y - b.y }; }
+  friend Vec2f operator * (Vec2f v, float f) { return Vec2f{ v.x* f, v.y* f }; }
+  friend Vec2f operator * (float f, Vec2f v) { return v * f; }
+  friend Vec2f operator / (Vec2f v, float f) { return Vec2f{ v.x / f, v.y / f }; }
 
-  template<typename F>
-  friend MyType operator / (MyType const& a, F val)
-  {
-    return MyType(a.x / val, a.y / val);
-  }
-
-  bool operator == (GenericSize const& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  bool operator != (GenericSize const& other) const
-  {
-    return !(*this == other);
-  }
-
-  T x, y;
+  friend bool operator == (Vec2f a, Vec2f b) { return a.x == b.x && a.y == b.y; }
 };
 
-using Size2f = GenericSize<float>;
-using Size2i = GenericSize<int>;
-
-///////////////////////////////////////////////////////////////////////////////
-// Vector
-///////////////////////////////////////////////////////////////////////////////
-
-template<typename T>
-struct GenericVector
+struct Vec2i
 {
-  typedef GenericVector<T> MyType;
+  int x = 0;
+  int y = 0;
 
-  GenericVector() : x(0), y(0) {}
-  GenericVector(T x_, T y_) : x(x_), y(y_) {}
-  GenericVector(GenericSize<T> size) : x(size.x), y(size.y) {}
-
-  MyType operator += (MyType const& other)
+  Vec2i() = default;
+  Vec2i(const Vec2i &) = default;
+  Vec2i(int x_, int y_)
+    : x(x_)
+    , y(y_)
   {
-    x += other.x;
-    y += other.y;
-    return *this;
   }
 
-  MyType operator -= (MyType const& other)
-  {
-    x -= other.x;
-    y -= other.y;
-    return *this;
-  }
+  friend void operator += (Vec2i& a, Vec2i b) { a = a + b; }
+  friend void operator -= (Vec2i& a, Vec2i b) { a = a - b; }
+  friend void operator *= (Vec2i& a, int b) { a = a * b; }
+  friend void operator /= (Vec2i& a, int b) { a = a / b; }
 
-  template<typename F>
-  friend MyType operator * (MyType const& a, F val)
-  {
-    return MyType(a.x * val, a.y * val);
-  }
+  friend Vec2i operator - (Vec2i v) { return Vec2i{ -v.x, -v.y }; }
+  friend Vec2i operator + (Vec2i a, Vec2i b) { return Vec2i{ a.x + b.x, a.y + b.y }; }
+  friend Vec2i operator - (Vec2i a, Vec2i b) { return Vec2i{ a.x - b.x, a.y - b.y }; }
+  friend Vec2i operator * (Vec2i v, int f) { return Vec2i{ v.x* f, v.y* f }; }
+  friend Vec2i operator * (int f, Vec2i v) { return v * f; }
+  friend Vec2i operator / (Vec2i v, int f) { return Vec2i{ v.x / f, v.y / f }; }
 
-  template<typename F>
-  friend MyType operator / (MyType const& a, F val)
-  {
-    return MyType(a.x / val, a.y / val);
-  }
-
-  template<typename F>
-  friend MyType operator * (F val, MyType const& a)
-  {
-    return MyType(a.x * val, a.y * val);
-  }
-
-  friend MyType operator + (MyType const& a, MyType const& b)
-  {
-    MyType r = a;
-    r += b;
-    return r;
-  }
-
-  friend MyType operator - (MyType const& a, MyType const& b)
-  {
-    MyType r = a;
-    r -= b;
-    return r;
-  }
-
-  T x, y;
+  friend bool operator == (Vec2i a, Vec2i b) { return a.x == b.x && a.y == b.y; }
+  friend bool operator != (Vec2i a, Vec2i b) { return !(a == b); }
 };
-
-using Vec2f = GenericVector<float>;
-using Vec2i = GenericVector<int>;
 

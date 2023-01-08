@@ -168,7 +168,7 @@ struct PausedState : Scene
     }
 
     auto overlay = Actor { NullVector, MDL_MINIMAP_BG };
-    overlay.scale = Size2f(16, 16);
+    overlay.scale = { 16, 16 };
     overlay.pos -= Vec2f(8, 8);
     overlay.screenRefFrame = true;
     overlay.zOrder = 12;

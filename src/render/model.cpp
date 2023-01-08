@@ -94,11 +94,14 @@ Model loadTiledModel(String path, int count, int COLS, int ROWS)
     auto col = i % COLS;
     auto row = i / COLS;
 
-    auto const width = 1.0 / float(COLS);
-    auto const height = 1.0 / float(ROWS);
+    Rect2f rect;
+    rect.size.x = 1.0 / float(COLS);
+    rect.size.y = 1.0 / float(ROWS);
+    rect.pos.x = col * rect.size.x;
+    rect.pos.y = row * rect.size.y;
 
     Action action;
-    addTexture(action, path, Rect2f(col * width, row * height, width, height));
+    addTexture(action, path, rect);
     m.actions.push_back(action);
   }
 

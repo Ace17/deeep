@@ -19,7 +19,7 @@ using namespace std;
 struct Room
 {
   Vec2i pos;
-  Size2i size; // in cells
+  Vec2i size; // in cells
   int theme = 0;
   Matrix2<int> tiles;
   Matrix2<int> tilesForDisplay;

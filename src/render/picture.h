@@ -8,14 +8,14 @@
 
 struct PictureView
 {
-  Size2i dim;
+  Vec2i dim;
   int stride;
   uint8_t* pixels;
 };
 
 struct Picture
 {
-  Size2i dim;
+  Vec2i dim;
   int stride;
   std::vector<uint8_t> pixels;
 

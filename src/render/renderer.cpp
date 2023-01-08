@@ -28,7 +28,7 @@ namespace
 {
 const int MAX_QUADS = 32678;
 const float SCALE = 0.125f;
-const auto INTERNAL_RESOLUTION = Size2i(256, 256);
+const auto INTERNAL_RESOLUTION = Vec2i(256, 256);
 
 Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {

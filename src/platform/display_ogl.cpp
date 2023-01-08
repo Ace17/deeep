@@ -196,7 +196,7 @@ struct OpenGlTexture : ITexture
 
 struct OpenGlFrameBuffer : IFrameBuffer
 {
-  OpenGlFrameBuffer(Size2i resolution, bool depth) : resolution(resolution)
+  OpenGlFrameBuffer(Vec2i resolution, bool depth) : resolution(resolution)
   {
     SAFE_GL(glGenFramebuffers(1, &framebuffer));
     SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
@@ -239,7 +239,7 @@ struct OpenGlFrameBuffer : IFrameBuffer
     return colorTexture.get();
   }
 
-  const Size2i resolution;
+  const Vec2i resolution;
   GLuint framebuffer;
   std::unique_ptr<ITexture> colorTexture;
   std::unique_ptr<ITexture> depthTexture;
@@ -269,7 +269,7 @@ struct OpenGlVertexBuffer : IVertexBuffer
 
 struct OpenGlGraphicsBackend : IGraphicsBackend
 {
-  OpenGlGraphicsBackend(Size2i resolution)
+  OpenGlGraphicsBackend(Vec2i resolution)
   {
     if(SDL_InitSubSystem(SDL_INIT_VIDEO))
     {
@@ -457,7 +457,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     return std::make_unique<OpenGlVertexBuffer>();
   }
 
-  std::unique_ptr<IFrameBuffer> createFrameBuffer(Size2i resolution, bool depth) override
+  std::unique_ptr<IFrameBuffer> createFrameBuffer(Vec2i resolution, bool depth) override
   {
     return std::make_unique<OpenGlFrameBuffer>(resolution, depth);
   }
@@ -521,7 +521,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
   void updateScreenSize()
   {
-    Size2i screenSize {};
+    Vec2i screenSize {};
     SDL_GL_GetDrawableSize(m_window, &screenSize.x, &screenSize.y);
 
     if(screenSize != m_screenSize)
@@ -542,7 +542,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
 private:
   int m_drawCallCount = 0;
-  Size2i m_screenSize {};
+  Vec2i m_screenSize {};
   IScreenSizeListener* m_screenSizeListener {};
   SDL_Window* m_window;
   SDL_GLContext m_context;
@@ -551,7 +551,7 @@ private:
 };
 }
 
-IGraphicsBackend* createGraphicsBackend(Size2i resolution)
+IGraphicsBackend* createGraphicsBackend(Vec2i resolution)
 {
   return new OpenGlGraphicsBackend(resolution);
 }

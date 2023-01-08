@@ -77,7 +77,7 @@ Picture loadPicture(String path, Rect2f frect)
     printf("[display] falling back on generated texture\n");
 
     Picture r;
-    r.dim = Size2i(32, 32);
+    r.dim = Vec2i(32, 32);
     r.stride = r.dim.x;
     r.pixels.resize(r.dim.x * r.dim.y * 4);
 

@@ -29,7 +29,7 @@
 
 using namespace std;
 
-extern const Size2i CELL_SIZE;
+extern const Vec2i CELL_SIZE;
 
 namespace
 {

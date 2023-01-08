@@ -19,7 +19,7 @@ struct PictureView;
 struct IScreenSizeListener
 {
   virtual ~IScreenSizeListener() = default;
-  virtual void onScreenSizeChanged(Size2i size) = 0;
+  virtual void onScreenSizeChanged(Vec2i size) = 0;
 };
 
 struct IGpuProgram
@@ -59,7 +59,7 @@ struct IGraphicsBackend
 
   virtual std::unique_ptr<ITexture> createTexture() = 0;
   virtual std::unique_ptr<IVertexBuffer> createVertexBuffer() = 0;
-  virtual std::unique_ptr<IFrameBuffer> createFrameBuffer(Size2i resolution, bool depth = true) = 0;
+  virtual std::unique_ptr<IFrameBuffer> createFrameBuffer(Vec2i resolution, bool depth = true) = 0;
   virtual std::unique_ptr<IGpuProgram> createGpuProgram(String name, bool zTest) = 0;
 
   virtual void setScreenSizeListener(IScreenSizeListener* listener) = 0;

@@ -25,7 +25,7 @@ unittest("LevelGraph: getRoomAt: one zero sized room")
   vector<Room> rooms;
   Room room;
   room.pos = Vec2i(0, 0);
-  room.size = Size2i(0, 0);
+  room.size = Vec2i(0, 0);
   rooms.push_back(move(room));
   assertEquals(-1, getRoomAt(rooms, Vec2i(0, 0)));
 }
@@ -35,7 +35,7 @@ unittest("LevelGraph: getRoomAt: 1x1 room at (0;0)")
   vector<Room> rooms;
   Room room;
   room.pos = Vec2i(0, 0);
-  room.size = Size2i(1, 1);
+  room.size = Vec2i(1, 1);
   rooms.push_back(move(room));
   assertEquals(0, getRoomAt(rooms, Vec2i(0, 0)));
 }
@@ -46,13 +46,13 @@ unittest("LevelGraph: getRoomAt: 1x1 room at (0;0), 1x1 room at (1;0)")
   {
     Room room;
     room.pos = Vec2i(0, 0);
-    room.size = Size2i(1, 1);
+    room.size = Vec2i(1, 1);
     rooms.push_back(move(room));
   }
   {
     Room room;
     room.pos = Vec2i(1, 0);
-    room.size = Size2i(1, 1);
+    room.size = Vec2i(1, 1);
     rooms.push_back(move(room));
   }
   assertEquals(1, getRoomAt(rooms, Vec2i(1, 0)));
@@ -65,7 +65,7 @@ unittest("LevelGraph: getRoomAt: 1x2 room at (10;4)")
   {
     Room room;
     room.pos = Vec2i(10, 4);
-    room.size = Size2i(1, 2);
+    room.size = Vec2i(1, 2);
     rooms.push_back(move(room));
   }
   assertEquals(-1, getRoomAt(rooms, Vec2i(10, 3)));

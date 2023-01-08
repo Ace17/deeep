@@ -10,24 +10,24 @@
 
 #include "geom.h"
 
-template<typename T>
-struct GenericBox
+struct Rect2f
 {
-  GenericBox() = default;
-  GenericBox(T x, T y, T w, T h) : pos(x, y), size(w, h) {}
-  GenericBox(GenericVector<T> pos_, GenericSize<T> size_) : pos(pos_), size(size_) {}
-
-  GenericVector<T> pos;
-  GenericSize<T> size;
+  Rect2f() = default;
+  Rect2f(float x, float y, float cx, float cy) : pos(x, y), size(cx, cy) {}
+  Rect2f(Vec2f pos_, Vec2f size_) : pos(pos_), size(size_) {}
+  Vec2f pos;
+  Vec2f size;
 };
 
-typedef GenericBox<int> Rect2i;
-typedef GenericBox<float> Rect2f;
-
-template<typename T>
-bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
+struct Rect2i
 {
-  static auto swap = [] (T& a, T& b)
+  Vec2i pos;
+  Vec2i size;
+};
+
+inline bool segmentsOverlap(float a_left, float a_right, float b_left, float b_right)
+{
+  static auto swap = [] (float& a, float& b)
     {
       auto t = a;
       a = b;
@@ -43,8 +43,7 @@ bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
   return b_left >= a_left && b_left < a_right;
 }
 
-template<typename T>
-bool overlaps(GenericBox<T> const& a, GenericBox<T> const& b)
+inline bool overlaps(const Rect2f& a, const Rect2f& b)
 {
   assert(a.size.x >= 0);
   assert(a.size.y >= 0);

@@ -35,7 +35,7 @@ struct Matrix2
     other.data = nullptr;
   }
 
-  Matrix2(Size2i size_) : size(size_)
+  Matrix2(Vec2i size_) : size(size_)
   {
     resize(size_);
   }
@@ -45,7 +45,7 @@ struct Matrix2
     delete[] data;
   }
 
-  void resize(Size2i size_)
+  void resize(Vec2i size_)
   {
     delete[] data;
 
@@ -56,7 +56,7 @@ struct Matrix2
       data[i] = T();
   }
 
-  Size2i size = Size2i(0, 0);
+  Vec2i size {};
 
   T & get(int x, int y)
   {

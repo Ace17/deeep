@@ -55,9 +55,9 @@ vector<int> decompressTiles(string data)
 }
 
 static
-Size2i getSize(json::Value const& obj)
+Vec2i getSize(json::Value const& obj)
 {
-  return Size2i(obj["width"], obj["height"]);
+  return Vec2i(obj["width"], obj["height"]);
 }
 
 static
@@ -135,12 +135,12 @@ Matrix2<int> parseTileLayer(json::Value& json)
   return tiles;
 }
 
-extern const Size2i CELL_SIZE { 16, 16 };
+extern const Vec2i CELL_SIZE { 16, 16 };
 
 static
 void generateConcreteRoom(Room& room)
 {
-  const Size2i rect { room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y };
+  const Vec2i rect { room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y };
   room.tiles.resize(rect);
 
   for(int x = 0; x < rect.x; ++x)
@@ -257,7 +257,7 @@ static void removeVersion(string& data)
   data.erase(i, j - i + 1);
 }
 
-static Size2i operator * (Size2i a, Size2i b)
+static Vec2i operator * (Vec2i a, Vec2i b)
 {
   return { a.x * b.x, a.y * b.y };
 }
@@ -332,7 +332,7 @@ Quest loadTiledWorld(string path) // tiled JSON ".world" format
   return r;
 }
 
-Matrix2<int> parseMatrix(Size2i size, String s)
+Matrix2<int> parseMatrix(Vec2i size, String s)
 {
   auto parseInteger = [&] () -> int
     {

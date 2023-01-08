@@ -128,11 +128,11 @@ unittest("Physics: left move, blocked by a bigger body")
 {
   Fixture fix;
   fix.mover.pos = Vec2f(100, 10);
-  fix.mover.size = Size2f(1, 1);
+  fix.mover.size = Vec2f(1, 1);
 
   Body blocker;
   blocker.pos = Vec2f(200, 5);
-  blocker.size = Size2f(10, 10);
+  blocker.size = Vec2f(10, 10);
   blocker.solid = true;
   fix.physics->addBody(&blocker);
 
@@ -146,11 +146,11 @@ unittest("Physics: left move, blocked by a smaller body")
 {
   Fixture fix;
   fix.mover.pos = Vec2f(100, 10);
-  fix.mover.size = Size2f(3, 3);
+  fix.mover.size = Vec2f(3, 3);
 
   Body blocker;
   blocker.pos = Vec2f(200, 11);
-  blocker.size = Size2f(1, 1);
+  blocker.size = Vec2f(1, 1);
   blocker.solid = true;
   fix.physics->addBody(&blocker);
 
