@@ -66,26 +66,26 @@ struct PausedState : Scene
 
       const auto origin = room.pos - m_scroll;
 
-      if(room.size.width == 1 && room.size.height == 1)
+      if(room.size.x == 1 && room.size.y == 1)
       {
         auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
         cell.action = 1;
-        cell.scale.width = cellSize;
-        cell.scale.height = cellSize;
+        cell.scale.x = cellSize;
+        cell.scale.y = cellSize;
         cell.pos.x = cellSize * origin.x;
         cell.pos.y = cellSize * origin.y;
         cell.screenRefFrame = true;
         cell.zOrder = 11;
         view->sendActor(cell);
       }
-      else if(room.size.height == 1) // horizontal corridor
+      else if(room.size.y == 1) // horizontal corridor
       {
-        for(int i = 0; i < room.size.width; ++i)
+        for(int i = 0; i < room.size.x; ++i)
         {
           auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
-          cell.action = i == 0 ? 10 : (i == room.size.width - 1 ? 11 : 13);
-          cell.scale.width = cellSize;
-          cell.scale.height = cellSize;
+          cell.action = i == 0 ? 10 : (i == room.size.x - 1 ? 11 : 13);
+          cell.scale.x = cellSize;
+          cell.scale.y = cellSize;
           cell.pos.x = cellSize * (origin.x + i);
           cell.pos.y = cellSize * origin.y;
           cell.screenRefFrame = true;
@@ -93,14 +93,14 @@ struct PausedState : Scene
           view->sendActor(cell);
         }
       }
-      else if(room.size.width == 1) // vertical corridor
+      else if(room.size.x == 1) // vertical corridor
       {
-        for(int i = 0; i < room.size.height; ++i)
+        for(int i = 0; i < room.size.y; ++i)
         {
           auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
-          cell.action = i == 0 ? 15 : (i == room.size.height - 1 ? 14 : 12);
-          cell.scale.width = cellSize;
-          cell.scale.height = cellSize;
+          cell.action = i == 0 ? 15 : (i == room.size.y - 1 ? 14 : 12);
+          cell.scale.x = cellSize;
+          cell.scale.y = cellSize;
           cell.pos.x = cellSize * origin.x;
           cell.pos.y = cellSize * (origin.y + i);
           cell.screenRefFrame = true;
@@ -110,8 +110,8 @@ struct PausedState : Scene
       }
       else
       {
-        for(int x = 0; x < room.size.width; ++x)
-          for(int y = 0; y < room.size.height; ++y)
+        for(int x = 0; x < room.size.x; ++x)
+          for(int y = 0; y < room.size.y; ++y)
           {
             auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
 
@@ -119,16 +119,16 @@ struct PausedState : Scene
             {
               if(y == 0)
                 cell.action = 4;
-              else if(y == room.size.height - 1)
+              else if(y == room.size.y - 1)
                 cell.action = 2;
               else
                 cell.action = 6;
             }
-            else if(x == room.size.width - 1)
+            else if(x == room.size.x - 1)
             {
               if(y == 0)
                 cell.action = 5;
-              else if(y == room.size.height - 1)
+              else if(y == room.size.y - 1)
                 cell.action = 3;
               else
                 cell.action = 8;
@@ -137,13 +137,13 @@ struct PausedState : Scene
             {
               cell.action = 7;
             }
-            else if(y == room.size.height - 1)
+            else if(y == room.size.y - 1)
             {
               cell.action = 9;
             }
 
-            cell.scale.width = cellSize;
-            cell.scale.height = cellSize;
+            cell.scale.x = cellSize;
+            cell.scale.y = cellSize;
             cell.pos.x = cellSize * (x + origin.x);
             cell.pos.y = cellSize * (y + origin.y);
             cell.screenRefFrame = true;
@@ -157,8 +157,8 @@ struct PausedState : Scene
       auto& currRoom = quest->rooms[m_roomIdx];
       auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
       cell.action = 17;
-      cell.scale.width = cellSize * currRoom.size.width;
-      cell.scale.height = cellSize * currRoom.size.height;
+      cell.scale.x = cellSize * currRoom.size.x;
+      cell.scale.y = cellSize * currRoom.size.y;
       cell.pos.x = cellSize * (currRoom.pos.x - m_scroll.x);
       cell.pos.y = cellSize * (currRoom.pos.y - m_scroll.y);
       cell.screenRefFrame = true;

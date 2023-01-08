@@ -189,7 +189,7 @@ unittest("Entity: hero stands on ground, then walks")
   player->tick();
 
   assertEquals((int)ACTION_WALK, (int)getActor(player).action);
-  assert(getActor(player).scale.width > 0);
+  assert(getActor(player).scale.x > 0);
 
   {
     Control cmd {};
@@ -200,6 +200,6 @@ unittest("Entity: hero stands on ground, then walks")
   player->tick();
 
   assertEquals((int)ACTION_WALK, (int)getActor(player).action);
-  assert(getActor(player).scale.width < 0);
+  assert(getActor(player).scale.x < 0);
 }
 

@@ -36,7 +36,7 @@ struct Wheel : Entity, Damageable
     auto r = Actor { pos, MDL_WHEEL };
 
     r.scale = Size(3, 3);
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.3);
+    r.pos += Vector(-(r.scale.x - size.x) * 0.5, -0.3);
 
     if(blinking)
       r.effect = Effect::Blinking;
@@ -45,7 +45,7 @@ struct Wheel : Entity, Damageable
     r.ratio = (time % 20) / 20.0f;
 
     if(dir > 0)
-      r.scale.width = -r.scale.width;
+      r.scale.x = -r.scale.x;
 
     actors.push_back(r);
   }

@@ -46,15 +46,15 @@ bool segmentsOverlap(T a_left, T a_right, T b_left, T b_right)
 template<typename T>
 bool overlaps(GenericBox<T> const& a, GenericBox<T> const& b)
 {
-  assert(a.size.width >= 0);
-  assert(a.size.height >= 0);
-  assert(b.size.width >= 0);
-  assert(b.size.height >= 0);
+  assert(a.size.x >= 0);
+  assert(a.size.y >= 0);
+  assert(b.size.x >= 0);
+  assert(b.size.y >= 0);
 
-  if(!segmentsOverlap(a.pos.x, a.pos.x + a.size.width, b.pos.x, b.pos.x + b.size.width))
+  if(!segmentsOverlap(a.pos.x, a.pos.x + a.size.x, b.pos.x, b.pos.x + b.size.x))
     return false;
 
-  if(!segmentsOverlap(a.pos.y, a.pos.y + a.size.height, b.pos.y, b.pos.y + b.size.height))
+  if(!segmentsOverlap(a.pos.y, a.pos.y + a.size.y, b.pos.y, b.pos.y + b.size.y))
     return false;
 
   return true;

@@ -406,9 +406,9 @@ public:
     }
 
     const float left = frect.pos.x;
-    const float right = frect.pos.x + frect.size.width;
+    const float right = frect.pos.x + frect.size.x;
     const float top = frect.pos.y;
-    const float bottom = frect.pos.y + frect.size.height;
+    const float bottom = frect.pos.y + frect.size.y;
 
     const int id = (int)m_tiles.size();
     m_tiles.push_back({ m_textures[sPath].get(), { { left, top }, { right, bottom } } });

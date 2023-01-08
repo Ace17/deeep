@@ -40,7 +40,7 @@ struct Explosion : Entity
 
     r.ratio = time / (float)DURATION;
     r.scale = Size(3, 3);
-    r.pos += Vector(-r.scale.width * 0.5, -r.scale.height * 0.5);
+    r.pos += Vector(-r.scale.x * 0.5, -r.scale.y * 0.5);
 
     actors.push_back(r);
   }

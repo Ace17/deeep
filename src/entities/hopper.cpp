@@ -38,7 +38,7 @@ struct Hopper : Entity, Damageable
     auto r = Actor { pos, MDL_HOPPER };
 
     r.scale = size;
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
+    r.pos += Vector(-(r.scale.x - size.x) * 0.5, 0);
 
     if(blinking)
       r.effect = Effect::Blinking;
@@ -47,7 +47,7 @@ struct Hopper : Entity, Damageable
     r.ratio = (time % 80) / 80.0f;
 
     if(dir > 0)
-      r.scale.width = -r.scale.width;
+      r.scale.x = -r.scale.x;
 
     actors.push_back(r);
   }

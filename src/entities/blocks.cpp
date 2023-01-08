@@ -139,7 +139,7 @@ struct CrumbleBlock : Entity
     if(openingTimer)
       return;
 
-    if(other->pos.y > pos.y + size.height * 0.9)
+    if(other->pos.y > pos.y + size.y * 0.9)
     {
       openingTimer = OPEN_DURATION;
 

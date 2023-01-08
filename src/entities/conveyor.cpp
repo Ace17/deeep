@@ -29,7 +29,7 @@ struct Conveyor : Entity
     auto r = Actor { pos, MDL_RECT };
     r.action = 2;
     r.scale = size;
-    r.scale.width *= -1;
+    r.scale.x *= -1;
     actors.push_back(r);
   }
 

@@ -221,8 +221,8 @@ struct InGameScene : Scene, private IGame
 
     // prevent camera from going outside the level
     auto const margin = Vec2f(8, 8);
-    cameraPos.x = ::clamp(cameraPos.x, margin.x, m_currRoom->size.width * CELL_SIZE.width - margin.x);
-    cameraPos.y = ::clamp(cameraPos.y, margin.y, m_currRoom->size.height * CELL_SIZE.height - margin.y);
+    cameraPos.x = ::clamp(cameraPos.x, margin.x, m_currRoom->size.x * CELL_SIZE.x - margin.x);
+    cameraPos.y = ::clamp(cameraPos.y, margin.y, m_currRoom->size.y * CELL_SIZE.y - margin.y);
 
     m_view->setCameraPos(cameraPos);
   }

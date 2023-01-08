@@ -19,29 +19,29 @@ struct GenericSize
 {
   typedef GenericSize<T> MyType;
 
-  GenericSize() : width(0), height(0)
+  GenericSize() : x(0), y(0)
   {
   }
 
-  GenericSize(T w, T h) : width(w), height(h)
+  GenericSize(T w, T h) : x(w), y(h)
   {
   }
 
   template<typename F>
   friend MyType operator * (MyType const& a, F val)
   {
-    return MyType(a.width * val, a.height * val);
+    return MyType(a.x * val, a.y * val);
   }
 
   template<typename F>
   friend MyType operator / (MyType const& a, F val)
   {
-    return MyType(a.width / val, a.height / val);
+    return MyType(a.x / val, a.y / val);
   }
 
   bool operator == (GenericSize const& other) const
   {
-    return width == other.width && height == other.height;
+    return x == other.x && y == other.y;
   }
 
   bool operator != (GenericSize const& other) const
@@ -49,7 +49,7 @@ struct GenericSize
     return !(*this == other);
   }
 
-  T width, height;
+  T x, y;
 };
 
 using Size2f = GenericSize<float>;
@@ -66,7 +66,7 @@ struct GenericVector
 
   GenericVector() : x(0), y(0) {}
   GenericVector(T x_, T y_) : x(x_), y(y_) {}
-  GenericVector(GenericSize<T> size) : x(size.width), y(size.height) {}
+  GenericVector(GenericSize<T> size) : x(size.x), y(size.y) {}
 
   MyType operator += (MyType const& other)
   {

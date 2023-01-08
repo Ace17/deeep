@@ -37,8 +37,8 @@ Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, in
     Rect2f rect;
     rect.pos.x = col / float(COLS);
     rect.pos.y = row / float(ROWS);
-    rect.size.width = 1.0 / float(COLS);
-    rect.size.height = 1.0 / float(ROWS);
+    rect.size.x = 1.0 / float(COLS);
+    rect.size.y = 1.0 / float(ROWS);
     addTexture(r, sheetPath, rect);
   }
 
@@ -72,8 +72,8 @@ Model loadAnimatedModel(String jsonPath)
         Rect2f rect;
         rect.pos.x = col / float(cols);
         rect.pos.y = row / float(rows);
-        rect.size.width = 1.0 / float(cols);
-        rect.size.height = 1.0 / float(rows);
+        rect.size.x = 1.0 / float(cols);
+        rect.size.y = 1.0 / float(rows);
 
         addTexture(action, sheet, rect);
         r.actions.push_back(action);

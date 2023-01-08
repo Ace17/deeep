@@ -18,30 +18,30 @@ void addRandomWidgets(Matrix2<int>& tiles)
 {
   auto rect = [&] (Vec2i pos, Size2i size, int tile)
     {
-      for(int dy = 0; dy < size.height; ++dy)
-        for(int dx = 0; dx < size.width; ++dx)
+      for(int dy = 0; dy < size.y; ++dy)
+        for(int dx = 0; dx < size.x; ++dx)
           tiles.set(dx + pos.x, dy + pos.y, tile);
     };
 
   auto isFull = [&] (Vec2i pos, Size2i size)
     {
-      for(int dy = 0; dy < size.height; ++dy)
-        for(int dx = 0; dx < size.width; ++dx)
+      for(int dy = 0; dy < size.y; ++dy)
+        for(int dx = 0; dx < size.x; ++dx)
           if(tiles.get(dx + pos.x, dy + pos.y) == 0)
             return false;
 
       return true;
     };
 
-  auto const maxX = tiles.size.width - 4;
-  auto const maxY = tiles.size.height - 4;
+  auto const maxX = tiles.size.x - 4;
+  auto const maxY = tiles.size.y - 4;
 
   for(int i = 0; i < (maxX * maxY) / 100; ++i)
   {
     auto pos = Vec2i(rand() % maxX + 1, rand() % maxY + 1);
     auto size = Size2i(2, 2);
 
-    if(isFull(pos + Vec2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
+    if(isFull(pos + Vec2i(-1, -1), Size2i(size.x + 2, size.y + 2)))
       rect(pos, size, 3);
   }
 }
@@ -52,13 +52,13 @@ bool isInsideRoom(Vec2i pos, Room const& room)
   if(pos.x < room.pos.x)
     return false;
 
-  if(pos.x >= room.pos.x + room.size.width)
+  if(pos.x >= room.pos.x + room.size.x)
     return false;
 
   if(pos.y < room.pos.y)
     return false;
 
-  if(pos.y >= room.pos.y + room.size.height)
+  if(pos.y >= room.pos.y + room.size.y)
     return false;
 
   return true;
@@ -80,12 +80,12 @@ extern const Size2i CELL_SIZE;
 static
 Vector toTilePosition(Vec2i v)
 {
-  return Vector(v.x * CELL_SIZE.width, v.y * CELL_SIZE.height);
+  return Vector(v.x * CELL_SIZE.x, v.y * CELL_SIZE.y);
 }
 
 static Vec2i operator * (Vec2i a, Size2i b)
 {
-  return { a.x * b.width, a.y * b.height };
+  return { a.x * b.x, a.y * b.y };
 }
 
 static
@@ -117,7 +117,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
     };
 
   // left
-  for(int row = 0; row < room.size.height; ++row)
+  for(int row = 0; row < room.size.y; ++row)
   {
     auto const delta = Vec2i(-1, row);
     auto const margin = Vec2i(-1, 0);
@@ -125,15 +125,15 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   }
 
   // right
-  for(int row = 0; row < room.size.height; ++row)
+  for(int row = 0; row < room.size.y; ++row)
   {
-    auto const delta = Vec2i(room.size.width, row);
+    auto const delta = Vec2i(room.size.x, row);
     auto const margin = Vec2i(1, 0);
     tryToConnectRoom(delta, margin);
   }
 
   // bottom
-  for(int col = 0; col < room.size.width; ++col)
+  for(int col = 0; col < room.size.x; ++col)
   {
     auto const delta = Vec2i(col, -1);
     auto const margin = Vec2i(0, -2);
@@ -141,9 +141,9 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   }
 
   // top
-  for(int col = 0; col < room.size.width; ++col)
+  for(int col = 0; col < room.size.x; ++col)
   {
-    auto const delta = Vec2i(col, room.size.height);
+    auto const delta = Vec2i(col, room.size.y);
     auto const margin = Vec2i(0, 2);
     tryToConnectRoom(delta, margin);
   }
@@ -158,13 +158,13 @@ Matrix2<int> applySmartTiling(Matrix2<int> const& tiles)
   Matrix2<int> r;
   r.resize(tiles.size);
 
-  for(int row = 0; row < r.size.height; ++row)
-    for(int col = 0; col < r.size.width; ++col)
+  for(int row = 0; row < r.size.y; ++row)
+    for(int col = 0; col < r.size.x; ++col)
       r.set(col, row, -1);
 
-  for(int row = 0; row < tiles.size.height; ++row)
+  for(int row = 0; row < tiles.size.y; ++row)
   {
-    for(int col = 0; col < tiles.size.width; ++col)
+    for(int col = 0; col < tiles.size.x; ++col)
     {
       if(tiles.get(col, row) == 0)
         continue;

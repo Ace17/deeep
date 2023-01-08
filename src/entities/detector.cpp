@@ -25,8 +25,8 @@ struct RoomBoundaryDetector : Entity
   {
     targetLevel = cfg->getInt("target_level");
     transform = Vector(cfg->getInt("transform_x"), cfg->getInt("transform_y"));
-    size.width = CELL_SIZE.width;
-    size.height = CELL_SIZE.height;
+    size.x = CELL_SIZE.x;
+    size.y = CELL_SIZE.y;
     solid = false;
     collisionGroup = 0;
     collidesWith = CG_PLAYER | CG_SOLIDPLAYER;
@@ -58,8 +58,8 @@ struct RoomBoundaryBlocker : Entity
 {
   RoomBoundaryBlocker(const IEntityConfig*)
   {
-    size.width = CELL_SIZE.width;
-    size.height = CELL_SIZE.height;
+    size.x = CELL_SIZE.x;
+    size.y = CELL_SIZE.y;
     solid = true;
     collisionGroup = CG_WALLS;
     collidesWith = -1;

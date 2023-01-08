@@ -83,7 +83,7 @@ struct Spider : Entity, Damageable
     r.ratio = (time % 20) / 20.0f;
 
     if(dir > 0)
-      r.scale.width = -r.scale.width;
+      r.scale.x = -r.scale.x;
 
     actors.push_back(r);
   }

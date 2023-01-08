@@ -38,7 +38,7 @@ struct Sweeper : Entity, Damageable
     auto r = Actor { pos, MDL_SWEEPER };
 
     r.scale = size;
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, 0);
+    r.pos += Vector(-(r.scale.x - size.x) * 0.5, 0);
 
     if(blinking)
       r.effect = Effect::Blinking;

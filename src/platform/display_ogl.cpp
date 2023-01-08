@@ -169,7 +169,7 @@ struct OpenGlTexture : ITexture
   void upload(PictureView pic) override
   {
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.width, pic.dim.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pic.pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.x, pic.dim.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pic.pixels);
     SAFE_GL(glGenerateMipmap(GL_TEXTURE_2D));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -207,7 +207,7 @@ struct OpenGlFrameBuffer : IFrameBuffer
       auto depthTexture = std::make_unique<OpenGlTexture>();
 
       SAFE_GL(glBindTexture(GL_TEXTURE_2D, depthTexture->texture));
-      SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, resolution.width, resolution.height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL));
+      SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, resolution.x, resolution.y, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL));
       SAFE_GL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthTexture->texture, 0));
 
       this->depthTexture = std::move(depthTexture);
@@ -218,7 +218,7 @@ struct OpenGlFrameBuffer : IFrameBuffer
       auto colorTexture = std::make_unique<OpenGlTexture>();
 
       SAFE_GL(glBindTexture(GL_TEXTURE_2D, colorTexture->texture));
-      SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, resolution.width, resolution.height, 0, GL_RGBA, GL_FLOAT, nullptr));
+      SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, resolution.x, resolution.y, 0, GL_RGBA, GL_FLOAT, nullptr));
       SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
       SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
       SAFE_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -290,7 +290,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     m_window = SDL_CreateWindow(
       "",
       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-      resolution.width, resolution.height,
+      resolution.x, resolution.y,
       SDL_WINDOW_OPENGL
       );
 
@@ -330,7 +330,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     updateScreenSize();
 
-    printf("[display] init OK ( %dx%d )\n", m_screenSize.width, m_screenSize.height);
+    printf("[display] init OK ( %dx%d )\n", m_screenSize.x, m_screenSize.y);
   }
 
   ~OpenGlGraphicsBackend()
@@ -470,23 +470,23 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     {
       float cx, cy;
 
-      if(AspectRatio > float(m_screenSize.width) / m_screenSize.height)
+      if(AspectRatio > float(m_screenSize.x) / m_screenSize.y)
       {
-        cx = m_screenSize.width;
+        cx = m_screenSize.x;
         cy = cx / AspectRatio;
       }
       else
       {
-        cy = m_screenSize.height;
+        cy = m_screenSize.y;
         cx = cy * AspectRatio;
       }
 
-      SAFE_GL(glViewport((m_screenSize.width - cx) / 2, (m_screenSize.height - cy) / 2, cx, cy));
+      SAFE_GL(glViewport((m_screenSize.x - cx) / 2, (m_screenSize.y - cy) / 2, cx, cy));
       SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     }
     else
     {
-      SAFE_GL(glViewport(0, 0, fb->resolution.width, fb->resolution.height));
+      SAFE_GL(glViewport(0, 0, fb->resolution.x, fb->resolution.y));
       SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, fb->framebuffer));
     }
   }
@@ -522,7 +522,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   void updateScreenSize()
   {
     Size2i screenSize {};
-    SDL_GL_GetDrawableSize(m_window, &screenSize.width, &screenSize.height);
+    SDL_GL_GetDrawableSize(m_window, &screenSize.x, &screenSize.y);
 
     if(screenSize != m_screenSize)
     {

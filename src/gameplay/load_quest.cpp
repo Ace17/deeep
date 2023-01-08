@@ -80,12 +80,12 @@ Rect2i transformTiledRect(Rect2i rect, int areaHeight)
   // convert them back to logical units (i.e tile units)
   rect.pos.x /= TiledPixelsPerTile;
   rect.pos.y /= TiledPixelsPerTile;
-  rect.size.width /= TiledPixelsPerTile;
-  rect.size.height /= TiledPixelsPerTile;
+  rect.size.x /= TiledPixelsPerTile;
+  rect.size.y /= TiledPixelsPerTile;
 
   // tiled uses a downwards pointing Y axis.
   // reverse it so it points upwards.
-  rect.pos.y = areaHeight - rect.pos.y - rect.size.height;
+  rect.pos.y = areaHeight - rect.pos.y - rect.size.y;
 
   return rect;
 }
@@ -113,18 +113,18 @@ Matrix2<int> parseTileLayer(json::Value& json)
   auto const buff = decompressTiles(data);
   auto const size = getSize(json);
 
-  if(size.width * size.height != (int)buff.size())
+  if(size.x * size.y != (int)buff.size())
     throw Error("invalid TMX file: width x height doesn't match data length");
 
   tiles.resize(size);
 
-  for(auto pos : rasterScan(size.width, size.height))
+  for(auto pos : rasterScan(size.x, size.y))
   {
     auto const x = pos.first;
     auto const y = pos.second;
     tiles.set(x, y, 0);
 
-    int srcOffset = (x + (size.height - 1 - y) * size.width);
+    int srcOffset = (x + (size.y - 1 - y) * size.x);
     int tile = buff[srcOffset];
 
     assert(tile >= 0);
@@ -140,27 +140,27 @@ extern const Size2i CELL_SIZE { 16, 16 };
 static
 void generateConcreteRoom(Room& room)
 {
-  const Size2i rect { room.size.width * CELL_SIZE.width, room.size.height * CELL_SIZE.height };
+  const Size2i rect { room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y };
   room.tiles.resize(rect);
 
-  for(int x = 0; x < rect.width; ++x)
+  for(int x = 0; x < rect.x; ++x)
   {
     // ground
     room.tiles.set(x, 0, 1);
 
     // ceiling
     for(int i = 0; i < 6; ++i)
-      room.tiles.set(x, rect.height - 1 - i, 1);
+      room.tiles.set(x, rect.y - 1 - i, 1);
   }
 
-  for(int y = 0; y < min(3, rect.height - 1); ++y)
+  for(int y = 0; y < min(3, rect.y - 1); ++y)
   {
     room.tiles.set(0, y, 1);
-    room.tiles.set(rect.width - 1, y, 1);
+    room.tiles.set(rect.x - 1, y, 1);
   }
 
-  for(int y = 0; y < rect.height; ++y)
-    for(int x = 0; x < rect.width; ++x)
+  for(int y = 0; y < rect.y; ++y)
+    for(int x = 0; x < rect.x; ++x)
     {
       auto const c = x / 16;
       auto const col = x % 16;
@@ -175,7 +175,7 @@ void generateConcreteRoom(Room& room)
       if(row == 1 && (col < 4 || col >= 12))
         room.tiles.set(x, y, 1);
 
-      if(x == 0 || x == rect.width - 1)
+      if(x == 0 || x == rect.x - 1)
         if(row < 3 || row >= 6)
           room.tiles.set(x, y, 1);
     }
@@ -218,10 +218,10 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
   room.tiles = parseTileLayer(layers["tiles"]);
 
   if(exists(layers, "things"))
-    room.spawners = parseThingLayer(layers["things"], room.size.height * CELL_SIZE.height);
+    room.spawners = parseThingLayer(layers["things"], room.size.y * CELL_SIZE.y);
 
   // add spikes and ladders
-  for(auto pos : rasterScan(room.tiles.size.width, room.tiles.size.height))
+  for(auto pos : rasterScan(room.tiles.size.x, room.tiles.size.y))
   {
     auto const x = pos.first;
     auto const y = pos.second;
@@ -259,19 +259,19 @@ static void removeVersion(string& data)
 
 static Size2i operator * (Size2i a, Size2i b)
 {
-  return { a.width * b.width, a.height * b.height };
+  return { a.x * b.x, a.y * b.y };
 }
 
 static
 Room loadAbstractRoom(json::Value const& jsonRoom)
 {
-  const int WorldMaxHeight = CELL_SIZE.height * 50;
+  const int WorldMaxHeight = CELL_SIZE.y * 50;
   auto box = getRect(jsonRoom);
   box = transformTiledRect(box, WorldMaxHeight);
-  box.pos.x /= CELL_SIZE.width;
-  box.pos.y /= CELL_SIZE.height;
-  box.size.width /= CELL_SIZE.width;
-  box.size.height /= CELL_SIZE.height;
+  box.pos.x /= CELL_SIZE.x;
+  box.pos.y /= CELL_SIZE.y;
+  box.size.x /= CELL_SIZE.x;
+  box.size.y /= CELL_SIZE.y;
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
@@ -282,7 +282,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   room.name = string(base.data, base.len);
   room.pos = box.pos;
   room.size = box.size;
-  room.start = Vec2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
+  room.start = Vec2i(sizeInTiles.x / 2, sizeInTiles.y / 4);
   room.theme = 3;// atoi(string(jsonRoom["type"]).c_str());
 
   if(File::exists(path))
@@ -307,8 +307,8 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
     s.len = sprintf(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
                     room.pos.x, room.pos.y,
                     path.c_str(), room.theme,
-                    room.size.width * CELL_SIZE.width, room.size.height * CELL_SIZE.height,
-                    actualSize.width, actualSize.height);
+                    room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y,
+                    actualSize.x, actualSize.y);
     throw Error(s);
   }
 
@@ -364,9 +364,9 @@ Matrix2<int> parseMatrix(Size2i size, String s)
 
   Matrix2<int> r(size);
 
-  for(int row = 0; row < r.size.height; ++row)
+  for(int row = 0; row < r.size.y; ++row)
   {
-    for(int col = 0; col < r.size.width; ++col)
+    for(int col = 0; col < r.size.x; ++col)
     {
       r.set(col, row, parseInteger());
     }
@@ -397,8 +397,8 @@ Quest loadQuest(string path)
     room.pos.y = int(jsonRoom["y"]);
     room.start.x = int(jsonRoom["start_x"]);
     room.start.y = int(jsonRoom["start_y"]);
-    room.size.width = int(jsonRoom["width"]);
-    room.size.height = int(jsonRoom["height"]);
+    room.size.x = int(jsonRoom["width"]);
+    room.size.y = int(jsonRoom["height"]);
     room.tiles = parseMatrix(room.size * CELL_SIZE, std::string(jsonRoom["tiles"]));
     room.tilesForDisplay = parseMatrix(room.size * CELL_SIZE, std::string(jsonRoom["tilesForDisplay"]));
 

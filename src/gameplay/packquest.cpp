@@ -33,9 +33,9 @@ std::string serializeMatrix(Matrix2<int> const& m)
 {
   std::string r;
 
-  for(int row = 0; row < m.size.height; ++row)
+  for(int row = 0; row < m.size.y; ++row)
   {
-    for(int col = 0; col < m.size.width; ++col)
+    for(int col = 0; col < m.size.x; ++col)
     {
       char buffer[256];
       snprintf(buffer, sizeof buffer, "%d, ", m.get(col, row));
@@ -71,8 +71,8 @@ void dumpQuest(Quest const& q, const char* filename)
     fprintf(fp, "           \"y\":%d,\n", r.pos.y);
     fprintf(fp, "           \"start_x\":%d,\n", r.start.x);
     fprintf(fp, "           \"start_y\":%d,\n", r.start.y);
-    fprintf(fp, "           \"width\":%d,\n", r.size.width);
-    fprintf(fp, "           \"height\":%d,\n", r.size.height);
+    fprintf(fp, "           \"width\":%d,\n", r.size.x);
+    fprintf(fp, "           \"height\":%d,\n", r.size.y);
     fprintf(fp, "           \"name\":\"%s\",\n", r.name.c_str());
     fprintf(fp, "           \"tiles\":\"%s\",\n", serializeMatrix(r.tiles).c_str());
     fprintf(fp, "           \"tilesForDisplay\":\"%s\",\n", serializeMatrix(r.tilesForDisplay).c_str());

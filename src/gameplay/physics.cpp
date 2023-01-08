@@ -67,8 +67,8 @@ struct Physics : IPhysics
     if(!body->pusher)
     {
       auto feet = body->getBox();
-      feet.size.height = 0.1;
-      feet.pos.y = body->getBox().pos.y - feet.size.height;
+      feet.size.y = 0.1;
+      feet.pos.y = body->getBox().pos.y - feet.size.y;
       body->floor = getSolidBodyInBox(feet, body->collidesWith, body);
     }
 
@@ -268,7 +268,7 @@ bool ShapeBox::probe(AffineTransform transform, Box otherBox) const
 
 float ShapeBox::raycast(AffineTransform transform, Box otherBox, Vec2f delta) const
 {
-  auto otherBoxHalfSize = Vec2f(otherBox.size.width, otherBox.size.height) * 0.5;
+  auto otherBoxHalfSize = Vec2f(otherBox.size.x, otherBox.size.y) * 0.5;
   auto obstacleHalfSize = transform.scale * 0.5;
   return ::raycast(otherBox.pos + otherBoxHalfSize,
                    delta,
@@ -280,8 +280,8 @@ bool ShapeTilemap::probe(AffineTransform /* transform */, Box otherBox) const
 {
   auto const x1 = otherBox.pos.x;
   auto const y1 = otherBox.pos.y;
-  auto const x2 = otherBox.pos.x + otherBox.size.width;
-  auto const y2 = otherBox.pos.y + otherBox.size.height;
+  auto const x2 = otherBox.pos.x + otherBox.size.x;
+  auto const y2 = otherBox.pos.y + otherBox.size.y;
 
   auto const col1 = int(floor(x1));
   auto const col2 = int(floor(x2));
@@ -298,7 +298,7 @@ bool ShapeTilemap::probe(AffineTransform /* transform */, Box otherBox) const
 
 float ShapeTilemap::raycast(AffineTransform /* transform */, Box otherBox, Vec2f delta) const
 {
-  const auto boxSize = Vec2f(otherBox.size.width, otherBox.size.height);
+  const auto boxSize = Vec2f(otherBox.size.x, otherBox.size.y);
 
   BoundingBox bb(otherBox.pos);
 

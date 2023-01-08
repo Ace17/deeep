@@ -152,7 +152,7 @@ struct Rockman : Player, Damageable
     r.scale = Size(3, 3);
 
     // re-center
-    r.pos += Vector(-(r.scale.width - size.width) * 0.5, -0.0);
+    r.pos += Vector(-(r.scale.x - size.x) * 0.5, -0.0);
 
     if(ball)
     {
@@ -185,7 +185,7 @@ struct Rockman : Player, Damageable
       {
         r.action = ACTION_CLIMB;
         r.ratio = 1.0f - climbDelay / float(CLIMB_DELAY);
-        r.scale.width *= -1;
+        r.scale.x *= -1;
       }
       else
       {
@@ -229,7 +229,7 @@ struct Rockman : Player, Damageable
     }
 
     if(dir == LEFT)
-      r.scale.width *= -1;
+      r.scale.x *= -1;
 
     if(blinking)
       r.effect = Effect::Blinking;
@@ -437,8 +437,8 @@ struct Rockman : Player, Damageable
       Box box;
       box.pos.x = pos.x;
       box.pos.y = pos.y - 0.1;
-      box.size.width = size.width;
-      box.size.height = 0.1;
+      box.size.x = size.x;
+      box.size.y = 0.1;
       ground = physics->isSolid(this, box);
     }
 
@@ -494,10 +494,10 @@ struct Rockman : Player, Damageable
     auto const front = dir == RIGHT ? 0.7 : -0.7;
 
     Box box;
-    box.pos.x = pos.x + size.width / 2 + front;
+    box.pos.x = pos.x + size.x / 2 + front;
     box.pos.y = pos.y + 0.3;
-    box.size.width = 0.01;
-    box.size.height = 0.9;
+    box.size.x = 0.01;
+    box.size.y = 0.9;
 
     if(physics->isSolid(this, box))
       return true;
@@ -575,7 +575,7 @@ struct Rockman : Player, Damageable
     if(!ladder && control.down && !ball && (upgrades & UPGRADE_BALL))
     {
       ball = true;
-      size = Size(NORMAL_SIZE.width, 0.9);
+      size = Size(NORMAL_SIZE.x, 0.9);
     }
 
     if(control.up && ball)

@@ -33,7 +33,7 @@ struct Elevator : Entity
   void enter() override
   {
     pos.x += 0.001;
-    size.width -= 0.002;
+    size.x -= 0.002;
     initialPos = pos;
   }
 
@@ -52,7 +52,7 @@ struct Elevator : Entity
 
   void onCollide(Body* other)
   {
-    if(other->pos.y > pos.y + size.height / 2)
+    if(other->pos.y > pos.y + size.y / 2)
     {
       if(debounceTrigger == 0)
         trigger();
