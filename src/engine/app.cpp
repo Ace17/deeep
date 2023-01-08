@@ -17,7 +17,6 @@
 #include "base/audio.h"
 #include "base/geom.h"
 #include "base/renderer.h"
-#include "base/resource.h"
 #include "base/scene.h"
 #include "misc/file.h"
 #include "misc/time.h"
