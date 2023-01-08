@@ -6,6 +6,7 @@
 
 // Loader for the quest file and room files.
 // (using the TMX JSON+gzip format)
+#include "base/box.h"
 #include "base/error.h"
 #include "base/geom.h"
 #include "base/util.h"

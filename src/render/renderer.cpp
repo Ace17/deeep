@@ -9,6 +9,7 @@
 #include <vector>
 using namespace std;
 
+#include "base/box.h"
 #include "base/error.h"
 #include "base/geom.h"
 #include "base/my_algorithm.h" // sort

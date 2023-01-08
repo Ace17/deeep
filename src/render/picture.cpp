@@ -1,3 +1,4 @@
+#include "base/box.h"
 #include "base/error.h"
 #include "misc/file.h"
 #include "picture.h"
