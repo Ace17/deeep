@@ -168,7 +168,19 @@ struct Lift : Entity
   Vector finalPos;
   Vector moveDir; // normalized
 };
+
+struct LegacyElevator : Lift
+{
+  LegacyElevator(IEntityConfig* cfg) : Lift(cfg)
+  {
+    unstable = 0;
+    link = 0;
+    delta_x = 0;
+    delta_y = 7;
+  }
+};
 }
 
 DECLARE_ENTITY("lift", Lift);
+DECLARE_ENTITY("elevator", LegacyElevator);
 
