@@ -10,7 +10,6 @@
 
 #include <stdint.h>
 
-#include "box.h"
 #include "geom.h"
 #include "span.h"
 #include "string.h"

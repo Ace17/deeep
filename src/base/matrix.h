@@ -10,7 +10,7 @@
 
 #include <cassert>
 
-#include "box.h"
+#include "geom.h"
 
 template<typename T>
 struct Matrix2
