@@ -18,12 +18,12 @@ using namespace std;
 // A room (i.e a level)
 struct Room
 {
-  Vector2i pos;
+  Vec2i pos;
   Size2i size; // in cells
   int theme = 0;
   Matrix2<int> tiles;
   Matrix2<int> tilesForDisplay;
-  Vector2i start;
+  Vec2i start;
   std::string name;
 
   struct Spawner

@@ -65,7 +65,7 @@ Rect2i getRect(json::Value const& obj)
 {
   Rect2i r;
 
-  r.pos = Vector2i(obj["x"], obj["y"]);
+  r.pos = Vec2i(obj["x"], obj["y"]);
   r.size = getSize(obj);
 
   return r;
@@ -282,7 +282,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   room.name = string(base.data, base.len);
   room.pos = box.pos;
   room.size = box.size;
-  room.start = Vector2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
+  room.start = Vec2i(sizeInTiles.width / 2, sizeInTiles.height / 4);
   room.theme = 3;// atoi(string(jsonRoom["type"]).c_str());
 
   if(File::exists(path))

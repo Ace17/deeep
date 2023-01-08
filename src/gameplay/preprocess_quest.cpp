@@ -16,14 +16,14 @@
 static
 void addRandomWidgets(Matrix2<int>& tiles)
 {
-  auto rect = [&] (Vector2i pos, Size2i size, int tile)
+  auto rect = [&] (Vec2i pos, Size2i size, int tile)
     {
       for(int dy = 0; dy < size.height; ++dy)
         for(int dx = 0; dx < size.width; ++dx)
           tiles.set(dx + pos.x, dy + pos.y, tile);
     };
 
-  auto isFull = [&] (Vector2i pos, Size2i size)
+  auto isFull = [&] (Vec2i pos, Size2i size)
     {
       for(int dy = 0; dy < size.height; ++dy)
         for(int dx = 0; dx < size.width; ++dx)
@@ -38,16 +38,16 @@ void addRandomWidgets(Matrix2<int>& tiles)
 
   for(int i = 0; i < (maxX * maxY) / 100; ++i)
   {
-    auto pos = Vector2i(rand() % maxX + 1, rand() % maxY + 1);
+    auto pos = Vec2i(rand() % maxX + 1, rand() % maxY + 1);
     auto size = Size2i(2, 2);
 
-    if(isFull(pos + Vector2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
+    if(isFull(pos + Vec2i(-1, -1), Size2i(size.width + 2, size.height + 2)))
       rect(pos, size, 3);
   }
 }
 
 static
-bool isInsideRoom(Vector2i pos, Room const& room)
+bool isInsideRoom(Vec2i pos, Room const& room)
 {
   if(pos.x < room.pos.x)
     return false;
@@ -64,7 +64,7 @@ bool isInsideRoom(Vector2i pos, Room const& room)
   return true;
 }
 
-int getRoomAt(vector<Room> const& quest, Vector2i absPos)
+int getRoomAt(vector<Room> const& quest, Vec2i absPos)
 {
   for(int i = 0; i < (int)quest.size(); ++i)
   {
@@ -78,12 +78,12 @@ int getRoomAt(vector<Room> const& quest, Vector2i absPos)
 extern const Size2i CELL_SIZE;
 
 static
-Vector toTilePosition(Vector2i v)
+Vector toTilePosition(Vec2i v)
 {
   return Vector(v.x * CELL_SIZE.width, v.y * CELL_SIZE.height);
 }
 
-static Vector2i operator * (Vector2i a, Size2i b)
+static Vec2i operator * (Vec2i a, Size2i b)
 {
   return { a.x * b.width, a.y * b.height };
 }
@@ -91,7 +91,7 @@ static Vector2i operator * (Vector2i a, Size2i b)
 static
 void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 {
-  auto tryToConnectRoom = [&] (Vector2i delta, Vector2i margin)
+  auto tryToConnectRoom = [&] (Vec2i delta, Vec2i margin)
     {
       auto const neighboorPos = room.pos + delta;
       auto const neighboorIdx = getRoomAt(quest, neighboorPos);
@@ -119,32 +119,32 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   // left
   for(int row = 0; row < room.size.height; ++row)
   {
-    auto const delta = Vector2i(-1, row);
-    auto const margin = Vector2i(-1, 0);
+    auto const delta = Vec2i(-1, row);
+    auto const margin = Vec2i(-1, 0);
     tryToConnectRoom(delta, margin);
   }
 
   // right
   for(int row = 0; row < room.size.height; ++row)
   {
-    auto const delta = Vector2i(room.size.width, row);
-    auto const margin = Vector2i(1, 0);
+    auto const delta = Vec2i(room.size.width, row);
+    auto const margin = Vec2i(1, 0);
     tryToConnectRoom(delta, margin);
   }
 
   // bottom
   for(int col = 0; col < room.size.width; ++col)
   {
-    auto const delta = Vector2i(col, -1);
-    auto const margin = Vector2i(0, -2);
+    auto const delta = Vec2i(col, -1);
+    auto const margin = Vec2i(0, -2);
     tryToConnectRoom(delta, margin);
   }
 
   // top
   for(int col = 0; col < room.size.width; ++col)
   {
-    auto const delta = Vector2i(col, room.size.height);
-    auto const margin = Vector2i(0, 2);
+    auto const delta = Vec2i(col, room.size.height);
+    auto const margin = Vec2i(0, 2);
     tryToConnectRoom(delta, margin);
   }
 }

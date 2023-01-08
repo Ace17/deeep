@@ -186,7 +186,7 @@ private:
   std::unique_ptr<Scene> sub;
   Quest* const quest;
   int const m_roomIdx;
-  Vector2i m_scroll {};
+  Vec2i m_scroll {};
 };
 
 Scene* createPausedState(IPresenter* view, Scene* sub, Quest* quest, int roomIdx)

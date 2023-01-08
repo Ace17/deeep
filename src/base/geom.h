@@ -118,5 +118,5 @@ struct GenericVector
 };
 
 using Vec2f = GenericVector<float>;
-using Vector2i = GenericVector<int>;
+using Vec2i = GenericVector<int>;
 

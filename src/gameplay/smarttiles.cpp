@@ -22,20 +22,20 @@ typedef Matrix2<int> TileMap;
 // | 6 . 2 |
 // | 7 0 1 |
 // ._______.
-static const Vector2i dirs[] =
+static const Vec2i dirs[] =
 {
-  Vector2i(0, -1),
-  Vector2i(+1, -1),
-  Vector2i(+1, 0),
-  Vector2i(+1, +1),
-  Vector2i(0, +1),
-  Vector2i(-1, +1),
-  Vector2i(-1, 0),
-  Vector2i(-1, -1),
+  Vec2i(0, -1),
+  Vec2i(+1, -1),
+  Vec2i(+1, 0),
+  Vec2i(+1, +1),
+  Vec2i(0, +1),
+  Vec2i(-1, +1),
+  Vec2i(-1, 0),
+  Vec2i(-1, -1),
 };
 
 static
-bool hasNeighboor(TileMap const& occupancy, Vector2i myPos, Vector2i dir)
+bool hasNeighboor(TileMap const& occupancy, Vec2i myPos, Vec2i dir)
 {
   auto const otherPos = myPos + dir;
 
@@ -53,7 +53,7 @@ int computeNeighboors(TileMap const& occupancy, int x, int y)
 {
   int neighboors = 0;
 
-  auto const c = Vector2i(x, y);
+  auto const c = Vec2i(x, y);
 
   uint32_t mask = 1;
 
