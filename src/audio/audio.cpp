@@ -8,6 +8,7 @@
 
 #include "base/audio.h"
 #include "base/error.h"
+#include "base/logger.h"
 #include "engine/audio_backend.h"
 #include "engine/stats.h"
 #include "misc/file.h" // exists
@@ -16,7 +17,6 @@
 #include <atomic>
 #include <cassert>
 #include <cmath> // sin
-#include <cstdio> // printf
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -124,7 +124,7 @@ struct HighLevelAudio : MixableAudio
     // this would cause an exception, crashing the wasm-version of the program.
     if(!File::exists(path))
     {
-      printf("[audio] sound '%.*s' was not found, fallback on default sound\n", path.len, path.data);
+      logMsg("[audio] sound '%.*s' was not found, fallback on default sound", path.len, path.data);
       return;
     }
 

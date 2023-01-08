@@ -7,6 +7,7 @@
 // SDL audio output
 
 #include "base/error.h"
+#include "base/logger.h"
 #include "base/span.h"
 #include "base/util.h"
 
@@ -44,16 +45,16 @@ struct SdlAudioBackend : IAudioBackend
 
     if(audioDevice == 0)
     {
-      printf("[sdl_audio] %s\n", SDL_GetError());
+      logMsg("[sdl_audio] %s", SDL_GetError());
       throw Error("Can't open audio");
     }
 
-    printf("[sdl_audio] %d Hz %d channels\n",
+    logMsg("[sdl_audio] %d Hz %d channels",
            audiospec.freq,
            audiospec.channels);
 
     SDL_PauseAudioDevice(audioDevice, 0);
-    printf("[sdl_audio] init OK\n");
+    logMsg("[sdl_audio] init OK");
   }
 
   ~SdlAudioBackend()
@@ -62,7 +63,7 @@ struct SdlAudioBackend : IAudioBackend
 
     SDL_CloseAudioDevice(audioDevice);
     SDL_QuitSubSystem(SDL_INIT_AUDIO);
-    printf("[sdl_audio] shutdown OK\n");
+    logMsg("[sdl_audio] shutdown OK");
   }
 
   SDL_AudioDeviceID audioDevice;

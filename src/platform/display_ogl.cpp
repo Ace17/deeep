@@ -8,12 +8,12 @@
 // OpenGL stuff
 
 #include <cassert>
-#include <cstdio>
 #include <memory>
 #include <vector>
 
 #include "base/error.h"
 #include "base/geom.h"
+#include "base/logger.h"
 #include "base/span.h"
 #include "engine/graphics_backend.h"
 #include "engine/stats.h"
@@ -72,7 +72,7 @@ GLuint compileShader(Span<const uint8_t> code, int type)
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &logLength);
     vector<char> msg(logLength);
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
-    fprintf(stderr, "%s\n", msg.data());
+    logMsg("%s", msg.data());
 
     throw Error("Can't compile shader");
   }
@@ -100,7 +100,7 @@ GLuint linkShaders(vector<GLuint> ids)
     glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &logLength);
     vector<char> msg(logLength);
     glGetProgramInfoLog(ProgramID, logLength, nullptr, msg.data());
-    fprintf(stderr, "%s\n", msg.data());
+    logMsg("%s", msg.data());
 
     throw Error("Can't link shader");
   }
@@ -128,11 +128,11 @@ void printOpenGlVersion()
       return s ? (const char*)s : "<null>";
     };
 
-  printf("[display] %s [%s]\n",
+  logMsg("[display] %s [%s]",
          notNull(glGetString(GL_VERSION)),
          notNull(glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
-  printf("[display] GPU: %s [%s]\n",
+  logMsg("[display] GPU: %s [%s]",
          notNull(glGetString(GL_RENDERER)),
          notNull(glGetString(GL_VENDOR)));
 }
@@ -330,7 +330,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     updateScreenSize();
 
-    printf("[display] init OK ( %dx%d )\n", m_screenSize.x, m_screenSize.y);
+    logMsg("[display] init OK ( %dx%d )", m_screenSize.x, m_screenSize.y);
   }
 
   ~OpenGlGraphicsBackend()
@@ -342,7 +342,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     SDL_DestroyWindow(m_window);
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
-    printf("[display] shutdown OK\n");
+    logMsg("[display] shutdown OK");
   }
 
   void setFullscreen(bool fs) override
@@ -393,7 +393,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   std::unique_ptr<IGpuProgram> createGpuProgram(String name_, bool zTest) override
   {
     const std::string name(name_.data, name_.len);
-    printf("[display] loading shader '%s'\n", name.c_str());
+    logMsg("[display] loading shader '%s'", name.c_str());
     auto vsCode = File::read("res/shaders/" + name + ".vert");
     auto fsCode = File::read("res/shaders/" + name + ".frag");
 

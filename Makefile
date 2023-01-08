@@ -45,6 +45,7 @@ SRCS_ENGINE:=\
 	src/engine/stats.cpp\
 	src/audio/audio.cpp\
 	src/audio/sound_ogg.cpp\
+	src/base/logger.cpp\
 	src/misc/base64.cpp\
 	src/misc/decompress.cpp\
 	src/misc/file.cpp\

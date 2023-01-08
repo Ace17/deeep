@@ -1,6 +1,7 @@
 // Game-specific : presentation
 
 #include "base/audio.h"
+#include "base/logger.h"
 #include "base/renderer.h"
 
 #include "presenter.h"
@@ -72,7 +73,7 @@ struct GamePresenter : IPresenter
     m_audio->loadSound(1024, format(buffer, "res/music/music-%02d.ogg", musicName));
 
     m_musicVoice = m_audio->createVoice();
-    printf("playing music #%d on voice %d\n", musicName, m_musicVoice);
+    logMsg("playing music #%d on voice %d", musicName, m_musicVoice);
 
     m_audio->playVoice(m_musicVoice, 1024, true);
     m_currMusicName = musicName;

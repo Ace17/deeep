@@ -12,6 +12,7 @@ using namespace std;
 #include "base/box.h"
 #include "base/error.h"
 #include "base/geom.h"
+#include "base/logger.h"
 #include "base/my_algorithm.h" // sort
 #include "base/renderer.h"
 #include "base/scene.h"
@@ -403,7 +404,7 @@ public:
       m_textures[sPath]->upload(pic);
 
       if(0)
-        printf("[renderer] loaded '%.*s'\n", path.len, path.data);
+        logMsg("[renderer] loaded '%.*s'", path.len, path.data);
     }
 
     const float left = frect.pos.x;

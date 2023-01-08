@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdio>
+#include "base/logger.h"
 
 struct VideoCapture
 {
@@ -17,7 +17,7 @@ struct VideoCapture
       if(m_mustScreenshot)
       {
         File::write("screenshot.rgba", pixels);
-        fprintf(stderr, "Saved screenshot to 'screenshot.rgba'\n");
+        logMsg("Saved screenshot to 'screenshot.rgba'");
 
         m_mustScreenshot = false;
       }
@@ -32,7 +32,7 @@ struct VideoCapture
 
       if(!m_captureFile)
       {
-        fprintf(stderr, "Can't start video capture!\n");
+        logMsg("Can't open capture.rgba for writing.");
         return false;
       }
 
@@ -40,7 +40,7 @@ struct VideoCapture
     }
     else
     {
-      fprintf(stderr, "Stopped video capture\n");
+      logMsg("Stopped video capture.");
       fclose(m_captureFile);
       m_captureFile = nullptr;
       return false;

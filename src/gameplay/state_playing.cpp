@@ -11,6 +11,7 @@
 #include <map>
 
 #include "base/error.h"
+#include "base/logger.h"
 #include "base/scene.h"
 #include "base/util.h"
 
@@ -420,7 +421,7 @@ struct InGameScene : Scene, private IGame
 
   void respawn() override
   {
-    printf("Respawning!\n");
+    logMsg("Respawning!");
     m_level = m_savedLevel;
     m_transform = m_savedPos - m_player->pos + Vector(0, 0.01);
     m_shouldLoadLevel = true;

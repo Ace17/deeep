@@ -7,6 +7,7 @@
 // main FSM: dispatching between various game states
 
 #include "base/audio.h"
+#include "base/logger.h"
 #include "base/renderer.h"
 #include "base/scene.h"
 #include "base/span.h"
@@ -52,7 +53,7 @@ struct RootScene : Scene
     {
       m_scene.release();
       m_scene.reset(next);
-      printf("Entering scene: %s\n", typeid(*next).name());
+      logMsg("Entering scene: %s", typeid(*next).name());
     }
 
     return nullptr;

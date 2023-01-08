@@ -16,6 +16,7 @@
 
 #include "base/audio.h"
 #include "base/geom.h"
+#include "base/logger.h"
 #include "base/renderer.h"
 #include "base/scene.h"
 #include "misc/file.h"
@@ -226,14 +227,14 @@ private:
   {
     if(m_fullscreen)
     {
-      fprintf(stderr, "Can't capture video in fullscreen mode\n");
+      logMsg("Can't capture video in fullscreen mode");
       return;
     }
 
     if(m_recorder.toggleVideoCapture())
     {
       m_fixedDisplayFramePeriod = CAPTURE_FRAME_PERIOD;
-      fprintf(stderr, "Capturing video at %d Hz...\n", 1000 / CAPTURE_FRAME_PERIOD);
+      logMsg("Capturing video at %d Hz...", 1000 / CAPTURE_FRAME_PERIOD);
     }
     else
     {
@@ -245,7 +246,7 @@ private:
   {
     if(m_fixedDisplayFramePeriod)
     {
-      fprintf(stderr, "Can't toggle full-screen during video capture\n");
+      logMsg("Can't toggle full-screen during video capture");
       return;
     }
 

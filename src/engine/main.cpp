@@ -8,7 +8,7 @@
 // This is the only file where emscripten-specific stuff can appear.
 
 #include "base/error.h"
-#include <cstdio>
+#include "base/logger.h"
 
 #include "app.h"
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
   {
     const auto msg = e.message();
     fflush(stdout);
-    fprintf(stderr, "Fatal: %.*s\n", msg.len, msg.data);
+    logMsg("Fatal: %.*s", msg.len, msg.data);
     return 1;
   }
 }

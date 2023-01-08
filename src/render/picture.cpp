@@ -1,5 +1,6 @@
 #include "base/box.h"
 #include "base/error.h"
+#include "base/logger.h"
 #include "misc/file.h"
 #include "picture.h"
 #include "png.h"
@@ -74,8 +75,7 @@ Picture loadPicture(String path, Rect2f frect)
   }
   catch(const Error& e)
   {
-    printf("[display] can't load texture: %.*s\n", e.message().len, e.message().data);
-    printf("[display] falling back on generated texture\n");
+    logMsg("[display] can't load texture '%.*s', falling back on generated one", e.message().len, e.message().data);
 
     Picture r;
     r.dim = Vec2i(32, 32);

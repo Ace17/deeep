@@ -7,6 +7,7 @@
 #include "base/box.h"
 #include "base/error.h"
 #include "base/geom.h"
+#include "base/logger.h"
 #include "base/string.h"
 #include "misc/file.h"
 #include "misc/json.h"
@@ -116,7 +117,7 @@ Model loadModel(String path)
     {
       if(!File::exists(path))
       {
-        printf("[display] model '%.*s' doesn't exist, fallback on default model\n", path.len, path.data);
+        logMsg("[display] model '%.*s' doesn't exist, fallback on default model", path.len, path.data);
         path = "res/sprites/rect.model";
       }
 
@@ -128,7 +129,7 @@ Model loadModel(String path)
 
       if(!File::exists(pngPath))
       {
-        printf("[display] tileset '%s' was not found, fallback on default tileset\n", pngPath.c_str());
+        logMsg("[display] tileset '%s' was not found, fallback on default tileset", pngPath.c_str());
         pngPath = "res/tiles/default.png";
       }
 
