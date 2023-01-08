@@ -1,12 +1,12 @@
-/*
- * Copyright (C) 2021 - Sebastien Alaiwan
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- */
+// Copyright (C) 2023 - Sebastien Alaiwan
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
 
-#include <cmath> // fabs
+// physics engine: movement, collision detection and response.
+
+#include <cmath> // floor
 
 #include "base/util.h"
 #include "body.h"
@@ -14,8 +14,6 @@
 #include "physics.h"
 #include <memory>
 #include <vector>
-
-using namespace std;
 
 static const ShapeBox shapeBox;
 
@@ -211,7 +209,7 @@ float raycast(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstacleHalfSize)
       axis = axis * -1;
 
     const float obstacleExtent =
-      fabs(obstacleHalfSize.x * axis.x) + fabs(obstacleHalfSize.y * axis.y);
+      abs(obstacleHalfSize.x * axis.x) + abs(obstacleHalfSize.y * axis.y);
 
     // compute projections on the axis
     const float startPos = dotProduct(axis, pos);
@@ -226,7 +224,7 @@ float raycast(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstacleHalfSize)
       return 1; // all the axis-projected move is after the obstacle
 
     // don't update 'fraction' if the move is parallel to the separating axis
-    if(fabs(startPos - targetPos) > 0.0001)
+    if(abs(startPos - targetPos) > 0.0001)
     {
       float f = (obstacleMin - 0.001 - startPos) / (targetPos - startPos);
 
