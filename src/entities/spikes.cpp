@@ -28,7 +28,7 @@ struct Spikes : Entity
   virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SPIKES };
-    r.scale = size;
+    r.scale = UnitSize;
     r.ratio = 0;
     actors.push_back(r);
   }
