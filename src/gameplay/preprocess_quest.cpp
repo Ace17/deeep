@@ -101,7 +101,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
       if(neighboorIdx < 0)
       {
         auto pos = toTilePosition(delta);
-        room.spawners.push_back({ pos, "blocker" });
+        room.spawners.push_back({ 0, pos, "blocker" });
         return;
       }
 

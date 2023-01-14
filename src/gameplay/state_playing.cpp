@@ -72,7 +72,7 @@ static
 void spawnEntities(Room const& room, IGame* game, int levelIdx)
 {
   // avoid collisions between static entities from different rooms
-  int id = levelIdx * 1000;
+  const int baseId = levelIdx * 1000;
 
   for(auto& spawner : room.spawners)
   {
@@ -80,11 +80,9 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
     config.values = spawner.config;
 
     auto entity = createEntity(spawner.name, &config);
-    entity->id = id;
+    entity->id = baseId + spawner.id;
     entity->pos = spawner.pos;
     game->spawn(entity.release());
-
-    ++id;
   }
 }
 

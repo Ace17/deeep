@@ -195,6 +195,7 @@ vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height
 
     spawner.pos = Vector(objRect.pos.x, objRect.pos.y);
     spawner.name = (string)obj["name"];
+    spawner.id = obj["id"];
 
     if(obj.has("properties"))
     {
@@ -231,13 +232,13 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
     if(tile == 9)
     {
       auto const pos = Vector(x, y);
-      room.spawners.push_back({ pos, "spikes" });
+      room.spawners.push_back({ 0, pos, "spikes" });
       room.tiles.set(x, y, 0);
     }
     else if(tile == 10)
     {
       auto const pos = Vector(x, y);
-      room.spawners.push_back({ pos, "ladder" });
+      room.spawners.push_back({ 0, pos, "ladder" });
       room.tiles.set(x, y, 0);
     }
   }
@@ -406,6 +407,7 @@ Quest loadQuest(string path)
     for(auto& jsonSpawner : jsonRoom["entities"].elements)
     {
       Room::Spawner s;
+      s.id = int(jsonSpawner["id"]);
       s.name = string(jsonSpawner["type"]);
       s.pos.x = double(int(jsonSpawner["x"])) / PRECISION;
       s.pos.y = double(int(jsonSpawner["y"])) / PRECISION;

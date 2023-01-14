@@ -26,6 +26,7 @@ struct Room
 
   struct Spawner
   {
+    int id;
     Vector pos;
     std::string name;
     std::map<std::string, std::string> config {};
