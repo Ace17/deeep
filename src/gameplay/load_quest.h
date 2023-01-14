@@ -2,5 +2,5 @@
 
 #include "quest.h"
 
-Quest loadQuest(string path);
+Quest loadQuest(std::string path);
 

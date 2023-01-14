@@ -13,8 +13,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 // A room (i.e a level)
 struct Room
 {
@@ -33,12 +31,12 @@ struct Room
     std::map<std::string, std::string> config {};
   };
 
-  vector<Spawner> spawners;
+  std::vector<Spawner> spawners;
 };
 
 // The whole game
 struct Quest
 {
-  vector<Room> rooms;
+  std::vector<Room> rooms;
 };
 

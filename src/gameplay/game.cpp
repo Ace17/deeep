@@ -18,8 +18,6 @@
 
 extern const String GAME_NAME = "Deeep";
 
-using namespace std;
-
 Span<const Resource> getResources();
 IPresenter* createPresenter(IRenderer* renderer, Audio* audio);
 

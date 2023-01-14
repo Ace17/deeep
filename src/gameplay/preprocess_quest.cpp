@@ -13,6 +13,8 @@
 #include "quest.h"
 #include <cstdlib> // rand
 
+using namespace std;
+
 static
 void addRandomWidgets(Matrix2<int>& tiles)
 {

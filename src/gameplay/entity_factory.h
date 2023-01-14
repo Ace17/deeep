@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-using namespace std;
-
 struct Entity;
 
 struct IEntityConfig
@@ -19,9 +17,6 @@ struct IEntityConfig
   virtual int getInt(const char* varName, int defaultValue = 0) = 0;
 };
 
-// e.g:
-// createEntity("spider");
-// createEntity("door(4)");
 std::unique_ptr<Entity> createEntity(string name, IEntityConfig* config);
 
 using CreationFunc = unique_ptr<Entity>(*)(IEntityConfig* args);

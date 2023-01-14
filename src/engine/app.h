@@ -9,13 +9,11 @@
 #include "base/span.h"
 #include <memory>
 
-using namespace std;
-
 struct IApp
 {
   virtual ~IApp() = default;
   virtual bool tick() = 0;
 };
 
-unique_ptr<IApp> createApp(Span<char*> args);
+std::unique_ptr<IApp> createApp(Span<char*> args);
 

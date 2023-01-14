@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-Quest loadTiledWorld(string path);
+Quest loadTiledWorld(std::string path);
 void dumpQuest(Quest const& q, const char* filename);
 
 int main(int argc, const char* argv[])
