@@ -135,12 +135,12 @@ private:
   {
     m_control.debug = m_debugMode;
 
-    auto const t0 = (int)GetSteadyClockMs();
+    auto const t0 = GetSteadyClockMs();
 
     m_scene->tick(m_control);
 
-    auto const t1 = (int)GetSteadyClockMs();
-    Stat("Tick duration", t1 - t0);
+    auto const t1 = GetSteadyClockMs();
+    Stat("Tick duration", int(t1 - t0));
   }
 
   void registerUserInputActions()
