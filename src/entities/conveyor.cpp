@@ -41,7 +41,7 @@ struct Conveyor : Entity
       return;
 
     noRecurse = true;
-    physics->moveBody(other, Vector(-0.004, 0));
+    physics->moveBody(other, Vector(-0.04, 0));
     noRecurse = false;
   }
 
