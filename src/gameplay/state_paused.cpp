@@ -9,6 +9,7 @@
 #include "base/scene.h"
 #include <memory>
 
+#include "minimap_data.h"
 #include "models.h" // MDL_PAUSED
 #include "presenter.h"
 #include "quest.h"
@@ -19,7 +20,7 @@
 
 struct PausedState : Scene
 {
-  PausedState(IPresenter* view_, Scene* sub_, Quest* quest_, int roomIdx) : view(view_), sub(sub_), quest(quest_), m_roomIdx(roomIdx)
+  PausedState(IPresenter* view_, Scene* sub_, const MinimapData& minimapData) : view(view_), sub(sub_), quest(minimapData.quest), m_roomIdx(minimapData.level)
   {
     view->playSound(SND_PAUSE);
 
@@ -184,13 +185,13 @@ private:
   Toggle downButton;
   IPresenter* const view;
   std::unique_ptr<Scene> sub;
-  Quest* const quest;
+  const Quest* const quest;
   int const m_roomIdx;
   Vec2i m_scroll {};
 };
 
-Scene* createPausedState(IPresenter* view, Scene* sub, Quest* quest, int roomIdx)
+Scene* createPausedState(IPresenter* view, Scene* sub, const MinimapData& minimapData)
 {
-  return new PausedState(view, sub, quest, roomIdx);
+  return new PausedState(view, sub, minimapData);
 }
 

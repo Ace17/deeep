@@ -19,6 +19,7 @@
 #include "entity_factory.h"
 #include "game.h"
 #include "load_quest.h"
+#include "minimap_data.h"
 #include "models.h" // MDL_TILES_00
 #include "physics.h"
 #include "player.h"
@@ -102,7 +103,12 @@ struct InGameScene : Scene, private IGame
   Scene* tick(Control c) override
   {
     if(startButton.toggle(c.start))
-      return createPausedState(m_view, this, &m_quest, m_level);
+    {
+      MinimapData data {};
+      data.quest = &m_quest;
+      data.level = m_level;
+      return createPausedState(m_view, this, data);
+    }
 
     loadLevelIfNeeded();
 
