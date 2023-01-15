@@ -18,13 +18,15 @@
 #include "toggle.h"
 #include "vec.h"
 
+extern const Vec2i CELL_SIZE;
+
 struct PausedState : Scene
 {
-  PausedState(IPresenter* view_, Scene* sub_, const MinimapData& minimapData) : view(view_), sub(sub_), quest(minimapData.quest), m_roomIdx(minimapData.level)
+  PausedState(IPresenter* view_, Scene* sub_, const MinimapData& minimapData_) : view(view_), sub(sub_), minimapData(minimapData_), quest(minimapData_.quest)
   {
     view->playSound(SND_PAUSE);
 
-    auto& currRoom = quest->rooms[m_roomIdx];
+    auto& currRoom = quest->rooms[minimapData.level];
     m_scroll = currRoom.pos;
   }
 
@@ -155,13 +157,18 @@ struct PausedState : Scene
     }
 
     {
-      auto& currRoom = quest->rooms[m_roomIdx];
+      auto& currRoom = quest->rooms[minimapData.level];
+
+      Vec2i playerCell;
+      playerCell.x = currRoom.pos.x + int(minimapData.playerPos.x) / CELL_SIZE.x;
+      playerCell.y = currRoom.pos.y + int(minimapData.playerPos.y) / CELL_SIZE.y;
+
       auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
       cell.action = 17;
-      cell.scale.x = cellSize * currRoom.size.x;
-      cell.scale.y = cellSize * currRoom.size.y;
-      cell.pos.x = cellSize * (currRoom.pos.x - m_scroll.x);
-      cell.pos.y = cellSize * (currRoom.pos.y - m_scroll.y);
+      cell.scale.x = cellSize;
+      cell.scale.y = cellSize;
+      cell.pos.x = cellSize * (playerCell.x - m_scroll.x);
+      cell.pos.y = cellSize * (playerCell.y - m_scroll.y);
       cell.screenRefFrame = true;
       cell.zOrder = 12;
       cell.effect = Effect::Blinking;
@@ -172,7 +179,7 @@ struct PausedState : Scene
     overlay.scale = { 16, 16 };
     overlay.pos -= Vec2f(8, 8);
     overlay.screenRefFrame = true;
-    overlay.zOrder = 12;
+    overlay.zOrder = 13;
     view->sendActor(overlay);
   }
 
@@ -185,8 +192,8 @@ private:
   Toggle downButton;
   IPresenter* const view;
   std::unique_ptr<Scene> sub;
+  const MinimapData minimapData;
   const Quest* const quest;
-  int const m_roomIdx;
   Vec2i m_scroll {};
 };
 

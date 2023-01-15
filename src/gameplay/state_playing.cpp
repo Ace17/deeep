@@ -107,6 +107,7 @@ struct InGameScene : Scene, private IGame
       MinimapData data {};
       data.quest = &m_quest;
       data.level = m_level;
+      data.playerPos = m_player->pos;
       return createPausedState(m_view, this, data);
     }
 
