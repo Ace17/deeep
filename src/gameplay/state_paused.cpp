@@ -63,96 +63,24 @@ struct PausedState : Scene
   {
     static auto const cellSize = 1.0;
 
-    for(int idx = 0; idx < (int)quest->rooms.size(); ++idx)
+    for(int y = 0; y < quest->minimapTiles.size.y; ++y)
     {
-      auto& room = quest->rooms[idx];
-
-      const auto origin = room.pos - m_scroll;
-
-      if(room.size.x == 1 && room.size.y == 1)
+      for(int x = 0; x < quest->minimapTiles.size.x; ++x)
       {
+        int tile = quest->minimapTiles.get(x, y);
+
+        if(tile < 0)
+          continue;
+
         auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
-        cell.action = 1;
+        cell.action = tile;
+        cell.pos.x = cellSize * (x - m_scroll.x);
+        cell.pos.y = cellSize * (y - m_scroll.y);
         cell.scale.x = cellSize;
         cell.scale.y = cellSize;
-        cell.pos.x = cellSize * origin.x;
-        cell.pos.y = cellSize * origin.y;
         cell.screenRefFrame = true;
         cell.zOrder = 11;
         view->sendActor(cell);
-      }
-      else if(room.size.y == 1) // horizontal corridor
-      {
-        for(int i = 0; i < room.size.x; ++i)
-        {
-          auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
-          cell.action = i == 0 ? 10 : (i == room.size.x - 1 ? 11 : 13);
-          cell.scale.x = cellSize;
-          cell.scale.y = cellSize;
-          cell.pos.x = cellSize * (origin.x + i);
-          cell.pos.y = cellSize * origin.y;
-          cell.screenRefFrame = true;
-          cell.zOrder = 11;
-          view->sendActor(cell);
-        }
-      }
-      else if(room.size.x == 1) // vertical corridor
-      {
-        for(int i = 0; i < room.size.y; ++i)
-        {
-          auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
-          cell.action = i == 0 ? 15 : (i == room.size.y - 1 ? 14 : 12);
-          cell.scale.x = cellSize;
-          cell.scale.y = cellSize;
-          cell.pos.x = cellSize * origin.x;
-          cell.pos.y = cellSize * (origin.y + i);
-          cell.screenRefFrame = true;
-          cell.zOrder = 11;
-          view->sendActor(cell);
-        }
-      }
-      else
-      {
-        for(int x = 0; x < room.size.x; ++x)
-          for(int y = 0; y < room.size.y; ++y)
-          {
-            auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
-
-            if(x == 0)
-            {
-              if(y == 0)
-                cell.action = 4;
-              else if(y == room.size.y - 1)
-                cell.action = 2;
-              else
-                cell.action = 6;
-            }
-            else if(x == room.size.x - 1)
-            {
-              if(y == 0)
-                cell.action = 5;
-              else if(y == room.size.y - 1)
-                cell.action = 3;
-              else
-                cell.action = 8;
-            }
-            else if(y == 0)
-            {
-              cell.action = 7;
-            }
-            else if(y == room.size.y - 1)
-            {
-              cell.action = 9;
-            }
-
-            cell.scale.x = cellSize;
-            cell.scale.y = cellSize;
-            cell.pos.x = cellSize * (x + origin.x);
-            cell.pos.y = cellSize * (y + origin.y);
-            cell.screenRefFrame = true;
-            cell.zOrder = 11;
-            view->sendActor(cell);
-          }
       }
     }
 

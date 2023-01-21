@@ -11,6 +11,7 @@
 
 #include "base/error.h"
 #include "quest.h"
+#include <climits>
 #include <cstdlib> // rand
 
 using namespace std;
@@ -313,9 +314,117 @@ void preprocessRoom(Room& room, vector<Room> const& quest)
   addFragileBlocks(room);
 }
 
+static
+void computeMinimap(Quest* quest)
+{
+  struct BoundingBox
+  {
+    BoundingBox()
+    {
+      min = Vec2i(INT_MAX, INT_MAX);
+      max = Vec2i(INT_MIN, INT_MIN);
+    }
+
+    void add(Vec2i p)
+    {
+      min.x = std::min(min.x, p.x);
+      max.x = std::max(max.x, p.x);
+      min.y = std::min(min.y, p.y);
+      max.y = std::max(max.y, p.y);
+    }
+
+    Vec2i min, max;
+  };
+
+  BoundingBox bb;
+
+  for(auto& r : quest->rooms)
+  {
+    bb.add(r.pos);
+    bb.add(r.pos + r.size);
+  }
+
+  if(bb.min.x < 0 || bb.max.y < 0)
+  {
+    char buffer[256];
+    throw Error(format(buffer, "Negative room position: %dx%d"));
+  }
+
+  quest->minimapTiles.resize(bb.max);
+
+  for(int y = 0; y < quest->minimapTiles.size.y; ++y)
+    for(int x = 0; x < quest->minimapTiles.size.x; ++x)
+      quest->minimapTiles.set(x, y, -1);
+
+  for(auto& room : quest->rooms)
+  {
+    const auto origin = room.pos;
+
+    if(room.size.x == 1 && room.size.y == 1)
+    {
+      quest->minimapTiles.set(origin.x, origin.y, 1);
+    }
+    else if(room.size.y == 1) // horizontal corridor
+    {
+      for(int i = 0; i < room.size.x; ++i)
+      {
+        int tile = i == 0 ? 10 : (i == room.size.x - 1 ? 11 : 13);
+        quest->minimapTiles.set(origin.x + i, origin.y, tile);
+      }
+    }
+    else if(room.size.x == 1) // vertical corridor
+    {
+      for(int i = 0; i < room.size.y; ++i)
+      {
+        int tile = i == 0 ? 15 : (i == room.size.y - 1 ? 14 : 12);
+        quest->minimapTiles.set(origin.x, origin.y + i, tile);
+      }
+    }
+    else
+    {
+      for(int x = 0; x < room.size.x; ++x)
+        for(int y = 0; y < room.size.y; ++y)
+        {
+          int tile = 0;
+
+          if(x == 0)
+          {
+            if(y == 0)
+              tile = 4;
+            else if(y == room.size.y - 1)
+              tile = 2;
+            else
+              tile = 6;
+          }
+          else if(x == room.size.x - 1)
+          {
+            if(y == 0)
+              tile = 5;
+            else if(y == room.size.y - 1)
+              tile = 3;
+            else
+              tile = 8;
+          }
+          else if(y == 0)
+          {
+            tile = 7;
+          }
+          else if(y == room.size.y - 1)
+          {
+            tile = 9;
+          }
+
+          quest->minimapTiles.set(origin.x + x, origin.y + y, tile);
+        }
+    }
+  }
+}
+
 void preprocessQuest(Quest& quest)
 {
   for(auto& r : quest.rooms)
     preprocessRoom(r, quest.rooms);
+
+  computeMinimap(&quest);
 }
 

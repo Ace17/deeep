@@ -39,5 +39,6 @@ struct Room
 struct Quest
 {
   std::vector<Room> rooms;
+  Matrix2<int> minimapTiles;
 };
 

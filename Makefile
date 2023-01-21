@@ -150,6 +150,7 @@ SRCS_PACKQUEST:=\
 	src/misc/base64.cpp\
 	src/misc/json.cpp\
 	src/misc/file.cpp\
+	src/misc/string.cpp\
 	src/gameplay/load_quest.cpp\
 	src/gameplay/smarttiles.cpp\
 	src/gameplay/preprocess_quest.cpp\
