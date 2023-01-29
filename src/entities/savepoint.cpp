@@ -42,6 +42,11 @@ struct SavePoint : Entity
     actors.push_back(r);
   }
 
+  void enter() override
+  {
+    timer = 10;
+  }
+
   void tick() override
   {
     decrement(timer);
@@ -49,11 +54,16 @@ struct SavePoint : Entity
 
   void onCollide(Body* other)
   {
-    if(dynamic_cast<Player*>(other) && !timer)
+    if(auto player = dynamic_cast<Player*>(other))
     {
-      game->playSound(SND_SAVEPOINT);
-      game->postEvent(make_unique<SaveEvent>());
-      game->textBox("Game Saved");
+      if(timer == 0)
+      {
+        player->pos = pos;
+        game->playSound(SND_SAVEPOINT);
+        game->postEvent(make_unique<SaveEvent>());
+        game->textBox("Game Saved");
+      }
+
       timer = 300;
     }
   }
