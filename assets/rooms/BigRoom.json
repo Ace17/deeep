@@ -1,10 +1,13 @@
-{ "height":64,
+{ "compressionlevel":-1,
+ "height":64,
+ "infinite":false,
  "layers":[
         {
          "compression":"zlib",
          "data":"eJzt1UEKgDAQA8D6\/097Ew\/aehAju7OQeyYUuo0xNhERETlydelOSXt1\/5NLd0yYK2\/Q2X7lX22S7pt+E+lu\/Pz8\/Pz8X3ir2\/n5+fk7b9DZzs9\/t0O6Dz8\/Pz9\/xt9tg852fv4nl+7In90h3Y2fn58\/5e+wQWc7P393\/2yDdC9+\/qS\/yvHzV\/avDNX955uZ+P\/pf7PDzJb+Z0WS2QH36g0l",
          "encoding":"base64",
          "height":64,
+         "id":1,
          "name":"tiles",
          "opacity":1,
          "type":"tilelayer",
@@ -15,7 +18,7 @@
         }, 
         {
          "draworder":"topdown",
-         "height":32,
+         "id":2,
          "name":"things",
          "objects":[
                 {
@@ -65,7 +68,13 @@
                 {
                  "height":16,
                  "id":55,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -76,7 +85,13 @@
                 {
                  "height":16,
                  "id":56,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -87,7 +102,13 @@
                 {
                  "height":16,
                  "id":57,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -98,7 +119,13 @@
                 {
                  "height":16,
                  "id":58,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -109,7 +136,13 @@
                 {
                  "height":16,
                  "id":59,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -120,7 +153,13 @@
                 {
                  "height":16,
                  "id":60,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -131,7 +170,13 @@
                 {
                  "height":16,
                  "id":61,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -142,7 +187,13 @@
                 {
                  "height":16,
                  "id":62,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -153,7 +204,13 @@
                 {
                  "height":16,
                  "id":63,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -164,7 +221,13 @@
                 {
                  "height":16,
                  "id":64,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -175,7 +238,13 @@
                 {
                  "height":16,
                  "id":65,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -186,7 +255,13 @@
                 {
                  "height":16,
                  "id":66,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -197,7 +272,13 @@
                 {
                  "height":16,
                  "id":67,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -208,7 +289,13 @@
                 {
                  "height":16,
                  "id":68,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -219,7 +306,13 @@
                 {
                  "height":16,
                  "id":69,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -230,13 +323,14 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":64,
          "x":0,
          "y":0
         }],
+ "nextlayerid":3,
  "nextobjectid":70,
  "orientation":"orthogonal",
  "renderorder":"right-down",
+ "tiledversion":"1.8.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -244,6 +338,7 @@
          "source":"..\/tiles-editor.tsx"
         }],
  "tilewidth":16,
- "version":1,
+ "type":"map",
+ "version":"1.8",
  "width":64
 }

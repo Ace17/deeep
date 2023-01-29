@@ -233,7 +233,13 @@
                 {
                  "height":16,
                  "id":24,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -244,7 +250,13 @@
                 {
                  "height":16,
                  "id":25,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -255,7 +267,13 @@
                 {
                  "height":16,
                  "id":26,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -266,7 +284,13 @@
                 {
                  "height":16,
                  "id":27,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -277,7 +301,13 @@
                 {
                  "height":16,
                  "id":28,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -288,7 +318,13 @@
                 {
                  "height":16,
                  "id":29,
-                 "name":"conveyor(0)",
+                 "name":"conveyor",
+                 "properties":[
+                        {
+                         "name":"0",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
