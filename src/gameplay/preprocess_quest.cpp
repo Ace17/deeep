@@ -383,6 +383,7 @@ void computeMinimap(Quest* quest)
     else
     {
       for(int x = 0; x < room.size.x; ++x)
+      {
         for(int y = 0; y < room.size.y; ++y)
         {
           int tile = 0;
@@ -416,6 +417,7 @@ void computeMinimap(Quest* quest)
 
           quest->minimapTiles.set(origin.x + x, origin.y + y, tile);
         }
+      }
     }
   }
 }
