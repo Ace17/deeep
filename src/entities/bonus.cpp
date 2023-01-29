@@ -76,6 +76,8 @@ struct Bonus : Entity
     }
   }
 
+  static constexpr uint32_t flags = EntityFlag_ShowOnMinimap_O | EntityFlag_Persist;
+
   int time = 0;
   int modelAction;
   int type;

@@ -9,6 +9,7 @@
 #include "base/scene.h"
 #include <memory>
 
+#include "entity_factory.h"
 #include "minimap_data.h"
 #include "models.h" // MDL_PAUSED
 #include "presenter.h"
@@ -63,11 +64,12 @@ struct PausedState : Scene
   {
     static auto const cellSize = 1.0;
 
+    // minimap tiles
     for(int y = 0; y < quest->minimapTiles.size.y; ++y)
     {
       for(int x = 0; x < quest->minimapTiles.size.x; ++x)
       {
-        int tile = quest->minimapTiles.get(x, y);
+        const int tile = quest->minimapTiles.get(x, y);
 
         if(tile < 0)
           continue;
@@ -81,6 +83,37 @@ struct PausedState : Scene
         cell.screenRefFrame = true;
         cell.zOrder = 11;
         view->sendActor(cell);
+      }
+    }
+
+    // minimap overlays (savepoints, items, etc.)
+    for(auto& room : quest->rooms)
+    {
+      for(auto& spawner : room.spawners)
+      {
+        int flags = getEntityFlags(spawner.name);
+        int tile = 0;
+
+        if(flags & EntityFlag_ShowOnMinimap_S)
+          tile = 18;
+
+        if(flags & EntityFlag_ShowOnMinimap_O)
+          tile = 19;
+
+        if(tile)
+        {
+          int x = room.pos.x + spawner.pos.x / CELL_SIZE.x;
+          int y = room.pos.y + spawner.pos.y / CELL_SIZE.y;
+          auto cell = Actor { NullVector, MDL_MINIMAP_TILES };
+          cell.action = tile;
+          cell.pos.x = cellSize * (x - m_scroll.x);
+          cell.pos.y = cellSize * (y - m_scroll.y);
+          cell.scale.x = cellSize;
+          cell.scale.y = cellSize;
+          cell.screenRefFrame = true;
+          cell.zOrder = 12;
+          view->sendActor(cell);
+        }
       }
     }
 

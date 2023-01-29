@@ -19,6 +19,8 @@
     { "name": "top-corner", "frames": [ 13 ] },
     { "name": "bot-corner", "frames": [ 15 ] },
     { "name": "you-are-here", "frames": [ 16 ] },
-    { "name": "you-are-here2", "frames": [ 17 ] }
+    { "name": "you-are-here2", "frames": [ 17 ] },
+    { "name": "savepoint", "frames": [ 18 ] },
+    { "name": "item", "frames": [ 19 ] }
   ]
 }

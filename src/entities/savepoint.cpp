@@ -58,6 +58,8 @@ struct SavePoint : Entity
     }
   }
 
+  static constexpr uint32_t flags = EntityFlag_ShowOnMinimap_S;
+
   int timer = 0;
 };
 

@@ -39,6 +39,8 @@ struct Entity : Body
 
   virtual void addActors(vector<Actor>& actors) const = 0;
 
+  static constexpr uint32_t flags = 0;
+
   int id = 0;
   bool dead = false;
   int blinking = 0;
