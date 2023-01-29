@@ -81,7 +81,9 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
     config.values = spawner.config;
 
     auto entity = createEntity(spawner.name, &config);
-    entity->id = baseId + spawner.id;
+    if(spawner.id)
+      entity->id = baseId + spawner.id;
+
     entity->pos = spawner.pos;
     game->spawn(entity.release());
   }

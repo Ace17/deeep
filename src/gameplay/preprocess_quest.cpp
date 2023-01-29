@@ -110,7 +110,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 
       auto transform = (room.pos - otherRoom.pos) * CELL_SIZE + margin;
 
-      Room::Spawner s;
+      Room::Spawner s {};
       s.name = "room_boundary_detector";
       s.config["target_level"] = to_string(neighboorIdx);
       s.config["transform_x"] = to_string(transform.x);
