@@ -468,20 +468,8 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     if(!fb)
     {
-      float cx, cy;
+      SAFE_GL(glViewport(m_screenViewport.pos.x, m_screenViewport.pos.y, m_screenViewport.size.x, m_screenViewport.size.y));
 
-      if(AspectRatio > float(m_screenSize.x) / m_screenSize.y)
-      {
-        cx = m_screenSize.x;
-        cy = cx / AspectRatio;
-      }
-      else
-      {
-        cy = m_screenSize.y;
-        cx = cy * AspectRatio;
-      }
-
-      SAFE_GL(glViewport((m_screenSize.x - cx) / 2, (m_screenSize.y - cy) / 2, cx, cy));
       SAFE_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     }
     else
@@ -522,11 +510,31 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   void updateScreenSize()
   {
     Vec2i screenSize {};
+    Rect2i screenViewport {};
     SDL_GL_GetDrawableSize(m_window, &screenSize.x, &screenSize.y);
 
-    if(screenSize != m_screenSize)
+    float cx, cy;
+
+    if(AspectRatio > float(screenSize.x) / screenSize.y)
+    {
+      cx = screenSize.x;
+      cy = cx / AspectRatio;
+    }
+    else
+    {
+      cy = screenSize.y;
+      cx = cy * AspectRatio;
+    }
+
+    screenViewport.pos.x = (screenSize.x - cx) / 2;
+    screenViewport.pos.y = (screenSize.y - cy) / 2;
+    screenViewport.size.x = cx;
+    screenViewport.size.y = cy;
+
+    if(screenSize != m_screenSize || m_screenViewport.pos != m_screenViewport.pos || screenViewport.size != m_screenViewport.size)
     {
       m_screenSize = screenSize;
+      m_screenViewport = screenViewport;
 
       if(m_screenSizeListener)
         m_screenSizeListener->onScreenSizeChanged(screenSize);
@@ -543,6 +551,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 private:
   int m_drawCallCount = 0;
   Vec2i m_screenSize {};
+  Rect2i m_screenViewport {};
   IScreenSizeListener* m_screenSizeListener {};
   SDL_Window* m_window;
   SDL_GLContext m_context;
