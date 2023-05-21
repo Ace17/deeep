@@ -15,12 +15,7 @@
 #include "base/audio.h" // IAudioMixer
 #include "engine/audio_backend.h"
 
-#include <memory>
-#include <vector>
-
 #include <SDL.h>
-
-using namespace std;
 
 namespace
 {
