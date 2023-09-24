@@ -8,7 +8,9 @@
 
 #include "base/span.h"
 #include "base/string.h"
+#include <cstdint>
 #include <string>
+
 using namespace std;
 
 namespace File
