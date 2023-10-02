@@ -30,12 +30,11 @@ struct Lift : Entity
     delta_x = cfg->getInt("delta_x", 0);
     delta_y = cfg->getInt("delta_y", +7);
     collisionGroup = CG_WALLS;
+    collidesWith = CG_PLAYER;
   }
 
   void enter() override
   {
-    pos.x += 0.001;
-    size.x -= 0.002;
     initialPos = pos;
     finalPos = pos + Vector(delta_x, delta_y);
     moveDir = normalize(finalPos - initialPos);
