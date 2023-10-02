@@ -453,15 +453,12 @@ struct Rockman : Player, Damageable
     {
       if(vel.y < 0)
       {
-        if(tryActivate(debounceLanding, 150))
-          game->playSound(SND_LAND);
-
+        game->playSound(SND_LAND);
         dashDelay = 0;
       }
     }
 
     decrement(debounceFire);
-    decrement(debounceLanding);
     decrement(climbDelay);
     decrement(shootDelay);
     decrement(ladderDelay);
@@ -601,7 +598,6 @@ struct Rockman : Player, Damageable
   }
 
   int debounceFire = 0;
-  int debounceLanding = 0;
   ORIENTATION dir = RIGHT;
   bool ground = false;
   Toggle jumpbutton, firebutton, dashbutton, restartbutton;
