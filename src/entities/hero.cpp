@@ -410,6 +410,13 @@ struct Rockman : Player, Damageable
     if(restartbutton.toggle(control.restart))
       life = 0;
 
+    if(life && crushed)
+    {
+      life = -1;
+      crushed = false;
+      die();
+    }
+
     // 'dying' animation
     if(life <= 0)
     {
@@ -525,6 +532,7 @@ struct Rockman : Player, Damageable
     blinking = 20;
     vel = NullVector;
     life = MAX_LIFE;
+    crushed = false;
   }
 
   void handleShooting()

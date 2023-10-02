@@ -55,7 +55,7 @@ struct Physics : IPhysics
       body->solid = false; // make pusher non-solid, so stacked bodies can move down
 
       if(body->pusher)
-        pushOthers(body, myBox, delta);
+        pushOthers(body, myBox, rc.fraction * delta);
 
       body->pos = myBox.pos;
       body->solid = oldSolid;
@@ -85,7 +85,13 @@ struct Physics : IPhysics
     // push potential non-solid bodies
     for(auto other : m_bodies)
       if(other != body && overlaps(rect, other->getBox()))
-        moveBody(other, delta);
+        if(other->collisionGroup & body->collidesWith)
+        {
+          auto fraction = moveBody(other, delta);
+
+          if(fraction < 1)
+            other->crushed = true;
+        }
   }
 
   bool isSolid(const Body* except, Box rect) const

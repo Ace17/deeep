@@ -36,6 +36,7 @@ struct Body
 
   bool solid = false;
   bool pusher = false; // push and crush?
+  bool crushed = false;
   Vector pos;
 
   // shape used for collision detection
