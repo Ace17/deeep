@@ -245,6 +245,18 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
       room.tiles.set(x, y, 0);
     }
   }
+
+  // process start point, if any
+  for(auto& s : room.spawners)
+  {
+    if(s.name == "start")
+    {
+      auto i = int(&s - room.spawners.data());
+      room.start = Vec2i(s.pos.x, s.pos.y);
+      room.spawners.erase(room.spawners.begin() + i);
+      break;
+    }
+  }
 }
 
 static Vec2i operator * (Vec2i a, Vec2i b)
