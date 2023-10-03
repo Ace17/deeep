@@ -14,4 +14,5 @@ static auto const CG_LADDER = 0x8;
 static auto const CG_DOORS = 0x10;
 static auto const CG_BONUS = 0x20;
 static auto const CG_ENEMIES = 0x40;
+static auto const CG_MOVINGWALLS = 0x80;
 

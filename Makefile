@@ -80,6 +80,7 @@ SRCS_GAME:=\
 	src/entities/hopper.cpp\
 	src/entities/ladder.cpp\
 	src/entities/lift.cpp\
+	src/entities/moving_wall.cpp\
 	src/entities/savepoint.cpp\
 	src/entities/spider.cpp\
 	src/entities/spikes.cpp\

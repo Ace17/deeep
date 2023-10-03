@@ -788,6 +788,45 @@
                  "width":16,
                  "x":592,
                  "y":880
+                }, 
+                {
+                 "height":144,
+                 "id":67,
+                 "name":"moving_wall",
+                 "properties":[
+                        {
+                         "name":"delta_x",
+                         "type":"string",
+                         "value":"40"
+                        }, 
+                        {
+                         "name":"link",
+                         "type":"string",
+                         "value":"33"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":864
+                }, 
+                {
+                 "height":16,
+                 "id":68,
+                 "name":"switch",
+                 "properties":[
+                        {
+                         "name":"link",
+                         "type":"string",
+                         "value":"33"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":752,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -796,7 +835,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":67,
+ "nextobjectid":69,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.2",

@@ -197,6 +197,9 @@ vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height
     spawner.name = (string)obj["name"];
     spawner.id = obj["id"];
 
+    spawner.config["width"] = to_string(objRect.size.x);
+    spawner.config["height"] = to_string(objRect.size.y);
+
     if(obj.has("properties"))
     {
       for(auto& prop : obj["properties"].elements)
