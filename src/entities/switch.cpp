@@ -25,6 +25,8 @@ struct Switch : Entity
   {
     size = UnitSize * 0.75;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
+    collisionGroup = CG_DOORS;
+    collidesWith = CG_PLAYER;
   }
 
   void enter() override
