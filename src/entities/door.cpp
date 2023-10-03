@@ -19,7 +19,7 @@ namespace
 {
 struct Door : Entity
 {
-  Door(IEntityConfig* args) : id(args->getInt("0"))
+  Door(IEntityConfig* args) : id(args->getInt("link", args->getInt("0")))
   {
     size = Size(1, 3);
     solid = true;

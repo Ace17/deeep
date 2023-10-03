@@ -21,7 +21,7 @@ namespace
 struct Switch : Entity
 {
   Switch(IEntityConfig* cfg)
-    : id(cfg->getInt("0"))
+    : id(cfg->getInt("link", cfg->getInt("0")))
   {
     size = UnitSize * 0.75;
     Body::onCollision = [this] (Body* other) { onCollide(other); };

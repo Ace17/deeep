@@ -134,7 +134,13 @@
                 {
                  "height":16,
                  "id":15,
-                 "name":"door(0)",
+                 "name":"door",
+                 "properties":[
+                        {
+                         "name":"link",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -145,7 +151,13 @@
                 {
                  "height":16,
                  "id":16,
-                 "name":"switch(0)",
+                 "name":"switch",
+                 "properties":[
+                        {
+                         "name":"link",
+                         "type":"string",
+                         "value":"0"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
