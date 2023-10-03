@@ -247,21 +247,6 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
   }
 }
 
-static void removeVersion(string& data)
-{
-  auto i = data.find("\"version\":");
-
-  if(i == string::npos)
-    return; // nothing to do
-
-  auto j = i;
-
-  while(data[j] != ',')
-    ++j;
-
-  data.erase(i, j - i + 1);
-}
-
 static Vec2i operator * (Vec2i a, Vec2i b)
 {
   return { a.x * b.x, a.y * b.y };
@@ -293,7 +278,6 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   if(File::exists(path))
   {
     auto data = File::read(path);
-    removeVersion(data);
     auto jsRoom = json::parse(data.c_str(), data.size());
     loadConcreteRoom(room, jsRoom);
   }
@@ -323,7 +307,6 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
 Quest loadTiledWorld(string path) // tiled JSON ".world" format
 {
   auto data = File::read(path);
-  removeVersion(data);
   auto js = json::parse(data.c_str(), data.size());
 
   Quest r;

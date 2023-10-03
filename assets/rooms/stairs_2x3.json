@@ -1,9 +1,10 @@
-{ "height":48,
+{ "compressionlevel":-1,
+ "height":48,
  "infinite":false,
  "layers":[
         {
          "compression":"zlib",
-         "data":"eAHtktmKQjEQRK+P8\/8\/rIE50BaVTnKzOAwGpNK1dRQf13U9vp\/vb7D5P\/Cqfzv6n3sTfwf1zMzar12ql1k9M7P2a5fqd2btjLP2Ra3cT5+\/sv\/0996xL\/6WO\/pbnTP7yY7sINOLrluz0aPa7By7uWsnfEHVTs2ffkPcz\/3Ud2cPe0H4E8hOhyf3l116Pr0\/vmfXW9hBP7Mi+mpkT+yFixj1lXd2xE44h9G34s4O7YJvoeZG51b\/Cj17U9ZfciuPewf9Tss4ciPo+sg7bZajG3R9meb8IxzdoMuiKTovnPMqF2dyDvFFzXHoqpW5aNkh65CcavAO8TotcvgyxJ95ahrZGtZykScbudadTA1b+ajTEbnWnYxiK+d0OpymHN4aqr9npmvES6ZgTy7z0FXzoNewluvl6a350RVr\/l5e+0bn3j3ON7oLv+u6w9E3ind2uUy21\/l3crxl546s++f1gPLJPP9NewJwBgQE",
+         "data":"eJzt00EOhTAIBNB26f0v7MaFMS0FOjBVOwmLH\/08ilpLKXXXruB6ZnS9dc\/ffGvYviWr+F8Ic4+zvvZ\/yG+v1Q9lreh75mT7rDmYvpRMn7UHyc+Y5dmf7fdmYPtRc\/T6aoPyI+P10fNZ9h+xN6TvmXFlX3Ov1FeK9fvTzHv\/jfa1\/UaxPCPE883yEW6EP7PD7HOjfI9p8SPOjPBRrjcMe\/bMb\/BRBur9i67jKpbPqBNwBgQE",
          "encoding":"base64",
          "height":48,
          "id":1,
@@ -129,7 +130,7 @@
  "nextobjectid":76,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.3.2",
+ "tiledversion":"1.8.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -138,6 +139,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":1.2,
+ "version":"1.8",
  "width":32
 }
