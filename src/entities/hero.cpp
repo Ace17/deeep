@@ -413,7 +413,6 @@ struct Rockman : Player, Damageable
     if(life && crushed)
     {
       life = -1;
-      crushed = false;
       die();
     }
 
@@ -517,6 +516,9 @@ struct Rockman : Player, Damageable
 
   void die()
   {
+    if(dieDelay)
+      return;
+
     game->playSound(SND_DIE);
     ball = false;
     size = NORMAL_SIZE;
