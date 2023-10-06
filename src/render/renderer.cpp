@@ -29,8 +29,8 @@ using namespace std;
 namespace
 {
 const int MAX_QUADS = 32678;
-const float SCALE = 0.125f;
 const auto INTERNAL_RESOLUTION = Vec2i(256, 256);
+const auto TILE_SIZE = 16.0f;
 
 Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
@@ -289,7 +289,9 @@ struct Renderer : IRenderer
 private:
   static Matrix3f getCameraMatrix(const Camera& cam)
   {
-    static const auto shrink = scale(SCALE * Vec2f(1, 1));
+    static const auto half_w = INTERNAL_RESOLUTION.x / 2;
+    static const auto half_h = INTERNAL_RESOLUTION.y / 2;
+    static const auto shrink = scale(Vec2f(TILE_SIZE / half_w, TILE_SIZE / half_h));
     return shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
   }
 
