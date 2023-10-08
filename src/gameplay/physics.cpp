@@ -42,7 +42,7 @@ struct Physics : IPhysics
   {
     auto myBox = body->getBox();
 
-    auto const rc = castBox(myBox, delta, body->collidesWith, true, body);
+    auto const rc = castBox(myBox, delta, body->collidesWith, body);
 
     if(rc.blocker)
       collideBodies(*body, *rc.blocker);
@@ -129,13 +129,13 @@ struct Physics : IPhysics
     Body* blocker = nullptr;
   };
 
-  Raycast castBox(Box box, Vec2f delta, int collisionGroup, bool onlySolid, const Body* except) const
+  Raycast castBox(Box box, Vec2f delta, int collisionGroup, const Body* except) const
   {
     Raycast r;
 
     for(auto& body : m_bodies)
     {
-      if(onlySolid && !body->solid)
+      if(!body->solid)
         continue;
 
       if(body == except)
