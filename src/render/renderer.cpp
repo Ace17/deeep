@@ -28,6 +28,10 @@ using namespace std;
 
 namespace
 {
+Gauge ggVboCap("VBO cap");
+Gauge ggSpriteCount("sprites");
+Gauge ggBatchCount("batches");
+
 const int MAX_QUADS = 32678;
 const auto INTERNAL_RESOLUTION = Vec2i(256, 256);
 const auto TILE_SIZE = 16.0f;
@@ -234,9 +238,9 @@ struct Renderer : IRenderer
 
     flushBatch();
 
-    Stat("sprites", m_quads.size());
-    Stat("batches", batchCount);
-    Stat("VBO capacity", (int)vboData.capacity());
+    ggSpriteCount = m_quads.size();
+    ggBatchCount = batchCount;
+    ggVboCap = vboData.capacity();
 
     m_quads.clear();
   }

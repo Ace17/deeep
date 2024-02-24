@@ -6,8 +6,17 @@ struct StatVal
   float val;
 };
 
-void Stat(const char* name, float value);
-
 int getStatCount();
 StatVal getStat(int idx);
+
+struct Gauge
+{
+  Gauge(const char* name);
+
+  const char* const name = "?";
+  const Gauge* const next = nullptr;
+  const int index;
+
+  void operator = (float value);
+};
 

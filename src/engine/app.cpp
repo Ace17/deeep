@@ -38,6 +38,11 @@ IRenderer* createRenderer(IGraphicsBackend* backend);
 MixableAudio* createAudio();
 UserInput* createUserInput();
 
+Gauge ggFps("FPS");
+Gauge ggTps("TPS");
+Gauge ggTicksPerFrame("Ticks/Frame");
+Gauge ggTickDuration("Tick duration");
+
 // Implemented by the game-specific part
 Scene* createGame(IRenderer* renderer, Audio* audio, Span<const string> argv);
 extern const String GAME_NAME;
@@ -114,19 +119,19 @@ private:
       {
         tickGameplay();
         m_tps.tick(now);
-        Stat("TPS", m_tps.slope());
+        ggTps = m_tps.slope();
       }
 
       ++ticksPerFrame;
     }
 
-    Stat("Ticks/Frame", ticksPerFrame);
+    ggTicksPerFrame = ticksPerFrame;
 
     // draw the frame
     draw();
 
     m_fps.tick(now);
-    Stat("FPS", m_fps.slope());
+    ggFps = m_fps.slope();
   }
 
   void tickGameplay()
@@ -138,7 +143,7 @@ private:
     m_scene->tick(m_control);
 
     auto const t1 = GetSteadyClockMs();
-    Stat("Tick duration", int(t1 - t0));
+    ggTickDuration = int(t1 - t0);
   }
 
   void registerUserInputActions()

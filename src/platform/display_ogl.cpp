@@ -48,6 +48,8 @@ void ensureGl(char const* expr, const char* file, int line)
 
 namespace
 {
+Gauge ggDrawCalls("Draw calls");
+
 const float AspectRatio = 1; // square aspect ratio
 
 GLuint compileShader(Span<const uint8_t> code, int type)
@@ -503,7 +505,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   {
     SDL_GL_SwapWindow(m_window);
     updateScreenSize();
-    Stat("Draw calls", m_drawCallCount);
+    ggDrawCalls = m_drawCallCount;
     m_drawCallCount = 0;
   }
 

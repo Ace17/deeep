@@ -1,8 +1,7 @@
 // immediate-mode gathering of named statistics.
 // Values are smoothed over AVERAGE_PERIOD.
-#include "stats.h"
-
 #include "misc/time.h"
+#include "stats.h"
 #include <map>
 #include <vector>
 
@@ -51,35 +50,41 @@ struct StatTrack
   }
 };
 
-std::vector<StatTrack> g_Tracks;
-std::map<const char*, int> g_NameToTrackId;
-}
-
-void Stat(const char* name, float value)
+std::vector<StatTrack> & g_Tracks()
 {
-  auto i = g_NameToTrackId.find(name);
-
-  if(i == g_NameToTrackId.end())
-  {
-    g_NameToTrackId[name] = (int)g_Tracks.size();
-    g_Tracks.push_back({});
-    i = g_NameToTrackId.find(name);
-  }
-
-  auto timeNow = GetSteadyClockMs() / 1000.0;
-  auto& track = g_Tracks[i->second];
-
-  track.name = name;
-  track.addValue(timeNow, value);
+  static std::vector<StatTrack> tracks;
+  return tracks;
+}
 }
 
 int getStatCount()
 {
-  return (int)g_Tracks.size();
+  return (int)g_Tracks().size();
 }
 
 StatVal getStat(int idx)
 {
-  return g_Tracks.at(idx).getCurrValue();
+  return g_Tracks().at(idx).getCurrValue();
+}
+
+static const Gauge* gAllGauges;
+
+Gauge::Gauge(const char* name) :
+  name(name),
+  next(gAllGauges),
+  index(g_Tracks().size())
+{
+  g_Tracks().push_back({});
+
+  gAllGauges = this;
+}
+
+void Gauge::operator = (float value)
+{
+  auto timeNow = GetSteadyClockMs() / 1000.0;
+  auto& track = g_Tracks()[index];
+
+  track.name = name;
+  track.addValue(timeNow, value);
 }
 
