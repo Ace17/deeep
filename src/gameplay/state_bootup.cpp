@@ -55,7 +55,7 @@ struct BootupState : Scene
     // Hack: clear screen with white
     {
       auto bg = Actor { NullVector, MDL_BOOTUP };
-      bg.scale = {48, 48};
+      bg.scale = { 48, 48 };
       bg.pos -= bg.scale * 0.5;
       bg.pos.y -= 15;
       bg.zOrder = 1;
@@ -65,7 +65,7 @@ struct BootupState : Scene
     {
       float ratio = std::min(timer / float(BEEPTIME), 1.0f);
       auto splash = Actor { NullVector, MDL_BOOTUP };
-      splash.scale = {20, 18};
+      splash.scale = { 20, 18 };
       splash.pos.y = 12.0f * (1.0f - ratio);
       splash.pos -= splash.scale * 0.5;
       splash.zOrder = 2;
