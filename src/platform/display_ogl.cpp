@@ -427,31 +427,11 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
     SAFE_GL(glVertexAttribPointer(id, dim, GL_FLOAT, GL_FALSE, stride, (void*)(uintptr_t)offset));
   }
 
-  void setUniformInt(int id, int value) override
-  {
-    SAFE_GL(glUniform1i(id, value));
-  }
-
-  void setUniformFloat3(int id, float x, float y, float z) override
-  {
-    SAFE_GL(glUniform3f(id, x, y, z));
-  }
-
-  void setUniformFloat4(int id, float x, float y, float z, float w) override
-  {
-    SAFE_GL(glUniform4f(id, x, y, z, w));
-  }
-
   void setUniformBlock(void* ptr, size_t size) override
   {
     glBindBuffer(GL_UNIFORM_BUFFER, m_uniformBuffer);
     glBufferData(GL_UNIFORM_BUFFER, size, ptr, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_UNIFORM_BUFFER, m_currProgram->uniformBlockIndex, m_uniformBuffer);
-  }
-
-  void setUniformMatrixFloat4(int id, float* matrix) override
-  {
-    SAFE_GL(glUniformMatrix4fv(id, 1, GL_FALSE, matrix));
   }
 
   std::unique_ptr<IVertexBuffer> createVertexBuffer() override

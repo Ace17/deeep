@@ -69,11 +69,7 @@ struct IGraphicsBackend
   virtual void useGpuProgram(IGpuProgram* program) = 0;
   virtual void useVertexBuffer(IVertexBuffer* vb) = 0;
   virtual void enableVertexAttribute(int id, int dim, int stride, int offset) = 0;
-  virtual void setUniformInt(int id, int value) = 0;
-  virtual void setUniformFloat3(int id, float x, float y, float z) = 0;
-  virtual void setUniformFloat4(int id, float x, float y, float z, float w) = 0;
   virtual void setUniformBlock(void* ptr, size_t size) = 0;
-  virtual void setUniformMatrixFloat4(int id, float* matrix) = 0;
   virtual void draw(int vertexCount) = 0;
   virtual void clear() = 0;
   virtual void swap() = 0;
