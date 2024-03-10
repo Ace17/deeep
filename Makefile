@@ -32,6 +32,10 @@ CXXFLAGS+=-std=c++14
 CXXFLAGS+=$(PKG_CFLAGS)
 LDFLAGS+=$(PKG_LDFLAGS)
 
+# Reduce executable size
+CXXFLAGS+=-ffunction-sections -fdata-sections
+LDFLAGS+=-Wl,-gc-sections
+
 #CXXFLAGS+=-O3
 
 #CXXFLAGS+=$(DBGFLAGS)
