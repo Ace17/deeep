@@ -230,8 +230,8 @@ struct InGameScene : Scene, private IGame
 
     // prevent camera from going outside the level
     auto const margin = Vec2f(8, 8);
-    cameraPos.x = ::clamp(cameraPos.x, margin.x, m_currRoom->size.x * CELL_SIZE.x - margin.x);
-    cameraPos.y = ::clamp(cameraPos.y, margin.y, m_currRoom->size.y * CELL_SIZE.y - margin.y);
+    cameraPos.x = ::clamp(cameraPos.x, margin.x, m_currRoomSize.x * CELL_SIZE.x - margin.x);
+    cameraPos.y = ::clamp(cameraPos.y, margin.y, m_currRoomSize.y * CELL_SIZE.y - margin.y);
 
     m_view->setCameraPos(cameraPos);
   }
@@ -327,17 +327,17 @@ struct InGameScene : Scene, private IGame
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
       throw Error("No such level");
 
-    m_currRoom = &m_quest.rooms[levelIdx];
+    auto& level = m_quest.rooms[levelIdx];
 
     m_tilemapBody.solid = true;
     m_tilemapBody.collisionGroup = CG_WALLS;
     m_tilemapBody.shape = &m_tilemapShape;
-    m_tilemapShape.tiles = &m_currRoom->tiles;
+    m_tilemapShape.tiles = &level.tiles;
     m_physics->addBody(&m_tilemapBody);
 
-    auto& level = m_quest.rooms[levelIdx];
     spawnEntities(level, this, levelIdx);
     m_tilesForDisplay = &level.tilesForDisplay;
+    m_currRoomSize = level.size;
     m_theme = level.theme;
     m_view->playMusic(level.theme);
 
@@ -450,7 +450,7 @@ struct InGameScene : Scene, private IGame
   }
 
   Quest m_quest;
-  Room* m_currRoom = nullptr;
+  Vec2i m_currRoomSize {};
   Player* m_player = nullptr;
   IPresenter* const m_view;
   unique_ptr<IPhysics> m_physics;
