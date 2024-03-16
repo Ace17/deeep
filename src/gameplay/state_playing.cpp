@@ -70,11 +70,8 @@ struct EntityConfigImpl : IEntityConfig
 };
 
 static
-void spawnEntities(Room const& room, IGame* game, int levelIdx)
+void spawnEntities(Room const& room, IGame* game)
 {
-  // avoid collisions between static entities from different rooms
-  const int baseId = levelIdx * 1000;
-
   for(auto& spawner : room.spawners)
   {
     EntityConfigImpl config;
@@ -83,7 +80,7 @@ void spawnEntities(Room const& room, IGame* game, int levelIdx)
     auto entity = createEntity(spawner.name, &config);
 
     if(spawner.id)
-      entity->id = baseId + spawner.id;
+      entity->id = spawner.id;
 
     entity->pos = spawner.pos;
     game->spawn(entity.release());
@@ -335,7 +332,7 @@ struct InGameScene : Scene, private IGame
     m_tilemapShape.tiles = &level.tiles;
     m_physics->addBody(&m_tilemapBody);
 
-    spawnEntities(level, this, levelIdx);
+    spawnEntities(level, this);
     m_tilesForDisplay = &level.tilesForDisplay;
     m_currRoomSize = level.size;
     m_theme = level.theme;
