@@ -333,6 +333,8 @@ struct InGameScene : Scene, private IGame
     m_physics->addBody(&m_tilemapBody);
 
     spawnEntities(level, this);
+    removeDeadThings();
+
     m_tilesForDisplay = &level.tilesForDisplay;
     m_currRoomSize = level.size;
     m_theme = level.theme;

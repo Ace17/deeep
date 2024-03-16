@@ -40,7 +40,10 @@ struct Bonus : Entity
 
     // already picked up?
     if(var->get())
+    {
+      Body::onCollision = [this] (Body*) {};
       dead = true;
+    }
   }
 
   virtual void addActors(vector<Actor>& actors) const override
@@ -61,9 +64,6 @@ struct Bonus : Entity
 
   void onCollide(Body* other)
   {
-    if(dead)
-      return;
-
     if(auto player = dynamic_cast<Player*>(other))
     {
       player->addUpgrade(type);
@@ -73,6 +73,8 @@ struct Bonus : Entity
 
       auto var = game->getVariable(id);
       var->set(1);
+
+      Body::onCollision = [this] (Body*) {};
     }
   }
 
