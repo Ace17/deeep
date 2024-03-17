@@ -288,6 +288,30 @@ struct Renderer : IRenderer
   void drawSprite(const RenderSprite& sprite) override
   {
     m_quads.push_back(spriteToQuad(sprite));
+
+    // culling
+    {
+      struct BoundingBox
+      {
+        BoundingBox(Vec2f p) { min = max = p; }
+        void add(Vec2f p)
+        {
+          min.x = std::min(min.x, p.x);
+          max.x = std::max(max.x, p.x);
+          min.y = std::min(min.y, p.y);
+          max.y = std::max(max.y, p.y);
+        }
+
+        Vec2f min, max;
+      };
+
+      auto& q = m_quads.back();
+      BoundingBox box(q.pos[0]);
+      for(auto& p : q.pos)
+        box.add(p);
+      if(box.max.x < -1.0 || box.min.x > 1.0 || box.max.y < -1.0 || box.min.y > 1.0)
+        m_quads.pop_back();
+    }
   }
 
 private:
