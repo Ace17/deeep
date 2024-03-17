@@ -7,7 +7,6 @@
 #include <array>
 #include <unordered_map>
 #include <vector>
-using namespace std;
 
 #include "base/box.h"
 #include "base/error.h"
