@@ -14,16 +14,14 @@
 #include "misc/util.h" // dirName
 #include "model.h"
 
-extern int loadTexture(String path, Rect2f rect);
-
 static
-void addTexture(Action& action, String path, Rect2f rect)
+void addTexture(Action& action, String path, Rect2f rect, const LoadTextureFunc& loadTexture)
 {
   action.textures.push_back(loadTexture(path, rect));
 }
 
 static
-Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, int COLS)
+Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, int COLS, const LoadTextureFunc& loadTexture)
 {
   Action r;
 
@@ -40,14 +38,14 @@ Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, in
     rect.pos.y = row / float(ROWS);
     rect.size.x = 1.0 / float(COLS);
     rect.size.y = 1.0 / float(ROWS);
-    addTexture(r, sheetPath, rect);
+    addTexture(r, sheetPath, rect, loadTexture);
   }
 
   return r;
 }
 
 static
-Model loadAnimatedModel(String jsonPath)
+Model loadAnimatedModel(String jsonPath, const LoadTextureFunc& loadTexture)
 {
   auto data = File::read(jsonPath);
   Model r;
@@ -61,7 +59,7 @@ Model loadAnimatedModel(String jsonPath)
   if(obj.has("actions"))
   {
     for(auto& action : obj["actions"].elements)
-      r.actions.push_back(loadSheetAction(action, sheet, rows, cols));
+      r.actions.push_back(loadSheetAction(action, sheet, rows, cols, loadTexture));
   }
   else
   {
@@ -76,7 +74,7 @@ Model loadAnimatedModel(String jsonPath)
         rect.size.x = 1.0 / float(cols);
         rect.size.y = 1.0 / float(rows);
 
-        addTexture(action, sheet, rect);
+        addTexture(action, sheet, rect, loadTexture);
         r.actions.push_back(action);
       }
     }
@@ -86,7 +84,7 @@ Model loadAnimatedModel(String jsonPath)
 }
 
 static
-Model loadTiledModel(String path, int count, int COLS, int ROWS)
+Model loadTiledModel(String path, int count, int COLS, int ROWS, const LoadTextureFunc& loadTexture)
 {
   auto m = Model();
 
@@ -102,14 +100,14 @@ Model loadTiledModel(String path, int count, int COLS, int ROWS)
     rect.pos.y = row * rect.size.y;
 
     Action action;
-    addTexture(action, path, rect);
+    addTexture(action, path, rect, loadTexture);
     m.actions.push_back(action);
   }
 
   return m;
 }
 
-Model loadModel(String path)
+Model loadModel(String path, const LoadTextureFunc& loadTexture)
 {
   try
   {
@@ -121,7 +119,7 @@ Model loadModel(String path)
         path = "res/sprites/rect.model";
       }
 
-      return loadAnimatedModel(path);
+      return loadAnimatedModel(path, loadTexture);
     }
     else if(endsWith(path, ".tiles"))
     {
@@ -133,7 +131,7 @@ Model loadModel(String path)
         pngPath = "res/tiles/default.png";
       }
 
-      return loadTiledModel(pngPath, 64 * 2, 8, 16);
+      return loadTiledModel(pngPath, 64 * 2, 8, 16, loadTexture);
     }
     else
     {

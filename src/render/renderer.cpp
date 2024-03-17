@@ -44,9 +44,6 @@ Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
   return r;
 }
 
-struct Renderer;
-Renderer* g_Renderer;
-
 struct Camera
 {
   Vec2f pos = Vec2f(0, 0);
@@ -81,7 +78,6 @@ struct Renderer : IRenderer
   Renderer(IGraphicsBackend* backend_)
     : backend(backend_)
   {
-    g_Renderer = this;
     m_quadShader = backend->createGpuProgram("standard", false);
     m_batchVbo = backend->createVertexBuffer();
     m_fb = backend->createFrameBuffer(INTERNAL_RESOLUTION, false);
@@ -89,17 +85,18 @@ struct Renderer : IRenderer
     m_quadVbo = backend->createVertexBuffer();
     m_quadVbo->upload(quadVertices, sizeof quadVertices);
 
-    m_Models[-1] = ::loadModel("res/font.model");
+    loadModel(-1, "res/font.model");
   }
 
   void loadModel(int id, String path) override
   {
-    m_Models[id] = ::loadModel(path);
+    auto loadTexFunc = [&] (String path, Rect2f frect) { return loadTexture(path, frect); };
+    m_Models[id] = ::loadModel(path, loadTexFunc);
   }
 
   void setCamera(Vec2f pos) override
   {
-    auto cam = Camera { pos, 0 };
+    auto cam = Camera{ pos, 0 };
 
     if(!m_cameraValid)
     {
@@ -307,8 +304,10 @@ struct Renderer : IRenderer
 
       auto& q = m_quads.back();
       BoundingBox box(q.pos[0]);
+
       for(auto& p : q.pos)
         box.add(p);
+
       if(box.max.x < -1.0 || box.min.x > 1.0 || box.max.y < -1.0 || box.min.y > 1.0)
         m_quads.pop_back();
     }
@@ -447,12 +446,6 @@ public:
     return id;
   }
 };
-}
-
-// exported to Model
-int loadTexture(String path, Rect2f frect)
-{
-  return g_Renderer->loadTexture(path, frect);
 }
 
 IRenderer* createRenderer(IGraphicsBackend* gfxBackend)
