@@ -9,16 +9,15 @@
 #include "base/delegate.h"
 #include "base/string.h"
 #include <vector>
-using namespace std;
 
 struct Action
 {
-  vector<int> textures;
+  std::vector<int> textures;
 };
 
 struct Model
 {
-  vector<Action> actions;
+  std::vector<Action> actions;
 };
 
 using LoadTextureFunc = Delegate<int (String path, Rect2f frect)>;
