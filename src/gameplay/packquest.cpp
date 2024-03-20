@@ -60,9 +60,6 @@ void dumpQuest(Quest const& q, const char* filename)
   fprintf(fp, "  [\n");
   fprintf(fp, "    {\n");
   fprintf(fp, "    \"name\":\"rooms\",\n");
-  fprintf(fp, "    \"minimap\":\"%s\",\n", serializeMatrix(q.minimapTiles).c_str());
-  fprintf(fp, "    \"width\":%d,\n", q.minimapTiles.size.x);
-  fprintf(fp, "    \"height\":%d,\n", q.minimapTiles.size.y);
   fprintf(fp, "    \"objects\":\n");
   fprintf(fp, "      [\n");
 

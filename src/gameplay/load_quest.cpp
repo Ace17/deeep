@@ -388,13 +388,6 @@ Quest loadQuest(string path)
 
   Quest r;
 
-  {
-    Vec2i size;
-    size.x = int(layer["width"]);
-    size.y = int(layer["height"]);
-    r.minimapTiles = parseMatrix(size, std::string(layer["minimap"]));
-  }
-
   for(auto& jsonRoom : layer["objects"].elements)
   {
     Room room {};

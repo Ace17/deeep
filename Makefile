@@ -91,6 +91,7 @@ SRCS_GAME:=\
 	src/entities/sweeper.cpp\
 	src/entities/switch.cpp\
 	src/entities/wheel.cpp\
+	src/gameplay/draw_minimap.cpp\
 	src/gameplay/entity_factory.cpp\
 	src/gameplay/game.cpp\
 	src/gameplay/physics.cpp\
