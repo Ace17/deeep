@@ -65,7 +65,7 @@ Model loadAnimatedModel(String jsonPath, const LoadTextureFunc& loadTexture)
   {
     for(int row = 0; row < rows; ++row)
     {
-      for(int col = 0; col < rows; ++col)
+      for(int col = 0; col < cols; ++col)
       {
         Action action;
         Rect2f rect;
