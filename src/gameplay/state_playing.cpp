@@ -309,7 +309,7 @@ struct InGameScene : Scene, private IGame
     {
       m_vars.clear();
 
-      for(auto& savedVar : m_savedVars)
+      for(auto& savedVar : m_savedGame.varValues)
         getVariable(savedVar.first)->set(savedVar.second);
 
       m_shouldLoadVars = false;
@@ -412,25 +412,28 @@ struct InGameScene : Scene, private IGame
     return m_player->pos;
   }
 
-  int m_savedLevel = 0;
-  Vector m_savedPos = NullVector;
-  map<int, int> m_savedVars;
+  struct SavedGame
+  {
+    int level = 0;
+    Vector position = NullVector;
+    std::map<int, int> varValues;
+  };
 
   void onSaveEvent()
   {
-    m_savedLevel = m_level;
-    m_savedPos = m_player->pos;
-    m_savedVars.clear();
+    m_savedGame.level = m_level;
+    m_savedGame.position = m_player->pos;
+    m_savedGame.varValues.clear();
 
     for(auto& var : m_vars)
-      m_savedVars[var.first] = var.second->get();
+      m_savedGame.varValues[var.first] = var.second->get();
   }
 
   void respawn() override
   {
     logMsg("Respawning!");
-    m_level = m_savedLevel;
-    m_transform = m_savedPos - m_player->pos + Vector(0, 0.01);
+    m_level = m_savedGame.level;
+    m_transform = m_savedGame.position - m_player->pos + Vector(0, 0.01);
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
   }
@@ -448,6 +451,7 @@ struct InGameScene : Scene, private IGame
     m_view->setAmbientLight(light);
   }
 
+  SavedGame m_savedGame;
   Quest m_quest;
   Vec2i m_currRoomSize {};
   Player* m_player = nullptr;
