@@ -179,6 +179,15 @@ MapViewModel computeMapViewModel(const MinimapData& map)
   playerPos.y += int(map.playerPos.y) / CELL_SIZE.y;
   r.cells.get(playerPos.x, playerPos.y).center = MapViewModel::CenterType::Player;
 
+  auto hideCellIfUnknown =
+    [&] (int x, int y, MapViewModel::Cell& cell)
+    {
+      if(!map.exploredCells->get(x, y))
+        cell.center = MapViewModel::CenterType::Solid;
+    };
+
+  r.cells.scan(hideCellIfUnknown);
+
   return r;
 }
 

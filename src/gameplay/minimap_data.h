@@ -6,9 +6,13 @@ struct Quest;
 
 struct MinimapData
 {
+  // immutable stuff
   const Quest* quest;
+
+  // dynamic stuff
   int level;
   Vec2f playerPos;
+  const Matrix2<int>* exploredCells;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

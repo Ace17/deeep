@@ -95,6 +95,19 @@ struct InGameScene : Scene, private IGame
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
     m_quest = loadQuest("res/quest.gz");
+
+    {
+      Vec2i questMapSize {};
+
+      for(auto& r : m_quest.rooms)
+      {
+        const Vec2i roomTopRight = r.pos + r.size;
+        questMapSize.x = std::max(questMapSize.x, roomTopRight.x);
+        questMapSize.y = std::max(questMapSize.y, roomTopRight.y);
+      }
+
+      m_savedGame.exploredCells.resize(questMapSize);
+    }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -102,16 +115,27 @@ struct InGameScene : Scene, private IGame
 
   Scene* tick(Control c) override
   {
+    loadLevelIfNeeded();
+
+    // update explored map cells
+    if(m_player)
+    {
+      Vec2i playerPos = m_quest.rooms[m_level].pos;
+      playerPos.x += int(m_player->pos.x) / CELL_SIZE.x;
+      playerPos.y += int(m_player->pos.y) / CELL_SIZE.y;
+
+      m_savedGame.exploredCells.set(playerPos.x, playerPos.y, 2);
+    }
+
     if(startButton.toggle(c.start))
     {
       MinimapData data {};
       data.quest = &m_quest;
       data.level = m_level;
       data.playerPos = m_player->pos;
+      data.exploredCells = &m_savedGame.exploredCells;
       return createPausedState(m_view, this, data);
     }
-
-    loadLevelIfNeeded();
 
     m_player->think(c);
 
@@ -417,6 +441,7 @@ struct InGameScene : Scene, private IGame
     int level = 0;
     Vector position = NullVector;
     std::map<int, int> varValues;
+    Matrix2<int> exploredCells; // 0 unknown, 1 known, 2 explored
   };
 
   void onSaveEvent()
