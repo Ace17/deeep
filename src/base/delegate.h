@@ -7,8 +7,6 @@
 // lightweight functor
 #pragma once
 
-#include <memory>
-
 template<class>
 struct Delegate;
 
@@ -23,30 +21,30 @@ struct Delegate<RetType(Args...)>
 
   Delegate(RetType(*f)(Args...))
   {
-    invokable = std::make_unique<StaticInvokable>(f);
+    reset(new StaticInvokable(f));
   }
 
   void operator = (Delegate<RetType(Args...)>&& other)
   {
-    invokable.reset(other.invokable.get());
-    other.invokable.release();
+    reset(other.invokable);
+    other.invokable = nullptr;
   }
 
   void operator = (RetType (* f)(Args...))
   {
-    invokable = std::make_unique<StaticInvokable>(f);
+    reset(new StaticInvokable(f));
   }
 
   template<typename Lambda>
   Delegate(const Lambda& func)
   {
-    invokable = std::make_unique<LambdaInvokable<Lambda>>(func);
+    reset(new LambdaInvokable<Lambda>(func));
   }
 
   template<typename Lambda>
   void operator = (const Lambda& func)
   {
-    invokable = std::make_unique<LambdaInvokable<Lambda>>(func);
+    reset(new LambdaInvokable<Lambda>(func));
   }
 
   operator bool () const { return invokable.ptr; }
@@ -58,7 +56,13 @@ private:
     virtual RetType call(Args... args) = 0;
   };
 
-  std::unique_ptr<Invokable> invokable;
+  Invokable* invokable = nullptr;
+
+  void reset(Invokable* i)
+  {
+    delete invokable;
+    invokable = i;
+  }
 
   // concrete invokable types
   struct StaticInvokable : Invokable
