@@ -41,7 +41,7 @@ struct Bonus : Entity
     // already picked up?
     if(var->get())
     {
-      Body::onCollision = [this] (Body*) {};
+      Body::onCollision = [] (Body*) {};
       dead = true;
     }
   }
@@ -74,7 +74,7 @@ struct Bonus : Entity
       auto var = game->getVariable(id);
       var->set(1);
 
-      Body::onCollision = [this] (Body*) {};
+      Body::onCollision = [] (Body*) {};
     }
   }
 

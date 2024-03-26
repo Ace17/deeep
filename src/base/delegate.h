@@ -47,7 +47,7 @@ struct Delegate<RetType(Args...)>
     reset(new LambdaInvokable<Lambda>(func));
   }
 
-  operator bool () const { return invokable.ptr; }
+  operator bool () const { return invokable; }
 
 private:
   struct Invokable
