@@ -382,13 +382,9 @@ Quest loadQuest(string path)
   auto data = gzipDecompress({ (uint8_t*)compressedData.c_str(), (int)compressedData.size() });
   auto js = json::parse((const char*)data.data(), data.size());
 
-  auto layers = getAllLayers(js);
-
-  auto layer = layers["rooms"];
-
   Quest r;
 
-  for(auto& jsonRoom : layer["objects"].elements)
+  for(auto& jsonRoom : js["rooms"].elements)
   {
     Room room {};
     room.name = string(jsonRoom["name"]);
