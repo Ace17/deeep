@@ -66,6 +66,7 @@ struct Value
   ////////////////////////////////////////
   // type == Type::Integer
   int intValue {};
+  int intPow10 = 0;
 
   operator int () const
   {

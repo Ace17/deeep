@@ -141,6 +141,14 @@ private:
       expect('e');
       break;
 
+    case 'n':
+      curr.type = Token::BOOLEAN;
+      expect('n');
+      expect('u');
+      expect('l');
+      expect('l');
+      break;
+
     case '-':
     case '0':
     case '1':
@@ -161,6 +169,14 @@ private:
         while(isdigit(frontChar()))
           accept();
 
+        if(frontChar() == '.')
+        {
+          accept();
+
+          while(isdigit(frontChar()))
+            accept();
+        }
+
         break;
       }
     default:
@@ -176,7 +192,7 @@ private:
   void expect(char c)
   {
     if(frontChar() != c)
-      throw Error("Unexpected character");
+      throw Error(string("Unexpected character: '") + c + "'");
 
     accept();
   }
@@ -197,7 +213,7 @@ private:
 
   static bool whitespace(char c)
   {
-    return c == ' ' || c == '\n';
+    return c == ' ' || c == '\n' || c == '\t';
   }
 
   const char* text;
@@ -261,7 +277,39 @@ Value parseValue(Tokenizer& tk)
   {
     Value r;
     r.type = Value::Type::Integer;
-    r.intValue = atoi(expect(tk, Token::NUMBER).c_str());
+    auto s = expect(tk, Token::NUMBER);
+    r.intValue = 0;
+    int i = 0;
+    int sign = 1;
+
+    if(s[i] == '-')
+    {
+      sign = -1;
+      ++i;
+    }
+
+    for(; i < (int)s.size(); ++i)
+    {
+      if(s[i] == '.')
+        break;
+
+      r.intValue *= 10;
+      r.intValue += s[i] - '0';
+    }
+
+    if(s[i] == '.')
+    {
+      ++i;
+
+      for(; i < (int)s.size(); ++i)
+      {
+        r.intValue *= 10;
+        r.intValue += s[i] - '0';
+        r.intPow10--;
+      }
+    }
+
+    r.intValue *= sign;
     return r;
   }
   else
