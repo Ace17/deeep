@@ -27,7 +27,7 @@ RESOURCES+=res/font.model
 TILES_SRC+=$(wildcard assets/tiles/*.xcf)
 RESOURCES+=$(TILES_SRC:assets/%.xcf=res/%.png)
 
-$(BIN)/res/quest.json: assets/quest.world $(BIN_HOST)/packquest.exe $(ROOMS_SRC)
+$(BIN)/res/quest.json: assets/quest.ldtk $(BIN_HOST)/packquest.exe $(ROOMS_SRC)
 	@mkdir -p $(dir $@)
 	$(BIN_HOST)/packquest.exe "$<" "$@"
 

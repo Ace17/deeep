@@ -14,46 +14,12 @@
 #include <map>
 #include <string>
 
-#include "misc/base64.h"
 #include "misc/decompress.h"
 #include "misc/file.h"
 #include "misc/json.h"
 #include "misc/util.h" // baseName, removeExtension
 
 #include "quest.h"
-
-static
-vector<int> convertFromLittleEndian(Span<const uint8_t> input)
-{
-  assert(input.len % 4 == 0);
-  vector<int> r(input.len / 4);
-
-  for(int i = 0; i < (int)r.size(); ++i)
-  {
-    r[i] = 0;
-    r[i] += input[i * 4 + 0] << 0;
-    r[i] += input[i * 4 + 1] << 8;
-    r[i] += input[i * 4 + 2] << 16;
-    r[i] += input[i * 4 + 3] << 24;
-  }
-
-  return r;
-}
-
-static
-vector<int> decompressTiles(string data)
-{
-  while(data.size() % 4)
-    data += "=";
-
-  auto const compDataBuffer = decodeBase64(data);
-  Span<const uint8_t> compData;
-  compData.data = compDataBuffer.data();
-  compData.len = compDataBuffer.size();
-
-  auto const uncompData = zlibDecompress(compData);
-  return convertFromLittleEndian(uncompData);
-}
 
 static
 Vec2i getSize(json::Value const& obj)
@@ -66,7 +32,7 @@ Rect2i getRect(json::Value const& obj)
 {
   Rect2i r;
 
-  r.pos = Vec2i(obj["x"], obj["y"]);
+  r.pos = Vec2i((int)obj["px"].elements[0], (int)obj["px"].elements[1]);
   r.size = getSize(obj);
 
   return r;
@@ -96,9 +62,9 @@ map<string, json::Value> getAllLayers(json::Value const& js)
 {
   map<string, json::Value> nameToLayer;
 
-  for(auto& layer : js["layers"].elements)
+  for(auto& layer : js["layerInstances"].elements)
   {
-    auto name = (string)layer["name"];
+    auto name = (string)layer["__identifier"];
     nameToLayer[name] = layer;
   }
 
@@ -106,13 +72,24 @@ map<string, json::Value> getAllLayers(json::Value const& js)
 }
 
 static
+std::vector<int> toIntArray(const json::Value& json)
+{
+  std::vector<int> r;
+  r.reserve(json.elements.size());
+
+  for(auto& e : json.elements)
+    r.push_back((int)e);
+
+  return r;
+}
+
+static
 Matrix2<int> parseTileLayer(json::Value& json)
 {
   Matrix2<int> tiles;
 
-  auto const data = (string)json["data"];
-  auto const buff = decompressTiles(data);
-  auto const size = getSize(json);
+  auto const buff = toIntArray(json["intGridCsv"]);
+  auto const size = Vec2i(json["__cWid"], json["__cHei"]);
 
   if(size.x * size.y != (int)buff.size())
     throw Error("invalid TMX file: width x height doesn't match data length");
@@ -187,25 +164,27 @@ vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height
 {
   vector<Room::Spawner> r;
 
-  for(auto& obj : objectLayer["objects"].elements)
+  for(auto& obj : objectLayer["entityInstances"].elements)
   {
     auto const objRect = transformTiledRect(getRect(obj), height);
 
     Room::Spawner spawner;
 
     spawner.pos = Vector(objRect.pos.x, objRect.pos.y);
-    spawner.name = (string)obj["name"];
-    spawner.id = obj["id"];
+    spawner.name = (string)obj["__identifier"];
+
+    for(auto& c : spawner.name)
+      c = std::tolower(c);
 
     spawner.config["width"] = to_string(objRect.size.x);
     spawner.config["height"] = to_string(objRect.size.y);
 
-    if(obj.has("properties"))
+    if(obj.has("fieldInstances"))
     {
-      for(auto& prop : obj["properties"].elements)
+      for(auto& prop : obj["fieldInstances"].elements)
       {
-        auto varName = (string)prop["name"];
-        auto varValue = (string)prop["value"];
+        auto varName = (string)prop["__identifier"];
+        auto varValue = std::to_string((int)prop["__value"]);
         spawner.config[varName] = varValue;
       }
     }
@@ -220,10 +199,10 @@ static
 void loadConcreteRoom(Room& room, json::Value const& jsRoom)
 {
   auto layers = getAllLayers(jsRoom);
-  room.tiles = parseTileLayer(layers["tiles"]);
+  room.tiles = parseTileLayer(layers["IntGrid"]);
 
-  if(exists(layers, "things"))
-    room.spawners = parseThingLayer(layers["things"], room.size.y * CELL_SIZE.y);
+  if(exists(layers, "Entities"))
+    room.spawners = parseThingLayer(layers["Entities"], room.size.y * CELL_SIZE.y);
 
   // add spikes and ladders
   for(auto pos : rasterScan(room.tiles.size.x, room.tiles.size.y))
@@ -268,7 +247,11 @@ static
 Room loadAbstractRoom(json::Value const& jsonRoom)
 {
   const int WorldMaxHeight = CELL_SIZE.y * 50;
-  auto box = getRect(jsonRoom);
+
+  Rect2i box;
+  box.pos = Vec2i(jsonRoom["worldX"], jsonRoom["worldY"]);
+  box.size = Vec2i(jsonRoom["pxWid"], jsonRoom["pxHei"]);
+
   box = transformTiledRect(box, WorldMaxHeight);
   box.pos.x /= CELL_SIZE.x;
   box.pos.y /= CELL_SIZE.y;
@@ -277,7 +260,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
-  auto const path = "assets/" + (string)jsonRoom["fileName"];
+  auto const path = "assets/" + (string)jsonRoom["externalRelPath"];
   auto const base = removeExtension(baseName(path));
 
   Room room;
@@ -316,14 +299,14 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   return room;
 }
 
-Quest loadTiledWorld(string path) // tiled JSON ".world" format
+Quest loadTiledWorld(string path) // LDTK JSON format
 {
   auto data = File::read(path);
   auto js = json::parse(data.c_str(), data.size());
 
   Quest r;
 
-  for(auto& roomValue : js["maps"].elements)
+  for(auto& roomValue : js["levels"].elements)
   {
     auto room = loadAbstractRoom(roomValue);
     r.rooms.push_back(std::move(room));
