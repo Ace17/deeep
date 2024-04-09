@@ -40,9 +40,17 @@ struct RoomBoundaryDetector : Entity
     actors.push_back(r);
   }
 
-  void onCollide(Body*)
+  void onCollide(Body* other)
   {
     if(touched)
+      return;
+
+    Vector c = other->pos + other->size / 2;
+
+    if(c.x < pos.x || c.x >= pos.x + size.x)
+      return;
+
+    if(c.y < pos.y || c.y >= pos.y + size.y)
       return;
 
     game->postEvent(make_unique<TouchLevelBoundary>(targetLevel, transform));

@@ -123,7 +123,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   for(int row = 0; row < room.size.y; ++row)
   {
     auto const delta = Vec2i(-1, row);
-    auto const margin = Vec2i(-1, 0);
+    auto const margin = Vec2i(-0.1, 0);
     tryToConnectRoom(delta, margin);
   }
 
@@ -131,7 +131,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   for(int row = 0; row < room.size.y; ++row)
   {
     auto const delta = Vec2i(room.size.x, row);
-    auto const margin = Vec2i(1, 0);
+    auto const margin = Vec2i(+0.1, 0);
     tryToConnectRoom(delta, margin);
   }
 
@@ -139,7 +139,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   for(int col = 0; col < room.size.x; ++col)
   {
     auto const delta = Vec2i(col, -1);
-    auto const margin = Vec2i(0, -2);
+    auto const margin = Vec2i(0, -0.1);
     tryToConnectRoom(delta, margin);
   }
 
@@ -147,7 +147,7 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
   for(int col = 0; col < room.size.x; ++col)
   {
     auto const delta = Vec2i(col, room.size.y);
-    auto const margin = Vec2i(0, 2);
+    auto const margin = Vec2i(0, 0.1);
     tryToConnectRoom(delta, margin);
   }
 }
