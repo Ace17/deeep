@@ -342,12 +342,16 @@ struct Rockman : Player, Damageable
     float wantedSpeed = 0;
 
     if(ladderDelay && (c.up || c.down))
-      ladder = true;
+    {
+      if(!ladder)
+      {
+        pos.x = ladderX + 0.1;
+        ladder = true;
+      }
+    }
 
     if(ladder)
     {
-      pos.x = ladderX + 0.1;
-
       if(c.jump || c.left || c.right)
       {
         ladder = false;
