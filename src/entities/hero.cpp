@@ -176,7 +176,7 @@ struct Rockman : Player, Damageable
     else if(ladder)
     {
       r.action = ACTION_LADDER;
-      r.ratio = vel.y == 0 ? 0.3 : (time % 20) / 20.0f;
+      r.ratio = vel.y == 0 ? 0.3 : (time % 40) / 40.0f;
       r.pos += Vector(0.05, -0.5);
     }
     else if(!ground)
@@ -262,7 +262,12 @@ struct Rockman : Player, Damageable
     airMove(c);
 
     if(ground)
+    {
       doubleJumped = false;
+
+      if(!c.up)
+        ladder = false;
+    }
 
     if(vel.x > 0)
       dir = RIGHT;
@@ -341,11 +346,12 @@ struct Rockman : Player, Damageable
   {
     float wantedSpeed = 0;
 
-    if(ladderDelay && (c.up || c.down))
+    if(ladderDelay && (c.up || (c.down && !ground)) && !ball)
     {
       if(!ladder)
       {
         pos.x = ladderX + 0.1;
+        vel.x = 0;
         ladder = true;
       }
     }
@@ -359,9 +365,9 @@ struct Rockman : Player, Damageable
       else
       {
         if(c.up)
-          vel.y = +WALK_SPEED;
+          vel.y = +WALK_SPEED * 0.5;
         else if(c.down)
-          vel.y = -WALK_SPEED;
+          vel.y = -WALK_SPEED * 0.5;
         else
           vel.y = 0;
       }
@@ -516,6 +522,7 @@ struct Rockman : Player, Damageable
   {
     game->setAmbientLight(0);
     upgrades = game->getVariable(-1)->get();
+    ladderDelay = 0;
   }
 
   void die()
