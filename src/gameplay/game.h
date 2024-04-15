@@ -83,6 +83,7 @@ struct IGame
 
   // logic
   virtual void spawn(Entity* e) = 0;
+  virtual void detach(Entity* e) = 0;
   virtual IVariable* getVariable(int name) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;
   virtual Vector getPlayerPosition() = 0;

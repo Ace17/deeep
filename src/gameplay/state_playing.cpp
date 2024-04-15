@@ -110,6 +110,12 @@ struct InGameScene : Scene, private IGame
     }
   }
 
+  ~InGameScene()
+  {
+    if(m_player)
+      m_player->leaveLevel();
+  }
+
   ////////////////////////////////////////////////////////////////
   // Scene: Game, seen by the engine
 
@@ -121,8 +127,8 @@ struct InGameScene : Scene, private IGame
     if(m_player)
     {
       Vec2i playerPos = m_quest.rooms[m_level].pos;
-      playerPos.x += int(m_player->pos.x) / CELL_SIZE.x;
-      playerPos.y += int(m_player->pos.y) / CELL_SIZE.y;
+      playerPos.x += int(m_player->position().x) / CELL_SIZE.x;
+      playerPos.y += int(m_player->position().y) / CELL_SIZE.y;
 
       m_savedGame.exploredCells.set(playerPos.x, playerPos.y, 2);
     }
@@ -132,7 +138,7 @@ struct InGameScene : Scene, private IGame
       MinimapData data {};
       data.quest = &m_quest;
       data.level = m_level;
-      data.playerPos = m_player->pos;
+      data.playerPos = m_player->position();
       data.exploredCells = &m_savedGame.exploredCells;
       return createPausedState(m_view, this, data);
     }
@@ -203,7 +209,7 @@ struct InGameScene : Scene, private IGame
     if(m_shouldLoadLevel)
     {
       loadLevel(m_level);
-      m_player->pos += m_transform;
+      m_player->setPosition(m_player->position() + m_transform);
       m_shouldLoadLevel = false;
       setAmbientLight(0);
     }
@@ -246,7 +252,7 @@ struct InGameScene : Scene, private IGame
 
   void updateCamera()
   {
-    auto cameraPos = m_player->pos;
+    auto cameraPos = m_player->position();
     cameraPos.y += 1.5;
 
     // prevent camera from going outside the level
@@ -318,11 +324,7 @@ struct InGameScene : Scene, private IGame
     // destroy current game arena
     ///////////////////////////////////////////////////////////////////////////
     if(m_player)
-    {
-      for(auto& entity : m_entities)
-        if(m_player == entity.get())
-          entity.release();
-    }
+      m_player->leaveLevel();
 
     m_physics.reset();
 
@@ -376,12 +378,12 @@ struct InGameScene : Scene, private IGame
     if(!m_player)
     {
       EntityConfigImpl config;
-      m_player = dynamic_cast<Player*>(createEntity("Hero", &config).release());
-      m_player->pos = Vector(level.start.x, level.start.y);
+      m_player = createHeroPlayer(this);
+      m_player->setPosition(Vector(level.start.x, level.start.y));
       postEvent(make_unique<SaveEvent>());
     }
 
-    spawn(m_player);
+    m_player->enterLevel();
   }
 
   void onTouchLevelBoundary(const TouchLevelBoundary* event)
@@ -418,6 +420,29 @@ struct InGameScene : Scene, private IGame
     m_spawned.push_back(unique(e));
   }
 
+  void detach(Entity* e) override
+  {
+    auto releaseFromVector = [] (std::vector<std::unique_ptr<Entity>>& container, Entity* e)
+      {
+        for(auto it = container.begin(); it != container.end();)
+        {
+          if(it->get() == e)
+          {
+            it->release();
+            it = container.erase(it);
+          }
+          else
+          {
+            ++it;
+          }
+        }
+      };
+
+    m_physics->removeBody(e);
+    releaseFromVector(m_spawned, e);
+    releaseFromVector(m_entities, e);
+  }
+
   IVariable* getVariable(int name) override
   {
     if(!m_vars[name])
@@ -433,7 +458,7 @@ struct InGameScene : Scene, private IGame
 
   Vector getPlayerPosition() override
   {
-    return m_player->pos;
+    return m_player->position();
   }
 
   struct SavedGame
@@ -447,7 +472,8 @@ struct InGameScene : Scene, private IGame
   void onSaveEvent()
   {
     m_savedGame.level = m_level;
-    m_savedGame.position = m_player->pos;
+    m_savedGame.position = m_player->position();
+    m_savedGame.position.y = round(m_savedGame.position.y) + 0.02;
     m_savedGame.varValues.clear();
 
     for(auto& var : m_vars)
@@ -458,7 +484,7 @@ struct InGameScene : Scene, private IGame
   {
     logMsg("Respawning!");
     m_level = m_savedGame.level;
-    m_transform = m_savedGame.position - m_player->pos + Vector(0, 0.01);
+    m_transform = m_savedGame.position - m_player->position();
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
   }

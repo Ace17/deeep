@@ -29,6 +29,15 @@ struct Damageable
   virtual void onDamage(int amount) = 0;
 };
 
+struct Player;
+
+struct Playerable
+{
+  virtual ~Playerable() = default;
+
+  virtual Player* getPlayer() = 0;
+};
+
 struct Entity : Body
 {
   virtual ~Entity() = default;

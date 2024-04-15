@@ -8,11 +8,15 @@
 
 #include "entity.h"
 
-struct Player : Entity
+struct Player
 {
   virtual void think(Control const& s) = 0;
   virtual float health() = 0;
+  virtual Vector position() = 0;
+  virtual void setPosition(Vector) = 0;
   virtual void addUpgrade(int upgrade) = 0;
+  virtual void enterLevel() {};
+  virtual void leaveLevel() {};
 };
 
 enum
@@ -25,4 +29,8 @@ enum
   UPGRADE_SLIDE = 32,
   UPGRADE_BOMB = 64,
 };
+
+struct IGame;
+Player* createHeroPlayer(IGame* game);
+Player* createHumanPlayer(IGame* game);
 

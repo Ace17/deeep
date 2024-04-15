@@ -38,7 +38,7 @@ struct Switch : Entity
   virtual void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SWITCH };
-    r.scale = size;
+    r.scale = UnitSize;
 
     if(blinking)
       r.effect = Effect::Blinking;

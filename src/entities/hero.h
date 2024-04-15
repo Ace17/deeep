@@ -9,7 +9,9 @@
 #include <memory>
 
 struct Player;
-std::unique_ptr<Player> makeRockman();
+struct IGame;
+
+Player* createHeroPlayer(IGame* game);
 
 enum ACTION
 {

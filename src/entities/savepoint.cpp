@@ -54,11 +54,10 @@ struct SavePoint : Entity
 
   void onCollide(Body* other)
   {
-    if(auto player = dynamic_cast<Player*>(other))
+    if(dynamic_cast<Playerable*>(other))
     {
       if(timer == 0)
       {
-        player->pos = pos;
         game->playSound(SND_SAVEPOINT);
         game->postEvent(make_unique<SaveEvent>());
         game->textBox("Game Saved");

@@ -128,7 +128,7 @@ struct Bomb : Entity
 
 static auto const NORMAL_SIZE = Size(0.7, 1.9);
 
-struct Rockman : Player, Damageable
+struct Rockman : Entity, Damageable
 {
   Rockman(IEntityConfig*)
   {
@@ -239,17 +239,17 @@ struct Rockman : Player, Damageable
     actors.push_back(r);
   }
 
-  void think(Control const& c) override
+  void think(Control const& c)
   {
     control = c;
   }
 
-  float health() override
+  float health()
   {
     return ::clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
   }
 
-  virtual void addUpgrade(int upgrade) override
+  void addUpgrade(int upgrade)
   {
     upgrades |= upgrade;
     blinking = 200;
@@ -633,11 +633,46 @@ struct Rockman : Player, Damageable
   int upgrades = 0;
 };
 
-DECLARE_ENTITY("Hero", Rockman);
+struct HeroPlayer : Player
+{
+  HeroPlayer(IGame* game_) : m_entity(nullptr), game(game_)
+  {}
+
+  void think(Control const& c)
+  {
+    m_entity.think(c);
+  }
+
+  float health()
+  {
+    return m_entity.health();
+  }
+
+  Vector position() override
+  {
+    return m_entity.pos;
+  }
+
+  void setPosition(Vector pos) override
+  {
+    m_entity.pos = pos;
+  }
+
+  void addUpgrade(int upgrade)
+  {
+    m_entity.addUpgrade(upgrade);
+  }
+
+  void enterLevel() override { game->spawn(&m_entity); };
+  void leaveLevel() override { game->detach(&m_entity); };
+
+  Rockman m_entity;
+  IGame* const game;
+};
 }
 
-std::unique_ptr<Player> makeRockman()
+Player* createHeroPlayer(IGame* game)
 {
-  return make_unique<Rockman>(nullptr);
+  return new HeroPlayer(game);
 }
 

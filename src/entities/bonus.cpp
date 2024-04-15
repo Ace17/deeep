@@ -64,9 +64,9 @@ struct Bonus : Entity
 
   void onCollide(Body* other)
   {
-    if(auto player = dynamic_cast<Player*>(other))
+    if(auto player = dynamic_cast<Playerable*>(other))
     {
-      player->addUpgrade(type);
+      player->getPlayer()->addUpgrade(type);
       game->playSound(SND_BONUS);
       game->textBox(msg);
       dead = true;

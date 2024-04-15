@@ -43,7 +43,7 @@ struct ExitPoint : Entity
     if(!active)
       return;
 
-    if(dynamic_cast<Player*>(other))
+    if(dynamic_cast<Playerable*>(other))
     {
       game->stopMusic();
       active = false;
