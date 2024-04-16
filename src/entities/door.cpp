@@ -19,10 +19,9 @@ namespace
 {
 struct Door : Entity
 {
-  Door(IEntityConfig* args) : id(args->getInt("link", args->getInt("0")))
+  Door(IEntityConfig* args) : id(args->getInt("link", args->getInt("0"))), initialState(args->getInt("initial", 0))
   {
     size = Size(1, 3);
-    solid = true;
     collisionGroup = CG_DOORS;
   }
 
@@ -30,11 +29,11 @@ struct Door : Entity
   {
     auto onTriggered = [&] (int open)
       {
-        state = open;
-        delay = 100;
+        state = (open + initialState) % 2;
+        delay = 50;
 
         // in case of closing, immediately prevent traversal
-        if(!open)
+        if(!state)
           solid = true;
 
         game->playSound(SND_DOOR);
@@ -44,10 +43,8 @@ struct Door : Entity
     subscription = var->observe(onTriggered);
 
     // already open?
-    state = var->get();
-
-    if(state)
-      solid = false;
+    state = (var->get() + initialState) % 2;
+    solid = !state;
   }
 
   void leave() override
@@ -75,6 +72,7 @@ struct Door : Entity
   bool state = false;
   int delay = 0;
   const int id;
+  const int initialState;
   unique_ptr<Handle> subscription;
 };
 
