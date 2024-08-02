@@ -25,8 +25,6 @@ namespace
 {
 Gauge ggAudioVoices("Audio voices");
 
-using namespace std;
-
 template<typename T>
 struct Fifo
 {
@@ -170,7 +168,7 @@ struct HighLevelAudio : MixableAudio
   int m_nextVoiceId = 1;
 
   // Shared read-only data (Resources)
-  unordered_map<int, std::shared_ptr<Sound>> m_sounds;
+  std::unordered_map<int, std::shared_ptr<Sound>> m_sounds;
   std::shared_ptr<BleepSound> m_bleepSound;
 
   /////////////////////////////////////////////////////////////////////////////
