@@ -21,13 +21,13 @@ struct EntityInfo
   uint32_t flags;
 };
 
-map<string, EntityInfo> & g_registry()
+map<string, EntityInfo>& g_registry()
 {
   static map<string, EntityInfo> registry;
   return registry;
 }
 
-const EntityInfo & getEntityInfo(string name)
+const EntityInfo& getEntityInfo(string name)
 {
   auto i_info = g_registry().find(name);
 

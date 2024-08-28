@@ -15,9 +15,8 @@ struct Vec2f
 
   Vec2f() = default;
   Vec2f(const Vec2f &) = default;
-  Vec2f& operator = (const Vec2f&) = default;
-  Vec2f(float x_, float y_)
-    : x(x_)
+  Vec2f& operator = (const Vec2f &) = default;
+  Vec2f(float x_, float y_) : x(x_)
     , y(y_)
   {
   }
@@ -44,9 +43,8 @@ struct Vec2i
 
   Vec2i() = default;
   Vec2i(const Vec2i &) = default;
-  Vec2i& operator = (const Vec2i&) = default;
-  Vec2i(int x_, int y_)
-    : x(x_)
+  Vec2i& operator = (const Vec2i &) = default;
+  Vec2i(int x_, int y_) : x(x_)
     , y(y_)
   {
   }

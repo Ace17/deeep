@@ -19,7 +19,7 @@ struct Delegate<RetType(Args...)>
   Delegate() = default;
   Delegate(Delegate &&) = default;
 
-  Delegate(RetType(*f)(Args...))
+  Delegate(RetType (*f)(Args...))
   {
     reset(new StaticInvokable(f));
   }
@@ -47,7 +47,10 @@ struct Delegate<RetType(Args...)>
     reset(new LambdaInvokable<Lambda>(func));
   }
 
-  operator bool () const { return invokable; }
+  operator bool () const
+  {
+    return invokable;
+  }
 
 private:
   struct Invokable
@@ -67,7 +70,9 @@ private:
   // concrete invokable types
   struct StaticInvokable : Invokable
   {
-    StaticInvokable(RetType(*f)(Args...)) : funcPtr(f) {}
+    StaticInvokable(RetType (*f)(Args...)) : funcPtr(f)
+    {
+    }
     RetType call(Args... args) override { return (*funcPtr)(args...); }
     RetType (* funcPtr)(Args...) = nullptr;
   };
@@ -75,7 +80,9 @@ private:
   template<typename Lambda>
   struct LambdaInvokable : Invokable
   {
-    LambdaInvokable(Lambda f) : funcPtr(f) {}
+    LambdaInvokable(Lambda f) : funcPtr(f)
+    {
+    }
     RetType call(Args... args) override { return funcPtr(args...); }
     Lambda funcPtr {};
   };

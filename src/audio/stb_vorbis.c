@@ -1430,7 +1430,7 @@ static __forceinline void prep_huffman(vorb* f)
       f->acc += (unsigned)z << f->valid_bits;
       f->valid_bits += 8;
     }
-    while (f->valid_bits <= 24);
+    while(f->valid_bits <= 24);
   }
 }
 
@@ -1521,18 +1521,18 @@ static int codebook_decode_scalar_raw(vorb* f, Codebook* c)
 #ifndef STB_VORBIS_NO_INLINE_DECODE
 
 #define DECODE_RAW(var, f, c)                                  \
-  if(f->valid_bits < STB_VORBIS_FAST_HUFFMAN_LENGTH)        \
-  prep_huffman(f);                                        \
-  var = f->acc & FAST_HUFFMAN_TABLE_MASK;                    \
-  var = c->fast_huffman[var];                                \
-  if(var >= 0){                                            \
-    int n = c->codeword_lengths[var];                       \
-    f->acc >>= n;                                           \
-    f->valid_bits -= n;                                     \
-    if(f->valid_bits < 0){ f->valid_bits = 0; var = -1; } \
-  }else{                                                   \
-    var = codebook_decode_scalar_raw(f, c);                  \
-  }
+        if(f->valid_bits < STB_VORBIS_FAST_HUFFMAN_LENGTH)        \
+        prep_huffman(f);                                        \
+        var = f->acc & FAST_HUFFMAN_TABLE_MASK;                    \
+        var = c->fast_huffman[var];                                \
+        if(var >= 0){                                            \
+          int n = c->codeword_lengths[var];                       \
+          f->acc >>= n;                                           \
+          f->valid_bits -= n;                                     \
+          if(f->valid_bits < 0){ f->valid_bits = 0; var = -1; } \
+        }else{                                                   \
+          var = codebook_decode_scalar_raw(f, c);                  \
+        }
 
 #else
 
@@ -1569,8 +1569,8 @@ static int codebook_decode_scalar(vorb* f, Codebook* c)
 #endif
 
 #define DECODE(var, f, c)                                       \
-  DECODE_RAW(var, f, c)                                        \
-  if(c->sparse) var = c->sorted_values[var];
+        DECODE_RAW(var, f, c)                                        \
+        if(c->sparse) var = c->sorted_values[var];
 
 #ifndef STB_VORBIS_DIVIDES_IN_CODEBOOK
 #define DECODE_VQ(var, f, c) DECODE_RAW(var, f, c)
@@ -3874,7 +3874,7 @@ static int start_decoder(vorb* f)
     skip(f, len);
     f->bytes_in_seg = 0;
   }
-  while (len);
+  while(len);
 
   // third packet!
   if(!start_packet(f))

@@ -25,12 +25,24 @@ struct Matrix3f
   {
     float elements[3 + 1] {}; // +1: slight speedup
 
-    operator float* () { return elements; }
-    operator const float* () const { return elements; }
+    operator float* ()
+    {
+      return elements;
+    }
+    operator const float* () const
+    {
+      return elements;
+    }
   };
 
-  operator row* () { return m_rows; }
-  operator const row* () const { return m_rows; }
+  operator row* ()
+  {
+    return m_rows;
+  }
+  operator const row* () const
+  {
+    return m_rows;
+  }
 
   row m_rows[3] {};
 };

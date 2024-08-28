@@ -15,7 +15,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #define assertNearlyEquals(u, v) \
-  assertNearlyEqualsFunc(u, v, __FILE__, __LINE__)
+        assertNearlyEqualsFunc(u, v, __FILE__, __LINE__)
 
 template<>
 struct ToStringImpl<Vec2f>

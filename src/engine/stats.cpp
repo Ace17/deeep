@@ -50,7 +50,7 @@ struct StatTrack
   }
 };
 
-std::vector<StatTrack> & g_Tracks()
+std::vector<StatTrack>& g_Tracks()
 {
   static std::vector<StatTrack> tracks;
   return tracks;

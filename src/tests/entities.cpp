@@ -40,7 +40,7 @@ unittest("Entity: explosion")
 
 struct NullPlayer : Player
 {
-  virtual void think(Control const&) {}
+  virtual void think(Control const &) {}
   virtual float health() { return 0; }
   virtual void addUpgrade(int) {}
 };
@@ -49,7 +49,7 @@ struct NullVariable : IVariable
 {
   int get() { return 0; }
   void set(int) {}
-  unique_ptr<Handle> observe(Observer&&) { return nullptr; }
+  unique_ptr<Handle> observe(Observer &&) { return nullptr; }
 };
 
 static NullVariable nullVariable;
@@ -120,7 +120,7 @@ unittest("Entity: pickup bonus")
       return &player;
     }
 
-    void addActors(vector<Actor>&) const override {}
+    void addActors(vector<Actor> &) const override {}
     MockPlayer player;
   };
 

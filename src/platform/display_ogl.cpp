@@ -29,7 +29,7 @@ using namespace std;
 #define SAFE_GL(a) a
 #else
 #define SAFE_GL(a) \
-  do { a; ensureGl(# a, __FILE__, __LINE__); } while (0)
+        do { a; ensureGl(# a, __FILE__, __LINE__); } while(0)
 #endif
 
 void ensureGl(char const* expr, const char* file, int line)

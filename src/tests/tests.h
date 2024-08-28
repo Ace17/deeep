@@ -13,23 +13,23 @@
 #include <string>
 
 #define unittest(name) \
-  unittestWithCounter(__COUNTER__, name)
+        unittestWithCounter(__COUNTER__, name)
 
 #define assertTrue(expr) \
-  assertTrueFunc(__FILE__, __LINE__, # expr, expr)
+        assertTrueFunc(__FILE__, __LINE__, # expr, expr)
 
 #define assertEquals(expected, actual) \
-  assertEqualsFunc(__FILE__, __LINE__, # actual, expected, actual)
+        assertEqualsFunc(__FILE__, __LINE__, # actual, expected, actual)
 
 #define assertThrown(expr) \
-  do { \
-    try \
-    { \
-      expr; \
-      failUnitTest(__FILE__, __LINE__, "No exception was thrown: " # expr); \
-    } \
-    catch(...){} \
-  } while (0)
+        do { \
+          try \
+          { \
+            expr; \
+            failUnitTest(__FILE__, __LINE__, "No exception was thrown: " # expr); \
+          } \
+          catch(...){} \
+        } while(0)
 
 void runTests(const char* filter);
 
@@ -44,13 +44,13 @@ struct Test
 };
 
 #define unittestWithCounter(counter, name) \
-  unittest2(counter, name)
+        unittest2(counter, name)
 
 #define unittest2(counter, name) \
-  static void g_myTest ## counter(); \
-  static Test g_myTestInfo ## counter = { &g_myTest ## counter, name }; \
-  static auto g_registration ## counter = registerTest(g_myTestInfo ## counter); \
-  static void g_myTest ## counter()
+        static void g_myTest ## counter(); \
+        static Test g_myTestInfo ## counter = { &g_myTest ## counter, name }; \
+        static auto g_registration ## counter = registerTest(g_myTestInfo ## counter); \
+        static void g_myTest ## counter()
 
 struct Registration {};
 Registration registerTest(Test& test);
@@ -71,7 +71,7 @@ extern T* DummyInstance();
 
 // match std::vector
 template<typename T>
-struct ToStringImpl < T, decltype(DummyInstance<T>()->push_back((typename T::value_type) {})) >
+struct ToStringImpl<T, decltype(DummyInstance<T>()->push_back((typename T::value_type) {}))>
 {
   static std::string call(const T& val)
   {
