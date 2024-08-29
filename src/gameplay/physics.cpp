@@ -94,7 +94,7 @@ struct Physics : IPhysics
         }
   }
 
-  bool isSolid(const Body* except, Box rect) const
+  bool isSolid(Box rect, const Body* except) const
   {
     return getSolidBodyInBox(rect, except->collidesWith, except);
   }

@@ -80,14 +80,14 @@ struct NullPhysicsProbe : IPhysicsProbe
     rect.pos.x += delta.x;
     rect.pos.y += delta.y;
 
-    if(isSolid(body, rect))
+    if(isSolid(rect, body))
       return 0;
 
     body->pos += delta;
     return 1;
   }
 
-  bool isSolid(const Body* /*body*/, Box rect) const
+  bool isSolid(Box rect, const Body* /*except*/) const
   {
     return rect.pos.y < 0;
   }
