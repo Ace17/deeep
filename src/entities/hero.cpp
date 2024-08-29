@@ -44,7 +44,7 @@ struct Bullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_BULLET };
     r.scale = size;
@@ -84,7 +84,7 @@ struct Bomb : Entity
     collidesWith = CG_WALLS | CG_ENEMIES;
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     if(life == 0)
       return;
@@ -146,7 +146,7 @@ struct Rockman : Entity, Damageable
     }
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_ROCKMAN };
     r.scale = Size(3, 3);
@@ -404,7 +404,7 @@ struct Rockman : Entity, Damageable
       vel.x = 0;
   }
 
-  virtual void tick() override
+  void tick() override
   {
     decrement(blinking);
     decrement(hurtDelay);
@@ -481,7 +481,7 @@ struct Rockman : Entity, Damageable
       collisionGroup |= CG_SOLIDPLAYER;
   }
 
-  virtual void onDamage(int amount) override
+  void onDamage(int amount) override
   {
     if(life <= 0)
       return;

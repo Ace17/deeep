@@ -25,12 +25,12 @@ struct Variable : IVariable
     assert(observers.empty());
   }
 
-  virtual int get() override
+  int get() override
   {
     return value;
   }
 
-  virtual void set(int newValue) override
+  void set(int newValue) override
   {
     value = newValue;
 
@@ -38,7 +38,7 @@ struct Variable : IVariable
       observer(newValue);
   }
 
-  virtual unique_ptr<Handle> observe(Observer&& observer) override
+  unique_ptr<Handle> observe(Observer&& observer) override
   {
     auto it = observers.insert(observers.begin(), std::move(observer));
 

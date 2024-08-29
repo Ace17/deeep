@@ -52,7 +52,7 @@ struct MovingWall : Entity
     subscription.reset();
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     for(int i = 0; i < size.x; ++i)
     {

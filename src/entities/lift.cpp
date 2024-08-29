@@ -67,7 +67,7 @@ struct Lift : Entity
     }
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_ELEVATOR };
     r.scale = size;

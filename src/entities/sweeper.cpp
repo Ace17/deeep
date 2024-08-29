@@ -33,7 +33,7 @@ struct Sweeper : Entity, Damageable
     vel.y = 0.03;
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SWEEPER };
 
@@ -49,7 +49,7 @@ struct Sweeper : Entity, Damageable
     actors.push_back(r);
   }
 
-  virtual void tick() override
+  void tick() override
   {
     ++time;
 
@@ -70,7 +70,7 @@ struct Sweeper : Entity, Damageable
       damageable->onDamage(5);
   }
 
-  virtual void onDamage(int amount) override
+  void onDamage(int amount) override
   {
     blinking = 75;
     life -= amount;

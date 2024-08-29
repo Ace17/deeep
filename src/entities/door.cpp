@@ -52,7 +52,7 @@ struct Door : Entity
     subscription.reset();
   }
 
-  virtual void tick() override
+  void tick() override
   {
     decrement(delay);
 
@@ -60,7 +60,7 @@ struct Door : Entity
       solid = false;
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_DOOR };
     r.action = state ? 1 : 3;
@@ -85,7 +85,7 @@ struct BreakableDoor : Entity, Damageable
     collisionGroup = CG_WALLS;
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_DOOR };
     r.scale = size;
@@ -103,12 +103,12 @@ struct BreakableDoor : Entity, Damageable
       dead = true;
   }
 
-  virtual void tick() override
+  void tick() override
   {
     decrement(blinking);
   }
 
-  virtual void onDamage(int amount) override
+  void onDamage(int amount) override
   {
     blinking = 20;
     life -= amount;

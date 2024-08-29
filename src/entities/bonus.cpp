@@ -46,7 +46,7 @@ struct Bonus : Entity
     }
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto s = sin(time * 0.1);
     auto r = Actor { pos, MDL_BONUS };
@@ -57,7 +57,7 @@ struct Bonus : Entity
     actors.push_back(r);
   }
 
-  virtual void tick() override
+  void tick() override
   {
     ++time;
   }

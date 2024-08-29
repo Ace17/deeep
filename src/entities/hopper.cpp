@@ -33,7 +33,7 @@ struct Hopper : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_HOPPER };
 
@@ -52,7 +52,7 @@ struct Hopper : Entity, Damageable
     actors.push_back(r);
   }
 
-  virtual void tick() override
+  void tick() override
   {
     ++time;
 
@@ -89,7 +89,7 @@ struct Hopper : Entity, Damageable
       damageable->onDamage(5);
   }
 
-  virtual void onDamage(int amount) override
+  void onDamage(int amount) override
   {
     blinking = 100;
     life -= amount;

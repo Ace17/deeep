@@ -35,7 +35,7 @@ struct Switch : Entity
     state = var->get();
   }
 
-  virtual void addActors(vector<Actor>& actors) const override
+  void addActors(vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SWITCH };
     r.scale = UnitSize;
@@ -48,7 +48,7 @@ struct Switch : Entity
     actors.push_back(r);
   }
 
-  virtual void tick() override
+  void tick() override
   {
     blinking = max(0, blinking - 1);
   }
