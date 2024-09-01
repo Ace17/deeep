@@ -198,7 +198,7 @@ Vec2f rotateLeft(Vec2f v) { return Vec2f(-v.y, v.x); }
 // The obstacle is an AABB, whose position and halfSize are given as parameters.
 // The return value represents the allowed move, as a fraction of the desired
 // move (delta).
-float raycast(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstacleHalfSize)
+float raycastAgainstAABB(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstacleHalfSize)
 {
   const Vec2f axes[] = {
     { 1, 0 },
@@ -274,10 +274,10 @@ float ShapeBox::raycast(AffineTransform transform, Box otherBox, Vec2f delta) co
 {
   auto otherBoxHalfSize = Vec2f(otherBox.size.x, otherBox.size.y) * 0.5;
   auto obstacleHalfSize = transform.scale * 0.5;
-  return ::raycast(otherBox.pos + otherBoxHalfSize,
-                   delta,
-                   transform.translate + obstacleHalfSize,
-                   obstacleHalfSize + otherBoxHalfSize);
+  return ::raycastAgainstAABB(otherBox.pos + otherBoxHalfSize,
+                              delta,
+                              transform.translate + obstacleHalfSize,
+                              obstacleHalfSize + otherBoxHalfSize);
 }
 
 bool ShapeTilemap::probe(AffineTransform /* transform */, Box otherBox) const
@@ -328,7 +328,7 @@ float ShapeTilemap::raycast(AffineTransform /* transform */, Box otherBox, Vec2f
       if(tiles->isInside(col, row) && tiles->get(col, row))
       {
         const auto tilePos = Vec2f(col, row) + tileHalfSize;
-        float f = ::raycast(otherBox.pos + boxHalfSize, delta, tilePos, boxHalfSize + tileHalfSize);
+        float f = ::raycastAgainstAABB(otherBox.pos + boxHalfSize, delta, tilePos, boxHalfSize + tileHalfSize);
 
         if(f < fraction)
           fraction = f;
