@@ -97,7 +97,7 @@ struct Fixture
     physics->addBody(&mover);
   }
 
-  unique_ptr<IPhysics> physics;
+  std::unique_ptr<IPhysics> physics;
   Body mover;
   Body walls;
   CornerShape cornerShape;

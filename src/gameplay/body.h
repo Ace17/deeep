@@ -13,8 +13,6 @@
 #include "base/matrix.h"
 #include "vec.h"
 
-using namespace std;
-
 struct AffineTransform
 {
   Vector translate;

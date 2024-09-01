@@ -21,5 +21,5 @@ struct IPhysics : IPhysicsProbe
 };
 
 #include <memory>
-unique_ptr<IPhysics> createPhysics();
+std::unique_ptr<IPhysics> createPhysics();
 
