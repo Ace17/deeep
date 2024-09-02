@@ -46,7 +46,6 @@ LDFLAGS+=-Wl,-gc-sections
 SRCS_ENGINE:=\
 	src/engine/app.cpp\
 	src/engine/main.cpp\
-	src/engine/stats.cpp\
 	src/audio/audio.cpp\
 	src/audio/sound_ogg.cpp\
 	src/base/logger.cpp\
@@ -55,6 +54,7 @@ SRCS_ENGINE:=\
 	src/misc/file.cpp\
 	src/misc/json.cpp\
 	src/misc/math.cpp\
+	src/misc/stats.cpp\
 	src/misc/string.cpp\
 	src/misc/time.cpp\
 	src/render/matrix3.cpp\

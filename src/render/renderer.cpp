@@ -18,9 +18,9 @@
 #include "base/span.h"
 #include "base/util.h" // clamp
 #include "engine/graphics_backend.h"
-#include "engine/stats.h"
 #include "matrix3.h"
 #include "misc/file.h"
+#include "misc/stats.h"
 #include "misc/util.h"
 #include "model.h"
 #include "picture.h"

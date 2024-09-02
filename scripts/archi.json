@@ -31,7 +31,7 @@
    {
       "desc" : "Audio subsystem",
       "name" : "audio",
-      "deps" : [ "base", "engine" ]
+      "deps" : [ "base", "engine", "misc" ]
    },
    {
       "desc" : "Input subsystem",

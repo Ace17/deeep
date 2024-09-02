@@ -20,13 +20,13 @@
 #include "base/renderer.h"
 #include "base/scene.h"
 #include "misc/file.h"
+#include "misc/stats.h"
 #include "misc/time.h"
 
 #include "audio_backend.h"
 #include "graphics_backend.h"
 #include "input.h"
 #include "ratecounter.h"
-#include "stats.h"
 #include "video_capture.h"
 
 auto const GAMEPLAY_HZ = 100;

@@ -16,8 +16,8 @@
 #include "base/logger.h"
 #include "base/span.h"
 #include "engine/graphics_backend.h"
-#include "engine/stats.h"
 #include "misc/file.h"
+#include "misc/stats.h"
 #include "render/picture.h"
 
 #include "glad.h"
