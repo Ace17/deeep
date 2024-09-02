@@ -11,6 +11,7 @@
 #include "base/util.h"
 #include "body.h"
 #include "misc/math.h"
+#include "misc/stats.h"
 #include "physics.h"
 #include <memory>
 #include <vector>
@@ -24,6 +25,8 @@ Body::Body()
 
 namespace
 {
+Gauge ggOverlapChecks("Overlap checks");
+
 struct Physics : IPhysics
 {
   void addBody(Body* body)
@@ -101,6 +104,8 @@ struct Physics : IPhysics
 
   void checkForOverlaps()
   {
+    int checkCount = 0;
+
     for(auto p : allPairs((int)m_bodies.size()))
     {
       auto& me = *m_bodies[p.first];
@@ -111,7 +116,11 @@ struct Physics : IPhysics
 
       if(overlaps(rect, otherBox))
         collideBodies(me, other);
+
+      ++checkCount;
     }
+
+    ggOverlapChecks = checkCount;
   }
 
   void collideBodies(Body& me, Body& other)
