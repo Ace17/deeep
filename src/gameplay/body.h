@@ -15,7 +15,6 @@
 
 struct AffineTransform
 {
-  Vector translate;
   Vector scale;
 };
 

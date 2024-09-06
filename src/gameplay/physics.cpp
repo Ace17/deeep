@@ -154,7 +154,6 @@ struct Physics : IPhysics
         continue;
 
       AffineTransform transform;
-      transform.translate = NullVector;
       transform.scale = body->size;
 
       Box transformedBox;
@@ -187,10 +186,12 @@ struct Physics : IPhysics
         continue;
 
       AffineTransform transform;
-      transform.translate = body->pos;
       transform.scale = body->size;
 
-      if(body->shape->probe(transform, myBox))
+      Box transformedBox = myBox;
+      transformedBox.pos -= body->pos;
+
+      if(body->shape->probe(transform, transformedBox))
         return body;
     }
 
@@ -278,7 +279,7 @@ unique_ptr<IPhysics> createPhysics()
 bool ShapeBox::probe(AffineTransform transform, Box otherBox) const
 {
   Box myBox;
-  myBox.pos = transform.translate;
+  myBox.pos = NullVector;
   myBox.size = { transform.scale.x, transform.scale.y };
   return overlaps(myBox, otherBox);
 }
@@ -289,7 +290,7 @@ float ShapeBox::raycast(AffineTransform transform, Box otherBox, Vec2f delta) co
   auto obstacleHalfSize = transform.scale * 0.5;
   return ::raycastAgainstAABB(otherBox.pos + otherBoxHalfSize,
                               delta,
-                              transform.translate + obstacleHalfSize,
+                              obstacleHalfSize,
                               obstacleHalfSize + otherBoxHalfSize);
 }
 
