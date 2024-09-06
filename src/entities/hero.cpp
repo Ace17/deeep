@@ -128,14 +128,17 @@ struct Bomb : Entity
 
 static auto const NORMAL_SIZE = Size(0.7, 1.9);
 
-struct Rockman : Entity, Damageable
+struct Rockman : Entity, Damageable, Playerable
 {
-  Rockman(IEntityConfig*)
+  Rockman(IEntityConfig*, Player* player_)
+    : player(player_)
   {
     size = NORMAL_SIZE;
     collidesWith |= CG_LADDER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
+
+  Player* getPlayer() { return player; }
 
   void onCollide(Body* b)
   {
@@ -631,11 +634,12 @@ struct Rockman : Entity, Damageable
   Vector vel;
 
   int upgrades = 0;
+  Player* const player;
 };
 
 struct HeroPlayer : Player
 {
-  HeroPlayer(IGame* game_) : m_entity(nullptr), game(game_)
+  HeroPlayer(IGame* game_) : m_entity(nullptr, this), game(game_)
   {}
 
   void think(Control const& c)
