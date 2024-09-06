@@ -154,10 +154,14 @@ struct Physics : IPhysics
         continue;
 
       AffineTransform transform;
-      transform.translate = body->pos;
+      transform.translate = NullVector;
       transform.scale = body->size;
 
-      const auto fraction = body->shape->raycast(transform, box, delta);
+      Box transformedBox;
+      transformedBox.pos = box.pos - body->pos;
+      transformedBox.size = box.size;
+
+      const auto fraction = body->shape->raycast(transform, transformedBox, delta);
 
       if(fraction < r.fraction)
       {
