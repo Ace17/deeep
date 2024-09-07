@@ -345,7 +345,7 @@ struct InGameScene : Scene, private IGame
     // create new game arena
     ///////////////////////////////////////////////////////////////////////////
 
-    m_physics = createPhysics();
+    m_physics.reset(createPhysics());
 
     if(levelIdx < 0 || levelIdx >= (int)m_quest.rooms.size())
       throw Error("No such level");

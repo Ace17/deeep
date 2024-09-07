@@ -20,6 +20,5 @@ struct IPhysics : IPhysicsProbe
   virtual void checkForOverlaps() = 0;
 };
 
-#include <memory>
-std::unique_ptr<IPhysics> createPhysics();
+IPhysics* createPhysics();
 

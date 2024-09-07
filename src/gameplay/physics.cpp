@@ -13,7 +13,6 @@
 #include "misc/math.h"
 #include "misc/stats.h"
 #include "physics.h"
-#include <memory>
 #include <vector>
 
 static const ShapeBox shapeBox;
@@ -285,9 +284,9 @@ struct BoundingBox
 };
 } // namespace
 
-unique_ptr<IPhysics> createPhysics()
+IPhysics* createPhysics()
 {
-  return make_unique<Physics>();
+  return new Physics;
 }
 
 bool ShapeBox::probe(Box otherBox) const
