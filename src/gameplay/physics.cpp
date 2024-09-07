@@ -24,7 +24,9 @@ Body::Body()
 
 namespace
 {
-Gauge ggOverlapChecks("Overlap checks");
+Gauge ggOverlapChecks("physics.overlap_checks");
+Gauge ggRaycasts("physics.raycasts");
+int raycastCount = 0;
 
 struct Physics : IPhysics
 {
@@ -126,6 +128,9 @@ struct Physics : IPhysics
     }
 
     ggOverlapChecks = checkCount;
+    ggRaycasts = raycastCount;
+
+    raycastCount = 0;
   }
 
   void collideBodies(Body& me, Body& other)
@@ -155,6 +160,7 @@ struct Physics : IPhysics
       if(!(body->collisionGroup & collisionGroup))
         continue;
 
+      raycastCount++;
       Box transformedBox = box;
       Vector transformedDelta = delta;
       const Vector scale = { 1.0f / body->size.x, 1.0f / body->size.y };
