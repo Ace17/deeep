@@ -108,8 +108,8 @@ function deliverWebVersion
   export CXX=emcc
   export EXT=".html"
   export DBGFLAGS=""
-  export CXXFLAGS="-O3 -g0 -fwasm-exceptions -DNDEBUG"
-  export LDFLAGS=" -O3 -g0 -fwasm-exceptions --use-preload-plugins --pre-js \"my-pre.js\" --preload-file res -s USE_WEBGL2=1 -s TOTAL_MEMORY=$((64 * 1024 * 1024)) -s PRECISE_F32=1"
+  export CXXFLAGS="-O3 -g0 -DNDEBUG"
+  export LDFLAGS=" -O3 -g0 --use-preload-plugins --pre-js \"my-pre.js\" --preload-file res -s USE_WEBGL2=1 -s TOTAL_MEMORY=$((64 * 1024 * 1024)) -s PRECISE_F32=1"
 
   make -j`nproc` game >/dev/null
 

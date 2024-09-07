@@ -18,10 +18,7 @@
 using namespace std;
 
 #ifdef __EMSCRIPTEN__
-extern "C"
-{
-void emscripten_set_main_loop(void (* f)(), int, int);
-}
+#include <emscripten.h>
 
 static IApp* g_theApp;
 
@@ -33,7 +30,7 @@ static void tickTheApp()
 void runMainLoop(IApp* app)
 {
   g_theApp = app;
-  emscripten_set_main_loop(&tickTheApp, 0, 10);
+  emscripten_set_main_loop(&tickTheApp, -1, 1);
 }
 
 #else

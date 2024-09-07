@@ -67,6 +67,7 @@ public:
     m_lastDisplayFrameTime = GetSteadyClockMs();
 
     registerUserInputActions();
+    logMsg("Engine successfully inited");
   }
 
   bool tick() override
