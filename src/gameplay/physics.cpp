@@ -45,7 +45,10 @@ struct Physics : IPhysics
   {
     auto myBox = body->getBox();
 
-    auto const rc = castBox(myBox, delta, body->collidesWith, body);
+    const auto oldSolid = body->solid;
+    body->solid = false; // make pusher non-solid, so stacked bodies can move down
+
+    auto const rc = castBox(myBox, delta, body->collidesWith);
 
     if(rc.blocker)
       collideBodies(*body, *rc.blocker);
@@ -54,14 +57,10 @@ struct Physics : IPhysics
     {
       myBox.pos += rc.fraction * delta;
 
-      auto oldSolid = body->solid;
-      body->solid = false; // make pusher non-solid, so stacked bodies can move down
-
       if(body->pusher)
         pushOthers(body, myBox, rc.fraction * delta);
 
       body->pos = myBox.pos;
-      body->solid = oldSolid;
     }
 
     // update floor
@@ -72,6 +71,9 @@ struct Physics : IPhysics
       feet.pos.y = body->getBox().pos.y - feet.size.y;
       body->floor = getSolidBodyInBox(feet, body->collidesWith, body);
     }
+
+    // restore 'solid' flag
+    body->solid = oldSolid;
 
     return rc.fraction;
   }
@@ -142,16 +144,13 @@ struct Physics : IPhysics
     Body* blocker = nullptr;
   };
 
-  Raycast castBox(Box box, Vec2f delta, int collisionGroup, const Body* except) const
+  Raycast castBox(Box box, Vec2f delta, int collisionGroup) const
   {
     Raycast r;
 
     for(auto& body : m_bodies)
     {
       if(!body->solid)
-        continue;
-
-      if(body == except)
         continue;
 
       if(!(body->collisionGroup & collisionGroup))
