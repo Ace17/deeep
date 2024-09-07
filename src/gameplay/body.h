@@ -13,16 +13,11 @@
 #include "base/matrix.h"
 #include "vec.h"
 
-struct AffineTransform
-{
-  Vector scale;
-};
-
 struct Shape
 {
   virtual ~Shape() = default;
-  virtual bool probe(AffineTransform tx, Box otherBox) const = 0;
-  virtual float raycast(AffineTransform tx, Box otherBox, Vec2f delta) const = 0;
+  virtual bool probe(Box box) const = 0;
+  virtual float raycast(Box box, Vec2f delta) const = 0;
 };
 
 struct Body
@@ -55,14 +50,14 @@ struct Body
 
 struct ShapeBox : Shape
 {
-  bool probe(AffineTransform transform, Box otherBox) const override;
-  float raycast(AffineTransform transform, Box otherBox, Vec2f delta) const override;
+  bool probe(Box box) const override;
+  float raycast(Box box, Vec2f delta) const override;
 };
 
 struct ShapeTilemap : Shape
 {
-  bool probe(AffineTransform transform, Box otherBox) const override;
-  float raycast(AffineTransform transform, Box otherBox, Vec2f delta) const override;
+  bool probe(Box box) const override;
+  float raycast(Box box, Vec2f delta) const override;
   Matrix2<int>* tiles;
 };
 

@@ -45,18 +45,18 @@ void assertNearlyEqualsFunc(Vec2f expected, Vec2f actual, const char* file, int 
 
 struct CornerShape : Shape
 {
-  bool probe(AffineTransform /* transform */, Box rect) const override
+  bool probe(Box box) const override
   {
-    return rect.pos.y < 0 || rect.pos.x < 0;
+    return box.pos.y < 0 || box.pos.x < 0;
   }
 
-  float raycast(AffineTransform /* transform */, Box otherBox, Vec2f delta) const override
+  float raycast(Box box, Vec2f delta) const override
   {
     float fraction = 1;
 
     {
-      float x1 = otherBox.pos.x;
-      float x2 = otherBox.pos.x + delta.x;
+      float x1 = box.pos.x;
+      float x2 = box.pos.x + delta.x;
 
       if(x1 > 0 && x2 < 0)
       {
@@ -68,8 +68,8 @@ struct CornerShape : Shape
     }
 
     {
-      float y1 = otherBox.pos.y;
-      float y2 = otherBox.pos.y + delta.y;
+      float y1 = box.pos.y;
+      float y2 = box.pos.y + delta.y;
 
       if(y1 > 0 && y2 < 0)
       {
@@ -132,7 +132,7 @@ unittest("Physics: left move, blocked by a bigger body")
 
   Body blocker;
   blocker.pos = Vec2f(200, 5);
-  blocker.size = Vec2f(10, 10);
+  blocker.size = Vec2f(8, 10);
   blocker.solid = true;
   fix.physics->addBody(&blocker);
 

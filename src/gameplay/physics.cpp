@@ -153,14 +153,21 @@ struct Physics : IPhysics
       if(!(body->collisionGroup & collisionGroup))
         continue;
 
-      AffineTransform transform;
-      transform.scale = body->size;
+      Box transformedBox = box;
+      Vector transformedDelta = delta;
+      const Vector scale = { 1.0f / body->size.x, 1.0f / body->size.y };
 
-      Box transformedBox;
-      transformedBox.pos = box.pos - body->pos;
-      transformedBox.size = box.size;
+      // transform
+      transformedBox.pos -= body->pos;
+      transformedBox.pos.x *= scale.x;
+      transformedBox.pos.y *= scale.y;
+      transformedBox.size.x *= scale.x;
+      transformedBox.size.y *= scale.y;
 
-      const auto fraction = body->shape->raycast(transform, transformedBox, delta);
+      transformedDelta.x *= scale.x;
+      transformedDelta.y *= scale.y;
+
+      const auto fraction = body->shape->raycast(transformedBox, transformedDelta);
 
       if(fraction < r.fraction)
       {
@@ -185,13 +192,17 @@ struct Physics : IPhysics
       if(!(body->collisionGroup & collisionGroup))
         continue;
 
-      AffineTransform transform;
-      transform.scale = body->size;
-
       Box transformedBox = myBox;
-      transformedBox.pos -= body->pos;
+      const Vector scale = { 1.0f / body->size.x, 1.0f / body->size.y };
 
-      if(body->shape->probe(transform, transformedBox))
+      // transform
+      transformedBox.pos -= body->pos;
+      transformedBox.pos.x *= scale.x;
+      transformedBox.pos.y *= scale.y;
+      transformedBox.size.x *= scale.x;
+      transformedBox.size.y *= scale.y;
+
+      if(body->shape->probe(transformedBox))
         return body;
     }
 
@@ -276,30 +287,30 @@ unique_ptr<IPhysics> createPhysics()
   return make_unique<Physics>();
 }
 
-bool ShapeBox::probe(AffineTransform transform, Box otherBox) const
+bool ShapeBox::probe(Box otherBox) const
 {
   Box myBox;
   myBox.pos = NullVector;
-  myBox.size = { transform.scale.x, transform.scale.y };
+  myBox.size = UnitSize;
   return overlaps(myBox, otherBox);
 }
 
-float ShapeBox::raycast(AffineTransform transform, Box otherBox, Vec2f delta) const
+float ShapeBox::raycast(Box otherBox, Vec2f delta) const
 {
   auto otherBoxHalfSize = Vec2f(otherBox.size.x, otherBox.size.y) * 0.5;
-  auto obstacleHalfSize = transform.scale * 0.5;
+  auto obstacleHalfSize = UnitSize * 0.5;
   return ::raycastAgainstAABB(otherBox.pos + otherBoxHalfSize,
                               delta,
                               obstacleHalfSize,
                               obstacleHalfSize + otherBoxHalfSize);
 }
 
-bool ShapeTilemap::probe(AffineTransform /* transform */, Box otherBox) const
+bool ShapeTilemap::probe(Box box) const
 {
-  auto const x1 = otherBox.pos.x;
-  auto const y1 = otherBox.pos.y;
-  auto const x2 = otherBox.pos.x + otherBox.size.x;
-  auto const y2 = otherBox.pos.y + otherBox.size.y;
+  auto const x1 = box.pos.x;
+  auto const y1 = box.pos.y;
+  auto const x2 = box.pos.x + box.size.x;
+  auto const y2 = box.pos.y + box.size.y;
 
   auto const col1 = int(floor(x1));
   auto const col2 = int(floor(x2));
@@ -314,16 +325,16 @@ bool ShapeTilemap::probe(AffineTransform /* transform */, Box otherBox) const
   return false;
 }
 
-float ShapeTilemap::raycast(AffineTransform /* transform */, Box otherBox, Vec2f delta) const
+float ShapeTilemap::raycast(Box box, Vec2f delta) const
 {
-  const auto boxSize = Vec2f(otherBox.size.x, otherBox.size.y);
+  const auto boxSize = Vec2f(box.size.x, box.size.y);
 
-  BoundingBox bb(otherBox.pos);
+  BoundingBox bb(box.pos);
 
-  bb.add(otherBox.pos);
-  bb.add(otherBox.pos + boxSize);
-  bb.add(delta + otherBox.pos);
-  bb.add(delta + otherBox.pos + boxSize);
+  bb.add(box.pos);
+  bb.add(box.pos + boxSize);
+  bb.add(delta + box.pos);
+  bb.add(delta + box.pos + boxSize);
 
   auto const col1 = int(floor(bb.min.x));
   auto const col2 = int(floor(bb.max.x));
@@ -342,7 +353,7 @@ float ShapeTilemap::raycast(AffineTransform /* transform */, Box otherBox, Vec2f
       if(tiles->isInside(col, row) && tiles->get(col, row))
       {
         const auto tilePos = Vec2f(col, row) + tileHalfSize;
-        float f = ::raycastAgainstAABB(otherBox.pos + boxHalfSize, delta, tilePos, boxHalfSize + tileHalfSize);
+        float f = ::raycastAgainstAABB(box.pos + boxHalfSize, delta, tilePos, boxHalfSize + tileHalfSize);
 
         if(f < fraction)
           fraction = f;
