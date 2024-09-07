@@ -87,7 +87,9 @@ struct Physics : IPhysics
 
     // push potential non-solid bodies
     for(auto other : m_bodies)
+    {
       if(other != body && overlaps(rect, other->getBox()))
+      {
         if(other->collisionGroup & body->collidesWith)
         {
           auto fraction = moveBody(other, delta);
@@ -95,6 +97,8 @@ struct Physics : IPhysics
           if(fraction < 1)
             other->crushed = true;
         }
+      }
+    }
   }
 
   bool isSolid(Box rect, const Body* except) const
