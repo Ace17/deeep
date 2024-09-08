@@ -5,8 +5,6 @@ ifneq (,$(CROSS_COMPILE))
 CXX:=$(CROSS_COMPILE)g++
 endif
 
-HOST_CXX?=g++
-
 EXT?=.exe
 BIN_HOST?=bin_host
 TARGETS+=$(BIN_HOST)
@@ -169,6 +167,7 @@ $(BIN_HOST)/%.cpp.o: %.cpp
 
 $(BIN_HOST)/packquest.exe: $(SRCS_PACKQUEST:%=$(BIN_HOST)/%.o)
 	@mkdir -p $(dir $@)
+	@echo [HOST] link "$@"
 	g++ $^ -o '$@'
 
 TARGETS+=$(BIN_HOST)/packquest.exe
