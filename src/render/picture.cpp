@@ -38,7 +38,7 @@ Picture loadPicture(String path, Rect2f frect)
     auto surface = getPicture(std::string(path.data, path.len));
 
     if(frect.size.x == 0 && frect.size.y == 0)
-      frect = Rect2f(0, 0, 1, 1);
+      frect = Rect2f({ 0, 0 }, { 1, 1 });
 
     if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.x > 1 || frect.pos.y + frect.size.y > 1)
       throw Error("Invalid boundaries for '" + std::string(path.data, path.len) + "'");
