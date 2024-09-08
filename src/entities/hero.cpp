@@ -138,7 +138,7 @@ struct Rockman : Entity, Damageable, Playerable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  Player* getPlayer() { return player; }
+  Player* getPlayer() override { return player; }
 
   void onCollide(Body* b)
   {
@@ -642,12 +642,12 @@ struct HeroPlayer : Player
   HeroPlayer(IGame* game_) : m_entity(nullptr, this), game(game_)
   {}
 
-  void think(Control const& c)
+  void think(Control const& c) override
   {
     m_entity.think(c);
   }
 
-  float health()
+  float health() override
   {
     return m_entity.health();
   }
@@ -662,7 +662,7 @@ struct HeroPlayer : Player
     m_entity.pos = pos;
   }
 
-  void addUpgrade(int upgrade)
+  void addUpgrade(int upgrade) override
   {
     m_entity.addUpgrade(upgrade);
   }
