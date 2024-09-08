@@ -274,20 +274,6 @@ float raycastAgainstAABB(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstac
 
   return fraction;
 }
-
-struct BoundingBox
-{
-  BoundingBox(Vec2f p) { min = max = p; }
-  void add(Vec2f p)
-  {
-    min.x = std::min(min.x, p.x);
-    max.x = std::max(max.x, p.x);
-    min.y = std::min(min.y, p.y);
-    max.y = std::max(max.y, p.y);
-  }
-
-  Vec2f min, max;
-};
 } // namespace
 
 IPhysics* createPhysics()

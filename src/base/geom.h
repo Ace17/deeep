@@ -65,3 +65,25 @@ struct Vec2i
   friend bool operator != (Vec2i a, Vec2i b) { return !(a == b); }
 };
 
+struct BoundingBox
+{
+  BoundingBox(Vec2f p)
+  {
+    min = max = p;
+  }
+
+  void add(Vec2f p)
+  {
+    min.x = Min(min.x, p.x);
+    max.x = Max(max.x, p.x);
+    min.y = Min(min.y, p.y);
+    max.y = Max(max.y, p.y);
+  }
+
+  Vec2f min, max;
+
+private:
+  static float Min(float a, float b) { return a < b ? a : b; }
+  static float Max(float a, float b) { return a > b ? a : b; }
+};
+
