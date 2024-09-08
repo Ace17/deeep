@@ -7,6 +7,24 @@
 #include "base/delegate.h"
 #include "tests.h"
 
+unittest("Delegate: lambdas")
+{
+  Delegate<void(void)> callMe;
+
+  bool wasCalled = false;
+  callMe = [&] () { wasCalled = true; };
+  callMe();
+  assertTrue(wasCalled);
+}
+
+unittest("Delegate: return value")
+{
+  Delegate<int(int)> multiplyByThree;
+
+  multiplyByThree = [] (int val) { return val * 3; };
+  assertEquals(12, multiplyByThree(4));
+}
+
 unittest("Delegate: void, no args")
 {
   bool invoked = false;
