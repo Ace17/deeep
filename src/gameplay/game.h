@@ -14,7 +14,6 @@
 #include "base/scene.h"
 #include "presenter.h"
 #include "vec.h"
-#include <functional>
 #include <memory>
 
 typedef Matrix2<int> Matrix;
