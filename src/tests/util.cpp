@@ -4,10 +4,12 @@
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
 
+#include "base/delegate.h"
 #include "base/my_algorithm.h"
 #include "base/util.h"
 #include "misc/util.h"
 #include "tests.h"
+#include <cstring>
 #include <vector>
 using namespace std;
 
@@ -130,6 +132,24 @@ unittest("Util: dirName")
 unittest("Util: baseName")
 {
   assertEquals(std::string("Goodbye.txt"), baseName("Hello/World/Goodbye.txt"));
+}
+
+unittest("Delegate: lambdas")
+{
+  Delegate<void(void)> callMe;
+
+  bool wasCalled = false;
+  callMe = [&] () { wasCalled = true; };
+  callMe();
+  assertTrue(wasCalled);
+}
+
+unittest("Delegate: return value")
+{
+  Delegate<int(int)> multiplyByThree;
+
+  multiplyByThree = [] (int val) { return val * 3; };
+  assertEquals(12, multiplyByThree(4));
 }
 
 unittest("Base: sort: simple")
