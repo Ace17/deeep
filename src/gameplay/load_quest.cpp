@@ -265,13 +265,11 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   if(actualSize != room.size * CELL_SIZE)
   {
     char buffer[256];
-    String s;
-    s.data = buffer;
-    s.len = sprintf(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
-                    room.pos.x, room.pos.y,
-                    path.c_str(), room.theme,
-                    room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y,
-                    actualSize.x, actualSize.y);
+    String s = format(buffer, "room instance at (%d;%d) with theme %s/%d has wrong dimensions: map expected %dx%d, but the concrete tileset is %dx%d\n",
+                      room.pos.x, room.pos.y,
+                      path.c_str(), room.theme,
+                      room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y,
+                      actualSize.x, actualSize.y);
     throw Error(s);
   }
 
