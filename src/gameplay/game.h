@@ -17,8 +17,6 @@
 #include <functional>
 #include <memory>
 
-using namespace std;
-
 typedef Matrix2<int> Matrix;
 
 struct Entity;
@@ -68,7 +66,7 @@ struct IVariable
 
   virtual int get() = 0;
   virtual void set(int) = 0;
-  virtual unique_ptr<Handle> observe(Observer&& observer) = 0;
+  virtual std::unique_ptr<Handle> observe(Observer&& observer) = 0;
 };
 
 struct IGame
@@ -85,7 +83,7 @@ struct IGame
   virtual void spawn(Entity* e) = 0;
   virtual void detach(Entity* e) = 0;
   virtual IVariable* getVariable(int name) = 0;
-  virtual void postEvent(unique_ptr<Event> event) = 0;
+  virtual void postEvent(std::unique_ptr<Event> event) = 0;
   virtual Vector getPlayerPosition() = 0;
   virtual void respawn() = 0;
 };

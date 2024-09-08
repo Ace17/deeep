@@ -38,7 +38,7 @@ struct Variable : IVariable
       observer(newValue);
   }
 
-  unique_ptr<Handle> observe(Observer&& observer) override
+  std::unique_ptr<Handle> observe(Observer&& observer) override
   {
     auto it = observers.insert(observers.begin(), std::move(observer));
 
