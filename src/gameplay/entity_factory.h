@@ -37,5 +37,5 @@ int registerEntity(std::string type, CreationFunc func, uint32_t flags);
         DECLARE_ENTITY_COUNTER(Name, Class, Counter)
 
 #define DECLARE_ENTITY_COUNTER(Name, Class, Counter) \
-        static auto const reg_ ## Counter = registerEntity(Name, [] (IEntityConfig* cfg) -> std::unique_ptr<Entity> { return make_unique<Class>(cfg); }, Class::flags)
+        static auto const reg_ ## Counter = registerEntity(Name, [] (IEntityConfig* cfg) -> std::unique_ptr<Entity> { return std::make_unique<Class>(cfg); }, Class::flags)
 

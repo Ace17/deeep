@@ -8,7 +8,7 @@ struct VideoCapture
   {
     if(m_captureFile || m_mustScreenshot)
     {
-      vector<uint8_t> pixels(dim.x * dim.y * 4);
+      std::vector<uint8_t> pixels(dim.x * dim.y * 4);
       backend->readPixels({ pixels.data(), (int)pixels.size() });
 
       if(m_captureFile)

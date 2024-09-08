@@ -7,13 +7,12 @@
 #include "misc/base64.h"
 #include "tests.h"
 #include <vector>
-using namespace std;
 
 unittest("Base64: simple")
 {
-  assertEquals(vector<uint8_t>({}), decodeBase64(""));
-  assertEquals(vector<uint8_t>({ 'a' }), decodeBase64("YQ=="));
-  assertEquals(vector<uint8_t>({ 'C', 'o', 'o', 'l' }), decodeBase64("Q29vbA=="));
-  assertEquals(vector<uint8_t>({ 'H', 'e', 'l', 'l', 'o' }), decodeBase64("SGVsbG8="));
+  assertEquals(std::vector<uint8_t>({}), decodeBase64(""));
+  assertEquals(std::vector<uint8_t>({ 'a' }), decodeBase64("YQ=="));
+  assertEquals(std::vector<uint8_t>({ 'C', 'o', 'o', 'l' }), decodeBase64("Q29vbA=="));
+  assertEquals(std::vector<uint8_t>({ 'H', 'e', 'l', 'l', 'o' }), decodeBase64("SGVsbG8="));
 }
 

@@ -9,9 +9,9 @@
 
 namespace
 {
-map<string, Picture> g_pictureCache;
+std::map<std::string, Picture> g_pictureCache;
 
-Picture loadPng(string path)
+Picture loadPng(std::string path)
 {
   Picture pic;
   auto pngDataBuf = File::read(path);
@@ -22,7 +22,7 @@ Picture loadPng(string path)
   return pic;
 }
 
-Picture* getPicture(string path)
+Picture* getPicture(std::string path)
 {
   if(g_pictureCache.find(path) == g_pictureCache.end())
     g_pictureCache[path] = loadPng(path);
@@ -35,13 +35,13 @@ Picture loadPicture(String path, Rect2f frect)
 {
   try
   {
-    auto surface = getPicture(string(path.data, path.len));
+    auto surface = getPicture(std::string(path.data, path.len));
 
     if(frect.size.x == 0 && frect.size.y == 0)
       frect = Rect2f(0, 0, 1, 1);
 
     if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.x > 1 || frect.pos.y + frect.size.y > 1)
-      throw Error("Invalid boundaries for '" + string(path.data, path.len) + "'");
+      throw Error("Invalid boundaries for '" + std::string(path.data, path.len) + "'");
 
     auto const bpp = 4;
 
@@ -51,7 +51,7 @@ Picture loadPicture(String path, Rect2f frect)
     rect.size.x = frect.size.x * surface->dim.x;
     rect.size.y = frect.size.y * surface->dim.y;
 
-    vector<uint8_t> img(rect.size.x * rect.size.y * bpp);
+    std::vector<uint8_t> img(rect.size.x * rect.size.y * bpp);
 
     auto src = surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->stride;
     auto dst = img.data() + bpp * rect.size.x * rect.size.y;

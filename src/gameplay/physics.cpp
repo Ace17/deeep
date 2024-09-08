@@ -223,7 +223,7 @@ private:
     return getBodiesInBox(myBox, collisionGroup, true, except);
   }
 
-  vector<Body*> m_bodies;
+  std::vector<Body*> m_bodies;
 };
 
 Vec2f rotateLeft(Vec2f v) { return Vec2f(-v.y, v.x); }

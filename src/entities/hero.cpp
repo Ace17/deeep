@@ -44,7 +44,7 @@ struct Bullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_BULLET };
     r.scale = size;
@@ -84,7 +84,7 @@ struct Bomb : Entity
     collidesWith = CG_WALLS | CG_ENEMIES;
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     if(life == 0)
       return;
@@ -149,7 +149,7 @@ struct Rockman : Entity, Damageable, Playerable
     }
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_ROCKMAN };
     r.scale = Size(3, 3);
@@ -203,7 +203,7 @@ struct Rockman : Entity, Damageable, Playerable
       {
         if(dashDelay)
         {
-          r.ratio = min(40 - dashDelay, 40) / 10.0f;
+          r.ratio = std::min(40 - dashDelay, 40) / 10.0f;
           r.action = ACTION_DASH;
         }
         else
@@ -342,7 +342,7 @@ struct Rockman : Entity, Damageable, Playerable
     }
 
     vel.x = ::clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
-    vel.y = max(vel.y, -MAX_FALL_SPEED);
+    vel.y = std::max(vel.y, -MAX_FALL_SPEED);
   }
 
   void airMove(Control c)
@@ -556,7 +556,7 @@ struct Rockman : Entity, Damageable, Playerable
       {
         if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
         {
-          auto b = make_unique<Bomb>();
+          auto b = std::make_unique<Bomb>();
           b->pos = getCenter() - b->size * 0.5;
           game->spawn(b.release());
           game->playSound(SND_FIRE);
@@ -569,7 +569,7 @@ struct Rockman : Entity, Damageable, Playerable
       {
         if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
         {
-          auto b = make_unique<Bullet>();
+          auto b = std::make_unique<Bullet>();
           auto sign = (dir == LEFT ? -1 : 1);
           auto offsetV = Vector(0, 1);
           auto offsetH = vel.x ? Vector(0.8, 0) : Vector(0.7, 0);

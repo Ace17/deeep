@@ -14,8 +14,6 @@
 #include <climits>
 #include <cstdlib> // rand
 
-using namespace std;
-
 static
 void addRandomWidgets(Matrix2<int>& tiles)
 {
@@ -67,7 +65,7 @@ bool isInsideRoom(Vec2i pos, Room const& room)
   return true;
 }
 
-int getRoomAt(vector<Room> const& quest, Vec2i absPos)
+int getRoomAt(std::vector<Room> const& quest, Vec2i absPos)
 {
   for(int i = 0; i < (int)quest.size(); ++i)
   {
@@ -92,7 +90,7 @@ static Vec2i operator * (Vec2i a, Vec2i b)
 }
 
 static
-void addBoundaryDetectors(Room& room, vector<Room> const& quest)
+void addBoundaryDetectors(Room& room, std::vector<Room> const& quest)
 {
   auto tryToConnectRoom = [&] (Vec2i delta, Vec2i margin)
     {
@@ -112,9 +110,9 @@ void addBoundaryDetectors(Room& room, vector<Room> const& quest)
 
       Room::Spawner s {};
       s.name = "room_boundary_detector";
-      s.config["target_level"] = to_string(neighboorIdx);
-      s.config["transform_x"] = to_string(transform.x);
-      s.config["transform_y"] = to_string(transform.y);
+      s.config["target_level"] = std::to_string(neighboorIdx);
+      s.config["transform_x"] = std::to_string(transform.x);
+      s.config["transform_y"] = std::to_string(transform.y);
       s.pos = toTilePosition(delta);
       room.spawners.push_back(s);
     };
@@ -181,7 +179,7 @@ Matrix2<int> applySmartTiling(Matrix2<int> const& tiles)
 }
 
 static
-vector<string> parseCall(string content)
+std::vector<std::string> parseCall(std::string content)
 {
   content += '\0';
   auto stream = content.c_str();
@@ -206,12 +204,12 @@ vector<string> parseCall(string content)
   auto expect = [&] (char what)
     {
       if(!accept(what))
-        throw Error(string("Expected '") + what + "'");
+        throw Error(std::string("Expected '") + what + "'");
     };
 
   auto parseString = [&] ()
     {
-      string r;
+      std::string r;
 
       while(!accept('"'))
       {
@@ -225,7 +223,7 @@ vector<string> parseCall(string content)
 
   auto parseIdentifier = [&] ()
     {
-      string r;
+      std::string r;
 
       while(isalnum(head()) || head() == '_' || head() == '-')
       {
@@ -245,7 +243,7 @@ vector<string> parseCall(string content)
         return parseIdentifier();
     };
 
-  vector<string> r;
+  std::vector<std::string> r;
   r.push_back(parseIdentifier());
 
   if(accept('('))
@@ -277,7 +275,7 @@ void replaceLegacyEntityNames(Room& room)
     int i = 0;
 
     for(auto& varValue : words)
-      spawner.config[to_string(i++)] = varValue;
+      spawner.config[std::to_string(i++)] = varValue;
   }
 }
 
@@ -295,8 +293,8 @@ void addFragileBlocks(Room& room)
     if(room.tiles.get(spawner.pos.x, spawner.pos.y))
     {
       int tile = room.tilesForDisplay.get(spawner.pos.x, spawner.pos.y);
-      spawner.config["tile"] = to_string(tile);
-      spawner.config["theme"] = to_string(room.theme);
+      spawner.config["tile"] = std::to_string(tile);
+      spawner.config["theme"] = std::to_string(room.theme);
       room.tiles.set(spawner.pos.x, spawner.pos.y, 0);
       room.tilesForDisplay.set(spawner.pos.x, spawner.pos.y, -1);
     }
@@ -304,7 +302,7 @@ void addFragileBlocks(Room& room)
 }
 
 static
-void preprocessRoom(Room& room, vector<Room> const& quest)
+void preprocessRoom(Room& room, std::vector<Room> const& quest)
 {
   room.tilesForDisplay = applySmartTiling(room.tiles);
 

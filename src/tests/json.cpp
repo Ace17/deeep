@@ -7,10 +7,9 @@
 #include "misc/json.h"
 #include "tests.h"
 #include <vector>
-using namespace std;
 
 static
-bool jsonOk(string text)
+bool jsonOk(std::string text)
 {
   try
   {
@@ -24,7 +23,7 @@ bool jsonOk(string text)
 }
 
 static
-auto jsonParse(string text)
+auto jsonParse(std::string text)
 {
   return json::parse(text.data(), text.size());
 }

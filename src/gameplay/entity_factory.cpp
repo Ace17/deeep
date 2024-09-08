@@ -11,8 +11,6 @@
 #include "entity_factory.h"
 #include <map>
 
-using namespace std;
-
 namespace
 {
 struct EntityInfo
@@ -21,13 +19,13 @@ struct EntityInfo
   uint32_t flags;
 };
 
-map<string, EntityInfo>& g_registry()
+std::map<std::string, EntityInfo>& g_registry()
 {
-  static map<string, EntityInfo> registry;
+  static std::map<std::string, EntityInfo> registry;
   return registry;
 }
 
-const EntityInfo& getEntityInfo(string name)
+const EntityInfo& getEntityInfo(std::string name)
 {
   auto i_info = g_registry().find(name);
 
@@ -38,7 +36,7 @@ const EntityInfo& getEntityInfo(string name)
 }
 }
 
-int registerEntity(string type, CreationFunc func, uint32_t flags)
+int registerEntity(std::string type, CreationFunc func, uint32_t flags)
 {
   auto& info = g_registry()[type];
   info.creationFunc = func;
@@ -46,12 +44,12 @@ int registerEntity(string type, CreationFunc func, uint32_t flags)
   return 0; // ignored
 }
 
-uint32_t getEntityFlags(string name)
+uint32_t getEntityFlags(std::string name)
 {
   return getEntityInfo(name).flags;
 }
 
-unique_ptr<Entity> createEntity(string name, IEntityConfig* args)
+std::unique_ptr<Entity> createEntity(std::string name, IEntityConfig* args)
 {
   return getEntityInfo(name).creationFunc(args);
 }

@@ -9,13 +9,12 @@
 #include <cmath>
 #include <memory>
 #include <vector>
-using namespace std;
 
 MixableAudio* createAudio();
 
 unittest("Audio: sound loops without discontinuity")
 {
-  unique_ptr<MixableAudio> audio(createAudio());
+  std::unique_ptr<MixableAudio> audio(createAudio());
   auto voice = audio->createVoice();
   audio->playVoice(voice, -1, true);
 
@@ -52,7 +51,7 @@ unittest("Audio: sound loops without discontinuity")
 
 unittest("Audio: autonomous voice release")
 {
-  unique_ptr<MixableAudio> audio(createAudio());
+  std::unique_ptr<MixableAudio> audio(createAudio());
   auto voice = audio->createVoice();
   audio->playVoice(voice, -1);
   audio->releaseVoice(voice, true);
@@ -80,7 +79,7 @@ unittest("Audio: autonomous voice release")
 
 unittest("Audio: non-autonomous voice release: the sound gets stopped immediately")
 {
-  unique_ptr<MixableAudio> audio(createAudio());
+  std::unique_ptr<MixableAudio> audio(createAudio());
   auto voice = audio->createVoice();
   audio->playVoice(voice, -1);
   audio->releaseVoice(voice, false);

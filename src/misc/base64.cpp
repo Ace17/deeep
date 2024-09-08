@@ -10,14 +10,14 @@
 
 #include "base/error.h"
 
-static const string base64_map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+static const std::string base64_map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-vector<uint8_t> decodeBase64(string const& input)
+std::vector<uint8_t> decodeBase64(std::string const& input)
 {
   if(input.length() % 4 != 0)
     throw Error("invalid base64 input");
 
-  vector<uint8_t> decoded;
+  std::vector<uint8_t> decoded;
 
   for(int i = 0; i < (int)input.size(); i += 4)
   {

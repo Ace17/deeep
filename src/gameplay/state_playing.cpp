@@ -29,8 +29,6 @@
 #include "toggle.h"
 #include "variable.h"
 
-using namespace std;
-
 extern const Vec2i CELL_SIZE;
 
 namespace
@@ -46,7 +44,7 @@ Actor getDebugActor(Entity* entity)
 
 struct EntityConfigImpl : IEntityConfig
 {
-  string getString(const char* varName, string defaultValue) override
+  std::string getString(const char* varName, std::string defaultValue) override
   {
     auto i = values.find(varName);
 
@@ -66,7 +64,7 @@ struct EntityConfigImpl : IEntityConfig
     return atoi(i->second.c_str());
   }
 
-  map<string, string> values;
+  std::map<std::string, std::string> values;
 };
 
 static
@@ -168,7 +166,7 @@ struct InGameScene : Scene, private IGame
 
     sendActorsForTileMap();
 
-    vector<Actor> actors;
+    std::vector<Actor> actors;
 
     for(auto& entity : m_entities)
     {
@@ -313,7 +311,7 @@ struct InGameScene : Scene, private IGame
     m_spawned.clear();
   }
 
-  static bool isDead(unique_ptr<Entity> const& e)
+  static bool isDead(std::unique_ptr<Entity> const& e)
   {
     return e->dead;
   }
@@ -378,7 +376,7 @@ struct InGameScene : Scene, private IGame
       EntityConfigImpl config;
       m_player = createHeroPlayer(this);
       m_player->setPosition(Vector(level.start.x, level.start.y));
-      postEvent(make_unique<SaveEvent>());
+      postEvent(std::make_unique<SaveEvent>());
     }
 
     m_player->enterLevel();
@@ -397,8 +395,8 @@ struct InGameScene : Scene, private IGame
   bool m_shouldLoadLevel = false;
   bool m_shouldLoadVars = false;
 
-  map<int, unique_ptr<IVariable>> m_vars;
-  vector<unique_ptr<Event>> m_eventQueue;
+  std::map<int, std::unique_ptr<IVariable>> m_vars;
+  std::vector<std::unique_ptr<Event>> m_eventQueue;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
@@ -444,12 +442,12 @@ struct InGameScene : Scene, private IGame
   IVariable* getVariable(int name) override
   {
     if(!m_vars[name])
-      m_vars[name] = make_unique<Variable>();
+      m_vars[name] = std::make_unique<Variable>();
 
     return m_vars[name].get();
   }
 
-  void postEvent(unique_ptr<Event> event) override
+  void postEvent(std::unique_ptr<Event> event) override
   {
     m_eventQueue.push_back(std::move(event));
   }
@@ -505,7 +503,7 @@ struct InGameScene : Scene, private IGame
   Vec2i m_currRoomSize {};
   Player* m_player = nullptr;
   IPresenter* const m_view;
-  unique_ptr<IPhysics> m_physics;
+  std::unique_ptr<IPhysics> m_physics;
   bool m_gameFinished = false;
   Body m_tilemapBody {};
   ShapeTilemap m_tilemapShape {};
@@ -515,14 +513,14 @@ struct InGameScene : Scene, private IGame
   bool m_debugFirstTime = true;
   Toggle startButton;
 
-  vector<unique_ptr<Entity>> m_entities;
-  vector<unique_ptr<Entity>> m_spawned;
+  std::vector<std::unique_ptr<Entity>> m_entities;
+  std::vector<std::unique_ptr<Entity>> m_spawned;
 };
 }
 
 Scene* createPlayingStateAtLevel(IPresenter* view, int level)
 {
-  auto gameState = make_unique<InGameScene>(view);
+  auto gameState = std::make_unique<InGameScene>(view);
   gameState->m_level = level;
   return gameState.release();
 }

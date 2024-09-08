@@ -67,7 +67,7 @@ struct Lift : Entity
     }
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_ELEVATOR };
     r.scale = size;
@@ -162,7 +162,7 @@ struct Lift : Entity
   int delta_y = 0;
   int link = 0;
 
-  unique_ptr<Handle> subscription;
+  std::unique_ptr<Handle> subscription;
   Vector initialPos;
   Vector finalPos;
   Vector moveDir; // normalized

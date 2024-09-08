@@ -80,13 +80,13 @@ struct BleepSound : Sound
   static constexpr auto baseFreq = 440.0;
   static constexpr auto maxSamples = sampleRate / 80; // integer number of periods
 
-  unique_ptr<IAudioSource> createSource()
+  std::unique_ptr<IAudioSource> createSource()
   {
     struct BleepSoundSource : IAudioSource
     {
       virtual int read(Span<float> output)
       {
-        auto const N = min(output.len / 2, maxSamples - sampleCount);
+        auto const N = std::min(output.len / 2, maxSamples - sampleCount);
 
         for(int i = 0; i < N; ++i)
         {
@@ -103,7 +103,7 @@ struct BleepSound : Sound
       int sampleCount = 0;
     };
 
-    return make_unique<BleepSoundSource>();
+    return std::make_unique<BleepSoundSource>();
   }
 };
 

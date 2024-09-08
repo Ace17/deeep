@@ -16,7 +16,7 @@
 template<typename T>
 Actor getActor(T& ent)
 {
-  vector<Actor> actors;
+  std::vector<Actor> actors;
   actors.clear();
   ent->addActors(actors);
   return actors[0];
@@ -49,7 +49,7 @@ struct NullVariable : IVariable
 {
   int get() { return 0; }
   void set(int) {}
-  unique_ptr<Handle> observe(Observer &&) { return nullptr; }
+  std::unique_ptr<Handle> observe(Observer &&) { return nullptr; }
 };
 
 static NullVariable nullVariable;
@@ -61,7 +61,7 @@ struct NullGame : IGame
   virtual void spawn(Entity* e) { entity = e; e->physics = physicsProbe; }
   virtual void detach(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
-  virtual void postEvent(unique_ptr<Event>) {}
+  virtual void postEvent(std::unique_ptr<Event>) {}
   virtual Vec2f getPlayerPosition() { return Vec2f(0, 0); }
   virtual void textBox(char const*) {}
   virtual void setAmbientLight(float) {}
@@ -120,7 +120,7 @@ unittest("Entity: pickup bonus")
       return &player;
     }
 
-    void addActors(vector<Actor> &) const override {}
+    void addActors(std::vector<Actor> &) const override {}
     MockPlayer player;
   };
 
@@ -156,8 +156,8 @@ unittest("Entity: animate")
   for(int i = 0; i < 1000; ++i)
   {
     auto actor = getActor(ent);
-    minVal = min(minVal, actor.ratio);
-    maxVal = max(maxVal, actor.ratio);
+    minVal = std::min(minVal, actor.ratio);
+    maxVal = std::max(maxVal, actor.ratio);
     ent->tick();
   }
 

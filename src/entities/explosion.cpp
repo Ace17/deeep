@@ -34,7 +34,7 @@ struct Explosion : Entity
     }
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_EXPLOSION };
 
@@ -50,6 +50,6 @@ struct Explosion : Entity
 
 std::unique_ptr<Entity> makeExplosion()
 {
-  return make_unique<Explosion>();
+  return std::make_unique<Explosion>();
 }
 

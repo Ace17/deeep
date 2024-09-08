@@ -35,7 +35,7 @@ struct Switch : Entity
     state = var->get();
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SWITCH };
     r.scale = UnitSize;
@@ -50,7 +50,7 @@ struct Switch : Entity
 
   void tick() override
   {
-    blinking = max(0, blinking - 1);
+    blinking = std::max(0, blinking - 1);
   }
 
   void onCollide(Body*)

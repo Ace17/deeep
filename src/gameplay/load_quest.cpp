@@ -58,13 +58,13 @@ Rect2i transformTiledRect(Rect2i rect, int areaHeight)
 }
 
 static
-map<string, json::Value> getAllLayers(json::Value const& js)
+std::map<std::string, json::Value> getAllLayers(json::Value const& js)
 {
-  map<string, json::Value> nameToLayer;
+  std::map<std::string, json::Value> nameToLayer;
 
   for(auto& layer : js["layerInstances"].elements)
   {
-    auto name = (string)layer["__identifier"];
+    auto name = (std::string)layer["__identifier"];
     nameToLayer[name] = layer;
   }
 
@@ -131,7 +131,7 @@ void generateConcreteRoom(Room& room)
       room.tiles.set(x, rect.y - 1 - i, 1);
   }
 
-  for(int y = 0; y < min(3, rect.y - 1); ++y)
+  for(int y = 0; y < std::min(3, rect.y - 1); ++y)
   {
     room.tiles.set(0, y, 1);
     room.tiles.set(rect.x - 1, y, 1);
@@ -160,9 +160,9 @@ void generateConcreteRoom(Room& room)
 }
 
 static
-vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height)
+std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height)
 {
-  vector<Room::Spawner> r;
+  std::vector<Room::Spawner> r;
 
   for(auto& obj : objectLayer["entityInstances"].elements)
   {
@@ -171,19 +171,19 @@ vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height
     Room::Spawner spawner;
 
     spawner.pos = Vector(objRect.pos.x, objRect.pos.y);
-    spawner.name = (string)obj["__identifier"];
+    spawner.name = (std::string)obj["__identifier"];
 
     for(auto& c : spawner.name)
       c = std::tolower(c);
 
-    spawner.config["width"] = to_string(objRect.size.x);
-    spawner.config["height"] = to_string(objRect.size.y);
+    spawner.config["width"] = std::to_string(objRect.size.x);
+    spawner.config["height"] = std::to_string(objRect.size.y);
 
     if(obj.has("fieldInstances"))
     {
       for(auto& prop : obj["fieldInstances"].elements)
       {
-        auto varName = (string)prop["__identifier"];
+        auto varName = (std::string)prop["__identifier"];
         auto varValue = std::to_string((int)prop["__value"]);
         spawner.config[varName] = varValue;
       }
@@ -239,15 +239,15 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
 
   auto const sizeInTiles = box.size * CELL_SIZE;
 
-  auto const path = "assets/" + (string)jsonRoom["externalRelPath"];
+  auto const path = "assets/" + (std::string)jsonRoom["externalRelPath"];
   auto const base = removeExtension(baseName(path));
 
   Room room;
-  room.name = string(base.data, base.len);
+  room.name = std::string(base.data, base.len);
   room.pos = box.pos;
   room.size = box.size;
   room.start = Vec2i(sizeInTiles.x / 2, sizeInTiles.y / 4);
-  room.theme = 3;// atoi(string(jsonRoom["type"]).c_str());
+  room.theme = 3;// atoi(std::string(jsonRoom["type"]).c_str());
 
   if(File::exists(path))
   {
@@ -276,7 +276,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   return room;
 }
 
-Quest loadTiledWorld(string path) // LDTK JSON format
+Quest loadTiledWorld(std::string path) // LDTK JSON format
 {
   auto data = File::read(path);
   auto js = json::parse(data.c_str(), data.size());
@@ -335,7 +335,7 @@ Matrix2<int> parseMatrix(Vec2i size, String s)
   return r;
 }
 
-Quest loadQuest(string path)
+Quest loadQuest(std::string path)
 {
   auto compressedData = File::read(path);
 
@@ -347,8 +347,8 @@ Quest loadQuest(string path)
   for(auto& jsonRoom : js["rooms"].elements)
   {
     Room room {};
-    room.name = string(jsonRoom["name"]);
-    room.theme = atoi(string(jsonRoom["type"]).c_str());
+    room.name = std::string(jsonRoom["name"]);
+    room.theme = atoi(std::string(jsonRoom["type"]).c_str());
     room.pos.x = int(jsonRoom["x"]);
     room.pos.y = int(jsonRoom["y"]);
     room.start.x = int(jsonRoom["start_x"]);
@@ -362,14 +362,14 @@ Quest loadQuest(string path)
     {
       Room::Spawner s;
       s.id = int(jsonSpawner["id"]);
-      s.name = string(jsonSpawner["type"]);
+      s.name = std::string(jsonSpawner["type"]);
       s.pos.x = double(int(jsonSpawner["x"])) / PRECISION;
       s.pos.y = double(int(jsonSpawner["y"])) / PRECISION;
 
       if(jsonSpawner.has("props"))
       {
         for(auto& member : jsonSpawner["props"].members)
-          s.config[member.first] = string(member.second);
+          s.config[member.first] = std::string(member.second);
       }
 
       room.spawners.push_back(s);

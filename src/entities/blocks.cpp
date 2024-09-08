@@ -27,7 +27,7 @@ struct FragileBlock : Entity, Damageable
     reappear();
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     if(state == 2)
       return;
@@ -122,7 +122,7 @@ struct CrumbleBlock : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     if(solid)
     {

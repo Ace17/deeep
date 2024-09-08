@@ -23,8 +23,6 @@
 #include "glad.h"
 #include "SDL.h" // SDL_INIT_VIDEO
 
-using namespace std;
-
 #ifdef NDEBUG
 #define SAFE_GL(a) a
 #else
@@ -39,10 +37,10 @@ void ensureGl(char const* expr, const char* file, int line)
   if(errorCode == GL_NO_ERROR)
     return;
 
-  string ss;
+  std::string ss;
   ss += "OpenGL error\n";
-  ss += string(file) + "(" + to_string(line) + "): " + string(expr) + "\n";
-  ss += "Error code: " + to_string(errorCode) + "\n";
+  ss += std::string(file) + "(" + std::to_string(line) + "): " + std::string(expr) + "\n";
+  ss += "Error code: " + std::to_string(errorCode) + "\n";
   throw Error(ss);
 }
 
@@ -72,7 +70,7 @@ GLuint compileShader(Span<const uint8_t> code, int type)
   {
     int logLength;
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &logLength);
-    vector<char> msg(logLength);
+    std::vector<char> msg(logLength);
     glGetShaderInfoLog(shaderId, logLength, nullptr, msg.data());
     logMsg("%s", msg.data());
 
@@ -82,7 +80,7 @@ GLuint compileShader(Span<const uint8_t> code, int type)
   return shaderId;
 }
 
-GLuint linkShaders(vector<GLuint> ids)
+GLuint linkShaders(std::vector<GLuint> ids)
 {
   // Link the program
   auto ProgramID = glCreateProgram();
@@ -100,7 +98,7 @@ GLuint linkShaders(vector<GLuint> ids)
   {
     int logLength;
     glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &logLength);
-    vector<char> msg(logLength);
+    std::vector<char> msg(logLength);
     glGetProgramInfoLog(ProgramID, logLength, nullptr, msg.data());
     logMsg("%s", msg.data());
 
@@ -366,7 +364,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
 
     // reverse upside down
     const auto rowSize = width * 4;
-    vector<uint8_t> rowBuf(rowSize);
+    std::vector<uint8_t> rowBuf(rowSize);
 
     for(int row = 0; row < height / 2; ++row)
     {

@@ -7,7 +7,6 @@
 #include "render/png.h"
 #include "tests.h"
 #include <vector>
-using namespace std;
 
 unittest("PNG: simple")
 {

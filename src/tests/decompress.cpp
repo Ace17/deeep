@@ -8,11 +8,10 @@
 #include "tests.h"
 #include <string>
 #include <vector>
-using namespace std;
 
-static auto toString = [] (vector<uint8_t> s)
+static auto toString = [] (std::vector<uint8_t> s)
   {
-    return string(s.begin(), s.end());
+    return std::string(s.begin(), s.end());
   };
 
 unittest("ZLIB decompress: simple")

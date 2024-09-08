@@ -21,7 +21,7 @@ void addTexture(Action& action, String path, Rect2f rect, const LoadTextureFunc&
 }
 
 static
-Action loadSheetAction(json::Value const& action, string sheetPath, int ROWS, int COLS, const LoadTextureFunc& loadTexture)
+Action loadSheetAction(json::Value const& action, std::string sheetPath, int ROWS, int COLS, const LoadTextureFunc& loadTexture)
 {
   Action r;
 
@@ -135,12 +135,12 @@ Model loadModel(String path, const LoadTextureFunc& loadTexture)
     }
     else
     {
-      throw Error("unknown format for '" + string(path.data, path.len) + "'");
+      throw Error("unknown format for '" + std::string(path.data, path.len) + "'");
     }
   }
   catch(const Error& e)
   {
-    throw Error("When loading '" + string(path.data, path.len) + "': " + string(e.message().data, e.message().len));
+    throw Error("When loading '" + std::string(path.data, path.len) + "': " + std::string(e.message().data, e.message().len));
   }
 }
 

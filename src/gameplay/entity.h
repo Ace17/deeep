@@ -17,8 +17,6 @@
 #include "physics_probe.h"
 #include <vector>
 
-using namespace std;
-
 struct Climbable
 {
   virtual ~Climbable() = default;
@@ -46,7 +44,7 @@ struct Entity : Body
   virtual void leave() {}
   virtual void tick() {}
 
-  virtual void addActors(vector<Actor>& actors) const = 0;
+  virtual void addActors(std::vector<Actor>& actors) const = 0;
 
   static constexpr uint32_t flags = 0;
 

@@ -44,11 +44,11 @@ struct Variable : IVariable
 
     auto removeObserver = [ = ] () { observers.erase(it); };
 
-    return make_unique<HandleWithDeleter>(removeObserver);
+    return std::make_unique<HandleWithDeleter>(removeObserver);
   }
 
 private:
-  list<Observer> observers;
+  std::list<Observer> observers;
   int value;
 };
 

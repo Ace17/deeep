@@ -396,8 +396,8 @@ private:
   std::unique_ptr<IVertexBuffer> m_quadVbo;
   std::unique_ptr<IFrameBuffer> m_fb;
 
-  unordered_map<int, Model> m_Models;
-  unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
+  std::unordered_map<int, Model> m_Models;
+  std::unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
   std::vector<Tile> m_tiles;
 
   std::vector<Vertex> vboData; // VBO scratch buffer

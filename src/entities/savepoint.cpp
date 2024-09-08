@@ -29,7 +29,7 @@ struct SavePoint : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SAVEPOINT };
     r.scale = size;
@@ -59,7 +59,7 @@ struct SavePoint : Entity
       if(timer == 0)
       {
         game->playSound(SND_SAVEPOINT);
-        game->postEvent(make_unique<SaveEvent>());
+        game->postEvent(std::make_unique<SaveEvent>());
         game->textBox("Game Saved");
       }
 

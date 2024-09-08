@@ -28,7 +28,7 @@ struct SpiderBullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_RECT };
     r.scale = size;
@@ -70,7 +70,7 @@ struct Spider : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_SPIDER };
 
@@ -116,7 +116,7 @@ struct Spider : Entity, Damageable
   void shoot(float angle)
   {
     auto const speed = 0.1;
-    auto bullet = make_unique<SpiderBullet>();
+    auto bullet = std::make_unique<SpiderBullet>();
     bullet->pos = getCenter();
     bullet->vel = Vector(cos(angle) * speed, sin(angle) * speed);
     game->spawn(bullet.release());

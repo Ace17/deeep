@@ -4873,7 +4873,7 @@ int stb_vorbis_get_samples_float_interleaved(stb_vorbis* f, int channels, float*
   const int len = num_floats / channels;
   int n = 0;
 
-  const int z = min(f->channels, channels);
+  const int z = std::min(f->channels, channels);
 
   while(n < len)
   {
@@ -4907,7 +4907,7 @@ int stb_vorbis_get_samples_float_interleaved(stb_vorbis* f, int channels, float*
 int stb_vorbis_get_samples_float(stb_vorbis* f, int channels, float** buffer, int num_samples)
 {
   int n = 0;
-  const int z = min(f->channels, channels);
+  const int z = std::min(f->channels, channels);
 
   while(n < num_samples)
   {

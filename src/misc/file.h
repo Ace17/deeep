@@ -11,11 +11,9 @@
 #include <cstdint>
 #include <string>
 
-using namespace std;
-
 namespace File
 {
-string read(String path);
+std::string read(String path);
 void write(String path, Span<const uint8_t> data);
 bool exists(String path);
 }

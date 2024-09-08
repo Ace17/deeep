@@ -10,19 +10,18 @@
 #include "gameplay/quest.h"
 #include "tests.h"
 #include <vector>
-using namespace std;
 
-int getRoomAt(vector<Room> const& quest, Vec2i absPos);
+int getRoomAt(std::vector<Room> const& quest, Vec2i absPos);
 
 unittest("LevelGraph: getRoomAt: no rooms")
 {
-  vector<Room> rooms;
+  std::vector<Room> rooms;
   assertEquals(-1, getRoomAt(rooms, Vec2i(0, 0)));
 }
 
 unittest("LevelGraph: getRoomAt: one zero sized room")
 {
-  vector<Room> rooms;
+  std::vector<Room> rooms;
   Room room;
   room.pos = Vec2i(0, 0);
   room.size = Vec2i(0, 0);
@@ -32,7 +31,7 @@ unittest("LevelGraph: getRoomAt: one zero sized room")
 
 unittest("LevelGraph: getRoomAt: 1x1 room at (0;0)")
 {
-  vector<Room> rooms;
+  std::vector<Room> rooms;
   Room room;
   room.pos = Vec2i(0, 0);
   room.size = Vec2i(1, 1);
@@ -42,7 +41,7 @@ unittest("LevelGraph: getRoomAt: 1x1 room at (0;0)")
 
 unittest("LevelGraph: getRoomAt: 1x1 room at (0;0), 1x1 room at (1;0)")
 {
-  vector<Room> rooms;
+  std::vector<Room> rooms;
   {
     Room room;
     room.pos = Vec2i(0, 0);
@@ -61,7 +60,7 @@ unittest("LevelGraph: getRoomAt: 1x1 room at (0;0), 1x1 room at (1;0)")
 
 unittest("LevelGraph: getRoomAt: 1x2 room at (10;4)")
 {
-  vector<Room> rooms;
+  std::vector<Room> rooms;
   {
     Room room;
     room.pos = Vec2i(10, 4);

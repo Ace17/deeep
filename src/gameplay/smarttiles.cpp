@@ -13,8 +13,6 @@
 #include "base/util.h"
 #include <cassert>
 
-using namespace std;
-
 typedef Matrix2<int> TileMap;
 
 // .-------.

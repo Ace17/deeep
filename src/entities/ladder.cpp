@@ -23,7 +23,7 @@ struct Ladder : Entity, Climbable
     collisionGroup = CG_LADDER;
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_LADDER };
     r.scale = size;

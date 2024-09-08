@@ -11,12 +11,10 @@
 #include <memory>
 #include <vector>
 
-using namespace std;
-
 template<typename T>
-unique_ptr<T> unique(T* p)
+std::unique_ptr<T> unique(T* p)
 {
-  return unique_ptr<T>(p);
+  return std::unique_ptr<T>(p);
 }
 
 template<typename T>
@@ -49,9 +47,9 @@ inline auto allPairs(int n)
       int i;
       int j;
 
-      pair<int, int> operator * () const
+      std::pair<int, int> operator * () const
       {
-        return pair<int, int>(i, j);
+        return std::pair<int, int>(i, j);
       }
 
       bool operator != (State const& other) const
@@ -107,9 +105,9 @@ inline auto rasterScan(int cx, int cy)
       int cx;
       int i;
 
-      pair<int, int> operator * () const
+      std::pair<int, int> operator * () const
       {
-        return pair<int, int>(i % cx, i / cx);
+        return std::pair<int, int>(i % cx, i / cx);
       }
 
       bool operator != (State const& other) const
@@ -139,7 +137,7 @@ inline auto rasterScan(int cx, int cy)
 
 // Remove an element from a vector. Might change the ordering.
 template<typename T, typename Lambda>
-void unstableRemove(vector<T>& container, Lambda predicate)
+void unstableRemove(std::vector<T>& container, Lambda predicate)
 {
   for(int i = 0; i < (int)container.size(); ++i)
   {
@@ -147,7 +145,7 @@ void unstableRemove(vector<T>& container, Lambda predicate)
     {
       auto const j = (int)container.size() - 1;
 
-      swap(container[i], container[j]);
+      std::swap(container[i], container[j]);
 
       if(i != j)
         --i;

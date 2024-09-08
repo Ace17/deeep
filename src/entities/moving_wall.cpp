@@ -52,7 +52,7 @@ struct MovingWall : Entity
     subscription.reset();
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     for(int i = 0; i < size.x; ++i)
     {
@@ -155,7 +155,7 @@ struct MovingWall : Entity
   int delta_y = 0;
   int link = 0;
 
-  unique_ptr<Handle> subscription;
+  std::unique_ptr<Handle> subscription;
   Vector initialPos;
   Vector finalPos;
   Vector moveDir; // normalized

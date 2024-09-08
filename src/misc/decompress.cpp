@@ -456,15 +456,13 @@ struct Inflator
 };
 }
 
-using namespace std;
-
 // https://tools.ietf.org/html/rfc1950#page-5
 //
 // zlib header:
 // - 2 bytes: 0x78 0x9C
 // - <deflated stream>
 // - 4 bytes: adler32 checksum
-vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
+std::vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
 {
   if(in.len < 2)
     throw Error("zlibDecompress: zlib data too small");
@@ -482,7 +480,7 @@ vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
   if(FDICT != 0)
     throw Error("zlibDecompress: unsupported preset directory");
 
-  vector<uint8_t> out;
+  std::vector<uint8_t> out;
   Inflator inflator;
   inflator.inflate(out, in, 2);
   // skip adler32 checksum
@@ -503,7 +501,7 @@ vector<uint8_t> zlibDecompress(Span<const uint8_t> in)
 // - <deflated stream>
 // - 4 bytes crc32
 // - 4 bytes input size
-vector<uint8_t> gzipDecompress(Span<const uint8_t> in)
+std::vector<uint8_t> gzipDecompress(Span<const uint8_t> in)
 {
   if(in.len < 10)
     throw Error("gzipDecompress: gzip data too small");
@@ -521,7 +519,7 @@ vector<uint8_t> gzipDecompress(Span<const uint8_t> in)
   if(flags != 0)
     throw Error("gzipDecompress: unsupported flags");
 
-  vector<uint8_t> out;
+  std::vector<uint8_t> out;
   Inflator inflator;
   inflator.inflate(out, in, 10);
   // skip crc32 and input size

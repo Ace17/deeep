@@ -60,7 +60,7 @@ struct Door : Entity
       solid = false;
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_DOOR };
     r.action = state ? 1 : 3;
@@ -73,7 +73,7 @@ struct Door : Entity
   int delay = 0;
   const int id;
   const int initialState;
-  unique_ptr<Handle> subscription;
+  std::unique_ptr<Handle> subscription;
 };
 
 struct BreakableDoor : Entity, Damageable
@@ -85,7 +85,7 @@ struct BreakableDoor : Entity, Damageable
     collisionGroup = CG_WALLS;
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_DOOR };
     r.scale = size;

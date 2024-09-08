@@ -5,8 +5,6 @@
 #include <cstring> // memcmp
 #include <string>
 
-using namespace std;
-
 inline bool endsWith(String value, String suffix)
 {
   if(suffix.len > value.len)
@@ -15,7 +13,7 @@ inline bool endsWith(String value, String suffix)
   return memcmp(value.data + value.len - suffix.len, suffix.data, suffix.len) == 0;
 }
 
-inline string setExtension(String name, String ext)
+inline std::string setExtension(String name, String ext)
 {
   int i = (int)name.len - 1;
 

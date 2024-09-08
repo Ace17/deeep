@@ -14,8 +14,6 @@
 #include "stb_vorbis.c"
 #include <cassert>
 
-using namespace std;
-
 struct OggSoundPlayer : IAudioSource
 {
   OggSoundPlayer(Span<uint8_t> data) : m_data(data)
@@ -44,17 +42,17 @@ struct OggSound : Sound
   {
   }
 
-  unique_ptr<IAudioSource> createSource()
+  std::unique_ptr<IAudioSource> createSource()
   {
     auto data = Span<uint8_t> { (uint8_t*)m_data.data(), (int)m_data.size() };
-    return make_unique<OggSoundPlayer>(data);
+    return std::make_unique<OggSoundPlayer>(data);
   }
 
-  const string m_data;
+  const std::string m_data;
 };
 
-unique_ptr<Sound> loadSoundFile(String filename)
+std::unique_ptr<Sound> loadSoundFile(String filename)
 {
-  return make_unique<OggSound>(filename);
+  return std::make_unique<OggSound>(filename);
 }
 

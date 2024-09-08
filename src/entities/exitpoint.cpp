@@ -28,7 +28,7 @@ struct ExitPoint : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto r = Actor { pos, MDL_BLOCK };
     r.scale = size;
@@ -60,7 +60,7 @@ struct ExitPoint : Entity
 
     if(decrement(timer))
     {
-      game->postEvent(make_unique<FinishGameEvent>());
+      game->postEvent(std::make_unique<FinishGameEvent>());
       active = true;
     }
   }

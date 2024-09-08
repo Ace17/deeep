@@ -46,12 +46,12 @@ struct Bonus : Entity
     }
   }
 
-  void addActors(vector<Actor>& actors) const override
+  void addActors(std::vector<Actor>& actors) const override
   {
     auto s = sin(time * 0.1);
     auto r = Actor { pos, MDL_BONUS };
     r.scale = UnitSize;
-    r.ratio = max(s, 0.0);
+    r.ratio = std::max(s, 0.0);
     r.action = modelAction;
 
     actors.push_back(r);
@@ -127,6 +127,6 @@ DECLARE_ENTITY("bonus_life", UpgradeBonus_Life);
 
 std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg)
 {
-  return make_unique<Bonus>(action, upgradeType, msg);
+  return std::make_unique<Bonus>(action, upgradeType, msg);
 }
 

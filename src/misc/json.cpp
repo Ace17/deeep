@@ -18,7 +18,7 @@ Value const& Value::operator [] (const char* name) const
   auto it = members.find(name);
 
   if(it == members.end())
-    throw Error("Member '" + string(name) + "' was not found");
+    throw Error("Member '" + std::string(name) + "' was not found");
 
   return it->second;
 }
@@ -46,7 +46,7 @@ struct Token
     COMMA,
   };
 
-  string lexem;
+  std::string lexem;
   Type type;
 };
 
@@ -181,7 +181,7 @@ private:
       }
     default:
       {
-        string msg = "Unknown char '";
+        std::string msg = "Unknown char '";
         msg += frontChar();
         msg += "'";
         throw Error(msg);
@@ -192,7 +192,7 @@ private:
   void expect(char c)
   {
     if(frontChar() != c)
-      throw Error(string("Unexpected character: '") + c + "'");
+      throw Error(std::string("Unexpected character: '") + c + "'");
 
     accept();
   }
@@ -226,7 +226,7 @@ using namespace json;
 static Value parseObject(Tokenizer& tk);
 static Value parseValue(Tokenizer& tk);
 static Value parseArray(Tokenizer& tk);
-static string expect(Tokenizer& tk, Token::Type type);
+static std::string expect(Tokenizer& tk, Token::Type type);
 
 Value json::parse(const char* text, size_t len)
 {
@@ -342,27 +342,27 @@ Value parseArray(Tokenizer& tk)
 }
 
 static
-string expect(Tokenizer& tk, Token::Type type)
+std::string expect(Tokenizer& tk, Token::Type type)
 {
   auto front = tk.front();
 
   if(front.type != type)
   {
-    string msg;
+    std::string msg;
 
     if(front.type == Token::EOF_)
       msg += "Unexpected end of file found";
     else
     {
       msg += "Unexpected token '" + front.lexem + "'";
-      msg += " of type " + to_string(front.type);
-      msg += " instead of " + to_string(type);
+      msg += " of type " + std::to_string(front.type);
+      msg += " instead of " + std::to_string(type);
     }
 
     throw Error(msg);
   }
 
-  string r = front.lexem;
+  std::string r = front.lexem;
   tk.popFront();
   return r;
 }
