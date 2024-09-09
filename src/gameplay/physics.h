@@ -22,3 +22,5 @@ struct IPhysics : IPhysicsProbe
 
 IPhysics* createPhysics();
 
+float raycastAgainstAABB(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstacleHalfSize);
+

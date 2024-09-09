@@ -103,6 +103,13 @@ struct Fixture
   CornerShape cornerShape;
 };
 
+unittest("Physics: raycast")
+{
+  assertEquals(1.0f, raycastAgainstAABB({ 0, 0 }, { 1, 0 }, { 10, 10 }, { 1, 1 }));
+  assertEquals(1.0f, raycastAgainstAABB({ -1, -0.9 }, { 2, 2 }, { 5, -5 }, { 5, 5 }));
+  assertNearlyEquals(Vec2f(0.25, 0), Vec2f(raycastAgainstAABB({ 0, 0 }, { 8, 0 }, { 4, 0 }, { 2, 5 }), 0));
+}
+
 unittest("Physics: simple move")
 {
   Fixture fix;

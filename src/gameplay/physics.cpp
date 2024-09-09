@@ -227,6 +227,7 @@ private:
 };
 
 Vec2f rotateLeft(Vec2f v) { return Vec2f(-v.y, v.x); }
+}
 
 // The obstacle is an AABB, whose position and halfSize are given as parameters.
 // The return value represents the allowed move, as a fraction of the desired
@@ -274,7 +275,6 @@ float raycastAgainstAABB(Vec2f pos, Vec2f delta, Vec2f obstaclePos, Vec2f obstac
 
   return fraction;
 }
-} // namespace
 
 IPhysics* createPhysics()
 {
