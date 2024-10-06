@@ -24,6 +24,11 @@ struct Delegate<RetType(Args...)>
     reset(new StaticInvokable(f));
   }
 
+  ~Delegate()
+  {
+    reset(nullptr);
+  }
+
   void operator = (Delegate<RetType(Args...)>&& other)
   {
     reset(other.invokable);
