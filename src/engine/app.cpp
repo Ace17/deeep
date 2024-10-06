@@ -150,36 +150,36 @@ private:
   void registerUserInputActions()
   {
     // App keys
-    m_input->listenToQuit([&] () { m_running = AppState::Exit; });
+    m_input->listenToQuit([&]() { m_running = AppState::Exit; });
 
-    m_input->listenToKey(Key::PrintScreen, [&] (bool isDown) { if(isDown) toggleVideoCapture(); }, true);
-    m_input->listenToKey(Key::PrintScreen, [&] (bool isDown) { if(isDown) m_recorder.takeScreenshot(); }, false);
-    m_input->listenToKey(Key::Return, [&] (bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
+    m_input->listenToKey(Key::PrintScreen, [&](bool isDown) { if(isDown) toggleVideoCapture(); }, true);
+    m_input->listenToKey(Key::PrintScreen, [&](bool isDown) { if(isDown) m_recorder.takeScreenshot(); }, false);
+    m_input->listenToKey(Key::Return, [&](bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
 
-    m_input->listenToKey(Key::Y, [&] (bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Exit; });
-    m_input->listenToKey(Key::N, [&] (bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Running; });
+    m_input->listenToKey(Key::Y, [&](bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Exit; });
+    m_input->listenToKey(Key::N, [&](bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Running; });
 
     // Player keys
-    m_input->listenToKey(Key::Esc, [&] (bool isDown) { if(isDown) onQuit(); });
-    m_input->listenToKey(Key::Return, [&] (bool isDown) { m_control.start = isDown; });
+    m_input->listenToKey(Key::Esc, [&](bool isDown) { if(isDown) onQuit(); });
+    m_input->listenToKey(Key::Return, [&](bool isDown) { m_control.start = isDown; });
 
-    m_input->listenToKey(Key::Left, [&] (bool isDown) { m_control.left = isDown; });
-    m_input->listenToKey(Key::Right, [&] (bool isDown) { m_control.right = isDown; });
-    m_input->listenToKey(Key::Up, [&] (bool isDown) { m_control.up = isDown; });
-    m_input->listenToKey(Key::Down, [&] (bool isDown) { m_control.down = isDown; });
+    m_input->listenToKey(Key::Left, [&](bool isDown) { m_control.left = isDown; });
+    m_input->listenToKey(Key::Right, [&](bool isDown) { m_control.right = isDown; });
+    m_input->listenToKey(Key::Up, [&](bool isDown) { m_control.up = isDown; });
+    m_input->listenToKey(Key::Down, [&](bool isDown) { m_control.down = isDown; });
 
-    m_input->listenToKey(Key::Z, [&] (bool isDown) { m_control.fire = isDown; });
-    m_input->listenToKey(Key::X, [&] (bool isDown) { m_control.jump = isDown; });
-    m_input->listenToKey(Key::C, [&] (bool isDown) { m_control.dash = isDown; });
+    m_input->listenToKey(Key::Z, [&](bool isDown) { m_control.fire = isDown; });
+    m_input->listenToKey(Key::X, [&](bool isDown) { m_control.jump = isDown; });
+    m_input->listenToKey(Key::C, [&](bool isDown) { m_control.dash = isDown; });
 
-    m_input->listenToKey(Key::R, [&] (bool isDown) { m_control.restart = isDown; });
+    m_input->listenToKey(Key::R, [&](bool isDown) { m_control.restart = isDown; });
 
     // Debug keys
-    m_input->listenToKey(Key::F2, [&] (bool isDown) { if(isDown) m_scene.reset(createGame(m_renderer.get(), m_audio.get(), m_args)); });
-    m_input->listenToKey(Key::Tab, [&] (bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
-    m_input->listenToKey(Key::Backtick, [&] (bool isDown) { m_fastForward = isDown; });
-    m_input->listenToKey(Key::ScrollLock, [&] (bool isDown) { if(isDown) toggleDebug(); });
-    m_input->listenToKey(Key::Pause, [&] (bool isDown) { if(isDown){ togglePause(); } });
+    m_input->listenToKey(Key::F2, [&](bool isDown) { if(isDown) m_scene.reset(createGame(m_renderer.get(), m_audio.get(), m_args)); });
+    m_input->listenToKey(Key::Tab, [&](bool isDown) { if(isDown) m_slowMotion = !m_slowMotion; });
+    m_input->listenToKey(Key::Backtick, [&](bool isDown) { m_fastForward = isDown; });
+    m_input->listenToKey(Key::ScrollLock, [&](bool isDown) { if(isDown) toggleDebug(); });
+    m_input->listenToKey(Key::Pause, [&](bool isDown) { if(isDown){ togglePause(); } });
   }
 
   void draw()
@@ -190,7 +190,7 @@ private:
 
     if(m_running == AppState::ConfirmExit)
     {
-      RenderSprite s {};
+      RenderSprite s{};
       s.pos = { -8, -8 };
       s.halfSize = { 16, 16 };
       s.modelId = 0;
@@ -293,7 +293,7 @@ private:
   int m_lastDisplayFrameTime;
   RateCounter m_fps;
   RateCounter m_tps;
-  Control m_control {};
+  Control m_control{};
   std::vector<std::string> m_args;
   bool m_slowMotion = false;
   bool m_fastForward = false;
