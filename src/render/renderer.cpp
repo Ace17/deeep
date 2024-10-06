@@ -319,10 +319,21 @@ private:
   Quad spriteToQuad(const RenderSprite& sprite) const
   {
     auto cam = sprite.useWorldRefFrame ? m_camera : Camera();
-    auto& model = m_Models.at(sprite.modelId);
+    auto it = m_Models.find(sprite.modelId);
+
+    if(it == m_Models.end())
+    {
+      char buffer[256];
+      throw Error(format(buffer, "No such model: %d", sprite.modelId));
+    }
+
+    auto& model = it->second;
 
     if(model.actions.empty())
-      throw Error("model has no actions");
+    {
+      char buffer[256];
+      throw Error(format(buffer, "model %d has no actions", sprite.modelId));
+    }
 
     if(sprite.actionIdx < 0 || sprite.actionIdx >= (int)model.actions.size())
       throw Error("invalid action index");
