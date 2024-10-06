@@ -517,7 +517,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
       m_screenViewport = screenViewport;
 
       if(m_screenSizeListener)
-        m_screenSizeListener->onScreenSizeChanged(screenSize);
+        m_screenSizeListener->onScreenSizeChanged(screenSize, screenViewport);
     }
   }
 
@@ -525,7 +525,7 @@ struct OpenGlGraphicsBackend : IGraphicsBackend
   {
     m_screenSizeListener = listener;
     updateScreenSize();
-    m_screenSizeListener->onScreenSizeChanged(m_screenSize);
+    m_screenSizeListener->onScreenSizeChanged(m_screenSize, m_screenViewport);
   }
 
 private:

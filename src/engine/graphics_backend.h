@@ -10,6 +10,7 @@
 
 #include <memory>
 
+#include "base/box.h"
 #include "base/geom.h"
 #include "base/string.h"
 
@@ -18,7 +19,7 @@ struct PictureView;
 struct IScreenSizeListener
 {
   virtual ~IScreenSizeListener() = default;
-  virtual void onScreenSizeChanged(Vec2i size) = 0;
+  virtual void onScreenSizeChanged(Vec2i size, Rect2i viewport) = 0;
 };
 
 struct IGpuProgram

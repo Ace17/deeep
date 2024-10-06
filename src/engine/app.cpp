@@ -70,7 +70,11 @@ public:
     logMsg("Engine successfully inited");
   }
 
-  void onScreenSizeChanged(Vec2i size) override { m_screenSize = size; }
+  void onScreenSizeChanged(Vec2i size, Rect2i viewport) override
+  {
+    m_screenSize = size;
+    m_viewport = viewport;
+  }
 
   bool tick() override
   {
@@ -310,6 +314,7 @@ private:
   std::unique_ptr<Scene> m_scene;
 
   Vec2i m_screenSize{};
+  Rect2i m_viewport{};
 };
 
 ///////////////////////////////////////////////////////////////////////////////
