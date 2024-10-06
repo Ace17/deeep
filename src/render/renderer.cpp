@@ -20,6 +20,7 @@
 #include "engine/graphics_backend.h"
 #include "matrix3.h"
 #include "misc/file.h"
+#include "misc/math.h"
 #include "misc/stats.h"
 #include "misc/util.h"
 #include "model.h"
@@ -66,12 +67,6 @@ const Vertex quadVertices[] =
   { -1, +1, 0, 1 },
 };
 
-template<typename T>
-T blend(T a, T b, float alpha)
-{
-  return a * (1 - alpha) + b * alpha;
-}
-
 struct Renderer : IRenderer
 {
   Renderer(IGraphicsBackend* backend_)
@@ -111,7 +106,7 @@ struct Renderer : IRenderer
         m_camera = cam;
     }
 
-    m_camera.pos = blend(m_camera.pos, cam.pos, 0.3f);
+    m_camera.pos = lerp(m_camera.pos, cam.pos, 0.3f);
     m_camera.angle = cam.angle;
   }
 

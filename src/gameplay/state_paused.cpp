@@ -7,6 +7,7 @@
 // minimap paused state
 
 #include "base/scene.h"
+#include "misc/math.h"
 #include <memory>
 
 #include "entity_factory.h"
@@ -20,12 +21,6 @@
 #include "vec.h"
 
 extern const Vec2i CELL_SIZE;
-
-template<typename T>
-T blend(T a, T b, float alpha)
-{
-  return a * (1 - alpha) + b * alpha;
-}
 
 struct PausedState : Scene
 {
@@ -69,7 +64,7 @@ struct PausedState : Scene
       m_scroll.y++;
 
     const Vec2f target(m_scroll.x, m_scroll.y);
-    m_scrollf = blend(m_scrollf, target, 0.2);
+    m_scrollf = lerp(m_scrollf, target, 0.2);
 
     return this;
   }
