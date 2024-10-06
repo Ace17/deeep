@@ -47,13 +47,13 @@ Gauge ggTickDuration("Tick duration");
 Scene* createGame(IRenderer* renderer, Audio* audio, Span<const std::string> argv);
 extern const String GAME_NAME;
 
-class App : public IApp
+class App : public IApp, private IScreenSizeListener
 {
 public:
-  App(Span<char*> args)
-    : m_args({ args.data, args.data + args.len })
+  App(Span<char*> args) : m_args({ args.data, args.data + args.len })
   {
     m_graphicsBackend.reset(createGraphicsBackend(RESOLUTION));
+    m_graphicsBackend->setScreenSizeListener(this);
     m_renderer.reset(createRenderer(m_graphicsBackend.get()));
     m_audio.reset(createAudio());
     m_audioBackend.reset(createAudioBackend(m_audio.get()));
@@ -69,6 +69,8 @@ public:
     registerUserInputActions();
     logMsg("Engine successfully inited");
   }
+
+  void onScreenSizeChanged(Vec2i size) override { m_screenSize = size; }
 
   bool tick() override
   {
@@ -216,7 +218,7 @@ private:
 
     m_renderer->endDraw();
 
-    m_recorder.captureDisplayFrameIfNeeded(m_graphicsBackend.get(), RESOLUTION);
+    m_recorder.captureDisplayFrameIfNeeded(m_graphicsBackend.get(), m_screenSize);
   }
 
   void onQuit()
@@ -306,6 +308,8 @@ private:
   std::unique_ptr<UserInput> m_input;
 
   std::unique_ptr<Scene> m_scene;
+
+  Vec2i m_screenSize{};
 };
 
 ///////////////////////////////////////////////////////////////////////////////
