@@ -24,6 +24,10 @@ void unbound2(int)
   logMsg("input: this key/event is unbound");
 }
 
+void unbound3(int, int) {}
+
+void unbound4(int, int, bool, int) {}
+
 Uint32 translateToSdlKey(Key key)
 {
   switch(key)
@@ -103,6 +107,13 @@ struct SdlUserInput : UserInput
       case SDL_MOUSEWHEEL:
         onMouseWheel(&event);
         break;
+      case SDL_MOUSEMOTION:
+        onMouseMotion(&event);
+        break;
+      case SDL_MOUSEBUTTONDOWN:
+      case SDL_MOUSEBUTTONUP:
+        onMouseClick(&event);
+        break;
       }
     }
   }
@@ -122,10 +133,22 @@ struct SdlUserInput : UserInput
     m_wheelDelegate = std::move(onWheel);
   }
 
+  void listenToMouseMove(Delegate<void(int, int)> onAbsoluteMove) override
+  {
+    m_absoluteMoveDelegate = std::move(onAbsoluteMove);
+  }
+
+  void listenToMouseClick(Delegate<void(int, int, bool, int)> onClick) override
+  {
+    m_clickDelegate = std::move(onClick);
+  }
+
 private:
   std::map<Uint32, Delegate<void(bool)>> m_keyDelegates;
   Delegate<void()> m_quitDelegate = &unbound;
   Delegate<void(int)> m_wheelDelegate = &unbound2;
+  Delegate<void(int, int)> m_absoluteMoveDelegate = &unbound3;
+  Delegate<void(int, int, bool, int)> m_clickDelegate = &unbound4;
 
   void onKeyDown(SDL_Event* evt)
   {
@@ -166,6 +189,16 @@ private:
   void onMouseWheel(SDL_Event* evt)
   {
     m_wheelDelegate(evt->wheel.y);
+  }
+
+  void onMouseMotion(SDL_Event* evt)
+  {
+    m_absoluteMoveDelegate(evt->motion.x, evt->motion.y);
+  }
+
+  void onMouseClick(SDL_Event* evt)
+  {
+    m_clickDelegate(evt->button.x, evt->button.y, (bool)evt->button.state, evt->button.button);
   }
 };
 }

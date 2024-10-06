@@ -40,5 +40,7 @@ struct UserInput
   virtual void listenToKey(Key key, Delegate<void(bool isDown)> func, bool modControl = false, bool modAlt = false) = 0;
   virtual void listenToQuit(Delegate<void()> onQuit) = 0;
   virtual void listenToMouseWheel(Delegate<void(int)> onWheel) = 0;
+  virtual void listenToMouseClick(Delegate<void(int, int, bool, int)> onClick) = 0;
+  virtual void listenToMouseMove(Delegate<void(int, int)> onRelativeMove) = 0;
 };
 
