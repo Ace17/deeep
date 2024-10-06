@@ -17,7 +17,9 @@ struct Delegate<RetType(Args...)>
   RetType operator () (Args... args) const { return invokable->call(args...); }
 
   Delegate() = default;
-  Delegate(Delegate &&) = default;
+
+  Delegate(const Delegate&) = delete;
+  Delegate& operator=(const Delegate&) = delete;
 
   Delegate(RetType (*f)(Args...))
   {
@@ -29,13 +31,19 @@ struct Delegate<RetType(Args...)>
     reset(nullptr);
   }
 
-  void operator = (Delegate<RetType(Args...)>&& other)
+  Delegate(Delegate&& other)
   {
     reset(other.invokable);
     other.invokable = nullptr;
   }
 
-  void operator = (RetType (* f)(Args...))
+  void operator=(Delegate<RetType(Args...)>&& other)
+  {
+    reset(other.invokable);
+    other.invokable = nullptr;
+  }
+
+  void operator=(RetType (* f)(Args...))
   {
     reset(new StaticInvokable(f));
   }
@@ -47,7 +55,7 @@ struct Delegate<RetType(Args...)>
   }
 
   template<typename Lambda>
-  void operator = (const Lambda& func)
+  void operator=(const Lambda& func)
   {
     reset(new LambdaInvokable<Lambda>(func));
   }
