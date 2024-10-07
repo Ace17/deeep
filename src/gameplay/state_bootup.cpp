@@ -52,7 +52,7 @@ struct BootupState : Scene
   void draw() override
   {
     float ratio = std::min(timer / float(BEEPTIME), 1.0f);
-    auto splash = Actor { NullVector, MDL_BOOTUP };
+    auto splash = SpriteActor { NullVector, MDL_BOOTUP };
     splash.scale = { 16, 16 };
     splash.pos.y = 0;
     splash.pos -= splash.scale * 0.5;

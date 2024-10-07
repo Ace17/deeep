@@ -22,7 +22,7 @@ enum class Effect
 };
 
 // a displayable object (= a game object, as seen by the user-interface)
-struct Actor
+struct SpriteActor
 {
   Vec2f pos = Vec2f(0, 0); // object position, in logical units
   MODEL model = 0; // what sprite to display
@@ -50,7 +50,7 @@ struct IPresenter
   virtual void setAmbientLight(float amount) = 0;
 
   // adds a displayable object to the current frame
-  virtual void sendActor(Actor const& actor) = 0;
+  virtual void sendActor(SpriteActor const& actor) = 0;
 
   virtual void flushFrame() = 0;
 };

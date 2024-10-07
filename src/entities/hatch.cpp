@@ -26,9 +26,9 @@ struct Hatch : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_BLOCK };
+    auto r = SpriteActor { pos, MDL_BLOCK };
     r.scale = size;
     r.ratio = 1.0f - openingTimer / float(OPEN_DURATION);
     r.action = solid ? 1 : 2;

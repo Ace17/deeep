@@ -25,9 +25,9 @@ struct Spikes : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_SPIKES };
+    auto r = SpriteActor { pos, MDL_SPIKES };
     r.scale = UnitSize;
     r.ratio = 0;
     actors.push_back(r);

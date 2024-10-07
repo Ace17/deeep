@@ -60,9 +60,9 @@ struct Door : Entity
       solid = false;
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_DOOR };
+    auto r = SpriteActor { pos, MDL_DOOR };
     r.action = state ? 1 : 3;
     r.ratio = 1 - (delay / 50.0f);
     r.scale = size;
@@ -85,9 +85,9 @@ struct BreakableDoor : Entity, Damageable
     collisionGroup = CG_WALLS;
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_DOOR };
+    auto r = SpriteActor { pos, MDL_DOOR };
     r.scale = size;
 
     if(blinking)

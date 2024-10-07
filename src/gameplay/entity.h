@@ -44,7 +44,7 @@ struct Entity : Body
   virtual void leave() {}
   virtual void tick() {}
 
-  virtual void addActors(std::vector<Actor>& actors) const = 0;
+  virtual void addActors(std::vector<SpriteActor>& actors) const = 0;
 
   static constexpr uint32_t flags = 0;
 

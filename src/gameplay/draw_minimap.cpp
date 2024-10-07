@@ -88,7 +88,7 @@ void drawMinimap(IPresenter* presenter, Vec2f pos, const MapViewModel& vm)
       const bool wallDown = y == 0 || vm.cells.get(x, y - 1).up != MapViewModel::EdgeType::Free;
       const bool wallLeft = x == 0 || vm.cells.get(x - 1, y).right != MapViewModel::EdgeType::Free;
 
-      auto actor = Actor { NullVector, MDL_MINIMAP_TILES };
+      auto actor = SpriteActor { NullVector, MDL_MINIMAP_TILES };
       actor.action = getCenterTile(wallRight, wallUp, wallDown, wallLeft) + (cell.visited ? 20 : 0);
       actor.pos.x = cellSize * x + pos.x;
       actor.pos.y = cellSize * y + pos.y;

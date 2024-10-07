@@ -6,7 +6,7 @@
 
 #include <cmath> // sin
 
-#include "base/scene.h" // Actor
+#include "base/scene.h" // SpriteActor
 #include "gameplay/collision_groups.h"
 #include "gameplay/entity.h"
 #include "gameplay/entity_factory.h"
@@ -28,9 +28,9 @@ struct SpiderBullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_RECT };
+    auto r = SpriteActor { pos, MDL_RECT };
     r.scale = size;
     r.action = 0;
     r.ratio = 0;
@@ -70,9 +70,9 @@ struct Spider : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_SPIDER };
+    auto r = SpriteActor { pos, MDL_SPIDER };
 
     r.scale = Size(1, 1);
 

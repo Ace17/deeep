@@ -67,9 +67,9 @@ struct Lift : Entity
     }
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_ELEVATOR };
+    auto r = SpriteActor { pos, MDL_ELEVATOR };
     r.scale = size;
     r.ratio = 0;
     r.action = state ? 1 : 0;

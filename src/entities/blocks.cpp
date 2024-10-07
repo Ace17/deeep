@@ -27,12 +27,12 @@ struct FragileBlock : Entity, Damageable
     reappear();
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
     if(state == 2)
       return;
 
-    auto r = Actor { pos, model };
+    auto r = SpriteActor { pos, model };
     r.scale = size;
 
     if(state == 0)
@@ -122,11 +122,11 @@ struct CrumbleBlock : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
     if(solid)
     {
-      auto r = Actor { pos, model };
+      auto r = SpriteActor { pos, model };
       r.scale = size;
       r.action = tile;
 

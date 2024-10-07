@@ -33,9 +33,9 @@ struct RoomBoundaryDetector : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_RECT };
+    auto r = SpriteActor { pos, MDL_RECT };
     r.scale = size;
     actors.push_back(r);
   }
@@ -73,9 +73,9 @@ struct RoomBoundaryBlocker : Entity
     collidesWith = -1;
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_RECT };
+    auto r = SpriteActor { pos, MDL_RECT };
     r.scale = size;
     r.effect = Effect::Blinking;
     actors.push_back(r);

@@ -14,9 +14,9 @@
 #include "tests.h"
 
 template<typename T>
-Actor getActor(T& ent)
+SpriteActor getActor(T& ent)
 {
-  std::vector<Actor> actors;
+  std::vector<SpriteActor> actors;
   actors.clear();
   ent->addActors(actors);
   return actors[0];
@@ -120,7 +120,7 @@ unittest("Entity: pickup bonus")
       return &player;
     }
 
-    void addActors(std::vector<Actor> &) const override {}
+    void addActors(std::vector<SpriteActor> &) const override {}
     MockPlayer player;
   };
 

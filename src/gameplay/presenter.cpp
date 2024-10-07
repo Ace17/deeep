@@ -107,7 +107,7 @@ struct GamePresenter : IPresenter
     m_renderer->setAmbientLight(amount);
   }
 
-  void sendActor(Actor const& actor) override
+  void sendActor(SpriteActor const& actor) override
   {
     RenderSprite s;
 

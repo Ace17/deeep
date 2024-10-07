@@ -46,10 +46,10 @@ struct Bonus : Entity
     }
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
     auto s = sin(time * 0.1);
-    auto r = Actor { pos, MDL_BONUS };
+    auto r = SpriteActor { pos, MDL_BONUS };
     r.scale = UnitSize;
     r.ratio = std::max(s, 0.0);
     r.action = modelAction;

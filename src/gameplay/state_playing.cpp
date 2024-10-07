@@ -33,10 +33,10 @@ extern const Vec2i CELL_SIZE;
 
 namespace
 {
-Actor getDebugActor(Entity* entity)
+SpriteActor getDebugActor(Entity* entity)
 {
   auto box = entity->getBox();
-  auto r = Actor { box.pos, MDL_RECT };
+  auto r = SpriteActor { box.pos, MDL_RECT };
   r.scale = box.size;
   r.zOrder = 10;
   return r;
@@ -166,7 +166,7 @@ struct InGameScene : Scene, private IGame
 
     sendActorsForTileMap();
 
-    std::vector<Actor> actors;
+    std::vector<SpriteActor> actors;
 
     for(auto& entity : m_entities)
     {
@@ -181,7 +181,7 @@ struct InGameScene : Scene, private IGame
     }
 
     {
-      Actor lifebar { Vector(-7, 1.5), MDL_LIFEBAR };
+      SpriteActor lifebar { Vector(-7, 1.5), MDL_LIFEBAR };
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(1, 5);
@@ -191,7 +191,7 @@ struct InGameScene : Scene, private IGame
     }
 
     {
-      Actor background = { Vector(-8, -8), MDL_BACKGROUND };
+      SpriteActor background = { Vector(-8, -8), MDL_BACKGROUND };
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
       background.zOrder = -2;
@@ -274,7 +274,7 @@ struct InGameScene : Scene, private IGame
         {
           const float posX = x;
           const float posY = y;
-          auto actor = Actor { Vector(posX, posY), model };
+          auto actor = SpriteActor { Vector(posX, posY), model };
           actor.action = tile;
           actor.scale = UnitSize;
           actor.zOrder = -1;

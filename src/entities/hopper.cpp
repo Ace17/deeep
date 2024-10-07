@@ -33,9 +33,9 @@ struct Hopper : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_HOPPER };
+    auto r = SpriteActor { pos, MDL_HOPPER };
 
     r.scale = size;
     r.pos += Vector(-(r.scale.x - size.x) * 0.5, 0);

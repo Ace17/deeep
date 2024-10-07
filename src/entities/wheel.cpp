@@ -31,9 +31,9 @@ struct Wheel : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<Actor>& actors) const override
+  void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = Actor { pos, MDL_WHEEL };
+    auto r = SpriteActor { pos, MDL_WHEEL };
 
     r.scale = Size(3, 3);
     r.pos += Vector(-(r.scale.x - size.x) * 0.5, -0.3);
