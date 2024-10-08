@@ -170,14 +170,10 @@ struct InGameScene : Scene, private IGame
 
     for(auto& entity : m_entities)
     {
-      actors.clear();
       entity->addActors(actors);
 
-      for(auto actor : actors)
-        m_view->sendActor(actor);
-
       if(m_debug)
-        m_view->sendActor(getDebugActor(entity.get()));
+        actors.push_back(getDebugActor(entity.get()));
     }
 
     {
@@ -187,7 +183,7 @@ struct InGameScene : Scene, private IGame
       lifebar.scale = Size(1, 5);
       lifebar.screenRefFrame = true;
       lifebar.zOrder = 9;
-      m_view->sendActor(lifebar);
+      actors.push_back(lifebar);
     }
 
     {
@@ -195,8 +191,11 @@ struct InGameScene : Scene, private IGame
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
       background.zOrder = -2;
-      m_view->sendActor(background);
+      actors.push_back(background);
     }
+
+    for(auto actor : actors)
+      m_view->sendActor(actor);
   }
 
   ////////////////////////////////////////////////////////////////
