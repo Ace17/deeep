@@ -5,7 +5,6 @@
 #include "picture.h"
 #include "png.h"
 #include <cstring> // memcpy
-#include <map>
 
 namespace
 {
