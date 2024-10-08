@@ -25,5 +25,5 @@ struct Picture
   }
 };
 
-Picture loadPicture(String path, Rect2f frect);
+Picture loadPicture(String path);
 

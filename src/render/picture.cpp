@@ -31,25 +31,19 @@ Picture* getPicture(std::string path)
 }
 }
 
-Picture loadPicture(String path, Rect2f frect)
+Picture loadPicture(String path)
 {
   try
   {
     auto surface = getPicture(std::string(path.data, path.len));
 
-    if(frect.size.x == 0 && frect.size.y == 0)
-      frect = Rect2f({ 0, 0 }, { 1, 1 });
-
-    if(frect.pos.x < 0 || frect.pos.y < 0 || frect.pos.x + frect.size.x > 1 || frect.pos.y + frect.size.y > 1)
-      throw Error("Invalid boundaries for '" + std::string(path.data, path.len) + "'");
-
     auto const bpp = 4;
 
     Rect2i rect;
-    rect.pos.x = frect.pos.x * surface->dim.x;
-    rect.pos.y = frect.pos.y * surface->dim.y;
-    rect.size.x = frect.size.x * surface->dim.x;
-    rect.size.y = frect.size.y * surface->dim.y;
+    rect.pos.x = 0;
+    rect.pos.y = 0;
+    rect.size.x = surface->dim.x;
+    rect.size.y = surface->dim.y;
 
     std::vector<uint8_t> img(rect.size.x * rect.size.y * bpp);
 

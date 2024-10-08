@@ -420,7 +420,7 @@ public:
 
     if(m_textures.find(sPath) == m_textures.end())
     {
-      auto pic = loadPicture(path, Rect2f({ 0, 0 }, { 1, 1 }));
+      auto pic = loadPicture(path);
       m_textures[sPath] = backend->createTexture();
       m_textures[sPath]->upload(pic);
 
