@@ -9,7 +9,7 @@
 
 namespace
 {
-Picture loadPng(std::string path)
+Picture loadPng(String path)
 {
   Picture pic;
   auto pngDataBuf = File::read(path);
@@ -25,7 +25,7 @@ Picture loadPicture(String path)
 {
   try
   {
-    auto surface = loadPng(std::string(path.data, path.len));
+    auto surface = loadPng(path);
 
     auto const bpp = 4;
 
