@@ -58,6 +58,7 @@ SRCS_ENGINE:=\
 	src/render/matrix3.cpp\
 	src/render/model.cpp\
 	src/render/picture.cpp\
+	src/render/jpg.cpp\
 	src/render/png.cpp\
 	src/render/renderer.cpp\
 
@@ -132,6 +133,7 @@ SRCS_TESTS:=\
 	src/tests/base64.cpp\
 	src/tests/decompress.cpp\
 	src/tests/delegate.cpp\
+	src/tests/jpg.cpp\
 	src/tests/json.cpp\
 	src/tests/util.cpp\
 	src/tests/png.cpp\
