@@ -58,7 +58,7 @@ Picture loadPicture(String path)
   }
   catch(const Error& e)
   {
-    logMsg("[display] can't load texture '%.*s', falling back on generated one", e.message().len, e.message().data);
+    logMsg("[display] can't load texture '%.*s': %.*s. Falling back on generated one", path.len, path.data, e.message().len, e.message().data);
 
     Picture r;
     r.dim = Vec2i(32, 32);
