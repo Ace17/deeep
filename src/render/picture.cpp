@@ -9,8 +9,6 @@
 
 namespace
 {
-std::map<std::string, Picture> g_pictureCache;
-
 Picture loadPng(std::string path)
 {
   Picture pic;
@@ -21,33 +19,25 @@ Picture loadPng(std::string path)
 
   return pic;
 }
-
-Picture* getPicture(std::string path)
-{
-  if(g_pictureCache.find(path) == g_pictureCache.end())
-    g_pictureCache[path] = loadPng(path);
-
-  return &g_pictureCache.at(path);
-}
 }
 
 Picture loadPicture(String path)
 {
   try
   {
-    auto surface = getPicture(std::string(path.data, path.len));
+    auto surface = loadPng(std::string(path.data, path.len));
 
     auto const bpp = 4;
 
     Rect2i rect;
     rect.pos.x = 0;
     rect.pos.y = 0;
-    rect.size.x = surface->dim.x;
-    rect.size.y = surface->dim.y;
+    rect.size.x = surface.dim.x;
+    rect.size.y = surface.dim.y;
 
     std::vector<uint8_t> img(rect.size.x * rect.size.y * bpp);
 
-    auto src = surface->pixels.data() + rect.pos.x * bpp + rect.pos.y * surface->stride;
+    auto src = surface.pixels.data() + rect.pos.x * bpp + rect.pos.y * surface.stride;
     auto dst = img.data() + bpp * rect.size.x * rect.size.y;
 
     // from glTexImage2D doc:
@@ -57,7 +47,7 @@ Picture loadPicture(String path)
     {
       dst -= bpp * rect.size.x;
       memcpy(dst, src, bpp * rect.size.x);
-      src += surface->stride;
+      src += surface.stride;
     }
 
     Picture r;
