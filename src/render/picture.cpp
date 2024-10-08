@@ -1,7 +1,9 @@
 #include "base/box.h"
 #include "base/error.h"
 #include "base/logger.h"
+#include "jpg.h"
 #include "misc/file.h"
+#include "misc/util.h"
 #include "picture.h"
 #include "png.h"
 #include <cstring> // memcpy
@@ -13,7 +15,9 @@ Picture loadPng(String path)
   Picture pic;
   auto pngDataBuf = File::read(path);
   auto pngData = Span<const uint8_t>((uint8_t*)pngDataBuf.data(), (int)pngDataBuf.size());
-  pic.pixels = decodePng(pngData, pic.dim.x, pic.dim.y);
+
+  auto decoderFunc = endsWith(path, ".png") ? decodePng : decodeJpg;
+  pic.pixels = decoderFunc(pngData, pic.dim.x, pic.dim.y);
   pic.stride = pic.dim.x * 4;
 
   return pic;

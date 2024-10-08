@@ -56,6 +56,9 @@ Model loadAnimatedModel(String jsonPath, const LoadTextureFunc& loadTexture)
 
   std::string sheet = setExtension(jsonPath, "png");
 
+  if(!File::exists(sheet))
+    sheet = setExtension(jsonPath, "jpg");
+
   if(obj.has("actions"))
   {
     for(auto& action : obj["actions"].elements)

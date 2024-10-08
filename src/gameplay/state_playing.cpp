@@ -366,7 +366,7 @@ struct InGameScene : Scene, private IGame
     // load new background
     {
       char buffer[256];
-      String path = format(buffer, "res/sprites/background-%02d.model", level.theme);
+      String path = format(buffer, "res/backgrounds/background-%02d.model", level.theme);
       m_view->preload({ ResourceType::Model, MDL_BACKGROUND, path });
     }
 

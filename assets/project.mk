@@ -13,6 +13,10 @@ SPRITES_SRC+=$(wildcard assets/sprites/*.json)
 RESOURCES+=$(SPRITES_SRC:assets/%.json=res/%.model)
 RESOURCES+=$(SPRITES_SRC:assets/%.json=res/%.png)
 
+BACKGROUNDS_SRC+=$(wildcard assets/backgrounds/*.json)
+RESOURCES+=$(BACKGROUNDS_SRC:assets/%.json=res/%.model)
+RESOURCES+=$(BACKGROUNDS_SRC:assets/%.json=res/%.jpg)
+
 #-----------------------------------
 # ROOMS
 
@@ -38,6 +42,13 @@ res/quest.gz: $(BIN)/res/quest.json
 res/%.model: assets/%.json
 	@mkdir -p $(dir $@)
 	@cp "$<" "$@"
+
+res/%.jpg: assets/%.xcf
+	@mkdir -p $(dir $@)
+	@echo "Render $<"
+	@xcf2png "$<" -o "$@.png"
+	@ffmpeg -loglevel 1 -i "$@.png" -pix_fmt yuvj420p -q:v 1 -y "$@" </dev/null
+	@rm -f "$@.png"
 
 res/%.png: assets/%.xcf
 	@mkdir -p $(dir $@)
