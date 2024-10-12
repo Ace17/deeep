@@ -172,7 +172,7 @@ unittest("Entity: hero falls")
   auto physics = NullPhysicsProbe();
   auto game = NullGame();
   game.physicsProbe = &physics;
-  auto player = createHeroPlayer(&game);
+  std::unique_ptr<Player> player(createHeroPlayer(&game));
   player->enterLevel();
   player->setPosition({ 0, 10 });
   // player->tick();

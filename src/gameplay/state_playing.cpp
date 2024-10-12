@@ -373,7 +373,7 @@ struct InGameScene : Scene, private IGame
     if(!m_player)
     {
       EntityConfigImpl config;
-      m_player = createHeroPlayer(this);
+      m_player.reset(createHeroPlayer(this));
       m_player->setPosition(Vector(level.start.x, level.start.y));
       postEvent(std::make_unique<SaveEvent>());
     }
@@ -500,7 +500,7 @@ struct InGameScene : Scene, private IGame
   SavedGame m_savedGame;
   Quest m_quest;
   Vec2i m_currRoomSize {};
-  Player* m_player = nullptr;
+  std::unique_ptr<Player> m_player;
   IPresenter* const m_view;
   std::unique_ptr<IPhysics> m_physics;
   bool m_gameFinished = false;

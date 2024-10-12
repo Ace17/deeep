@@ -10,6 +10,8 @@
 
 struct Player
 {
+  virtual ~Player() = default;
+
   virtual void think(Control const& s) = 0;
   virtual float health() = 0;
   virtual Vector position() = 0;
