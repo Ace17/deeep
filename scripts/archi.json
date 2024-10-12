@@ -11,7 +11,7 @@
    {
       "desc" : "Main",
       "name" : "engine",
-      "deps" : [ "base", "misc" ]
+      "deps" : [ "base", "misc", "sys" ]
    },
    {
       "desc" : "Game-specific gameplay",
@@ -46,6 +46,10 @@
    {
       "desc" : "Desc GL",
       "name" : "GL"
+   },
+   {
+      "desc" : "Desc Sys",
+      "name" : "sys"
    },
    {
       "desc" : "Test suite",
