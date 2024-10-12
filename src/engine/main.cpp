@@ -41,8 +41,19 @@ void runMainLoop(IApp* app)
 
 #endif
 
+#ifdef __linux__
+#include <sys/resource.h>
+#endif
+
 int main(int argc, char* argv[])
 {
+  void foo(void);
+
+#ifdef __linux__
+  rlimit lim { 8192, 8192 };
+  setrlimit(RLIMIT_STACK, &lim);
+#endif
+
   try
   {
     auto app = createApp({ argv + 1, argc - 1 });
