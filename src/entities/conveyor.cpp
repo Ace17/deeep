@@ -26,7 +26,7 @@ struct Conveyor : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_RECT };
+    auto r = SpriteActor { pos + size / 2, MDL_RECT };
     r.action = 2;
     r.scale = size;
     r.scale.x *= -1;

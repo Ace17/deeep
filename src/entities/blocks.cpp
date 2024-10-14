@@ -32,7 +32,7 @@ struct FragileBlock : Entity, Damageable
     if(state == 2)
       return;
 
-    auto r = SpriteActor { pos, model };
+    auto r = SpriteActor { pos + size / 2, model };
     r.scale = size;
 
     if(state == 0)
@@ -126,7 +126,7 @@ struct CrumbleBlock : Entity
   {
     if(solid)
     {
-      auto r = SpriteActor { pos, model };
+      auto r = SpriteActor { pos + size / 2, model };
       r.scale = size;
       r.action = tile;
 

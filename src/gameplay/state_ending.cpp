@@ -60,7 +60,6 @@ struct EndingState : Scene
   {
     auto splash = SpriteActor { NullVector, MDL_ENDING };
     splash.scale = { 16, 16 };
-    splash.pos -= Vec2f(8, 8);
     view->sendActor(splash);
   }
 

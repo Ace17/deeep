@@ -35,7 +35,7 @@ struct Sweeper : Entity, Damageable
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_SWEEPER };
+    auto r = SpriteActor { pos + size / 2, MDL_SWEEPER };
 
     r.scale = size;
     r.pos += Vector(-(r.scale.x - size.x) * 0.5, 0);

@@ -37,7 +37,7 @@ struct Switch : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_SWITCH };
+    auto r = SpriteActor { pos + UnitSize / 2, MDL_SWITCH };
     r.scale = UnitSize;
 
     if(blinking)

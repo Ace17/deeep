@@ -35,7 +35,7 @@ struct RoomBoundaryDetector : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_RECT };
+    auto r = SpriteActor { pos + size / 2, MDL_RECT };
     r.scale = size;
     actors.push_back(r);
   }
@@ -75,7 +75,7 @@ struct RoomBoundaryBlocker : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_RECT };
+    auto r = SpriteActor { pos + size / 2, MDL_RECT };
     r.scale = size;
     r.effect = Effect::Blinking;
     actors.push_back(r);

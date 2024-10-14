@@ -348,12 +348,6 @@ private:
 
     Vec2f pos = sprite.pos;
 
-    if(sprite.halfSize.x < 0)
-      pos.x -= sprite.halfSize.x;
-
-    if(sprite.halfSize.y < 0)
-      pos.y -= sprite.halfSize.y;
-
     const auto worldTransform = translate(pos) * rotate(sprite.angle) * scale(sprite.halfSize);
     const auto transform = getCameraMatrix(cam) * worldTransform;
 
@@ -361,10 +355,10 @@ private:
     q.zOrder = sprite.zOrder;
     q.tile = action.textures[idx];
 
-    auto const m0x = 0;
-    auto const m0y = 0;
-    auto const m1x = 1;
-    auto const m1y = 1;
+    auto const m0x = -0.5;
+    auto const m0y = -0.5;
+    auto const m1x = +0.5;
+    auto const m1y = +0.5;
 
     q.pos[0] = multiplyMatrix(transform, m0x, m0y, 1);
     q.pos[1] = multiplyMatrix(transform, m0x, m1y, 1);

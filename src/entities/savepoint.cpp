@@ -31,7 +31,7 @@ struct SavePoint : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_SAVEPOINT };
+    auto r = SpriteActor { pos + size / 2, MDL_SAVEPOINT };
     r.scale = size;
     r.ratio = 0;
     r.action = 0;

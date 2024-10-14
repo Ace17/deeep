@@ -35,10 +35,9 @@ struct Hopper : Entity, Damageable
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_HOPPER };
+    auto r = SpriteActor { pos + size / 2, MDL_HOPPER };
 
     r.scale = size;
-    r.pos += Vector(-(r.scale.x - size.x) * 0.5, 0);
 
     if(blinking)
       r.effect = Effect::Blinking;

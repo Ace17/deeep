@@ -58,7 +58,7 @@ struct MovingWall : Entity
     {
       for(int y = 0; y < size.y; ++y)
       {
-        auto r = SpriteActor { pos, MDL_TILES_00 };
+        auto r = SpriteActor { pos + Vec2f(0.5, 0.5), MDL_TILES_00 };
         r.action = 16;
         r.pos.x += i;
         r.pos.y += y;

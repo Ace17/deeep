@@ -46,7 +46,7 @@ struct Bullet : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_BULLET };
+    auto r = SpriteActor { pos + size / 2, MDL_BULLET };
     r.scale = size;
     r.action = 0;
     r.ratio = 0;
@@ -89,7 +89,7 @@ struct Bomb : Entity
     if(life == 0)
       return;
 
-    auto r = SpriteActor { pos, MDL_RECT };
+    auto r = SpriteActor { pos + size / 2, MDL_RECT };
     r.scale = size;
     r.zOrder = 2;
 
@@ -155,7 +155,8 @@ struct Rockman : Entity, Damageable, Playerable
     r.scale = Size(3, 3);
 
     // re-center
-    r.pos += Vector(-(r.scale.x - size.x) * 0.5, -0.0);
+    r.pos.x += size.x / 2;
+    r.pos.y += r.scale.y / 2;
 
     if(ball)
     {

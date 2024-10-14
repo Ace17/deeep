@@ -197,7 +197,7 @@ private:
     if(m_running == AppState::ConfirmExit)
     {
       RenderSprite s{};
-      s.pos = { -8, -8 };
+      s.pos = { 0, 0 };
       s.halfSize = { 16, 16 };
       s.modelId = 0;
       s.zOrder = 99;

@@ -24,7 +24,7 @@ enum class Effect
 // a displayable object (= a game object, as seen by the user-interface)
 struct SpriteActor
 {
-  Vec2f pos = Vec2f(0, 0); // object position, in logical units
+  Vec2f pos = Vec2f(0, 0); // object center position, in logical units
   MODEL model = 0; // what sprite to display
   int action = 0; // what sprite action to use
   float ratio = 0; // in [0 .. 1]. 0 for action beginning, 1 for action end

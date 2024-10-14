@@ -36,7 +36,7 @@ namespace
 SpriteActor getDebugActor(Entity* entity)
 {
   auto box = entity->getBox();
-  auto r = SpriteActor { box.pos, MDL_RECT };
+  auto r = SpriteActor { box.pos + box.size / 2, MDL_RECT };
   r.scale = box.size;
   r.zOrder = 10;
   return r;
@@ -177,7 +177,7 @@ struct InGameScene : Scene, private IGame
     }
 
     {
-      SpriteActor lifebar { Vector(-7, 1.5), MDL_LIFEBAR };
+      SpriteActor lifebar { Vector(-7, 3.5), MDL_LIFEBAR };
       lifebar.action = 0;
       lifebar.ratio = m_player->health();
       lifebar.scale = Size(1, 5);
@@ -187,7 +187,7 @@ struct InGameScene : Scene, private IGame
     }
 
     {
-      SpriteActor background = { Vector(-8, -8), MDL_BACKGROUND };
+      SpriteActor background = { Vector(0, 0), MDL_BACKGROUND };
       background.scale = Size(16, 16);
       background.screenRefFrame = true;
       background.zOrder = -2;
@@ -271,8 +271,8 @@ struct InGameScene : Scene, private IGame
           return;
 
         {
-          const float posX = x;
-          const float posY = y;
+          const float posX = x + 0.5f;
+          const float posY = y + 0.5f;
           auto actor = SpriteActor { Vector(posX, posY), model };
           actor.action = tile;
           actor.scale = UnitSize;

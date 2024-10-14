@@ -55,7 +55,6 @@ struct BootupState : Scene
     auto splash = SpriteActor { NullVector, MDL_BOOTUP };
     splash.scale = { 16, 16 };
     splash.pos.y = 0;
-    splash.pos -= splash.scale * 0.5;
     splash.zOrder = 2;
     view->sendActor(splash);
     view->setAmbientLight(1 - ratio);

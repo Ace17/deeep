@@ -28,7 +28,7 @@ struct Hatch : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_BLOCK };
+    auto r = SpriteActor { pos + size / 2, MDL_BLOCK };
     r.scale = size;
     r.ratio = 1.0f - openingTimer / float(OPEN_DURATION);
     r.action = solid ? 1 : 2;

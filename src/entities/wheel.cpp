@@ -33,10 +33,10 @@ struct Wheel : Entity, Damageable
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_WHEEL };
+    auto r = SpriteActor { pos + size / 2, MDL_WHEEL };
 
     r.scale = Size(3, 3);
-    r.pos += Vector(-(r.scale.x - size.x) * 0.5, -0.3);
+    r.pos += Vector(0, 0.7);
 
     if(blinking)
       r.effect = Effect::Blinking;

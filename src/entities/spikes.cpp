@@ -27,7 +27,7 @@ struct Spikes : Entity
 
   void addActors(std::vector<SpriteActor>& actors) const override
   {
-    auto r = SpriteActor { pos, MDL_SPIKES };
+    auto r = SpriteActor { pos + UnitSize / 2, MDL_SPIKES };
     r.scale = UnitSize;
     r.ratio = 0;
     actors.push_back(r);
