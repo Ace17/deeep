@@ -48,7 +48,7 @@ namespace
 {
 Gauge ggDrawCalls("Draw calls");
 
-const float AspectRatio = 1; // square aspect ratio
+const float AspectRatio = 1.5;
 
 GLuint compileShader(Span<const uint8_t> code, int type)
 {

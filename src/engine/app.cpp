@@ -30,7 +30,7 @@
 #include "video_capture.h"
 
 auto const GAMEPLAY_HZ = 100;
-auto const INITIAL_WINDOW_SIZE = Vec2i(768, 768);
+auto const INITIAL_WINDOW_SIZE = Vec2i(1152, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
 IGraphicsBackend* createGraphicsBackend(Vec2i resolution);
@@ -198,7 +198,7 @@ private:
     {
       RenderSprite s{};
       s.pos = { 0, 0 };
-      s.halfSize = { 16, 16 };
+      s.halfSize = { 24, 16 };
       s.modelId = 0;
       s.zOrder = 99;
       m_renderer->drawSprite(s);

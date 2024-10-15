@@ -34,7 +34,7 @@ Gauge ggSpriteCount("sprites");
 Gauge ggBatchCount("batches");
 
 const int MAX_QUADS = 32678;
-const auto INTERNAL_RESOLUTION = Vec2i(256, 256);
+const auto INTERNAL_RESOLUTION = Vec2i(384, 256);
 const auto TILE_SIZE = 16.0f;
 const float SCALE = 0.1;
 
