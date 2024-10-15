@@ -14,11 +14,20 @@
 #include "span.h"
 #include "string.h"
 
-struct RenderSprite
+struct RenderColor
 {
-  Vec2f pos;
+  float r, g, b, a;
+};
+
+struct RenderObject
+{
   bool useWorldRefFrame;
   int zOrder;
+};
+
+struct RenderSprite : RenderObject
+{
+  Vec2f pos;
   float angle;
   Vec2f halfSize;
   bool blinking;
@@ -27,10 +36,25 @@ struct RenderSprite
   float frame;
 };
 
-struct RenderText
+struct RenderText : RenderObject
 {
   Vec2f pos;
   String text;
+};
+
+struct RenderCircle : RenderObject
+{
+  Vec2f pos;
+  float radius;
+  RenderColor color;
+};
+
+struct RenderLine : RenderObject
+{
+  Vec2f a, b;
+  RenderColor color;
+  float thicknessMin = 1;
+  float thicknessMax = 1;
 };
 
 struct IRenderer
@@ -46,5 +70,7 @@ struct IRenderer
   virtual void endDraw() = 0;
   virtual void drawSprite(const RenderSprite& sprite) = 0;
   virtual void drawText(const RenderText& text) = 0;
+  virtual void drawCircle(const RenderCircle& circle) = 0;
+  virtual void drawLine(const RenderLine& line) = 0;
 };
 

@@ -202,12 +202,26 @@ private:
       s.modelId = 0;
       s.zOrder = 99;
       m_renderer->drawSprite(s);
-      m_renderer->drawText({ Vec2f(0, 0.5), "QUIT? [Y/N]" });
+
+      RenderText text{};
+      text.pos = Vec2f(0, 0.5);
+      text.text = "QUIT? [Y/N]";
+      m_renderer->drawText(text);
     }
     else if(m_paused)
-      m_renderer->drawText({ Vec2f(0, 0), "PAUSE" });
+    {
+      RenderText text{};
+      text.pos = Vec2f(0, 0);
+      text.text = "PAUSE";
+      m_renderer->drawText(text);
+    }
     else if(m_slowMotion)
-      m_renderer->drawText({ Vec2f(0, 0), "SLOW-MOTION MODE" });
+    {
+      RenderText text{};
+      text.pos = Vec2f(0, 0);
+      text.text = "SLOW-MOTION MODE";
+      m_renderer->drawText(text);
+    }
 
     if(m_control.debug)
     {
@@ -215,8 +229,10 @@ private:
       {
         char txt[256];
         auto stat = getStat(i);
-        auto s = format(txt, "%s: %.2f", stat.name, stat.val);
-        m_renderer->drawText({ Vec2f(0, 4 - i), s });
+        RenderText text{};
+        text.pos = Vec2f(0, 4 - i);
+        text.text = format(txt, "%s: %.2f", stat.name, stat.val);
+        m_renderer->drawText(text);
       }
     }
 

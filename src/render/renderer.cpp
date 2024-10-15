@@ -5,6 +5,7 @@
 // License, or (at your option) any later version.
 
 #include <array>
+#include <cmath>
 #include <unordered_map>
 #include <vector>
 
@@ -35,6 +36,7 @@ Gauge ggBatchCount("batches");
 const int MAX_QUADS = 32678;
 const auto INTERNAL_RESOLUTION = Vec2i(256, 256);
 const auto TILE_SIZE = 16.0f;
+const float SCALE = 0.1;
 
 Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
@@ -54,6 +56,7 @@ struct Camera
 struct Vertex
 {
   float x, y, u, v;
+  float r = 1, g = 1, b = 1, a = 1;
 };
 
 const Vertex quadVertices[] =
@@ -73,6 +76,7 @@ struct Renderer : IRenderer
     : backend(backend_)
   {
     m_quadShader = backend->createGpuProgram("standard", false);
+    m_lineShader = backend->createGpuProgram("line", false);
     m_batchVbo = backend->createVertexBuffer();
     m_fb = backend->createFrameBuffer(INTERNAL_RESOLUTION, false);
 
@@ -169,6 +173,13 @@ struct Renderer : IRenderer
 
     my::sort<Quad>(m_quads, byPriority);
 
+    auto linesByZ = [] (const RenderLine& a, const RenderLine& b)
+      {
+        return a.zOrder < b.zOrder;
+      };
+
+    my::sort<RenderLine>(m_lines, linesByZ);
+
     vboData.clear();
 
     ITexture* currTexture = nullptr;
@@ -178,53 +189,183 @@ struct Renderer : IRenderer
 
     backend->useVertexBuffer(m_batchVbo.get());
 
-    for(auto const& q : m_quads)
+    Span<RenderLine> lines(m_lines);
+    Span<RenderCircle> circles(m_circles);
+    Span<Quad> quads(m_quads);
+
+    const auto cameraTransform = getCameraMatrix(m_camera);
+    const auto identity = translate({});
+
+    auto addOneLine = [&] (const RenderLine& line)
+      {
+        if(currShader != m_lineShader.get())
+        {
+          flushBatch();
+
+          backend->useGpuProgram(m_lineShader.get());
+          backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+          backend->enableVertexAttribute(1 /* uv          */, 2, sizeof(Vertex), offsetof(Vertex, u));
+          backend->enableVertexAttribute(2 /* color       */, 4, sizeof(Vertex), offsetof(Vertex, r));
+
+          currShader = m_lineShader.get();
+        }
+
+        auto const transform = identity;
+
+        auto const a = multiplyMatrix(transform, line.a.x, line.a.y, 1);
+        auto const b = multiplyMatrix(transform, line.b.x, line.b.y, 1);
+
+        auto const n = normalize(b - a);
+        auto const t = Vec2f(-n.y, n.x);
+
+        auto const p0 = a + t * line.thicknessMax * SCALE;
+        auto const p1 = a - t * line.thicknessMax * SCALE;
+        auto const p2 = b - t * line.thicknessMax * SCALE;
+        auto const p3 = b + t * line.thicknessMax * SCALE;
+
+        const auto u = line.thicknessMin;
+
+        vboData.push_back(Vertex{ p0.x, p0.y, -u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
+        vboData.push_back(Vertex{ p1.x, p1.y, +u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
+        vboData.push_back(Vertex{ p2.x, p2.y, +u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
+
+        vboData.push_back(Vertex{ p0.x, p0.y, -u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
+        vboData.push_back(Vertex{ p2.x, p2.y, +u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
+        vboData.push_back(Vertex{ p3.x, p3.y, -u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
+      };
+
+    auto addOneCircle = [&] (const RenderCircle& circle)
+      {
+        if(currShader != m_lineShader.get())
+        {
+          flushBatch();
+
+          backend->useGpuProgram(m_lineShader.get());
+          backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+          backend->enableVertexAttribute(1 /* uv          */, 2, sizeof(Vertex), offsetof(Vertex, u));
+          backend->enableVertexAttribute(2 /* color       */, 4, sizeof(Vertex), offsetof(Vertex, r));
+
+          currShader = m_lineShader.get();
+        }
+
+        auto transform = circle.useWorldRefFrame ? cameraTransform : identity;
+        const int N = 48;
+
+        for(int i = 0; i < N; ++i)
+        {
+          float angle0 = (i + 0) * 2 * PI / N;
+          float angle1 = (i + 1) * 2 * PI / N;
+
+          const float cos0 = cos(angle0);
+          const float sin0 = sin(angle0);
+          const float cos1 = cos(angle1);
+          const float sin1 = sin(angle1);
+
+          const float thickness = 1.0 * SCALE;
+
+          const float innerRadius = circle.radius - thickness * 0.5;
+          const float outerRadius = circle.radius + thickness * 0.5;
+
+          Vec2f p0 = circle.pos + Vec2f(cos0, sin0) * innerRadius;
+          Vec2f p1 = circle.pos + Vec2f(cos0, sin0) * outerRadius;
+          Vec2f p2 = circle.pos + Vec2f(cos1, sin1) * outerRadius;
+          Vec2f p3 = circle.pos + Vec2f(cos1, sin1) * innerRadius;
+
+          p0 = multiplyMatrix(transform, p0.x, p0.y, 1);
+          p1 = multiplyMatrix(transform, p1.x, p1.y, 1);
+          p2 = multiplyMatrix(transform, p2.x, p2.y, 1);
+          p3 = multiplyMatrix(transform, p3.x, p3.y, 1);
+
+          const auto u = 1;
+
+          vboData.push_back(Vertex{ p0.x, p0.y, -u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
+          vboData.push_back(Vertex{ p1.x, p1.y, +u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
+          vboData.push_back(Vertex{ p2.x, p2.y, +u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
+
+          vboData.push_back(Vertex{ p0.x, p0.y, -u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
+          vboData.push_back(Vertex{ p2.x, p2.y, +u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
+          vboData.push_back(Vertex{ p3.x, p3.y, -u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
+        }
+      };
+
+    auto addOneQuad = [&] (const Quad& quad)
+      {
+        if(currShader != m_quadShader.get())
+        {
+          flushBatch();
+
+          backend->useGpuProgram(m_quadShader.get());
+          backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
+          backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+
+          currShader = m_quadShader.get();
+        }
+
+        if(m_tiles[quad.tile].texture != currTexture)
+        {
+          flushBatch();
+
+          currTexture = m_tiles[quad.tile].texture;
+          currTexture->bind(0); // Bind our diffuse texture in Texture Unit 0
+        }
+
+        if(quad.light != currLight)
+        {
+          flushBatch();
+
+          MyUniformBlock block { quad.light[0], quad.light[1], quad.light[2], 0 };
+          backend->setUniformBlock(&block, sizeof block);
+          currLight = quad.light;
+        }
+
+        if(vboData.size() * 6 >= MAX_QUADS)
+          flushBatch();
+
+        const auto& tile = m_tiles[quad.tile];
+        const float u0 = tile.uv[0].x;
+        const float v0 = 1 - tile.uv[1].y;
+        const float u1 = tile.uv[1].x;
+        const float v1 = 1 - tile.uv[0].y;
+
+        vboData.push_back({ quad.pos[0].x, quad.pos[0].y, u0, v0 });
+        vboData.push_back({ quad.pos[1].x, quad.pos[1].y, u0, v1 });
+        vboData.push_back({ quad.pos[2].x, quad.pos[2].y, u1, v1 });
+
+        vboData.push_back({ quad.pos[0].x, quad.pos[0].y, u0, v0 });
+        vboData.push_back({ quad.pos[2].x, quad.pos[2].y, u1, v1 });
+        vboData.push_back({ quad.pos[3].x, quad.pos[3].y, u1, v0 });
+      };
+
+    while(lines.len || circles.len || quads.len)
     {
-      if(vboData.size() * 6 >= MAX_QUADS)
-        flushBatch();
+      float minZ = 1.0 / 0.0;
 
-      if(currShader != m_quadShader.get())
+      if(lines.len && lines[0].zOrder < minZ)
+        minZ = lines[0].zOrder;
+
+      if(circles.len && circles[0].zOrder < minZ)
+        minZ = circles[0].zOrder;
+
+      if(quads.len && quads[0].zOrder < minZ)
+        minZ = quads[0].zOrder;
+
+      while(lines.len > 0 && lines[0].zOrder == minZ)
       {
-        flushBatch();
-
-        backend->useGpuProgram(m_quadShader.get());
-        backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
-        backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
-
-        currShader = m_quadShader.get();
+        addOneLine(lines[0]);
+        lines += 1;
       }
 
-      if(m_tiles[q.tile].texture != currTexture)
+      while(circles.len > 0 && circles[0].zOrder == minZ)
       {
-        flushBatch();
-
-        currTexture = m_tiles[q.tile].texture;
-        // Bind our diffuse texture in Texture Unit 0
-        currTexture->bind(0);
+        addOneCircle(circles[0]);
+        circles += 1;
       }
 
-      if(q.light != currLight)
+      while(quads.len > 0 && quads[0].zOrder == minZ)
       {
-        flushBatch();
-
-        MyUniformBlock block { q.light[0], q.light[1], q.light[2], 0 };
-        backend->setUniformBlock(&block, sizeof block);
-        currLight = q.light;
+        addOneQuad(quads[0]);
+        quads += 1;
       }
-
-      const auto& tile = m_tiles[q.tile];
-      const float u0 = tile.uv[0].x;
-      const float v0 = 1 - tile.uv[1].y;
-      const float u1 = tile.uv[1].x;
-      const float v1 = 1 - tile.uv[0].y;
-
-      vboData.push_back({ q.pos[0].x, q.pos[0].y, u0, v0 });
-      vboData.push_back({ q.pos[1].x, q.pos[1].y, u0, v1 });
-      vboData.push_back({ q.pos[2].x, q.pos[2].y, u1, v1 });
-
-      vboData.push_back({ q.pos[0].x, q.pos[0].y, u0, v0 });
-      vboData.push_back({ q.pos[2].x, q.pos[2].y, u1, v1 });
-      vboData.push_back({ q.pos[3].x, q.pos[3].y, u1, v0 });
     }
 
     flushBatch();
@@ -234,6 +375,8 @@ struct Renderer : IRenderer
     ggVboCap = vboData.capacity();
 
     m_quads.clear();
+    m_circles.clear();
+    m_lines.clear();
   }
 
   int batchCount = 0;
@@ -276,6 +419,31 @@ struct Renderer : IRenderer
     }
   }
 
+  void drawCircle(const RenderCircle& circle) override
+  {
+    auto cam = circle.useWorldRefFrame ? m_camera : Camera();
+    const auto transform = getCameraMatrix(cam);
+
+    RenderCircle c = circle;
+    Vec2f p = circle.pos + Vec2f(circle.radius, 0);
+    c.pos = multiplyMatrix(transform, circle.pos.x, circle.pos.y, 1);
+    c.radius = (c.pos - multiplyMatrix(transform, p.x, p.y, 1)).x;
+
+    m_circles.push_back(c);
+  }
+
+  void drawLine(const RenderLine& line) override
+  {
+    auto cam = line.useWorldRefFrame ? m_camera : Camera();
+    const auto transform = getCameraMatrix(cam);
+
+    RenderLine l = line;
+    l.a = multiplyMatrix(transform, line.a.x, line.a.y, 1);
+    l.b = multiplyMatrix(transform, line.b.x, line.b.y, 1);
+
+    m_lines.push_back(l);
+  }
+
   void drawSprite(const RenderSprite& sprite) override
   {
     auto q = spriteToQuad(sprite);
@@ -307,6 +475,7 @@ private:
   bool m_cameraValid = false;
 
   std::unique_ptr<IGpuProgram> m_quadShader;
+  std::unique_ptr<IGpuProgram> m_lineShader;
 
   struct Quad
   {
@@ -391,6 +560,8 @@ private:
     Vec2f uv[2];
   };
 
+  std::vector<RenderCircle> m_circles;
+  std::vector<RenderLine> m_lines;
   std::vector<Quad> m_quads;
   std::unique_ptr<IVertexBuffer> m_batchVbo;
   std::unique_ptr<IVertexBuffer> m_quadVbo;

@@ -34,12 +34,12 @@ extern const Vec2i CELL_SIZE;
 
 namespace
 {
-SpriteActor getDebugActor(Entity* entity)
+DebugRectActor getDebugActor(Entity* entity)
 {
   auto box = entity->getBox();
-  auto r = SpriteActor { box.pos + box.size / 2, MDL_RECT };
-  r.scale = box.size;
-  r.zOrder = 10;
+  DebugRectActor r;
+  r.pos[0] = box.pos;
+  r.pos[1] = box.pos + box.size;
   return r;
 }
 
@@ -174,7 +174,7 @@ struct InGameScene : Scene, private IGame
       entity->addActors(actors);
 
       if(m_debug)
-        actors.push_back(getDebugActor(entity.get()));
+        m_view->sendActor(getDebugActor(entity.get()));
     }
 
     {

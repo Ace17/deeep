@@ -38,7 +38,10 @@ struct GamePresenter : IPresenter
       if(m_textboxDelay < DELAY)
         y += 16 * (DELAY - m_textboxDelay) / DELAY;
 
-      m_renderer->drawText({ Vec2f(0, y), m_textbox });
+      RenderText text{};
+      text.pos = Vec2f(0, y);
+      text.text = m_textbox;
+      m_renderer->drawText(text);
       m_textboxDelay--;
     }
   }
@@ -122,6 +125,30 @@ struct GamePresenter : IPresenter
     s.zOrder = actor.zOrder;
 
     m_renderer->drawSprite(s);
+  }
+
+  void sendActor(DebugRectActor const& actor) override
+  {
+    Vec2f pos[4][2] =
+    {
+      { Vec2f(actor.pos[0].x, actor.pos[0].y), { Vec2f(actor.pos[0].x, actor.pos[1].y) } },
+      { Vec2f(actor.pos[0].x, actor.pos[1].y), { Vec2f(actor.pos[1].x, actor.pos[1].y) } },
+      { Vec2f(actor.pos[1].x, actor.pos[1].y), { Vec2f(actor.pos[1].x, actor.pos[0].y) } },
+      { Vec2f(actor.pos[1].x, actor.pos[0].y), { Vec2f(actor.pos[0].x, actor.pos[0].y) } },
+    };
+
+    for(auto& line : pos)
+    {
+      RenderLine s {};
+      s.useWorldRefFrame = true;
+      s.a = line[0];
+      s.b = line[1];
+      s.color = { 8, 8, 0, 1 };
+      s.thicknessMin = 0.5;
+      s.thicknessMax = 0.1;
+      s.zOrder = 100;
+      m_renderer->drawLine(s);
+    }
   }
 
 private:

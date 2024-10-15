@@ -35,6 +35,11 @@ struct SpriteActor
   int zOrder = 0; // actors with higher value are drawn over the others
 };
 
+struct DebugRectActor
+{
+  Vec2f pos[2];
+};
+
 // This interface should act as a message sink.
 // It should provide no way to query anything about the outside world.
 struct IPresenter
@@ -51,6 +56,7 @@ struct IPresenter
 
   // adds a displayable object to the current frame
   virtual void sendActor(SpriteActor const& actor) = 0;
+  virtual void sendActor(DebugRectActor const& actor) = 0;
 
   virtual void flushFrame() = 0;
 };
