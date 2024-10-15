@@ -14,6 +14,7 @@
 #include "base/logger.h"
 #include "base/scene.h"
 #include "base/util.h"
+#include "misc/math.h"
 
 #include "collision_groups.h"
 #include "entity_factory.h"
@@ -188,9 +189,39 @@ struct InGameScene : Scene, private IGame
 
     {
       SpriteActor background = { Vector(0, 0), MDL_BACKGROUND };
-      background.scale = Size(16, 16);
+      background.scale = Size(32, 32);
       background.screenRefFrame = true;
       background.zOrder = -2;
+
+      // scroll the background, according to the camera position
+      {
+        const Vec2f screenSize = { 24, 16 };
+        Vec2f ratio {};
+
+        if(m_cameraArea.size.x > 0)
+          ratio.x = (m_cameraPos.x - m_cameraArea.pos.x) / m_cameraArea.size.x;
+
+        if(m_cameraArea.size.y > 0)
+          ratio.y = (m_cameraPos.y - m_cameraArea.pos.y) / m_cameraArea.size.y;
+
+        const float rangeX = background.scale.x - screenSize.x;
+        const float rangeY = background.scale.y - screenSize.y;
+
+        if(rangeX > 0)
+        {
+          const float minX = screenSize.x / 2 - background.scale.x / 2;
+          const float maxX = minX + rangeX;
+          background.pos.x += lerp(maxX, minX, ratio.x);
+        }
+
+        if(rangeY > 0)
+        {
+          const float minY = screenSize.y / 2 - background.scale.y / 2;
+          const float maxY = minY + rangeY;
+          background.pos.y += lerp(maxY, minY, ratio.y);
+        }
+      }
+
       actors.push_back(background);
     }
 
@@ -247,15 +278,23 @@ struct InGameScene : Scene, private IGame
     }
   }
 
+  Vec2f m_cameraPos {};
+  Rect2f m_cameraArea {}; // the area where the center of the camera can go
+
   void updateCamera()
   {
-    auto cameraPos = m_player->position();
-    cameraPos.y += 1.5;
-
     // prevent camera from going outside the level
     auto const margin = Vec2f(8, 8);
-    cameraPos.x = ::clamp(cameraPos.x, margin.x, m_currRoomSize.x * CELL_SIZE.x - margin.x);
-    cameraPos.y = ::clamp(cameraPos.y, margin.y, m_currRoomSize.y * CELL_SIZE.y - margin.y);
+    m_cameraArea.pos = { margin.x, margin.y };
+    m_cameraArea.size.x = m_currRoomSize.x * CELL_SIZE.x - 2 * margin.x;
+    m_cameraArea.size.y = m_currRoomSize.y * CELL_SIZE.y - 2 * margin.y;
+
+    auto cameraPos = m_player->position();
+    cameraPos.y += 1.5;
+    cameraPos.x = ::clamp(cameraPos.x, m_cameraArea.pos.x, m_cameraArea.pos.x + m_cameraArea.size.x);
+    cameraPos.y = ::clamp(cameraPos.y, m_cameraArea.pos.y, m_cameraArea.pos.y + m_cameraArea.size.y);
+
+    m_cameraPos = cameraPos;
 
     m_view->setCameraPos(cameraPos);
   }
