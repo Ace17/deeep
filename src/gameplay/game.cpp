@@ -17,6 +17,8 @@
 #include <string>
 
 extern const String GAME_NAME = "Deeep";
+extern const Vec2i INITIAL_WINDOW_SIZE = Vec2i(1152, 768);
+extern const int GAMEPLAY_HZ = 100;
 
 Span<const Resource> getResources();
 IPresenter* createPresenter(IRenderer* renderer, Audio* audio);

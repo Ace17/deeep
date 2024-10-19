@@ -29,8 +29,6 @@
 #include "ratecounter.h"
 #include "video_capture.h"
 
-auto const GAMEPLAY_HZ = 100;
-auto const INITIAL_WINDOW_SIZE = Vec2i(1152, 768);
 auto const CAPTURE_FRAME_PERIOD = 40;
 
 IGraphicsBackend* createGraphicsBackend(Vec2i resolution);
@@ -46,6 +44,8 @@ Gauge ggTickDuration("Tick duration");
 // Implemented by the game-specific part
 Scene* createGame(IRenderer* renderer, Audio* audio, Span<const std::string> argv);
 extern const String GAME_NAME;
+extern const int GAMEPLAY_HZ;
+extern const Vec2i INITIAL_WINDOW_SIZE;
 
 class App : public IApp, private IScreenSizeListener
 {
