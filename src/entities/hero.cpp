@@ -18,15 +18,22 @@
 
 #include "hero.h"
 
+extern const int GAMEPLAY_HZ;
+
+const float ORIGINAL_HZ = 60.0988f; // NSTC SNES
+
 namespace
 {
-auto const WALK_SPEED = 0.075f;
-auto const MAX_HORZ_SPEED = 0.2f;
-auto const MAX_FALL_SPEED = 0.2f;
+inline auto ConvertSpeed(float val) { return val * (ORIGINAL_HZ / GAMEPLAY_HZ) / 16.0f; }
+
+auto const WALK_SPEED = ConvertSpeed(1.5f);
+auto const DASH_SPEED = ConvertSpeed(3.5f);
+auto const MAX_FALL_SPEED = ConvertSpeed(5.75f);
 auto const CLIMB_DELAY = 10;
 auto const HURT_DELAY = 50;
-auto const JUMP_VEL = 0.15;
+auto const JUMP_VEL = ConvertSpeed(5.0f);
 auto const MAX_LIFE = 31;
+auto const GRAVITY = 0.25f / 16.0f * (ORIGINAL_HZ / GAMEPLAY_HZ) * (ORIGINAL_HZ / GAMEPLAY_HZ);
 
 enum ORIENTATION
 {
@@ -281,7 +288,7 @@ struct Rockman : Entity, Damageable, Playerable
 
     // gravity
     if(life > 0 && !ladder)
-      vel.y -= 0.005;
+      vel.y -= GRAVITY;
 
     sliding = false;
 
@@ -316,7 +323,7 @@ struct Rockman : Entity, Damageable, Playerable
       {
         game->playSound(SND_JUMP);
         // wall climbing
-        vel.x = dir == RIGHT ? -0.04 : 0.04;
+        vel.x = dir == RIGHT ? -0.3 : 0.3;
 
         if(c.dash)
           dashDelay = 40;
@@ -342,7 +349,6 @@ struct Rockman : Entity, Damageable, Playerable
         vel.y = 0;
     }
 
-    vel.x = ::clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
     vel.y = std::max(vel.y, -MAX_FALL_SPEED);
   }
 
@@ -397,7 +403,11 @@ struct Rockman : Entity, Damageable, Playerable
 
     if(dashDelay > 0)
     {
-      wantedSpeed *= 4;
+      wantedSpeed = (wantedSpeed > 0 ? 1 : -1) * DASH_SPEED;
+
+      if(!c.left && !c.right)
+        wantedSpeed = 0;
+
       vel.x = wantedSpeed;
     }
 
