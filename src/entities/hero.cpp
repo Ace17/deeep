@@ -475,10 +475,9 @@ struct Rockman : Entity, Damageable, Playerable
     if(ground && !wasOnGround)
     {
       if(vel.y < 0)
-      {
         game->playSound(SND_LAND);
-        dashDelay = 0;
-      }
+
+      dashDelay = 0;
     }
 
     decrement(debounceFire);
