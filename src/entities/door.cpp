@@ -19,7 +19,7 @@ namespace
 {
 struct Door : Entity
 {
-  Door(IEntityConfig* args) : id(args->getInt("link", args->getInt("0"))), initialState(args->getInt("initial", 0))
+  Door(IEntityConfig* args) : link(args->getInt("link", args->getInt("0"))), initialState(args->getInt("initial", 0))
   {
     size = Size(1, 3);
     collisionGroup = CG_DOORS;
@@ -39,7 +39,7 @@ struct Door : Entity
         game->playSound(SND_DOOR);
       };
 
-    auto var = game->getVariable(id);
+    auto var = game->getVariable(link);
     subscription = var->observe(onTriggered);
 
     // already open?
@@ -71,7 +71,7 @@ struct Door : Entity
 
   bool state = false;
   int delay = 0;
-  const int id;
+  const int link;
   const int initialState;
   std::unique_ptr<Handle> subscription;
 };
