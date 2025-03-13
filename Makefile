@@ -85,6 +85,7 @@ SRCS_GAME:=\
 	src/entities/lift.cpp\
 	src/entities/moving_wall.cpp\
 	src/entities/savepoint.cpp\
+	src/entities/shutter.cpp\
 	src/entities/spider.cpp\
 	src/entities/spikes.cpp\
 	src/entities/sweeper.cpp\

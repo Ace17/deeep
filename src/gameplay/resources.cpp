@@ -66,6 +66,7 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_BULLET, "res/sprites/bullet.model" },
   { ResourceType::Model, MDL_EXPLOSION, "res/sprites/explosion.model" },
   { ResourceType::Model, MDL_SPIKES, "res/sprites/spikes.model" },
+  { ResourceType::Model, MDL_SHUTTER, "res/sprites/shutter.model" },
   { ResourceType::Model, MDL_HOPPER, "res/sprites/hopper.model" },
   { ResourceType::Model, MDL_MINIMAP_BG, "res/sprites/minimap_menu.model" },
   { ResourceType::Model, MDL_MINIMAP_TILES, "res/sprites/minimap_tiles.model" },
