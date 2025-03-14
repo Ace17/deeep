@@ -336,8 +336,11 @@ struct InGameScene : Scene, private IGame
 
     unstableRemove(m_entities, &isDead);
 
-    for(auto& spawned : m_spawned)
+    while(m_spawned.size())
     {
+      auto spawned = std::move(m_spawned.back());
+      m_spawned.pop_back();
+
       spawned->game = this;
       spawned->physics = m_physics.get();
       spawned->enter();
@@ -345,8 +348,6 @@ struct InGameScene : Scene, private IGame
       m_physics->addBody(spawned.get());
       m_entities.push_back(std::move(spawned));
     }
-
-    m_spawned.clear();
   }
 
   static bool isDead(std::unique_ptr<Entity> const& e)
