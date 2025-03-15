@@ -247,6 +247,16 @@ struct InGameScene : Scene, private IGame
   {
     m_debug = debugFlag;
 
+    if(debugFlag)
+    {
+      auto onCell =
+        [&] (int, int, int& exploredStatus)
+        {
+          exploredStatus = 1;
+        };
+      m_savedGame.exploredCells.scan(onCell);
+    }
+
     if(debugFlag && m_debugFirstTime)
     {
       m_debugFirstTime = false;

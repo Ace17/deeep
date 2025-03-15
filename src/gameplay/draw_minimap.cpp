@@ -182,8 +182,19 @@ MapViewModel computeMapViewModel(const MinimapData& map)
   auto hideCellIfUnknown =
     [&] (int x, int y, MapViewModel::Cell& cell)
     {
-      if(!map.exploredCells->get(x, y))
+      int status = map.exploredCells->get(x, y);
+      switch(status)
+      {
+      case 0:
         cell.center = MapViewModel::CenterType::Solid;
+        break;
+      case 1:
+        cell.visited = false;
+        break;
+      case 2:
+        cell.visited = true;
+        break;
+      }
     };
 
   r.cells.scan(hideCellIfUnknown);
