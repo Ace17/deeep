@@ -58,11 +58,11 @@ Rect2i transformTiledRect(Rect2i rect, int areaHeight)
   return rect;
 }
 
-std::map<std::string, json::Value> getAllLayers(json::Value const& js)
+std::map<std::string, json::Value> getMap(json::Value const& js, const char* name)
 {
   std::map<std::string, json::Value> nameToLayer;
 
-  for(auto& layer : js["layerInstances"].elements)
+  for(auto& layer : js[name].elements)
   {
     auto name = (std::string)layer["__identifier"];
     nameToLayer[name] = layer;
@@ -168,7 +168,7 @@ std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int h
 
 void loadConcreteRoom(Room& room, json::Value const& jsRoom)
 {
-  auto layers = getAllLayers(jsRoom);
+  auto layers = getMap(jsRoom, "layerInstances");
   room.tiles = parseTileLayer(layers["IntGrid"]);
   room.tilesForDisplay = parseAutoLayerTiles(layers["IntGrid"]);
 
@@ -186,6 +186,9 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
       break;
     }
   }
+
+  auto fields = getMap(jsRoom, "fieldInstances");
+  room.theme = int(fields.at("Theme")["__value"]);
 }
 
 Vec2i operator * (Vec2i a, Vec2i b)
@@ -217,7 +220,6 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   room.pos = box.pos;
   room.size = box.size;
   room.start = Vec2i(sizeInTiles.x / 2, sizeInTiles.y / 4);
-  room.theme = 3;// atoi(std::string(jsonRoom["type"]).c_str());
 
   {
     auto data = File::read(path);
