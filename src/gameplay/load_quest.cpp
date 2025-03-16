@@ -21,13 +21,15 @@
 
 #include "quest.h"
 
-static
+extern const Vec2i CELL_SIZE { 15, 10 };
+
+namespace
+{
 Vec2i getSize(json::Value const& obj)
 {
   return Vec2i(obj["width"], obj["height"]);
 }
 
-static
 Rect2i getRect(json::Value const& obj)
 {
   Rect2i r;
@@ -38,9 +40,8 @@ Rect2i getRect(json::Value const& obj)
   return r;
 }
 
-static const int TiledPixelsPerTile = 16;
+const int TiledPixelsPerTile = 16;
 
-static
 Rect2i transformTiledRect(Rect2i rect, int areaHeight)
 {
   // tiled stores dimensions as pixel units
@@ -57,7 +58,6 @@ Rect2i transformTiledRect(Rect2i rect, int areaHeight)
   return rect;
 }
 
-static
 std::map<std::string, json::Value> getAllLayers(json::Value const& js)
 {
   std::map<std::string, json::Value> nameToLayer;
@@ -71,7 +71,6 @@ std::map<std::string, json::Value> getAllLayers(json::Value const& js)
   return nameToLayer;
 }
 
-static
 std::vector<int> toIntArray(const json::Value& json)
 {
   std::vector<int> r;
@@ -83,7 +82,6 @@ std::vector<int> toIntArray(const json::Value& json)
   return r;
 }
 
-static
 Matrix2<int> parseTileLayer(json::Value& json)
 {
   Matrix2<int> tiles;
@@ -111,7 +109,6 @@ Matrix2<int> parseTileLayer(json::Value& json)
   return tiles;
 }
 
-static
 Matrix2<int> parseAutoLayerTiles(const json::Value& json)
 {
   const auto size = Vec2i(json["__cWid"], json["__cHei"]);
@@ -134,9 +131,6 @@ Matrix2<int> parseAutoLayerTiles(const json::Value& json)
   return r;
 }
 
-extern const Vec2i CELL_SIZE { 15, 10 };
-
-static
 void generateConcreteRoom(Room& room)
 {
   const Vec2i rect { room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y };
@@ -180,7 +174,6 @@ void generateConcreteRoom(Room& room)
     }
 }
 
-static
 std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height)
 {
   std::vector<Room::Spawner> r;
@@ -216,7 +209,6 @@ std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int h
   return r;
 }
 
-static
 void loadConcreteRoom(Room& room, json::Value const& jsRoom)
 {
   auto layers = getAllLayers(jsRoom);
@@ -239,12 +231,11 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
   }
 }
 
-static Vec2i operator * (Vec2i a, Vec2i b)
+Vec2i operator * (Vec2i a, Vec2i b)
 {
   return { a.x * b.x, a.y * b.y };
 }
 
-static
 Room loadAbstractRoom(json::Value const& jsonRoom)
 {
   const int WorldMaxHeight = CELL_SIZE.y * 50;
@@ -298,22 +289,6 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   return room;
 }
 
-Quest loadTiledWorld(std::string path) // LDTK JSON format
-{
-  auto data = File::read(path);
-  auto js = json::parse(data.c_str(), data.size());
-
-  Quest r;
-
-  for(auto& roomValue : js["levels"].elements)
-  {
-    auto room = loadAbstractRoom(roomValue);
-    r.rooms.push_back(std::move(room));
-  }
-
-  return r;
-}
-
 Matrix2<int> parseMatrix(Vec2i size, String s)
 {
   auto parseInteger = [&] () -> int
@@ -352,6 +327,23 @@ Matrix2<int> parseMatrix(Vec2i size, String s)
     {
       r.set(col, row, parseInteger());
     }
+  }
+
+  return r;
+}
+}
+
+Quest loadTiledWorld(std::string path) // LDTK JSON format
+{
+  auto data = File::read(path);
+  auto js = json::parse(data.c_str(), data.size());
+
+  Quest r;
+
+  for(auto& roomValue : js["levels"].elements)
+  {
+    auto room = loadAbstractRoom(roomValue);
+    r.rooms.push_back(std::move(room));
   }
 
   return r;
