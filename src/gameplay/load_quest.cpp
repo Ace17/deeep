@@ -131,49 +131,6 @@ Matrix2<int> parseAutoLayerTiles(const json::Value& json)
   return r;
 }
 
-void generateConcreteRoom(Room& room)
-{
-  const Vec2i rect { room.size.x * CELL_SIZE.x, room.size.y * CELL_SIZE.y };
-  room.tiles.resize(rect);
-
-  for(int x = 0; x < rect.x; ++x)
-  {
-    // ground
-    room.tiles.set(x, 0, 1);
-
-    // ceiling
-    for(int i = 0; i < 6; ++i)
-      room.tiles.set(x, rect.y - 1 - i, 1);
-  }
-
-  for(int y = 0; y < std::min(3, rect.y - 1); ++y)
-  {
-    room.tiles.set(0, y, 1);
-    room.tiles.set(rect.x - 1, y, 1);
-  }
-
-  for(int y = 0; y < rect.y; ++y)
-    for(int x = 0; x < rect.x; ++x)
-    {
-      auto const c = x / 16;
-      auto const col = x % 16;
-      auto const row = y % 16;
-
-      if(col >= 7 && col < 9 && (row + c) % 4 == 0)
-        room.tiles.set(x, y, 1);
-
-      if(col >= 11 && col < 13 && (row + c) % 4 == 2)
-        room.tiles.set(x, y, 1);
-
-      if(row == 1 && (col < 4 || col >= 12))
-        room.tiles.set(x, y, 1);
-
-      if(x == 0 || x == rect.x - 1)
-        if(row < 3 || row >= 6)
-          room.tiles.set(x, y, 1);
-    }
-}
-
 std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height)
 {
   std::vector<Room::Spawner> r;
@@ -262,15 +219,10 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   room.start = Vec2i(sizeInTiles.x / 2, sizeInTiles.y / 4);
   room.theme = 3;// atoi(std::string(jsonRoom["type"]).c_str());
 
-  if(File::exists(path))
   {
     auto data = File::read(path);
     auto jsRoom = json::parse(data.c_str(), data.size());
     loadConcreteRoom(room, jsRoom);
-  }
-  else
-  {
-    generateConcreteRoom(room);
   }
 
   auto const actualSize = room.tiles.size;
