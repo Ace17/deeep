@@ -45,15 +45,14 @@ Gauge ggTickDuration("Tick duration");
 Scene* createGame(IRenderer* renderer, Audio* audio, Span<const std::string> argv);
 extern const String GAME_NAME;
 extern const int GAMEPLAY_HZ;
-extern const Vec2i INITIAL_WINDOW_SIZE;
-const auto INTERNAL_RESOLUTION = Vec2i(240, 160);
+extern const Vec2i INTERNAL_RESOLUTION;
 
 class App : public IApp, private IScreenSizeListener
 {
 public:
   App(Span<char*> args) : m_args({ args.data, args.data + args.len })
   {
-    m_graphicsBackend.reset(createGraphicsBackend(INITIAL_WINDOW_SIZE));
+    m_graphicsBackend.reset(createGraphicsBackend(INTERNAL_RESOLUTION * 4));
     m_graphicsBackend->setScreenSizeListener(this);
     m_renderer.reset(createRenderer(m_graphicsBackend.get(), INTERNAL_RESOLUTION));
     m_audio.reset(createAudio());

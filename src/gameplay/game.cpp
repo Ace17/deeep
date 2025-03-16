@@ -17,7 +17,7 @@
 #include <string>
 
 extern const String GAME_NAME = "Deeep";
-extern const Vec2i INITIAL_WINDOW_SIZE = Vec2i(240 * 3, 160 * 3);
+extern const Vec2i INTERNAL_RESOLUTION = Vec2i(240, 160);
 extern const int GAMEPLAY_HZ = 100;
 
 Span<const Resource> getResources();
