@@ -34,7 +34,6 @@ Gauge ggSpriteCount("sprites");
 Gauge ggBatchCount("batches");
 
 const int MAX_QUADS = 32678;
-const auto INTERNAL_RESOLUTION = Vec2i(384, 256);
 const auto TILE_SIZE = 16.0f;
 const float SCALE = 0.1;
 
@@ -72,13 +71,14 @@ const Vertex quadVertices[] =
 
 struct Renderer : IRenderer
 {
-  Renderer(IGraphicsBackend* backend_)
+  Renderer(IGraphicsBackend* backend_, Vec2i internalResolution)
     : backend(backend_)
+    , m_internalResolution(internalResolution)
   {
     m_quadShader = backend->createGpuProgram("standard", false);
     m_lineShader = backend->createGpuProgram("line", false);
     m_batchVbo = backend->createVertexBuffer();
-    m_fb = backend->createFrameBuffer(INTERNAL_RESOLUTION, false);
+    m_fb = backend->createFrameBuffer(m_internalResolution, false);
 
     m_quadVbo = backend->createVertexBuffer();
     m_quadVbo->upload(quadVertices, sizeof quadVertices);
@@ -463,10 +463,10 @@ struct Renderer : IRenderer
   }
 
 private:
-  static Matrix3f getCameraMatrix(const Camera& cam)
+  Matrix3f getCameraMatrix(const Camera& cam) const
   {
-    static const auto half_w = INTERNAL_RESOLUTION.x / 2;
-    static const auto half_h = INTERNAL_RESOLUTION.y / 2;
+    static const auto half_w = m_internalResolution.x / 2;
+    static const auto half_h = m_internalResolution.y / 2;
     static const auto shrink = scale(Vec2f(TILE_SIZE / half_w, TILE_SIZE / half_h));
     return shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
   }
@@ -577,6 +577,7 @@ private:
   int m_frameCount = 0;
 
   IGraphicsBackend* const backend;
+  const Vec2i m_internalResolution;
 
 public:
   int loadTexture(String path, Rect2f frect)
@@ -605,8 +606,8 @@ public:
 };
 }
 
-IRenderer* createRenderer(IGraphicsBackend* gfxBackend)
+IRenderer* createRenderer(IGraphicsBackend* gfxBackend, Vec2i internalResolution)
 {
-  return new Renderer(gfxBackend);
+  return new Renderer(gfxBackend, internalResolution);
 }
 

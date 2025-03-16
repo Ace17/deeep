@@ -113,7 +113,7 @@ Matrix2<int> parseTileLayer(json::Value& json)
   return tiles;
 }
 
-extern const Vec2i CELL_SIZE { 16, 16 };
+extern const Vec2i CELL_SIZE { 15, 10 };
 
 static
 void generateConcreteRoom(Room& room)

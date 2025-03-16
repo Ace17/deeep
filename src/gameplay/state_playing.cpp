@@ -294,7 +294,7 @@ struct InGameScene : Scene, private IGame
   void updateCamera()
   {
     // prevent camera from going outside the level
-    auto const margin = Vec2f(12, 8);
+    auto const margin = Vec2f(7.5, 5);
     m_cameraArea.pos = { margin.x, margin.y };
     m_cameraArea.size.x = m_currRoomSize.x * CELL_SIZE.x - 2 * margin.x;
     m_cameraArea.size.y = m_currRoomSize.y * CELL_SIZE.y - 2 * margin.y;

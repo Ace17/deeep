@@ -24,7 +24,7 @@ Body::Body()
 
 namespace
 {
-Gauge ggOverlapChecks("physics.overlap_checks");
+Gauge ggOverlapChecks("physics.overlap_tests");
 Gauge ggRaycasts("physics.raycasts");
 int raycastCount = 0;
 
