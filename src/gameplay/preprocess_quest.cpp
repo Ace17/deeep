@@ -15,39 +15,6 @@
 #include <cstdlib> // rand
 
 static
-void addRandomWidgets(Matrix2<int>& tiles)
-{
-  auto rect = [&] (Vec2i pos, Vec2i size, int tile)
-    {
-      for(int dy = 0; dy < size.y; ++dy)
-        for(int dx = 0; dx < size.x; ++dx)
-          tiles.set(dx + pos.x, dy + pos.y, tile);
-    };
-
-  auto isFull = [&] (Vec2i pos, Vec2i size)
-    {
-      for(int dy = 0; dy < size.y; ++dy)
-        for(int dx = 0; dx < size.x; ++dx)
-          if(tiles.get(dx + pos.x, dy + pos.y) == 0)
-            return false;
-
-      return true;
-    };
-
-  auto const maxX = tiles.size.x - 4;
-  auto const maxY = tiles.size.y - 4;
-
-  for(int i = 0; i < (maxX * maxY) / 100; ++i)
-  {
-    auto pos = Vec2i(rand() % maxX + 1, rand() % maxY + 1);
-    auto size = Vec2i(2, 2);
-
-    if(isFull(pos + Vec2i(-1, -1), Vec2i(size.x + 2, size.y + 2)))
-      rect(pos, size, 3);
-  }
-}
-
-static
 bool isInsideRoom(Vec2i pos, Room const& room)
 {
   if(pos.x < room.pos.x)
@@ -148,34 +115,6 @@ void addBoundaryDetectors(Room& room, std::vector<Room> const& quest)
     auto const margin = Vec2i(0, 0.1);
     tryToConnectRoom(delta, margin);
   }
-}
-
-// from smarttiles
-int computeTileFor(Matrix2<int> const& m, int x, int y);
-
-static
-Matrix2<int> applySmartTiling(Matrix2<int> const& tiles)
-{
-  Matrix2<int> r;
-  r.resize(tiles.size);
-
-  for(int row = 0; row < r.size.y; ++row)
-    for(int col = 0; col < r.size.x; ++col)
-      r.set(col, row, -1);
-
-  for(int row = 0; row < tiles.size.y; ++row)
-  {
-    for(int col = 0; col < tiles.size.x; ++col)
-    {
-      if(tiles.get(col, row) == 0)
-        continue;
-
-      auto composition = computeTileFor(tiles, col, row);
-      r.set(col, row, composition);
-    }
-  }
-
-  return r;
 }
 
 static
@@ -304,9 +243,6 @@ void addFragileBlocks(Room& room)
 static
 void preprocessRoom(Room& room, std::vector<Room> const& quest)
 {
-  room.tilesForDisplay = applySmartTiling(room.tiles);
-
-  addRandomWidgets(room.tiles);
   addBoundaryDetectors(room, quest);
   replaceLegacyEntityNames(room);
   addFragileBlocks(room);

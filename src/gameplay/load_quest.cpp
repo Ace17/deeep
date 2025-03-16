@@ -100,17 +100,38 @@ Matrix2<int> parseTileLayer(json::Value& json)
   {
     auto const x = pos.first;
     auto const y = pos.second;
-    tiles.set(x, y, 0);
 
     int srcOffset = (x + (size.y - 1 - y) * size.x);
     int tile = buff[srcOffset];
 
     assert(tile >= 0);
-
     tiles.set(x, y, tile);
   }
 
   return tiles;
+}
+
+static
+Matrix2<int> parseAutoLayerTiles(const json::Value& json)
+{
+  const auto size = Vec2i(json["__cWid"], json["__cHei"]);
+
+  Matrix2<int> r(size);
+
+  for(auto pos : rasterScan(size.x, size.y))
+    r.set(pos.first, pos.second, -1);
+
+  for(auto& t : json["autoLayerTiles"].elements)
+  {
+    Vec2i pos;
+    pos.x = int(t["px"].elements[0]) / TiledPixelsPerTile;
+    pos.y = size.y - 1 - int(t["px"].elements[1]) / TiledPixelsPerTile;
+
+    const int tile = int(t["t"]);
+    r.set(pos.x, pos.y, tile);
+  }
+
+  return r;
 }
 
 extern const Vec2i CELL_SIZE { 15, 10 };
@@ -200,6 +221,7 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom)
 {
   auto layers = getAllLayers(jsRoom);
   room.tiles = parseTileLayer(layers["IntGrid"]);
+  room.tilesForDisplay = parseAutoLayerTiles(layers["IntGrid"]);
 
   if(exists(layers, "Entities"))
     room.spawners = parseThingLayer(layers["Entities"], room.size.y * CELL_SIZE.y);
