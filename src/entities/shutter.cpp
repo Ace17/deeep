@@ -64,7 +64,7 @@ struct Shutter : Entity
     solid = !state;
 
     DamageSensor* sensor = new DamageSensor;
-    sensor->onDamageDg = [this](){ toggle(!state); };
+    sensor->onDamageDg = [this](){ if(delay == 0) toggle(!state); };
     sensor->pos = pos + Vec2f(-1, 3);
     game->spawn(sensor);
   }
