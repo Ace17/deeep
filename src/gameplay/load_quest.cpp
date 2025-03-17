@@ -198,7 +198,7 @@ Vec2i operator * (Vec2i a, Vec2i b)
 
 Room loadAbstractRoom(json::Value const& jsonRoom)
 {
-  const int WorldMaxHeight = CELL_SIZE.y * 50;
+  const int WorldMaxHeight = CELL_SIZE.y * 128;
 
   Rect2i box;
   box.pos = Vec2i(jsonRoom["worldX"], jsonRoom["worldY"]);

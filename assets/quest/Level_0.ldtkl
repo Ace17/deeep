@@ -11,8 +11,8 @@
 	"identifier": "Level_0",
 	"iid": "b7c256d0-d7b0-11ee-844c-7704fb3a7c95",
 	"uid": 0,
-	"worldX": 480,
-	"worldY": 320,
+	"worldX": 6240,
+	"worldY": 3360,
 	"worldDepth": 0,
 	"pxWid": 960,
 	"pxHei": 960,
@@ -65,8 +65,8 @@
 					"defUid": 31,
 					"px": [96,336],
 					"fieldInstances": [],
-					"__worldX": 576,
-					"__worldY": 656
+					"__worldX": 6336,
+					"__worldY": 3696
 				},
 				{
 					"__identifier": "Wheel",
@@ -81,8 +81,8 @@
 					"defUid": 33,
 					"px": [720,128],
 					"fieldInstances": [],
-					"__worldX": 1200,
-					"__worldY": 448
+					"__worldX": 6960,
+					"__worldY": 3488
 				},
 				{
 					"__identifier": "Wheel",
@@ -97,8 +97,8 @@
 					"defUid": 33,
 					"px": [816,128],
 					"fieldInstances": [],
-					"__worldX": 1296,
-					"__worldY": 448
+					"__worldX": 7056,
+					"__worldY": 3488
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -113,8 +113,8 @@
 					"defUid": 22,
 					"px": [640,112],
 					"fieldInstances": [],
-					"__worldX": 1120,
-					"__worldY": 432
+					"__worldX": 6880,
+					"__worldY": 3472
 				},
 				{
 					"__identifier": "Upgrade_climb",
@@ -129,8 +129,8 @@
 					"defUid": 29,
 					"px": [416,896],
 					"fieldInstances": [],
-					"__worldX": 896,
-					"__worldY": 1216
+					"__worldX": 6656,
+					"__worldY": 4256
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -145,8 +145,8 @@
 					"defUid": 22,
 					"px": [224,640],
 					"fieldInstances": [],
-					"__worldX": 704,
-					"__worldY": 960
+					"__worldX": 6464,
+					"__worldY": 4000
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -161,8 +161,8 @@
 					"defUid": 22,
 					"px": [96,624],
 					"fieldInstances": [],
-					"__worldX": 576,
-					"__worldY": 944
+					"__worldX": 6336,
+					"__worldY": 3984
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -177,8 +177,8 @@
 					"defUid": 22,
 					"px": [96,608],
 					"fieldInstances": [],
-					"__worldX": 576,
-					"__worldY": 928
+					"__worldX": 6336,
+					"__worldY": 3968
 				},
 				{
 					"__identifier": "Upgrade_slide",
@@ -193,8 +193,8 @@
 					"defUid": 32,
 					"px": [608,688],
 					"fieldInstances": [],
-					"__worldX": 1088,
-					"__worldY": 1008
+					"__worldX": 6848,
+					"__worldY": 4048
 				},
 				{
 					"__identifier": "Sweeper",
@@ -209,8 +209,8 @@
 					"defUid": 26,
 					"px": [752,608],
 					"fieldInstances": [],
-					"__worldX": 1232,
-					"__worldY": 928
+					"__worldX": 6992,
+					"__worldY": 3968
 				},
 				{
 					"__identifier": "Switch",
@@ -225,8 +225,8 @@
 					"defUid": 11,
 					"px": [640,896],
 					"fieldInstances": [{ "__identifier": "link", "__type": "Int", "__value": 0, "__tile": null, "defUid": 12, "realEditorValues": [] }],
-					"__worldX": 1120,
-					"__worldY": 1216
+					"__worldX": 6880,
+					"__worldY": 4256
 				},
 				{
 					"__identifier": "Hatch",
@@ -241,8 +241,8 @@
 					"defUid": 23,
 					"px": [304,656],
 					"fieldInstances": [],
-					"__worldX": 784,
-					"__worldY": 976
+					"__worldX": 6544,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Hatch",
@@ -257,8 +257,8 @@
 					"defUid": 23,
 					"px": [336,656],
 					"fieldInstances": [],
-					"__worldX": 816,
-					"__worldY": 976
+					"__worldX": 6576,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Hatch",
@@ -273,8 +273,8 @@
 					"defUid": 23,
 					"px": [320,656],
 					"fieldInstances": [],
-					"__worldX": 800,
-					"__worldY": 976
+					"__worldX": 6560,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Hatch",
@@ -289,8 +289,8 @@
 					"defUid": 23,
 					"px": [352,656],
 					"fieldInstances": [],
-					"__worldX": 832,
-					"__worldY": 976
+					"__worldX": 6592,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Hatch",
@@ -305,8 +305,8 @@
 					"defUid": 23,
 					"px": [368,656],
 					"fieldInstances": [],
-					"__worldX": 848,
-					"__worldY": 976
+					"__worldX": 6608,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Hatch",
@@ -321,8 +321,8 @@
 					"defUid": 23,
 					"px": [400,656],
 					"fieldInstances": [],
-					"__worldX": 880,
-					"__worldY": 976
+					"__worldX": 6640,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Hatch",
@@ -337,8 +337,8 @@
 					"defUid": 23,
 					"px": [384,656],
 					"fieldInstances": [],
-					"__worldX": 864,
-					"__worldY": 976
+					"__worldX": 6624,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Conveyor",
@@ -353,8 +353,8 @@
 					"defUid": 20,
 					"px": [800,656],
 					"fieldInstances": [],
-					"__worldX": 1280,
-					"__worldY": 976
+					"__worldX": 7040,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Conveyor",
@@ -369,8 +369,8 @@
 					"defUid": 20,
 					"px": [816,656],
 					"fieldInstances": [],
-					"__worldX": 1296,
-					"__worldY": 976
+					"__worldX": 7056,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Conveyor",
@@ -385,8 +385,8 @@
 					"defUid": 20,
 					"px": [832,656],
 					"fieldInstances": [],
-					"__worldX": 1312,
-					"__worldY": 976
+					"__worldX": 7072,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Conveyor",
@@ -401,8 +401,8 @@
 					"defUid": 20,
 					"px": [848,656],
 					"fieldInstances": [],
-					"__worldX": 1328,
-					"__worldY": 976
+					"__worldX": 7088,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Conveyor",
@@ -417,8 +417,8 @@
 					"defUid": 20,
 					"px": [864,656],
 					"fieldInstances": [],
-					"__worldX": 1344,
-					"__worldY": 976
+					"__worldX": 7104,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Conveyor",
@@ -433,8 +433,8 @@
 					"defUid": 20,
 					"px": [880,656],
 					"fieldInstances": [],
-					"__worldX": 1360,
-					"__worldY": 976
+					"__worldX": 7120,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Lift",
@@ -453,8 +453,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 13, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [13] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 0, "__tile": null, "defUid": 17, "realEditorValues": [] }
 					],
-					"__worldX": 1024,
-					"__worldY": 1232
+					"__worldX": 6784,
+					"__worldY": 4272
 				},
 				{
 					"__identifier": "Lift",
@@ -473,8 +473,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 15, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [15] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 0, "__tile": null, "defUid": 17, "realEditorValues": [] }
 					],
-					"__worldX": 944,
-					"__worldY": 928
+					"__worldX": 6704,
+					"__worldY": 3968
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -489,8 +489,8 @@
 					"defUid": 22,
 					"px": [320,128],
 					"fieldInstances": [],
-					"__worldX": 800,
-					"__worldY": 448
+					"__worldX": 6560,
+					"__worldY": 3488
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -505,8 +505,8 @@
 					"defUid": 22,
 					"px": [624,416],
 					"fieldInstances": [],
-					"__worldX": 1104,
-					"__worldY": 736
+					"__worldX": 6864,
+					"__worldY": 3776
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -521,8 +521,8 @@
 					"defUid": 22,
 					"px": [688,400],
 					"fieldInstances": [],
-					"__worldX": 1168,
-					"__worldY": 720
+					"__worldX": 6928,
+					"__worldY": 3760
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -537,8 +537,8 @@
 					"defUid": 22,
 					"px": [672,400],
 					"fieldInstances": [],
-					"__worldX": 1152,
-					"__worldY": 720
+					"__worldX": 6912,
+					"__worldY": 3760
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -553,8 +553,8 @@
 					"defUid": 22,
 					"px": [752,384],
 					"fieldInstances": [],
-					"__worldX": 1232,
-					"__worldY": 704
+					"__worldX": 6992,
+					"__worldY": 3744
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -569,8 +569,8 @@
 					"defUid": 22,
 					"px": [736,384],
 					"fieldInstances": [],
-					"__worldX": 1216,
-					"__worldY": 704
+					"__worldX": 6976,
+					"__worldY": 3744
 				},
 				{
 					"__identifier": "Lift",
@@ -589,8 +589,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 0, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 1, "__tile": null, "defUid": 17, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
 					],
-					"__worldX": 768,
-					"__worldY": 1216
+					"__worldX": 6528,
+					"__worldY": 4256
 				},
 				{
 					"__identifier": "Savepoint",
@@ -605,8 +605,8 @@
 					"defUid": 25,
 					"px": [368,496],
 					"fieldInstances": [],
-					"__worldX": 848,
-					"__worldY": 816
+					"__worldX": 6608,
+					"__worldY": 3856
 				},
 				{
 					"__identifier": "Upgrade_djump",
@@ -621,8 +621,8 @@
 					"defUid": 30,
 					"px": [576,512],
 					"fieldInstances": [],
-					"__worldX": 1056,
-					"__worldY": 832
+					"__worldX": 6816,
+					"__worldY": 3872
 				},
 				{
 					"__identifier": "Lift",
@@ -641,8 +641,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 1, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [1] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 0, "__tile": null, "defUid": 17, "realEditorValues": [] }
 					],
-					"__worldX": 1072,
-					"__worldY": 944
+					"__worldX": 6832,
+					"__worldY": 3984
 				},
 				{
 					"__identifier": "Lift",
@@ -661,8 +661,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 0, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 0, "__tile": null, "defUid": 17, "realEditorValues": [] }
 					],
-					"__worldX": 1152,
-					"__worldY": 944
+					"__worldX": 6912,
+					"__worldY": 3984
 				},
 				{
 					"__identifier": "Lift",
@@ -681,8 +681,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 0, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 1, "__tile": null, "defUid": 17, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
 					],
-					"__worldX": 656,
-					"__worldY": 1152
+					"__worldX": 6416,
+					"__worldY": 4192
 				},
 				{
 					"__identifier": "Lift",
@@ -701,8 +701,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 4, "__tile": null, "defUid": 16, "realEditorValues": [{ "id": "V_Int", "params": [4] }] },
 						{ "__identifier": "unstable", "__type": "Int", "__value": 1, "__tile": null, "defUid": 17, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
 					],
-					"__worldX": 592,
-					"__worldY": 1184
+					"__worldX": 6352,
+					"__worldY": 4224
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -717,8 +717,8 @@
 					"defUid": 22,
 					"px": [608,416],
 					"fieldInstances": [],
-					"__worldX": 1088,
-					"__worldY": 736
+					"__worldX": 6848,
+					"__worldY": 3776
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -733,8 +733,8 @@
 					"defUid": 22,
 					"px": [320,96],
 					"fieldInstances": [],
-					"__worldX": 800,
-					"__worldY": 416
+					"__worldX": 6560,
+					"__worldY": 3456
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -749,8 +749,8 @@
 					"defUid": 22,
 					"px": [288,128],
 					"fieldInstances": [],
-					"__worldX": 768,
-					"__worldY": 448
+					"__worldX": 6528,
+					"__worldY": 3488
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -765,8 +765,8 @@
 					"defUid": 22,
 					"px": [288,96],
 					"fieldInstances": [],
-					"__worldX": 768,
-					"__worldY": 416
+					"__worldX": 6528,
+					"__worldY": 3456
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -781,8 +781,8 @@
 					"defUid": 22,
 					"px": [304,128],
 					"fieldInstances": [],
-					"__worldX": 784,
-					"__worldY": 448
+					"__worldX": 6544,
+					"__worldY": 3488
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -797,8 +797,8 @@
 					"defUid": 22,
 					"px": [304,96],
 					"fieldInstances": [],
-					"__worldX": 784,
-					"__worldY": 416
+					"__worldX": 6544,
+					"__worldY": 3456
 				},
 				{
 					"__identifier": "Upgrade_bomb",
@@ -813,8 +813,8 @@
 					"defUid": 28,
 					"px": [480,176],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 496
+					"__worldX": 6720,
+					"__worldY": 3536
 				},
 				{
 					"__identifier": "Upgrade_ball",
@@ -829,8 +829,8 @@
 					"defUid": 27,
 					"px": [416,352],
 					"fieldInstances": [],
-					"__worldX": 896,
-					"__worldY": 672
+					"__worldX": 6656,
+					"__worldY": 3712
 				},
 				{
 					"__identifier": "Fragile_block",
@@ -845,8 +845,8 @@
 					"defUid": 22,
 					"px": [384,144],
 					"fieldInstances": [],
-					"__worldX": 864,
-					"__worldY": 464
+					"__worldX": 6624,
+					"__worldY": 3504
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -861,8 +861,8 @@
 					"defUid": 21,
 					"px": [384,160],
 					"fieldInstances": [],
-					"__worldX": 864,
-					"__worldY": 480
+					"__worldX": 6624,
+					"__worldY": 3520
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -877,8 +877,8 @@
 					"defUid": 21,
 					"px": [592,704],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1024
+					"__worldX": 6832,
+					"__worldY": 4064
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -893,8 +893,8 @@
 					"defUid": 21,
 					"px": [592,720],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1040
+					"__worldX": 6832,
+					"__worldY": 4080
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -909,8 +909,8 @@
 					"defUid": 21,
 					"px": [592,736],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1056
+					"__worldX": 6832,
+					"__worldY": 4096
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -925,8 +925,8 @@
 					"defUid": 21,
 					"px": [592,752],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1072
+					"__worldX": 6832,
+					"__worldY": 4112
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -941,8 +941,8 @@
 					"defUid": 21,
 					"px": [592,768],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1088
+					"__worldX": 6832,
+					"__worldY": 4128
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -957,8 +957,8 @@
 					"defUid": 21,
 					"px": [592,784],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1104
+					"__worldX": 6832,
+					"__worldY": 4144
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -973,8 +973,8 @@
 					"defUid": 21,
 					"px": [592,800],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1120
+					"__worldX": 6832,
+					"__worldY": 4160
 				},
 				{
 					"__identifier": "Crumble_block",
@@ -989,8 +989,8 @@
 					"defUid": 21,
 					"px": [592,816],
 					"fieldInstances": [],
-					"__worldX": 1072,
-					"__worldY": 1136
+					"__worldX": 6832,
+					"__worldY": 4176
 				},
 				{
 					"__identifier": "Moving_wall",
@@ -1009,8 +1009,8 @@
 						{ "__identifier": "delta_y", "__type": "Int", "__value": 0, "__tile": null, "defUid": 19, "realEditorValues": [] },
 						{ "__identifier": "link", "__type": "Int", "__value": 33, "__tile": null, "defUid": 20, "realEditorValues": [{ "id": "V_Int", "params": [33] }] }
 					],
-					"__worldX": 560,
-					"__worldY": 1120
+					"__worldX": 6320,
+					"__worldY": 4160
 				},
 				{
 					"__identifier": "Switch",
@@ -1025,8 +1025,8 @@
 					"defUid": 11,
 					"px": [752,896],
 					"fieldInstances": [{ "__identifier": "link", "__type": "Int", "__value": 33, "__tile": null, "defUid": 12, "realEditorValues": [{ "id": "V_Int", "params": [33] }] }],
-					"__worldX": 1232,
-					"__worldY": 1216
+					"__worldX": 6992,
+					"__worldY": 4256
 				},
 				{
 					"__identifier": "Start",
@@ -1041,8 +1041,8 @@
 					"defUid": 6,
 					"px": [496,688],
 					"fieldInstances": [],
-					"__worldX": 976,
-					"__worldY": 1008
+					"__worldX": 6736,
+					"__worldY": 4048
 				},
 				{
 					"__identifier": "Spikes",
@@ -1057,8 +1057,8 @@
 					"defUid": 34,
 					"px": [560,928],
 					"fieldInstances": [],
-					"__worldX": 1040,
-					"__worldY": 1248
+					"__worldX": 6800,
+					"__worldY": 4288
 				},
 				{
 					"__identifier": "Spikes",
@@ -1073,8 +1073,8 @@
 					"defUid": 34,
 					"px": [544,928],
 					"fieldInstances": [],
-					"__worldX": 1024,
-					"__worldY": 1248
+					"__worldX": 6784,
+					"__worldY": 4288
 				},
 				{
 					"__identifier": "Ladder",
@@ -1089,8 +1089,8 @@
 					"defUid": 35,
 					"px": [480,896],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 1216
+					"__worldX": 6720,
+					"__worldY": 4256
 				},
 				{
 					"__identifier": "Ladder",
@@ -1105,8 +1105,8 @@
 					"defUid": 35,
 					"px": [480,880],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 1200
+					"__worldX": 6720,
+					"__worldY": 4240
 				},
 				{
 					"__identifier": "Ladder",
@@ -1121,8 +1121,8 @@
 					"defUid": 35,
 					"px": [480,832],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 1152
+					"__worldX": 6720,
+					"__worldY": 4192
 				},
 				{
 					"__identifier": "Ladder",
@@ -1137,8 +1137,8 @@
 					"defUid": 35,
 					"px": [480,816],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 1136
+					"__worldX": 6720,
+					"__worldY": 4176
 				},
 				{
 					"__identifier": "Ladder",
@@ -1153,8 +1153,8 @@
 					"defUid": 35,
 					"px": [480,848],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 1168
+					"__worldX": 6720,
+					"__worldY": 4208
 				},
 				{
 					"__identifier": "Ladder",
@@ -1169,8 +1169,8 @@
 					"defUid": 35,
 					"px": [480,864],
 					"fieldInstances": [],
-					"__worldX": 960,
-					"__worldY": 1184
+					"__worldX": 6720,
+					"__worldY": 4224
 				},
 				{
 					"__identifier": "Spikes",
@@ -1185,8 +1185,8 @@
 					"defUid": 34,
 					"px": [688,656],
 					"fieldInstances": [],
-					"__worldX": 1168,
-					"__worldY": 976
+					"__worldX": 6928,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Spikes",
@@ -1201,8 +1201,8 @@
 					"defUid": 34,
 					"px": [704,656],
 					"fieldInstances": [],
-					"__worldX": 1184,
-					"__worldY": 976
+					"__worldX": 6944,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Spikes",
@@ -1217,8 +1217,8 @@
 					"defUid": 34,
 					"px": [720,656],
 					"fieldInstances": [],
-					"__worldX": 1200,
-					"__worldY": 976
+					"__worldX": 6960,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Spikes",
@@ -1233,8 +1233,8 @@
 					"defUid": 34,
 					"px": [736,656],
 					"fieldInstances": [],
-					"__worldX": 1216,
-					"__worldY": 976
+					"__worldX": 6976,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Spikes",
@@ -1249,8 +1249,8 @@
 					"defUid": 34,
 					"px": [752,656],
 					"fieldInstances": [],
-					"__worldX": 1232,
-					"__worldY": 976
+					"__worldX": 6992,
+					"__worldY": 4016
 				},
 				{
 					"__identifier": "Ladder",
@@ -1265,8 +1265,8 @@
 					"defUid": 35,
 					"px": [16,704],
 					"fieldInstances": [],
-					"__worldX": 496,
-					"__worldY": 1024
+					"__worldX": 6256,
+					"__worldY": 4064
 				},
 				{
 					"__identifier": "Ladder",
@@ -1281,8 +1281,8 @@
 					"defUid": 35,
 					"px": [160,704],
 					"fieldInstances": [],
-					"__worldX": 640,
-					"__worldY": 1024
+					"__worldX": 6400,
+					"__worldY": 4064
 				},
 				{
 					"__identifier": "Door",
@@ -1297,8 +1297,8 @@
 					"defUid": 9,
 					"px": [720,864],
 					"fieldInstances": [{ "__identifier": "link", "__type": "Int", "__value": 0, "__tile": null, "defUid": 10, "realEditorValues": [] }],
-					"__worldX": 1200,
-					"__worldY": 1184
+					"__worldX": 6960,
+					"__worldY": 4224
 				},
 				{
 					"__identifier": "Switch",
@@ -1313,8 +1313,8 @@
 					"defUid": 11,
 					"px": [848,864],
 					"fieldInstances": [{ "__identifier": "link", "__type": "Int", "__value": 0, "__tile": null, "defUid": 12, "realEditorValues": [] }],
-					"__worldX": 1328,
-					"__worldY": 1184
+					"__worldX": 7088,
+					"__worldY": 4224
 				}
 			]
 		},
