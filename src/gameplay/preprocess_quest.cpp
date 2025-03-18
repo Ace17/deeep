@@ -219,11 +219,11 @@ void replaceLegacyEntityNames(Room& room)
 }
 
 static
-void addFragileBlocks(Room& room)
+void addSpecialBlocks(Room& room)
 {
   for(auto& spawner : room.spawners)
   {
-    if(spawner.name != "fragile_block" && spawner.name != "crumble_block")
+    if(spawner.name != "fragile_block" && spawner.name != "crumble_block" && spawner.name != "fake_block")
       continue;
 
     if(!room.tiles.isInside(spawner.pos.x, spawner.pos.y))
@@ -245,7 +245,7 @@ void preprocessRoom(Room& room, std::vector<Room> const& quest)
 {
   addBoundaryDetectors(room, quest);
   replaceLegacyEntityNames(room);
-  addFragileBlocks(room);
+  addSpecialBlocks(room);
 }
 
 void preprocessQuest(Quest& quest)

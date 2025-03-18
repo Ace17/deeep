@@ -110,6 +110,30 @@ struct FragileBlock : Entity, Damageable
   int tile;
 };
 
+struct FakeBlock : Entity
+{
+  FakeBlock(IEntityConfig* cfg)
+  {
+    model = MDL_TILES_00 + cfg->getInt("theme", 0);
+    tile = cfg->getInt("tile", 1);
+    size = UnitSize;
+    solid = false;
+  }
+
+  void addActors(std::vector<SpriteActor>& actors) const override
+  {
+    auto r = SpriteActor { pos + size / 2, model };
+    r.scale = size;
+    r.ratio = 0;
+    r.action = tile;
+
+    actors.push_back(r);
+  }
+
+  int model;
+  int tile;
+};
+
 struct CrumbleBlock : Entity
 {
   CrumbleBlock(IEntityConfig* cfg)
@@ -175,6 +199,7 @@ struct CrumbleBlock : Entity
 };
 
 DECLARE_ENTITY("fragile_block", FragileBlock);
+DECLARE_ENTITY("fake_block", FakeBlock);
 DECLARE_ENTITY("crumble_block", CrumbleBlock);
 }
 
