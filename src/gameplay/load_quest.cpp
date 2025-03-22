@@ -125,6 +125,10 @@ Matrix2<int> parseAutoLayerTiles(const json::Value& json)
     pos.y = size.y - 1 - int(t["px"].elements[1]) / TiledPixelsPerTile;
 
     const int tile = int(t["t"]);
+
+    if(pos.x == size.x)
+      continue;
+
     r.set(pos.x, pos.y, tile);
   }
 

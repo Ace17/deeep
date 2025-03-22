@@ -66,7 +66,7 @@ struct FragileBlock : Entity, Damageable
         solid = 0;
 
         state = 2;
-        timer = 600;
+        timer = 200;
       }
     }
     else if(state == 2)
