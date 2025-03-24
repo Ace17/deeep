@@ -158,8 +158,8 @@ private:
     // App keys
     m_input->listenToQuit([&]() { m_running = AppState::Exit; });
 
-    m_input->listenToKey(Key::PrintScreen, [&](bool isDown) { if(isDown) toggleVideoCapture(); }, true);
-    m_input->listenToKey(Key::PrintScreen, [&](bool isDown) { if(isDown) m_recorder.takeScreenshot(); }, false);
+    m_input->listenToKey(Key::F12, [&](bool isDown) { if(isDown) toggleVideoCapture(); }, true);
+    m_input->listenToKey(Key::F12, [&](bool isDown) { if(isDown) m_recorder.takeScreenshot(); }, false);
     m_input->listenToKey(Key::Return, [&](bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
 
     m_input->listenToKey(Key::Y, [&](bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Exit; });

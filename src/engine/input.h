@@ -12,6 +12,7 @@ enum class Key
 {
   Esc,
   F2,
+  F12,
   PrintScreen,
   Pause,
   Return,

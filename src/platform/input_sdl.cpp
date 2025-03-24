@@ -37,6 +37,7 @@ Uint32 translateToSdlKey(Key key)
   case Key::Return: return SDLK_RETURN;
   case Key::PrintScreen: return SDLK_PRINTSCREEN;
   case Key::F2: return SDLK_F2;
+  case Key::F12: return SDLK_F12;
   case Key::Left: return SDLK_LEFT;
   case Key::Right: return SDLK_RIGHT;
   case Key::Up: return SDLK_UP;
