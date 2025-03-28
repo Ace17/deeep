@@ -29,12 +29,6 @@ struct Switch : Entity
     collidesWith = CG_PLAYER;
   }
 
-  void enter() override
-  {
-    auto var = game->getVariable(id);
-    state = var->get();
-  }
-
   void addActors(std::vector<SpriteActor>& actors) const override
   {
     auto r = SpriteActor { pos + UnitSize / 2, MDL_SWITCH };
@@ -43,7 +37,8 @@ struct Switch : Entity
     if(blinking)
       r.effect = Effect::Blinking;
 
-    r.action = state ? 1 : 0;
+    auto var = game->getVariable(id);
+    r.action = var->get() ? 1 : 0;
 
     actors.push_back(r);
   }
@@ -59,14 +54,13 @@ struct Switch : Entity
       return;
 
     blinking = 200;
-    state = !state;
     game->playSound(SND_SWITCH);
 
     auto var = game->getVariable(id);
-    var->set(state);
+    const bool newState = !var->get();
+    var->set(newState);
   }
 
-  bool state = false;
   const int id;
 };
 
