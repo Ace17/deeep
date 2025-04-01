@@ -90,8 +90,8 @@ void drawMinimap(IPresenter* presenter, Vec2f pos, const MapViewModel& vm)
 
       auto actor = SpriteActor { NullVector, MDL_MINIMAP_TILES };
       actor.action = getCenterTile(wallRight, wallUp, wallDown, wallLeft) + (cell.visited ? 20 : 0);
-      actor.pos.x = cellSize * x + pos.x;
-      actor.pos.y = cellSize * y + pos.y;
+      actor.pos.x = cellSize * x + pos.x * cellSize;
+      actor.pos.y = cellSize * y + pos.y * cellSize;
       actor.scale.x = cellSize;
       actor.scale.y = cellSize;
       actor.screenRefFrame = true;
