@@ -30,7 +30,8 @@ struct IGpuProgram
 struct ITexture
 {
   virtual ~ITexture() = default;
-  virtual void upload(PictureView pic) = 0;
+  virtual void create(Vec2i size) = 0;
+  virtual void upload(PictureView srcPic, Vec2i dstPos = {}) = 0;
   virtual void setNoRepeat() = 0;
   virtual void bind(int unit) = 0;
 };

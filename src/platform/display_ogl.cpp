@@ -166,7 +166,16 @@ struct OpenGlTexture : ITexture
     glDeleteTextures(1, &texture);
   }
 
-  void upload(PictureView pic) override
+  void create(Vec2i dim) override
+  {
+    glBindTexture(GL_TEXTURE_2D, texture);
+    SAFE_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, dim.x, dim.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  }
+
+  void upload(PictureView pic, Vec2i dstPos) override
   {
     const int bpp = 4;
     const Vec2i dim = pic.dim;
@@ -189,12 +198,7 @@ struct OpenGlTexture : ITexture
     }
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.x, pic.dim.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.data());
-    SAFE_GL(glGenerateMipmap(GL_TEXTURE_2D));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    SAFE_GL(glTexSubImage2D(GL_TEXTURE_2D, 0, dstPos.x, dstPos.y, pic.dim.x, pic.dim.y, GL_RGBA, GL_UNSIGNED_BYTE, img.data()));
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
