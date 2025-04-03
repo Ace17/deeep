@@ -168,8 +168,28 @@ struct OpenGlTexture : ITexture
 
   void upload(PictureView pic) override
   {
+    const int bpp = 4;
+    const Vec2i dim = pic.dim;
+    std::vector<uint8_t> img(dim.x * dim.y * bpp);
+
+    {
+      // Flip the picture upside down
+      // from glTexImage2D doc:
+      // "The first element corresponds to the lower left corner of the texture image",
+      // (e.g (u,v) = (0,0))
+      auto src = pic.pixels;
+      auto dst = img.data() + bpp * dim.x * dim.y;
+
+      for(int y = 0; y < dim.y; ++y)
+      {
+        dst -= bpp * dim.x;
+        memcpy(dst, src, bpp * dim.x);
+        src += pic.stride * bpp;
+      }
+    }
+
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.x, pic.dim.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pic.pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pic.dim.x, pic.dim.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.data());
     SAFE_GL(glGenerateMipmap(GL_TEXTURE_2D));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

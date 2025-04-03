@@ -6,7 +6,6 @@
 #include "misc/util.h"
 #include "picture.h"
 #include "png.h"
-#include <cstring> // memcpy
 
 namespace
 {
@@ -18,7 +17,7 @@ Picture loadPng(String path)
 
   auto decoderFunc = endsWith(path, ".png") ? decodePng : decodeJpg;
   pic.pixels = decoderFunc(pngData, pic.dim.x, pic.dim.y);
-  pic.stride = pic.dim.x * 4;
+  pic.stride = pic.dim.x;
 
   return pic;
 }
@@ -28,37 +27,7 @@ Picture loadPicture(String path)
 {
   try
   {
-    auto surface = loadPng(path);
-
-    auto const bpp = 4;
-
-    Rect2i rect;
-    rect.pos.x = 0;
-    rect.pos.y = 0;
-    rect.size.x = surface.dim.x;
-    rect.size.y = surface.dim.y;
-
-    std::vector<uint8_t> img(rect.size.x * rect.size.y * bpp);
-
-    auto src = surface.pixels.data() + rect.pos.x * bpp + rect.pos.y * surface.stride;
-    auto dst = img.data() + bpp * rect.size.x * rect.size.y;
-
-    // from glTexImage2D doc:
-    // "The first element corresponds to the lower left corner of the texture image",
-    // (e.g (u,v) = (0,0))
-    for(int y = 0; y < rect.size.y; ++y)
-    {
-      dst -= bpp * rect.size.x;
-      memcpy(dst, src, bpp * rect.size.x);
-      src += surface.stride;
-    }
-
-    Picture r;
-    r.dim = rect.size;
-    r.stride = rect.size.x;
-    r.pixels = std::move(img);
-
-    return r;
+    return loadPng(path);
   }
   catch(const Error& e)
   {
