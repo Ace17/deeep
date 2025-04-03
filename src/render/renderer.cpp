@@ -36,6 +36,7 @@ Gauge ggBatchCount("batches");
 const int MAX_QUADS = 32678;
 const auto TILE_SIZE = 16.0f;
 const float SCALE = 0.1;
+const Vec2i AtlasSize = { 2048, 2048 };
 
 Vec2f multiplyMatrix(const Matrix3f& mat, float v0, float v1, float v2)
 {
@@ -82,6 +83,9 @@ struct Renderer : IRenderer
 
     m_quadVbo = backend->createVertexBuffer();
     m_quadVbo->upload(quadVertices, sizeof quadVertices);
+
+    m_atlasTexture = backend->createTexture();
+    m_atlasTexture->create(AtlasSize);
 
     loadModel(-1, "res/font.model");
   }
@@ -560,6 +564,12 @@ private:
     Vec2f uv[2];
   };
 
+  struct AtlasedTexture
+  {
+    Vec2i pos;
+    Vec2i dim;
+  };
+
   std::vector<RenderCircle> m_circles;
   std::vector<RenderLine> m_lines;
   std::vector<Quad> m_quads;
@@ -568,39 +578,75 @@ private:
   std::unique_ptr<IFrameBuffer> m_fb;
 
   std::unordered_map<int, Model> m_Models;
-  std::unordered_map<std::string, std::unique_ptr<ITexture>> m_textures;
+  std::unordered_map<std::string, AtlasedTexture> m_atlasedTextures;
   std::vector<Tile> m_tiles;
 
   std::vector<Vertex> vboData; // VBO scratch buffer
-
+  std::unique_ptr<ITexture> m_atlasTexture;
+  Vec2i m_atlasFreeSpacePointer {};
+  int m_atlasMaxHeightOnCurrentLine = 0;
   float m_ambientLight = 0;
   int m_frameCount = 0;
 
   IGraphicsBackend* const backend;
   const Vec2i m_internalResolution;
 
-public:
+  Vec2i findFreePosInAtlas(Vec2i dim)
+  {
+    if(m_atlasFreeSpacePointer.x + dim.x > AtlasSize.x)
+    {
+      // the texture doesn't fit on this line, create a new line
+      m_atlasFreeSpacePointer.x = 0;
+      m_atlasFreeSpacePointer.y += m_atlasMaxHeightOnCurrentLine;
+    }
+
+    if(m_atlasFreeSpacePointer.y + dim.y >= AtlasSize.y)
+    {
+      char buffer[256];
+      throw Error(format(buffer, "Atlas is full"));
+    }
+
+    const Vec2i pos = m_atlasFreeSpacePointer;
+    m_atlasFreeSpacePointer.x += dim.x;
+    m_atlasMaxHeightOnCurrentLine = std::max(m_atlasMaxHeightOnCurrentLine, dim.y);
+    return pos;
+  }
+
   int loadTexture(String path, Rect2f frect)
   {
     const std::string sPath(path.data, path.len);
 
-    if(m_textures.find(sPath) == m_textures.end())
+    if(m_atlasedTextures.find(sPath) == m_atlasedTextures.end())
     {
       auto pic = loadPicture(path);
-      m_textures[sPath] = backend->createTexture();
-      m_textures[sPath]->upload(pic);
+      const Vec2i posInAtlas = findFreePosInAtlas(pic.dim);
+      m_atlasTexture->upload(pic, posInAtlas);
+
+      m_atlasedTextures[sPath] = { posInAtlas, pic.dim };
 
       if(0)
-        logMsg("[renderer] loaded '%.*s'", path.len, path.data);
+        logMsg("[renderer] loaded '%.*s' at (%d;%d)", path.len, path.data, posInAtlas.x, posInAtlas.y);
     }
 
-    const float left = frect.pos.x;
-    const float right = frect.pos.x + frect.size.x;
-    const float top = frect.pos.y;
-    const float bottom = frect.pos.y + frect.size.y;
+    const AtlasedTexture& tex = m_atlasedTextures[sPath];
+
+    const float texLocalLeft = frect.pos.x;
+    const float texLocalRight = frect.pos.x + frect.size.x;
+    const float texLocalTop = 1 - frect.pos.y;
+    const float texLocalBottom = 1 - (frect.pos.y + frect.size.y);
+
+    const int leftInPixels = tex.pos.x + (texLocalLeft * tex.dim.x);
+    const int rightInPixels = tex.pos.x + (texLocalRight * tex.dim.x);
+    const int topInPixels = tex.pos.y + (texLocalTop * tex.dim.y);
+    const int bottomInPixels = tex.pos.y + (texLocalBottom * tex.dim.y);
+
+    const float left = leftInPixels / float(AtlasSize.x);
+    const float right = rightInPixels / float(AtlasSize.x);
+    const float top = 1 - topInPixels / float(AtlasSize.y);
+    const float bottom = 1 - bottomInPixels / float(AtlasSize.y);
 
     const int id = (int)m_tiles.size();
-    m_tiles.push_back({ m_textures[sPath].get(), { { left, top }, { right, bottom } } });
+    m_tiles.push_back({ m_atlasTexture.get(), { { left, top }, { right, bottom } } });
     return id;
   }
 };
