@@ -100,9 +100,9 @@ struct GamePresenter : IPresenter
     m_audio->releaseVoice(voiceId, true);
   }
 
-  void setCameraPos(Vec2f pos) override
+  void setCameraPos(Vec2f pos, bool teleport) override
   {
-    m_renderer->setCamera(pos);
+    m_renderer->setCamera(pos, teleport);
   }
 
   void setAmbientLight(float amount) override

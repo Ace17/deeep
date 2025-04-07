@@ -96,11 +96,11 @@ struct Renderer : IRenderer
     m_Models[id] = ::loadModel(path, loadTexFunc);
   }
 
-  void setCamera(Vec2f pos) override
+  void setCamera(Vec2f pos, bool teleport) override
   {
     auto cam = Camera{ pos, 0 };
 
-    if(!m_cameraValid)
+    if(!m_cameraValid || teleport)
     {
       m_camera = cam;
       m_cameraValid = true;

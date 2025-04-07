@@ -51,7 +51,7 @@ struct IPresenter
   virtual void playMusic(MUSIC id) = 0;
   virtual void stopMusic() = 0;
   virtual void playSound(SOUND id) = 0;
-  virtual void setCameraPos(Vec2f pos) = 0;
+  virtual void setCameraPos(Vec2f pos, bool teleport = false) = 0;
   virtual void setAmbientLight(float amount) = 0;
 
   // adds a displayable object to the current frame

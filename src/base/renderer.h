@@ -62,7 +62,7 @@ struct IRenderer
   virtual ~IRenderer() = default;
 
   virtual void loadModel(int id, String imagePath) = 0;
-  virtual void setCamera(Vec2f pos) = 0;
+  virtual void setCamera(Vec2f pos, bool teleport) = 0;
   virtual void setAmbientLight(float ambientLight) = 0;
 
   // draw functions

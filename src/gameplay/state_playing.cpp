@@ -147,7 +147,7 @@ struct InGameScene : Scene, private IGame
     updateEntities();
 
     processEvents();
-    updateCamera();
+    updateCamera(false);
 
     updateDebugFlag(c.debug);
 
@@ -240,6 +240,7 @@ struct InGameScene : Scene, private IGame
       m_player->setPosition(m_player->position() + m_transform);
       m_shouldLoadLevel = false;
       setAmbientLight(0);
+      updateCamera(true);
     }
   }
 
@@ -291,7 +292,7 @@ struct InGameScene : Scene, private IGame
   Vec2f m_cameraPos {};
   Rect2f m_cameraArea {}; // the area where the center of the camera can go
 
-  void updateCamera()
+  Vec2f computeTargetCameraPos()
   {
     // prevent camera from going outside the level
     auto const margin = Vec2f(7.5, 5);
@@ -304,9 +305,13 @@ struct InGameScene : Scene, private IGame
     cameraPos.x = ::clamp(cameraPos.x, m_cameraArea.pos.x, m_cameraArea.pos.x + m_cameraArea.size.x);
     cameraPos.y = ::clamp(cameraPos.y, m_cameraArea.pos.y, m_cameraArea.pos.y + m_cameraArea.size.y);
 
-    m_cameraPos = cameraPos;
+    return cameraPos;
+  }
 
-    m_view->setCameraPos(cameraPos);
+  void updateCamera(bool teleport)
+  {
+    m_cameraPos = computeTargetCameraPos();
+    m_view->setCameraPos(m_cameraPos, teleport);
   }
 
   void sendActorsForTileMap() const
