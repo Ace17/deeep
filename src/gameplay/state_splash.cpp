@@ -19,6 +19,7 @@ struct SplashState : Scene
 {
   SplashState(IPresenter* view_) : view(view_)
   {
+    startButton.toggle(true);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ struct SplashState : Scene
 
       delay = FADE_TIME;
 
-      if(c.fire || c.jump || c.dash || c.start)
+      if(startButton.toggle(c.fire || c.jump || c.dash || c.start))
       {
         view->stopMusic();
         activated = true;
@@ -67,6 +68,7 @@ struct SplashState : Scene
 
 private:
   IPresenter* const view;
+  Toggle startButton;
   bool activated = false;
   int delay = 0;
 };
