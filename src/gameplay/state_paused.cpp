@@ -74,7 +74,7 @@ struct PausedState : Scene
     drawMinimap(view, m_scrollf, mapViewModel);
 
     auto overlay = SpriteActor { NullVector, MDL_MINIMAP_BG };
-    overlay.scale = { 16, 16 };
+    overlay.scale = { 15, 10 };
     overlay.screenRefFrame = true;
     overlay.zOrder = 13;
     view->sendActor(overlay);

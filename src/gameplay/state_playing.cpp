@@ -195,7 +195,7 @@ struct InGameScene : Scene, private IGame
 
       // scroll the background, according to the camera position
       {
-        const Vec2f screenSize = { 24, 16 };
+        const Vec2f screenSize = { 15, 10 };
         Vec2f ratio {};
 
         if(m_cameraArea.size.x > 0)

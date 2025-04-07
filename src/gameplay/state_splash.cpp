@@ -60,7 +60,7 @@ struct SplashState : Scene
   {
     {
       auto splash = SpriteActor { NullVector, MDL_SPLASH };
-      splash.scale = { 16, 16 };
+      splash.scale = { 15, 10 };
       view->sendActor(splash);
     }
   }
