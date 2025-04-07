@@ -86,6 +86,20 @@ void spawnEntities(Room const& room, IGame* game)
   }
 }
 
+Vec2i computeQuestMapSize(const Quest& quest)
+{
+  Vec2i r {};
+
+  for(auto& room : quest.rooms)
+  {
+    const Vec2i roomTopRight = room.pos + room.size;
+    r.x = std::max(r.x, roomTopRight.x);
+    r.y = std::max(r.y, roomTopRight.y);
+  }
+
+  return r;
+}
+
 struct InGameScene : Scene, private IGame
 {
   InGameScene(IPresenter* view) :
@@ -94,19 +108,7 @@ struct InGameScene : Scene, private IGame
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
     m_quest = loadQuest("res/quest.gz");
-
-    {
-      Vec2i questMapSize {};
-
-      for(auto& r : m_quest.rooms)
-      {
-        const Vec2i roomTopRight = r.pos + r.size;
-        questMapSize.x = std::max(questMapSize.x, roomTopRight.x);
-        questMapSize.y = std::max(questMapSize.y, roomTopRight.y);
-      }
-
-      m_savedGame.exploredCells.resize(questMapSize);
-    }
+    m_savedGame.exploredCells.resize(computeQuestMapSize(m_quest));
   }
 
   ~InGameScene()
