@@ -76,9 +76,8 @@ void removeWhen(Container& container, Lambda predicate)
 
 struct BleepSound : Sound
 {
-  static constexpr auto sampleRate = 48000;
   static constexpr auto baseFreq = 440.0;
-  static constexpr auto maxSamples = sampleRate / 80; // integer number of periods
+  static constexpr auto maxSamples = SAMPLERATE / 80; // integer number of periods
 
   std::unique_ptr<IAudioSource> createSource()
   {
@@ -90,8 +89,8 @@ struct BleepSound : Sound
 
         for(int i = 0; i < N; ++i)
         {
-          output[2 * i + 0] = mySin(0.0 + baseFreq * sampleCount / sampleRate);
-          output[2 * i + 1] = mySin(0.5 + baseFreq * sampleCount / sampleRate);
+          output[2 * i + 0] = mySin(0.0 + baseFreq * sampleCount / SAMPLERATE);
+          output[2 * i + 1] = mySin(0.5 + baseFreq * sampleCount / SAMPLERATE);
           ++sampleCount;
         }
 
