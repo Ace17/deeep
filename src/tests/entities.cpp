@@ -62,7 +62,7 @@ struct NullGame : IGame
   virtual void detach(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(std::unique_ptr<Event>) {}
-  virtual Vec2f getPlayerPosition() { return Vec2f(0, 0); }
+  virtual Vec2f getPlayerPosition() { return {}; }
   virtual void textBox(char const*) {}
   virtual void setAmbientLight(float) {}
   virtual void respawn() {}
