@@ -25,8 +25,6 @@ Action loadSheetAction(json::Value const& action, std::string sheetPath, int ROW
 {
   Action r;
 
-  action["name"];
-
   for(auto& frame : action["frames"].elements)
   {
     auto const idx = (int)frame;
