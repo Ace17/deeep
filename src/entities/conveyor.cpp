@@ -15,9 +15,11 @@ namespace
 {
 struct Conveyor : Entity
 {
-  Conveyor(const IEntityConfig*)
+  Conveyor(IEntityConfig* cfg)
   {
-    size = UnitSize;
+    size.x = cfg->getInt("width", 1);
+    size.y = cfg->getInt("height", 1);
+    speed = cfg->getInt("speed", 30) / 1000.0f;
     collisionGroup = CG_WALLS;
     collidesWith = CG_PLAYER;
     solid = 1;
@@ -41,10 +43,11 @@ struct Conveyor : Entity
       return;
 
     noRecurse = true;
-    physics->moveBody(other, Vector(-0.04, 0));
+    physics->moveBody(other, Vector(speed, 0));
     noRecurse = false;
   }
 
+  float speed = 0;
   bool noRecurse = false;
 };
 
