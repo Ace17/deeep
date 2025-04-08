@@ -11,6 +11,8 @@
 #include "gameplay/entity_factory.h"
 #include "gameplay/models.h"
 
+#include <cmath>
+
 namespace
 {
 struct Conveyor : Entity
@@ -26,13 +28,25 @@ struct Conveyor : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
+  void tick() override
+  {
+    m_time += fabs(speed);
+
+    if(m_time >= 1.0f)
+      m_time -= 1.0f;
+  }
+
   void addActors(std::vector<SpriteActor> &) const override {};
 
   void addActors(std::vector<TileActor>& actors) const override
   {
     const Rect2f rect { pos, size };
     auto r = TileActor { rect, MDL_RECT };
-    r.ratio = 0;
+    r.ratio = fmod(m_time, 1);
+
+    if(speed < 0)
+      r.ratio = 1 - r.ratio;
+
     r.action = 2;
     actors.push_back(r);
   }
@@ -51,6 +65,7 @@ struct Conveyor : Entity
 
   float speed = 0;
   bool noRecurse = false;
+  float m_time = 0;
 };
 
 DECLARE_ENTITY("conveyor", Conveyor);

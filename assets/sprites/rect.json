@@ -1,5 +1,5 @@
 {
-  "rows" : 1,
+  "rows" : 8,
   "cols" : 8,
   "actions": [
     {
@@ -12,7 +12,11 @@
     },
     {
       "name": "conveyor",
-      "frames": [ 2 ]
+      "frames": [ 8, 9, 10, 11 ]
+    },
+    {
+      "name": "exitpoint",
+      "frames": [ 12, 13, 14, 15 ]
     },
     {
       "name": "cross",
@@ -23,12 +27,12 @@
       "frames": [ 4 ]
     },
     {
-      "name": "mapcell",
-      "frames": [ 5 ]
-    },
-    {
       "name": "ladder",
       "frames": [ 6 ]
+    },
+    {
+      "name": "mapcell",
+      "frames": [ 5 ]
     }
   ]
 }

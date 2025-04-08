@@ -16,6 +16,8 @@
 #include "gameplay/toggle.h"
 #include "gameplay/vec.h"
 
+#include <cmath>
+
 namespace
 {
 struct SavePoint : Entity
@@ -33,8 +35,8 @@ struct SavePoint : Entity
   {
     auto r = SpriteActor { pos + size / 2, MDL_SAVEPOINT };
     r.scale = size;
-    r.ratio = 0;
-    r.action = 0;
+    r.action = 3;
+    r.ratio = fmod(m_time, 1);
 
     if(timer)
       r.effect = Effect::Blinking;
@@ -50,6 +52,11 @@ struct SavePoint : Entity
   void tick() override
   {
     decrement(timer);
+
+    m_time += 0.01;
+
+    if(m_time >= 1.0f)
+      m_time -= 1.0f;
   }
 
   void onCollide(Body* other)
@@ -63,13 +70,14 @@ struct SavePoint : Entity
         game->textBox("Game Saved");
       }
 
-      timer = 300;
+      timer = 150;
     }
   }
 
   static constexpr uint32_t flags = EntityFlag_ShowOnMinimap_S;
 
   int timer = 0;
+  float m_time = 0;
 };
 
 DECLARE_ENTITY("savepoint", SavePoint);
