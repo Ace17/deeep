@@ -29,6 +29,7 @@ struct Lift : Entity
     link = cfg->getInt("link", 0);
     delta_x = cfg->getInt("delta_x", 0);
     delta_y = cfg->getInt("delta_y", +7);
+    liftSpeed = cfg->getInt("speed", 50) / 1000.0f;
     collisionGroup = CG_WALLS;
     collidesWith = CG_PLAYER;
   }
@@ -93,8 +94,6 @@ struct Lift : Entity
   void tick() override
   {
     decrement(debounceTrigger);
-
-    const auto liftSpeed = 0.05;
     switch(state)
     {
     case 0: // at rest
@@ -161,6 +160,7 @@ struct Lift : Entity
   int delta_x = 0;
   int delta_y = 0;
   int link = 0;
+  float liftSpeed = 0;
 
   std::unique_ptr<Handle> subscription;
   Vector initialPos;
