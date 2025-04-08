@@ -52,20 +52,15 @@ struct MovingWall : Entity
     subscription.reset();
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(std::vector<SpriteActor> &) const override {};
+
+  void addActors(std::vector<TileActor>& actors) const override
   {
-    for(int i = 0; i < size.x; ++i)
-    {
-      for(int y = 0; y < size.y; ++y)
-      {
-        auto r = SpriteActor { pos + Vec2f(0.5, 0.5), MDL_TILES_00 };
-        r.action = 16;
-        r.pos.x += i;
-        r.pos.y += y;
-        r.zOrder = 1;
-        actors.push_back(r);
-      }
-    }
+    const Rect2f rect { pos, size };
+    auto r = TileActor { rect, MDL_TILES_00 };
+    r.action = 16;
+    r.zOrder = 1;
+    actors.push_back(r);
   }
 
   void trigger()

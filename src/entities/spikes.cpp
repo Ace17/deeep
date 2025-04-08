@@ -16,19 +16,23 @@ namespace
 {
 struct Spikes : Entity
 {
-  Spikes(IEntityConfig*)
+  Spikes(IEntityConfig* cfg)
   {
-    size = Size(1, 0.95);
+    size.x = cfg->getInt("width", 1);
+    size.y = cfg->getInt("height", 1);
+    size.y -= 0.05;
     solid = 1;
     collisionGroup = CG_WALLS;
     collidesWith = CG_SOLIDPLAYER;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(std::vector<SpriteActor> &) const override {};
+
+  void addActors(std::vector<TileActor>& actors) const override
   {
-    auto r = SpriteActor { pos + UnitSize / 2, MDL_SPIKES };
-    r.scale = UnitSize;
+    const Rect2f rect { pos, size };
+    auto r = TileActor { rect, MDL_SPIKES };
     r.ratio = 0;
     actors.push_back(r);
   }

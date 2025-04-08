@@ -26,12 +26,14 @@ struct Conveyor : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(std::vector<SpriteActor> &) const override {};
+
+  void addActors(std::vector<TileActor>& actors) const override
   {
-    auto r = SpriteActor { pos + size / 2, MDL_RECT };
+    const Rect2f rect { pos, size };
+    auto r = TileActor { rect, MDL_RECT };
+    r.ratio = 0;
     r.action = 2;
-    r.scale = size;
-    r.scale.x *= -1;
     actors.push_back(r);
   }
 

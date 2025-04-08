@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "base/box.h"
 #include "base/geom.h"
 #include "base/resource.h"
 
@@ -35,6 +36,16 @@ struct SpriteActor
   int zOrder = 0; // actors with higher value are drawn over the others
 };
 
+struct TileActor
+{
+  Rect2f rect; // the rect to cover
+  MODEL model = 0; // what sprite to display
+  int action = 0; // what sprite action to use
+  float ratio = 0; // in [0 .. 1]. 0 for action beginning, 1 for action end
+  bool screenRefFrame = false; // if true, 'pos' is expressed relative to the camera (used for HUD objects).
+  int zOrder = 0; // actors with higher value are drawn over the others
+};
+
 struct DebugRectActor
 {
   Vec2f pos[2];
@@ -56,6 +67,7 @@ struct IPresenter
 
   // adds a displayable object to the current frame
   virtual void sendActor(SpriteActor const& actor) = 0;
+  virtual void sendActor(TileActor const& actor) = 0;
   virtual void sendActor(DebugRectActor const& actor) = 0;
 
   virtual void flushFrame() = 0;

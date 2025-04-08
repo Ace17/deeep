@@ -127,6 +127,35 @@ struct GamePresenter : IPresenter
     m_renderer->drawSprite(s);
   }
 
+  void sendActor(TileActor const& actor) override
+  {
+    const float left = actor.rect.pos.x;
+    const float right = actor.rect.pos.x + actor.rect.size.x;
+    const float bottom = actor.rect.pos.y;
+    const float top = actor.rect.pos.y + actor.rect.size.y;
+
+    const Vec2f tileSize = { 1, 1 };
+
+    for(float col = left; col < right; col += tileSize.x)
+    {
+      for(float row = bottom; row < top; row += tileSize.y)
+      {
+        RenderSprite s {};
+
+        s.pos = Vec2f(col, row);
+        s.halfSize = tileSize;
+        s.pos += s.halfSize * 0.5;
+        s.useWorldRefFrame = !actor.screenRefFrame;
+        s.modelId = (int)actor.model;
+        s.actionIdx = actor.action;
+        s.frame = actor.ratio;
+        s.zOrder = actor.zOrder;
+
+        m_renderer->drawSprite(s);
+      }
+    }
+  }
+
   void sendActor(DebugRectActor const& actor) override
   {
     Vec2f pos[4][2] =

@@ -45,6 +45,7 @@ struct Entity : Body
   virtual void tick() {}
 
   virtual void addActors(std::vector<SpriteActor>& actors) const = 0;
+  virtual void addActors(std::vector<TileActor> &) const {};
 
   static constexpr uint32_t flags = 0;
 

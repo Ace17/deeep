@@ -170,23 +170,15 @@ struct InGameScene : Scene, private IGame
     sendActorsForTileMap();
 
     std::vector<SpriteActor> actors;
+    std::vector<TileActor> tileActors;
 
     for(auto& entity : m_entities)
     {
       entity->addActors(actors);
+      entity->addActors(tileActors);
 
       if(m_debug)
         m_view->sendActor(getDebugActor(entity.get()));
-    }
-
-    {
-      SpriteActor lifebar { Vector(-7, 3.5), MDL_LIFEBAR };
-      lifebar.action = 0;
-      lifebar.ratio = m_player->health();
-      lifebar.scale = Size(1, 5);
-      lifebar.screenRefFrame = true;
-      lifebar.zOrder = 9;
-      actors.push_back(lifebar);
     }
 
     {
@@ -228,6 +220,9 @@ struct InGameScene : Scene, private IGame
     }
 
     for(auto actor : actors)
+      m_view->sendActor(actor);
+
+    for(auto actor : tileActors)
       m_view->sendActor(actor);
   }
 

@@ -16,18 +16,20 @@ namespace
 {
 struct Ladder : Entity, Climbable
 {
-  Ladder(IEntityConfig*)
+  Ladder(IEntityConfig* cfg)
   {
-    size = UnitSize;
+    size.x = cfg->getInt("width", 1);
+    size.y = cfg->getInt("height", 1);
     solid = 0;
     collisionGroup = CG_LADDER;
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(std::vector<SpriteActor> &) const override {};
+
+  void addActors(std::vector<TileActor>& actors) const override
   {
-    auto r = SpriteActor { pos + size / 2, MDL_LADDER };
-    r.scale = size;
-    r.ratio = 0;
+    const Rect2f rect { pos, size };
+    auto r = TileActor { rect, MDL_LADDER };
     r.action = 6;
     actors.push_back(r);
   }
