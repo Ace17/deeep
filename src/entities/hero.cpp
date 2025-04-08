@@ -356,14 +356,21 @@ struct Rockman : Entity, Damageable, Playerable
   {
     float wantedSpeed = 0;
 
-    if(ladderDelay && (c.up || (c.down && !ground)) && !ball)
+    if(ladderDelay)
     {
-      if(!ladder)
+      if((c.up || (c.down && !ground)) && !ball)
       {
-        pos.x = ladderX + 0.1;
-        vel.x = 0;
-        ladder = true;
+        if(!ladder)
+        {
+          pos.x = ladderX + 0.1;
+          vel.x = 0;
+          ladder = true;
+        }
       }
+    }
+    else
+    {
+      ladder = false;
     }
 
     if(ladder)
