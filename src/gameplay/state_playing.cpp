@@ -241,19 +241,23 @@ struct InGameScene : Scene, private IGame
     }
   }
 
+  void revealMap()
+  {
+    auto onCell =
+      [&] (int, int, int& exploredStatus)
+      {
+        if(exploredStatus == 0)
+          exploredStatus = 1;
+      };
+    m_savedGame.exploredCells.scan(onCell);
+  }
+
   void updateDebugFlag(float debugFlag)
   {
     m_debug = debugFlag;
 
     if(debugFlag)
-    {
-      auto onCell =
-        [&] (int, int, int& exploredStatus)
-        {
-          exploredStatus = 1;
-        };
-      m_savedGame.exploredCells.scan(onCell);
-    }
+      revealMap();
 
     if(debugFlag && m_debugFirstTime)
     {
