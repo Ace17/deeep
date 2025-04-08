@@ -152,6 +152,13 @@ struct Rockman : Entity, Damageable, Playerable
       ladderDelay = 10;
       ladderX = b->pos.x;
     }
+    else if(dynamic_cast<Swimmable*>(b))
+    {
+      if(!swimDelay)
+        game->playSound(SND_SPLASH);
+
+      swimDelay = 10;
+    }
   }
 
   void addActors(IActorSink* sink) const override
@@ -205,7 +212,7 @@ struct Rockman : Entity, Damageable, Playerable
     }
     else
     {
-      if(vel.x != 0)
+      if(abs(vel.x) >= 0.01)
       {
         if(dashDelay)
         {
@@ -286,7 +293,10 @@ struct Rockman : Entity, Damageable, Playerable
 
     // gravity
     if(life > 0 && !ladder)
-      vel.y -= GRAVITY;
+    {
+      const auto gravity = swimDelay ? GRAVITY / 2 : GRAVITY;
+      vel.y -= gravity;
+    }
 
     sliding = false;
 
@@ -416,8 +426,9 @@ struct Rockman : Entity, Damageable, Playerable
       vel.x = wantedSpeed;
     }
 
-    for(int i = 0; i < 10; ++i)
-      vel.x = (vel.x * 0.95 + wantedSpeed * 0.05);
+    const float damping = swimDelay ? 0.9 : 0.7;
+
+    vel.x = (vel.x * damping + wantedSpeed * (1 - damping));
 
     if(abs(vel.x) < 0.001)
       vel.x = 0;
@@ -489,6 +500,9 @@ struct Rockman : Entity, Damageable, Playerable
     decrement(climbDelay);
     decrement(shootDelay);
     decrement(ladderDelay);
+
+    if(decrement(swimDelay))
+      game->playSound(SND_SPLASH);
 
     handleShooting();
 
@@ -639,6 +653,7 @@ struct Rockman : Entity, Damageable, Playerable
   int dieDelay = 0;
   int shootDelay = 0;
   int ladderDelay = 0;
+  int swimDelay = 0;
   float ladderX;
   int life = MAX_LIFE;
   bool doubleJumped = false;

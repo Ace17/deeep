@@ -33,6 +33,7 @@ static const Resource resources[] =
   { ResourceType::Sound, SND_EXPLODE, "res/sounds/explode.ogg" },
   { ResourceType::Sound, SND_SAVEPOINT, "res/sounds/savepoint.ogg" },
   { ResourceType::Sound, SND_VICTORY, "res/sounds/victory.ogg" },
+  { ResourceType::Sound, SND_SPLASH, "res/sounds/splash.ogg" },
 
   { ResourceType::Model, MDL_ENGINE, "res/sprites/engine.model" },
 
@@ -70,6 +71,7 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_HOPPER, "res/sprites/hopper.model" },
   { ResourceType::Model, MDL_MINIMAP_BG, "res/sprites/minimap_menu.model" },
   { ResourceType::Model, MDL_MINIMAP_TILES, "res/sprites/minimap_tiles.model" },
+  { ResourceType::Model, MDL_WATER, "res/sprites/water.model" },
 };
 
 Span<const Resource> getResources()

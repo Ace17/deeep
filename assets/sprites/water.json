@@ -1,0 +1,10 @@
+{
+  "rows" : 1,
+  "cols" : 4,
+  "actions": [
+    {
+      "name": "default",
+      "frames": [ 0, 1, 2, 3 ]
+    }
+  ]
+}

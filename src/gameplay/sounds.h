@@ -30,5 +30,6 @@ enum
   SND_SAVEPOINT,
   SND_VICTORY,
   SND_STARTUP,
+  SND_SPLASH,
 };
 

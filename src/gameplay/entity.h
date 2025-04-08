@@ -23,6 +23,11 @@ struct Climbable
   virtual ~Climbable() = default;
 };
 
+struct Swimmable
+{
+  virtual ~Swimmable() = default;
+};
+
 struct Damageable
 {
   virtual void onDamage(int amount) = 0;
