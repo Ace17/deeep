@@ -25,7 +25,6 @@ struct Conveyor : Entity
     collisionGroup = CG_WALLS;
     collidesWith = CG_PLAYER;
     solid = 1;
-    Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
   void tick() override
@@ -34,6 +33,14 @@ struct Conveyor : Entity
 
     if(m_time >= 1.0f)
       m_time -= 1.0f;
+
+    auto box = getBox();
+    box.pos.y += box.size.y;
+    box.size.y = 0.1;
+
+    if(auto other = physics->getBodiesInBox(box, CG_PLAYER))
+      if(other->floor == this)
+        physics->moveBody(other, Vector(speed, 0));
   }
 
   void addActors(std::vector<SpriteActor> &) const override {};
@@ -51,20 +58,7 @@ struct Conveyor : Entity
     actors.push_back(r);
   }
 
-  void onCollide(Body* other)
-  {
-    // avoid infinite recursion
-    // (if the conveyor pushes the player towards the conveyor)
-    if(noRecurse)
-      return;
-
-    noRecurse = true;
-    physics->moveBody(other, Vector(speed, 0));
-    noRecurse = false;
-  }
-
   float speed = 0;
-  bool noRecurse = false;
   float m_time = 0;
 };
 
