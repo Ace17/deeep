@@ -8,6 +8,7 @@
 
 #include <cmath> // floor
 
+#include "base/my_algorithm.h"
 #include "base/util.h"
 #include "body.h"
 #include "misc/math.h"
@@ -111,20 +112,56 @@ struct Physics : IPhysics
 
   void checkForOverlaps()
   {
+    // line sweeping on X axis from left to right
+    struct Event
+    {
+      float time;
+      int type; // 0-enter, 1-leave
+      int body;
+    };
+
+    std::vector<Event> events;
+    events.reserve(m_bodies.size() * 2);
+
+    for(auto& body : m_bodies)
+    {
+      const auto idx = int(&body - m_bodies.data());
+      auto box = body->getBox();
+      events.push_back({ box.pos.x, 0, idx });
+      events.push_back({ box.pos.x + box.size.x, 1, idx });
+    }
+
+    auto eventSpan = Span<Event>(events);
+    my::sort(eventSpan, [](const Event& a, const Event& b) { return a.time != b.time ? (a.time < b.time) : (a.type > b.type); });
+
+    std::vector<int> bodies;
+
     int checkCount = 0;
 
-    for(auto p : allPairs((int)m_bodies.size()))
+    for(auto& event : events)
     {
-      auto& me = *m_bodies[p.first];
-      auto& other = *m_bodies[p.second];
+      if(event.type == 0) // enter
+      {
+        for(auto& otherBody : bodies)
+        {
+          auto& me = *m_bodies[event.body];
+          auto& other = *m_bodies[otherBody];
 
-      auto rect = me.getBox();
-      auto otherBox = other.getBox();
+          auto rect = me.getBox();
+          auto otherBox = other.getBox();
 
-      if(overlaps(rect, otherBox))
-        collideBodies(me, other);
+          ++checkCount;
 
-      ++checkCount;
+          if(overlaps(rect, otherBox))
+            collideBodies(me, other);
+        }
+
+        bodies.push_back(event.body);
+      }
+      else // leave
+      {
+        unstableRemove(bodies, [&] (int candidate) { return candidate == event.body; });
+      }
     }
 
     ggOverlapChecks = checkCount;
