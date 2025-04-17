@@ -17,8 +17,8 @@
 #include "toggle.h"
 #include "vec.h"
 
-static auto const BEEPTIME = 190;
-static auto const BOOTUPTIME = BEEPTIME + 90;
+static auto const BEEPTIME = 100;
+static auto const BOOTUPTIME = BEEPTIME + 300;
 
 struct BootupState : Scene
 {
