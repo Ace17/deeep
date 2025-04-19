@@ -34,7 +34,7 @@ struct Explosion : Entity
     }
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_EXPLOSION };
 
@@ -42,7 +42,7 @@ struct Explosion : Entity
     r.scale = Size(3, 3);
     r.pos += Vector(-r.scale.x * 0.5, -r.scale.y * 0.5);
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   int time = 0;

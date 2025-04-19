@@ -51,14 +51,12 @@ struct Bullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_BULLET };
     r.scale = size;
-    r.action = 0;
-    r.ratio = 0;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override
@@ -91,7 +89,7 @@ struct Bomb : Entity
     collidesWith = CG_WALLS | CG_ENEMIES;
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     if(life == 0)
       return;
@@ -100,7 +98,7 @@ struct Bomb : Entity
     r.scale = size;
     r.zOrder = 2;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override
@@ -156,7 +154,7 @@ struct Rockman : Entity, Damageable, Playerable
     }
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos, MDL_ROCKMAN };
     r.scale = Size(3, 3);
@@ -247,7 +245,7 @@ struct Rockman : Entity, Damageable, Playerable
 
     r.zOrder = 1;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void think(Control const& c)

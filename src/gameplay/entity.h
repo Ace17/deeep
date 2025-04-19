@@ -15,6 +15,7 @@
 #include "body.h"
 #include "game.h"
 #include "physics_probe.h"
+#include "presenter.h" // IActorSink
 #include <vector>
 
 struct Climbable
@@ -44,8 +45,7 @@ struct Entity : Body
   virtual void leave() {}
   virtual void tick() {}
 
-  virtual void addActors(std::vector<SpriteActor>& actors) const = 0;
-  virtual void addActors(std::vector<TileActor> &) const {};
+  virtual void addActors(IActorSink* sink) const = 0;
 
   static constexpr uint32_t flags = 0;
 

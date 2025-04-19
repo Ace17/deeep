@@ -68,7 +68,7 @@ struct Lift : Entity
     }
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_ELEVATOR };
     r.scale = size;
@@ -78,7 +78,7 @@ struct Lift : Entity
     if(state && !unstable)
       r.effect = Effect::Blinking;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void trigger()

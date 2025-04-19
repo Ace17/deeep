@@ -28,14 +28,14 @@ struct SpiderBullet : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_RECT };
     r.scale = size;
     r.action = 0;
     r.ratio = 0;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override
@@ -70,7 +70,7 @@ struct Spider : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + Vec2f(0.5, 0.05), MDL_SPIDER };
 
@@ -85,7 +85,7 @@ struct Spider : Entity, Damageable
     if(dir > 0)
       r.scale.x = -r.scale.x;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override

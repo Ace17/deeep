@@ -29,7 +29,7 @@ struct Switch : Entity
     collidesWith = CG_PLAYER;
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + UnitSize / 2, MDL_SWITCH };
     r.scale = UnitSize;
@@ -40,7 +40,7 @@ struct Switch : Entity
     auto var = game->getVariable(id);
     r.action = var->get() ? 1 : 0;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override

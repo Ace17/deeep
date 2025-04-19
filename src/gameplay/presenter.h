@@ -51,9 +51,19 @@ struct DebugRectActor
   Vec2f pos[2];
 };
 
+struct IActorSink
+{
+  virtual ~IActorSink() = default;
+
+  // adds a displayable object to the current frame
+  virtual void sendActor(SpriteActor const& actor) = 0;
+  virtual void sendActor(TileActor const& actor) = 0;
+  virtual void sendActor(DebugRectActor const& actor) = 0;
+};
+
 // This interface should act as a message sink.
 // It should provide no way to query anything about the outside world.
-struct IPresenter
+struct IPresenter : IActorSink
 {
   virtual ~IPresenter() = default;
 
@@ -64,11 +74,6 @@ struct IPresenter
   virtual void playSound(SOUND id) = 0;
   virtual void setCameraPos(Vec2f pos, bool teleport = false) = 0;
   virtual void setAmbientLight(float amount) = 0;
-
-  // adds a displayable object to the current frame
-  virtual void sendActor(SpriteActor const& actor) = 0;
-  virtual void sendActor(TileActor const& actor) = 0;
-  virtual void sendActor(DebugRectActor const& actor) = 0;
 
   virtual void flushFrame() = 0;
 };

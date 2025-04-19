@@ -52,15 +52,13 @@ struct MovingWall : Entity
     subscription.reset();
   }
 
-  void addActors(std::vector<SpriteActor> &) const override {};
-
-  void addActors(std::vector<TileActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     const Rect2f rect { pos, size };
     auto r = TileActor { rect, MDL_TILES_00 };
     r.action = 16;
     r.zOrder = 1;
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void trigger()

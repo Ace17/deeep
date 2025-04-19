@@ -33,7 +33,7 @@ struct Sweeper : Entity, Damageable
     vel.y = 0.03;
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_SWEEPER };
 
@@ -46,7 +46,7 @@ struct Sweeper : Entity, Damageable
     r.action = 0;
     r.ratio = (time % 80) / 80.0f;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override

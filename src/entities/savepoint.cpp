@@ -31,7 +31,7 @@ struct SavePoint : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_SAVEPOINT };
     r.scale = size;
@@ -41,7 +41,7 @@ struct SavePoint : Entity
     if(timer)
       r.effect = Effect::Blinking;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void enter() override

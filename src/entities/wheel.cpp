@@ -31,7 +31,7 @@ struct Wheel : Entity, Damageable
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_WHEEL };
 
@@ -47,7 +47,7 @@ struct Wheel : Entity, Damageable
     if(dir > 0)
       r.scale.x = -r.scale.x;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override

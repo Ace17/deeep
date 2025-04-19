@@ -43,9 +43,7 @@ struct Conveyor : Entity
         physics->moveBody(other, Vector(speed, 0));
   }
 
-  void addActors(std::vector<SpriteActor> &) const override {};
-
-  void addActors(std::vector<TileActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     const Rect2f rect { pos, size };
     auto r = TileActor { rect, MDL_RECT };
@@ -55,7 +53,7 @@ struct Conveyor : Entity
       r.ratio = 1 - r.ratio;
 
     r.action = 2;
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   float speed = 0;

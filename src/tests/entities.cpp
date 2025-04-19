@@ -16,10 +16,16 @@
 template<typename T>
 SpriteActor getActor(T& ent)
 {
-  std::vector<SpriteActor> actors;
-  actors.clear();
-  ent->addActors(actors);
-  return actors[0];
+  struct SimpleSink : IActorSink
+  {
+    void sendActor(SpriteActor const& a) { actor = a; }
+    void sendActor(TileActor const &) {}
+    void sendActor(DebugRectActor const &) {}
+    SpriteActor actor;
+  };
+  SimpleSink sink;
+  ent->addActors(&sink);
+  return sink.actor;
 }
 
 unittest("Entity: explosion")
@@ -120,7 +126,7 @@ unittest("Entity: pickup bonus")
       return &player;
     }
 
-    void addActors(std::vector<SpriteActor> &) const override {}
+    void addActors(IActorSink*) const override {}
     MockPlayer player;
   };
 

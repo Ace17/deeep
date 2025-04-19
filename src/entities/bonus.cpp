@@ -46,7 +46,7 @@ struct Bonus : Entity
     }
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto s = sin(time * 0.1);
     auto r = SpriteActor { pos + UnitSize / 2, MDL_BONUS };
@@ -54,7 +54,7 @@ struct Bonus : Entity
     r.ratio = std::max(s, 0.0);
     r.action = modelAction;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void tick() override

@@ -27,7 +27,7 @@ struct FragileBlock : Entity, Damageable
     reappear();
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     if(state == 2)
       return;
@@ -42,7 +42,7 @@ struct FragileBlock : Entity, Damageable
 
     r.action = tile;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   void onDamage(int) override
@@ -120,14 +120,14 @@ struct FakeBlock : Entity
     solid = false;
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, model };
     r.scale = size;
     r.ratio = 0;
     r.action = tile;
 
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   int model;
@@ -146,7 +146,7 @@ struct CrumbleBlock : Entity
     Body::onCollision = [this] (Body* other) { onCollide(other); };
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     if(solid)
     {
@@ -154,7 +154,7 @@ struct CrumbleBlock : Entity
       r.scale = size;
       r.action = tile;
 
-      actors.push_back(r);
+      sink->sendActor(r);
     }
   }
 

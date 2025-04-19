@@ -24,14 +24,12 @@ struct Ladder : Entity, Climbable
     collisionGroup = CG_LADDER;
   }
 
-  void addActors(std::vector<SpriteActor> &) const override {};
-
-  void addActors(std::vector<TileActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     const Rect2f rect { pos, size };
     auto r = TileActor { rect, MDL_LADDER };
     r.action = 6;
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 };
 

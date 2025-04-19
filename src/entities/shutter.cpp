@@ -29,13 +29,13 @@ struct DamageSensor : Entity, Damageable
     onDamageDg();
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_SHUTTER };
     r.action = 0;
     r.ratio = 0;
     r.scale = size;
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   Delegate<void()> onDamageDg = [] () {};
@@ -94,13 +94,13 @@ struct Shutter : Entity
     game->playSound(SND_DOOR);
   }
 
-  void addActors(std::vector<SpriteActor>& actors) const override
+  void addActors(IActorSink* sink) const override
   {
     auto r = SpriteActor { pos + size / 2, MDL_SHUTTER };
     r.action = state ? 0 : 1;
     r.ratio = 1 - (delay / 50.0f);
     r.scale = size;
-    actors.push_back(r);
+    sink->sendActor(r);
   }
 
   bool state = false;

@@ -15,6 +15,7 @@
 #include "base/scene.h"
 #include "base/util.h"
 #include "misc/math.h"
+#include "misc/stats.h"
 
 #include "collision_groups.h"
 #include "entity_factory.h"
@@ -169,13 +170,9 @@ struct InGameScene : Scene, private IGame
 
     sendActorsForTileMap();
 
-    std::vector<SpriteActor> actors;
-    std::vector<TileActor> tileActors;
-
     for(auto& entity : m_entities)
     {
-      entity->addActors(actors);
-      entity->addActors(tileActors);
+      entity->addActors(m_view);
 
       if(m_debug)
         m_view->sendActor(getDebugActor(entity.get()));
@@ -216,14 +213,8 @@ struct InGameScene : Scene, private IGame
         }
       }
 
-      actors.push_back(background);
+      m_view->sendActor(background);
     }
-
-    for(auto actor : actors)
-      m_view->sendActor(actor);
-
-    for(auto actor : tileActors)
-      m_view->sendActor(actor);
   }
 
   ////////////////////////////////////////////////////////////////
