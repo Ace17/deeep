@@ -317,7 +317,7 @@ struct InGameScene : Scene, private IGame
           return;
 
         Vec2f pos = Vec2f(x, y);
-        auto actor = TileActor { {pos, UnitSize}, model };
+        auto actor = TileActor { { pos, UnitSize }, model };
         actor.action = tile;
         actor.zOrder = -1;
         m_view->sendActor(actor);
