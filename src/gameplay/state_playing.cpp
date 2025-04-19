@@ -316,15 +316,11 @@ struct InGameScene : Scene, private IGame
         if(tile == -1)
           return;
 
-        {
-          const float posX = x + 0.5f;
-          const float posY = y + 0.5f;
-          auto actor = SpriteActor { Vector(posX, posY), model };
-          actor.action = tile;
-          actor.scale = UnitSize;
-          actor.zOrder = -1;
-          m_view->sendActor(actor);
-        }
+        Vec2f pos = Vec2f(x, y);
+        auto actor = TileActor { {pos, UnitSize}, model };
+        actor.action = tile;
+        actor.zOrder = -1;
+        m_view->sendActor(actor);
       };
 
     m_tilesForDisplay->scan(onCell);
