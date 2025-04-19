@@ -58,6 +58,6 @@ struct ShapeTilemap : Shape
 {
   bool probe(Box box) const override;
   float raycast(Box box, Vec2f delta) const override;
-  Matrix2<int>* tiles;
+  const Matrix2<int>* tiles;
 };
 

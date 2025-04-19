@@ -104,11 +104,11 @@ Vec2i computeQuestMapSize(const Quest& quest)
 struct InGameScene : Scene, private IGame
 {
   InGameScene(IPresenter* view) :
-    m_view(view)
+    m_quest(loadQuest("res/quest.gz"))
+    , m_view(view)
   {
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
-    m_quest = loadQuest("res/quest.gz");
     m_savedGame.exploredCells.resize(computeQuestMapSize(m_quest));
   }
 
@@ -541,7 +541,7 @@ struct InGameScene : Scene, private IGame
   }
 
   SavedGame m_savedGame;
-  Quest m_quest;
+  const Quest m_quest;
   Vec2i m_currRoomSize {};
   std::unique_ptr<Player> m_player;
   IPresenter* const m_view;
