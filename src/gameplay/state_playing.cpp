@@ -69,7 +69,6 @@ struct EntityConfigImpl : IEntityConfig
   std::map<std::string, std::string> values;
 };
 
-static
 void spawnEntities(Room const& room, IGame* game)
 {
   for(auto& spawner : room.spawners)
