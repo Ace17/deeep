@@ -280,9 +280,6 @@ struct InGameScene : Scene, private IGame
     }
   }
 
-  Vec2f m_cameraPos {};
-  Rect2f m_cameraArea {}; // the area where the center of the camera can go
-
   Vec2f computeTargetCameraPos()
   {
     // prevent camera from going outside the level
@@ -307,7 +304,7 @@ struct InGameScene : Scene, private IGame
 
   void sendActorsForTileMap() const
   {
-    auto const model = MDL_TILES_00 + m_theme % 8;
+    auto const model = MDL_TILES_00 + m_currRoomTheme % 8;
 
     auto onCell =
       [&] (int x, int y, int tile)
@@ -402,7 +399,7 @@ struct InGameScene : Scene, private IGame
 
     m_tilesForDisplay = &level.tilesForDisplay;
     m_currRoomSize = level.size;
-    m_theme = level.theme;
+    m_currRoomTheme = level.theme;
     m_view->playMusic(level.theme);
 
     // load new background
@@ -429,15 +426,6 @@ struct InGameScene : Scene, private IGame
     m_transform = event->transform;
     m_level = event->targetLevel;
   }
-
-  int m_level = 1;
-  int m_theme = 0;
-  Vector m_transform;
-  bool m_shouldLoadLevel = false;
-  bool m_shouldLoadVars = false;
-
-  std::map<int, std::unique_ptr<IVariable>> m_vars;
-  std::vector<std::unique_ptr<Event>> m_eventQueue;
 
   ////////////////////////////////////////////////////////////////
   // IGame: game, as seen by the entities
@@ -539,13 +527,26 @@ struct InGameScene : Scene, private IGame
     m_view->setAmbientLight(light);
   }
 
+  int m_level = 1;
+  int m_currRoomTheme = 0;
+
+  bool m_shouldLoadLevel = false;
+  Vector m_transform;
+
+  bool m_shouldLoadVars = false;
+  bool m_gameFinished = false;
+
+  std::map<int, std::unique_ptr<IVariable>> m_vars;
+  std::vector<std::unique_ptr<Event>> m_eventQueue;
+
   SavedGame m_savedGame;
   const Quest m_quest;
   Vec2i m_currRoomSize {};
-  std::unique_ptr<Player> m_player;
+
   IPresenter* const m_view;
+
+  std::unique_ptr<Player> m_player;
   std::unique_ptr<IPhysics> m_physics;
-  bool m_gameFinished = false;
   Body m_tilemapBody {};
   ShapeTilemap m_tilemapShape {};
 
@@ -556,6 +557,9 @@ struct InGameScene : Scene, private IGame
 
   std::vector<std::unique_ptr<Entity>> m_entities;
   std::vector<std::unique_ptr<Entity>> m_spawned;
+
+  Vec2f m_cameraPos {};
+  Rect2f m_cameraArea {}; // the area where the center of the camera can go
 };
 }
 
