@@ -498,14 +498,6 @@ struct InGameScene : Scene, private IGame
     return m_player->position();
   }
 
-  struct SavedGame
-  {
-    int level = 0;
-    Vector position = NullVector;
-    std::map<int, int> varValues;
-    Matrix2<int> exploredCells; // 0 unknown, 1 known, 2 explored
-  };
-
   Entity* getEntityById(int id) override
   {
     auto it = m_entitiesById.find(id);
@@ -557,6 +549,14 @@ struct InGameScene : Scene, private IGame
 
   std::map<int, std::unique_ptr<IVariable>> m_vars;
   std::vector<std::unique_ptr<Event>> m_eventQueue;
+
+  struct SavedGame
+  {
+    int level = 0;
+    Vector position = NullVector;
+    std::map<int, int> varValues;
+    Matrix2<int> exploredCells; // 0 unknown, 1 known, 2 explored
+  };
 
   SavedGame m_savedGame;
   const Quest m_quest;
