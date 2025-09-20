@@ -14,6 +14,7 @@
 #include "misc/math.h"
 #include "misc/stats.h"
 #include "physics.h"
+#include "spatial_hashing.h"
 #include <vector>
 
 static const ShapeBox shapeBox;
@@ -34,10 +35,12 @@ struct Physics : IPhysics
   void addBody(Body* body)
   {
     m_bodies.push_back(body);
+    m_hashedSpace.putObject(body->getBox(), (uintptr_t)body);
   }
 
   void removeBody(Body* body)
   {
+    m_hashedSpace.removeObject(body->getBox(), (uintptr_t)body);
     auto isItTheOne =
       [ = ] (Body* candidate) { return candidate == body; };
     unstableRemove(m_bodies, isItTheOne);
@@ -49,6 +52,9 @@ struct Physics : IPhysics
 
     const auto oldSolid = body->solid;
     body->solid = false; // make pusher non-solid, so stacked bodies can move down
+
+    // temporarily remove the object from the hashed space, so we don't collide with ourselves
+    m_hashedSpace.removeObject(myBox, (uintptr_t)body);
 
     auto const rc = castBox(myBox, delta, body->collidesWith);
 
@@ -76,6 +82,9 @@ struct Physics : IPhysics
 
     // restore 'solid' flag
     body->solid = oldSolid;
+
+    // put back the moved object into the hashed space
+    m_hashedSpace.putObject(body->getBox(), (uintptr_t)body);
 
     return rc.fraction;
   }
@@ -112,55 +121,26 @@ struct Physics : IPhysics
 
   void checkForOverlaps()
   {
-    // line sweeping on X axis from left to right
-    struct Event
-    {
-      float time;
-      int type; // 0-enter, 1-leave
-      int body;
-    };
-
-    std::vector<Event> events;
-    events.reserve(m_bodies.size() * 2);
-
-    for(auto& body : m_bodies)
-    {
-      const auto idx = int(&body - m_bodies.data());
-      auto box = body->getBox();
-      events.push_back({ box.pos.x, 0, idx });
-      events.push_back({ box.pos.x + box.size.x, 1, idx });
-    }
-
-    auto eventSpan = Span<Event>(events);
-    my::sort(eventSpan, [](const Event& a, const Event& b) { return a.time != b.time ? (a.time < b.time) : (a.type > b.type); });
-
-    std::vector<int> bodies;
-
     int checkCount = 0;
 
-    for(auto& event : events)
+    for(auto& myBody : m_bodies)
     {
-      if(event.type == 0) // enter
+      std::vector<uintptr_t> bodiesToCheck = m_hashedSpace.getObjectsInRect(myBody->getBox());
+
+      for(uintptr_t b : bodiesToCheck)
       {
-        for(auto& otherBody : bodies)
-        {
-          auto& me = *m_bodies[event.body];
-          auto& other = *m_bodies[otherBody];
+        auto otherBody = (Body*)b;
 
-          auto rect = me.getBox();
-          auto otherBox = other.getBox();
+        if(otherBody == myBody)
+          continue;
 
-          ++checkCount;
+        auto myBox = myBody->getBox();
+        auto otherBox = otherBody->getBox();
 
-          if(overlaps(rect, otherBox))
-            collideBodies(me, other);
-        }
+        ++checkCount;
 
-        bodies.push_back(event.body);
-      }
-      else // leave
-      {
-        unstableRemove(bodies, [&] (int candidate) { return candidate == event.body; });
+        if(overlaps(myBox, otherBox))
+          collideBodies(*myBody, *otherBody);
       }
     }
 
@@ -189,8 +169,20 @@ struct Physics : IPhysics
   {
     Raycast r;
 
-    for(auto& body : m_bodies)
+    BoundingBox bb(box.pos);
+
+    bb.add(box.pos);
+    bb.add(box.pos + box.size);
+    bb.add(delta + box.pos);
+    bb.add(delta + box.pos + box.size);
+    const Box moveSpan = { { bb.min.x, bb.min.y }, { bb.max.x - bb.min.x, bb.max.y - bb.min.y } };
+
+    std::vector<uintptr_t> bodiesToCheck = m_hashedSpace.getObjectsInRect(moveSpan);
+
+    for(uintptr_t b : bodiesToCheck)
     {
+      auto body = (Body*)b;
+
       if(!body->solid)
         continue;
 
@@ -226,8 +218,12 @@ struct Physics : IPhysics
 
   Body* getBodiesInBox(Box myBox, int collisionGroup, bool onlySolid, const Body* except) const
   {
-    for(auto& body : m_bodies)
+    std::vector<uintptr_t> bodiesToCheck = m_hashedSpace.getObjectsInRect(myBox);
+
+    for(uintptr_t b : bodiesToCheck)
     {
+      auto body = (Body*)b;
+
       if(onlySolid && !body->solid)
         continue;
 
@@ -261,6 +257,7 @@ private:
   }
 
   std::vector<Body*> m_bodies;
+  HashedSpace m_hashedSpace;
 };
 
 Vec2f rotateLeft(Vec2f v) { return Vec2f(-v.y, v.x); }

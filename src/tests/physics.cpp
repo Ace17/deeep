@@ -91,7 +91,9 @@ struct Fixture
     walls.solid = true;
     walls.collisionGroup = 1;
     walls.shape = &cornerShape;
+    walls.size = { 100, 100 };
     physics->addBody(&walls);
+    walls.size = { 1, 1 };
 
     mover.collidesWith = 1;
     physics->addBody(&mover);

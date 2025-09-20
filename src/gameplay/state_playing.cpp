@@ -391,8 +391,11 @@ struct InGameScene : Scene, private IGame
     m_tilemapBody.solid = true;
     m_tilemapBody.collisionGroup = CG_WALLS;
     m_tilemapBody.shape = &m_tilemapShape;
+    m_tilemapBody.pos = { 0, 0 };
+    m_tilemapBody.size = { float(level.size.x * CELL_SIZE.x), float(level.size.y * CELL_SIZE.y) };
     m_tilemapShape.tiles = &level.tiles;
     m_physics->addBody(&m_tilemapBody);
+    m_tilemapBody.size = { 1, 1 };
 
     spawnEntities(level, this);
     removeDeadThings();

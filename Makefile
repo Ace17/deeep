@@ -99,6 +99,7 @@ SRCS_GAME:=\
 	src/gameplay/presenter.cpp\
 	src/gameplay/load_quest.cpp\
 	src/gameplay/resources.cpp\
+	src/gameplay/spatial_hashing.cpp\
 	src/gameplay/state_bootup.cpp\
 	src/gameplay/state_ending.cpp\
 	src/gameplay/state_playing.cpp\
@@ -142,6 +143,7 @@ SRCS_TESTS:=\
 	src/tests/entities.cpp\
 	src/tests/level_graph.cpp\
 	src/tests/physics.cpp\
+	src/tests/spatial_hashing.cpp\
 
 $(BIN)/tests$(EXT): $(SRCS_TESTS:%=$(BIN)/%.o)
 	@mkdir -p $(dir $@)
