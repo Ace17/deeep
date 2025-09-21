@@ -12,7 +12,7 @@
 
 #include "entity_factory.h"
 #include "minimap_data.h"
-#include "models.h" // MDL_PAUSED
+#include "models.h" // MDL_MINIMAP_BG
 #include "presenter.h"
 #include "quest.h"
 #include "sounds.h"

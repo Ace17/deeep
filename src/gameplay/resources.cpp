@@ -52,7 +52,6 @@ static const Resource resources[] =
   { ResourceType::Model, MDL_BOOTUP, "res/sprites/bootup_logo.model" },
   { ResourceType::Model, MDL_SPLASH, "res/sprites/splash.model" },
   { ResourceType::Model, MDL_ENDING, "res/sprites/ending.model" },
-  { ResourceType::Model, MDL_PAUSED, "res/sprites/pause_menu.model" },
   { ResourceType::Model, MDL_ELEVATOR, "res/sprites/elevator.model" },
   { ResourceType::Model, MDL_RECT, "res/sprites/rect.model" },
   { ResourceType::Model, MDL_SWITCH, "res/sprites/switch.model" },
