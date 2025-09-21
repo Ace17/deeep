@@ -24,3 +24,11 @@ Audio
 - _What_: Positionnal audio
   _Why_: for the heaters in pyyrolysis. It's unrealistic to have the full volume if the sound is emitted by a far away object.
 
+
+Gameplay
+--------
+
+- Conditional scroll areas ( for hidden areas )
+
+- Slopes
+
