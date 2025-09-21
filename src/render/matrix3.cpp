@@ -20,6 +20,26 @@ Matrix3f operator * (Matrix3f const& A, Matrix3f const& B)
   return r;
 }
 
+Matrix3f computeTransform(Vec2f pos, float angle, Vec2f scale)
+{
+  auto const ca = cos(angle);
+  auto const sa = sin(angle);
+
+  Matrix3f r;
+  r[0][0] = +ca * scale.x;
+  r[0][1] = -sa * scale.y;
+  r[0][2] = pos.x;
+
+  r[1][0] = +sa * scale.x;
+  r[1][1] = +ca * scale.y;
+  r[1][2] = pos.y;
+
+  r[2][0] = 0;
+  r[2][1] = 0;
+  r[2][2] = 1;
+  return r;
+}
+
 Matrix3f translate(Vec2f v)
 {
   Matrix3f r;

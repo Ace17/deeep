@@ -521,7 +521,7 @@ private:
 
     Vec2f pos = sprite.pos;
 
-    const auto worldTransform = translate(pos) * rotate(sprite.angle) * scale(sprite.halfSize);
+    const auto worldTransform = computeTransform(pos, sprite.angle, sprite.halfSize);
     const auto transform = getCameraMatrix(cam) * worldTransform;
 
     Quad q;
