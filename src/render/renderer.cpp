@@ -450,47 +450,6 @@ struct Renderer : IRenderer
 
   void drawSprite(const RenderSprite& sprite) override
   {
-    auto q = spriteToQuad(sprite);
-
-    // early culling
-    {
-      BoundingBox box(q.pos[0]);
-
-      for(auto& p : q.pos)
-        box.add(p);
-
-      if(box.max.x < -1.0 || box.min.x > 1.0 || box.max.y < -1.0 || box.min.y > 1.0)
-        return;
-    }
-
-    m_quads.push_back(q);
-  }
-
-private:
-  Matrix3f getCameraMatrix(const Camera& cam) const
-  {
-    static const auto half_w = m_internalResolution.x / 2;
-    static const auto half_h = m_internalResolution.y / 2;
-    static const auto shrink = scale(Vec2f(TILE_SIZE / half_w, TILE_SIZE / half_h));
-    return shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
-  }
-
-  Camera m_camera;
-  bool m_cameraValid = false;
-
-  std::unique_ptr<IGpuProgram> m_quadShader;
-  std::unique_ptr<IGpuProgram> m_lineShader;
-
-  struct Quad
-  {
-    int zOrder;
-    std::array<float, 3> light {};
-    int tile;
-    Vec2f pos[4];
-  };
-
-  Quad spriteToQuad(const RenderSprite& sprite) const
-  {
     auto cam = sprite.useWorldRefFrame ? m_camera : Camera();
     auto it = m_Models.find(sprite.modelId);
 
@@ -555,8 +514,42 @@ private:
       }
     }
 
-    return q;
+    // early culling
+    {
+      BoundingBox box(q.pos[0]);
+
+      for(auto& p : q.pos)
+        box.add(p);
+
+      if(box.max.x < -1.0 || box.min.x > 1.0 || box.max.y < -1.0 || box.min.y > 1.0)
+        return;
+    }
+
+    m_quads.push_back(q);
   }
+
+private:
+  Matrix3f getCameraMatrix(const Camera& cam) const
+  {
+    static const auto half_w = m_internalResolution.x / 2;
+    static const auto half_h = m_internalResolution.y / 2;
+    static const auto shrink = scale(Vec2f(TILE_SIZE / half_w, TILE_SIZE / half_h));
+    return shrink * rotate(-cam.angle) * translate(-1 * cam.pos);
+  }
+
+  Camera m_camera;
+  bool m_cameraValid = false;
+
+  std::unique_ptr<IGpuProgram> m_quadShader;
+  std::unique_ptr<IGpuProgram> m_lineShader;
+
+  struct Quad
+  {
+    int zOrder;
+    std::array<float, 3> light {};
+    int tile;
+    Vec2f pos[4];
+  };
 
   struct Tile
   {
