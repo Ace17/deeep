@@ -12,6 +12,7 @@
 #include "base/matrix.h"
 #include "base/util.h"
 #include <cassert>
+#include <stdint.h>
 
 typedef Matrix2<int> TileMap;
 

@@ -16,6 +16,7 @@
 #include "game.h"
 #include "physics_probe.h"
 #include "presenter.h" // IActorSink
+#include <stdint.h>
 #include <vector>
 
 struct Climbable

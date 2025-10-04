@@ -9,6 +9,7 @@
 #pragma once
 
 #include <memory>
+#include <stdint.h>
 
 #include "base/box.h"
 #include "base/geom.h"
