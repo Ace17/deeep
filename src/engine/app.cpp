@@ -121,15 +121,17 @@ private:
 
       m_lastTime = nextTime;
       m_lastRemainder = (1000 + m_lastRemainder) % freq;
+      ++ticksPerFrame;
+    }
 
+    for(int k = 0; k < ticksPerFrame; ++k)
+    {
       if(!m_paused && m_running == AppState::Running)
       {
         tickGameplay();
         m_tps.tick(now);
         ggTps = m_tps.slope();
       }
-
-      ++ticksPerFrame;
     }
 
     ggTicksPerFrame = ticksPerFrame;
