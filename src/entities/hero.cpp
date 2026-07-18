@@ -310,8 +310,7 @@ struct Rockman : Entity, Damageable, Playerable
           // unless we have the climb upgrade
           doubleJumped = !(upgrades & UPGRADE_CLIMB);
 
-          for(int i = 0; i < 8; ++i)
-            vel.y *= 0.97;
+          vel.y *= 0.9;
 
           sliding = true;
           dashDelay = 0;
