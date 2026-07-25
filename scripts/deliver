@@ -42,12 +42,12 @@ function deliverBinaryVersion
   BIN=$BIN_WIN \
     ./scripts/w64-make -j`nproc` \
     VERSION="$version" \
-    $BIN_WIN/rel/game.exe \
+    $BIN_WIN/game.exe \
     >/dev/null
 
   gccVersion=$(x86_64-w64-mingw32-g++ -dumpversion)
 
-  cp $BIN_WIN/rel/game.exe                                           $tmpDir/$N/$N.exe
+  cp $BIN_WIN/game.exe                                               $tmpDir/$N/$N.exe
   cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll                 $tmpDir/$N
   cp /usr/lib/gcc/x86_64-w64-mingw32/$gccVersion/libstdc++-6.dll     $tmpDir/$N
   cp /usr/lib/gcc/x86_64-w64-mingw32/$gccVersion/libgcc_s_seh-1.dll  $tmpDir/$N
@@ -64,9 +64,9 @@ function deliverBinaryVersion
     >/dev/null
 
   echo -n "Game required GLIBC: "
-  nm -D $tmpDir/bin/gnu/rel/game.exe | grep GLIBC_ | sed 's/.*GLIBC_//g' | sort -Vru | head -n 1
+  nm -D $tmpDir/bin/gnu/game.exe | grep GLIBC_ | sed 's/.*GLIBC_//g' | sort -Vru | head -n 1
 
-  cp -a $tmpDir/bin/gnu/rel/game.exe                                 $tmpDir/$N/$N.x86_64
+  cp -a $tmpDir/bin/gnu/game.exe                                     $tmpDir/$N/$N.x86_64
 
   # Strip executables
   strip -s $tmpDir/$N/*.{exe,dll,x86_64}
@@ -114,7 +114,7 @@ function deliverWebVersion
   make -j`nproc` game >/dev/null
 
   rm -f /tmp/$NAME-web.zip
-  (cd $tmpDir/bin/web/rel && zip /tmp/$NAME-web.zip -r . )
+  (cd $tmpDir/bin/web && zip /tmp/$NAME-web.zip game.data game.html game.js game.wasm )
 
   du -hs /tmp/$NAME-web.zip
 }

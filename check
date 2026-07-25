@@ -14,7 +14,7 @@ def main():
     run(['scripts/w64-make', '-j', '16'])
     print("--- stats ---")
     print("Kloc: % 2.2f kloc" % (compute_klock("src")/1000.0))
-    print("Code: % 5d kb" % (os.path.getsize("bin/rel/game.exe")/1024))
+    print("Code: % 5d kb" % (os.path.getsize("bin/game.exe")/1024))
 
 def compute_klock(dir):
     result = 0

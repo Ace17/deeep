@@ -112,13 +112,13 @@ SRCS:=\
 	$(SRCS_GAME)\
 	$(SRCS_ENGINE)\
 
-$(BIN)/rel/game$(EXT): $(SRCS:%=$(BIN)/%.o)
+$(BIN)/game$(EXT): $(SRCS:%=$(BIN)/%.o)
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o '$@' $(LDFLAGS)
 
-TARGETS+=$(BIN)/rel/game$(EXT)
+TARGETS+=$(BIN)/game$(EXT)
 
-game: $(BIN)/rel/game$(EXT)
+game: $(BIN)/game$(EXT)
 
 #------------------------------------------------------------------------------
 include assets/project.mk
