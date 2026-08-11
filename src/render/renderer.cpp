@@ -594,10 +594,7 @@ private:
     }
 
     if(m_atlasFreeSpacePointer.y + dim.y >= AtlasSize.y)
-    {
-      char buffer[256];
-      throw Error(format(buffer, "Atlas is full"));
-    }
+      throw Error("Atlas is full");
 
     const Vec2i pos = m_atlasFreeSpacePointer;
     m_atlasFreeSpacePointer.x += dim.x;
