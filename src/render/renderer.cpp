@@ -98,24 +98,8 @@ struct Renderer : IRenderer
 
   void setCamera(Vec2f pos, bool teleport) override
   {
-    auto cam = Camera{ pos, 0 };
-
-    if(!m_cameraValid || teleport)
-    {
-      m_camera = cam;
-      m_cameraValid = true;
-    }
-
-    // avoid big camera jumps
-    {
-      auto delta = m_camera.pos - pos;
-
-      if(abs(delta.x) > 2 || abs(delta.y) > 2)
-        m_camera = cam;
-    }
-
-    m_camera.pos = lerp(m_camera.pos, cam.pos, 0.3f);
-    m_camera.angle = cam.angle;
+    (void)teleport;
+    m_camera.pos = pos;
   }
 
   void setAmbientLight(float ambientLight) override
@@ -538,7 +522,6 @@ private:
   }
 
   Camera m_camera;
-  bool m_cameraValid = false;
 
   std::unique_ptr<IGpuProgram> m_quadShader;
   std::unique_ptr<IGpuProgram> m_lineShader;
