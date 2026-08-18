@@ -77,10 +77,8 @@ void dumpQuest(Quest const& q, const char* filename)
     fprintf(fp, "       \"entities\":\n");
     fprintf(fp, "       [\n");
 
-    for(int k = 0; k < (int)r.spawners.size(); ++k)
+    for(auto& s : r.spawners)
     {
-      auto& s = r.spawners[k];
-
       fprintf(fp, "         {\n");
       fprintf(fp, "           \"id\":%d,\n", id++);
       fprintf(fp, "           \"type\": \"%s\",\n", s.name.c_str());
@@ -113,7 +111,7 @@ void dumpQuest(Quest const& q, const char* filename)
       fprintf(fp, "           \"ender\":0\n");
       fprintf(fp, "         }");
 
-      if(k < int(r.spawners.size() - 1))
+      if(&s != &r.spawners.back())
         fprintf(fp, ",");
 
       fprintf(fp, "\n");
