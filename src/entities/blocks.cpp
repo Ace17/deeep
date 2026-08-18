@@ -41,6 +41,7 @@ struct FragileBlock : Entity, Damageable
       r.ratio = 1.0f - (timer / 50.0f);
 
     r.action = tile;
+    r.zOrder = 3;
 
     sink->sendActor(r);
   }
@@ -126,6 +127,7 @@ struct FakeBlock : Entity
     r.scale = size;
     r.ratio = 0;
     r.action = tile;
+    r.zOrder = 3;
 
     sink->sendActor(r);
   }
@@ -153,6 +155,7 @@ struct CrumbleBlock : Entity
       auto r = SpriteActor { pos + size / 2, model };
       r.scale = size;
       r.action = tile;
+      r.zOrder = 3;
 
       sink->sendActor(r);
     }
