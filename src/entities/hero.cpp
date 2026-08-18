@@ -61,7 +61,7 @@ struct Bullet : Entity
 
   void tick() override
   {
-    pos += vel;
+    physics->moveBody(this, vel);
     decrement(life);
 
     if(life == 0)
