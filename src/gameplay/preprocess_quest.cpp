@@ -150,5 +150,11 @@ void preprocessQuest(Quest& quest)
 {
   for(auto& r : quest.rooms)
     preprocessRoom(r, quest.rooms);
+
+  int id = 1;
+
+  for(auto& r : quest.rooms)
+    for(auto& s : r.spawners)
+      s.id = id++;
 }
 

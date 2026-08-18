@@ -53,8 +53,6 @@ void dumpQuest(Quest const& q, const char* filename)
   if(!fp)
     throw Error("Can't open file for writing");
 
-  int id = 1;
-
   fprintf(fp, "{\n");
   fprintf(fp, "\"rooms\":\n");
   fprintf(fp, "  [\n");
@@ -80,7 +78,7 @@ void dumpQuest(Quest const& q, const char* filename)
     for(auto& s : r.spawners)
     {
       fprintf(fp, "         {\n");
-      fprintf(fp, "           \"id\":%d,\n", id++);
+      fprintf(fp, "           \"id\":%d,\n", s.id);
       fprintf(fp, "           \"type\": \"%s\",\n", s.name.c_str());
       fprintf(fp, "           \"x\":%d,\n", int(s.pos.x * PRECISION));
       fprintf(fp, "           \"y\":%d,\n", int(s.pos.y * PRECISION));
