@@ -7,12 +7,9 @@
 // Preprocessor for rooms:
 // - create connections between adjacent rooms
 // - create blockers around rooms
-// - add some display randomness to the tiles
 
 #include "base/error.h"
 #include "quest.h"
-#include <climits>
-#include <cstdlib> // rand
 
 static
 bool isInsideRoom(Vec2i pos, Room const& room)
