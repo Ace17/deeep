@@ -25,6 +25,24 @@ extern const Vec2i CELL_SIZE { 15, 10 };
 
 namespace
 {
+struct UidDatabase
+{
+  std::map<std::string, int> iidToUid;
+
+  int getIdFor(const std::string& iid)
+  {
+    auto it = iidToUid.find(iid);
+
+    if(it == iidToUid.end())
+    {
+      const int nextId = 1 + iidToUid.size();
+      iidToUid[iid] = nextId;
+    }
+
+    return iidToUid.at(iid);
+  }
+};
+
 Vec2i getSize(json::Value const& obj)
 {
   return Vec2i(obj["width"], obj["height"]);
@@ -135,7 +153,7 @@ Matrix2<int> parseAutoLayerTiles(const json::Value& json)
   return r;
 }
 
-std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height)
+std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height, UidDatabase& db)
 {
   std::vector<Room::Spawner> r;
 
@@ -147,6 +165,7 @@ std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int h
 
     spawner.pos = Vector(objRect.pos.x, objRect.pos.y);
     spawner.name = (std::string)obj["__identifier"];
+    spawner.id = db.getIdFor((std::string)obj["iid"]);
 
     for(auto& c : spawner.name)
       c = std::tolower(c);
@@ -170,14 +189,14 @@ std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int h
   return r;
 }
 
-void loadConcreteRoom(Room& room, json::Value const& jsRoom)
+void loadConcreteRoom(Room& room, json::Value const& jsRoom, UidDatabase& db)
 {
   auto layers = getMap(jsRoom, "layerInstances");
   room.tiles = parseTileLayer(layers["IntGrid"]);
   room.tilesForDisplay = parseAutoLayerTiles(layers["IntGrid"]);
 
   if(exists(layers, "Entities"))
-    room.spawners = parseThingLayer(layers["Entities"], room.size.y * CELL_SIZE.y);
+    room.spawners = parseThingLayer(layers["Entities"], room.size.y * CELL_SIZE.y, db);
 
   // process start point, if any
   for(auto& s : room.spawners)
@@ -200,7 +219,7 @@ Vec2i operator * (Vec2i a, Vec2i b)
   return { a.x * b.x, a.y * b.y };
 }
 
-Room loadAbstractRoom(json::Value const& jsonRoom)
+Room loadAbstractRoom(json::Value const& jsonRoom, UidDatabase& db)
 {
   const int WorldMaxHeight = CELL_SIZE.y * 128;
 
@@ -228,7 +247,7 @@ Room loadAbstractRoom(json::Value const& jsonRoom)
   {
     auto data = File::read(path);
     auto jsRoom = json::parse(data.c_str(), data.size());
-    loadConcreteRoom(room, jsRoom);
+    loadConcreteRoom(room, jsRoom, db);
   }
 
   auto const actualSize = room.tiles.size;
@@ -297,9 +316,10 @@ Quest loadTiledWorld(std::string path) // LDTK JSON format
   auto js = json::parse(data.c_str(), data.size());
 
   Quest r;
+  UidDatabase db;
 
   for(auto& roomValue : js["levels"].elements)
-    r.rooms.push_back(loadAbstractRoom(roomValue));
+    r.rooms.push_back(loadAbstractRoom(roomValue, db));
 
   return r;
 }
