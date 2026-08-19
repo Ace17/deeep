@@ -299,10 +299,7 @@ Quest loadTiledWorld(std::string path) // LDTK JSON format
   Quest r;
 
   for(auto& roomValue : js["levels"].elements)
-  {
-    auto room = loadAbstractRoom(roomValue);
-    r.rooms.push_back(std::move(room));
-  }
+    r.rooms.push_back(loadAbstractRoom(roomValue));
 
   return r;
 }
