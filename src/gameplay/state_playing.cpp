@@ -517,12 +517,9 @@ struct InGameScene : Scene, private IGame
     m_shouldLoadVars = true;
   }
 
-  void textBox(char const* msg) override
+  void textBox(String msg) override
   {
-    String s;
-    s.data = msg;
-    s.len = strlen(msg);
-    m_view->textBox(s);
+    m_view->textBox(msg);
   }
 
   void setAmbientLight(float light) override

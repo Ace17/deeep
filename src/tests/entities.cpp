@@ -69,7 +69,7 @@ struct NullGame : IGame
   virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(std::unique_ptr<Event>) {}
   virtual Vec2f getPlayerPosition() { return {}; }
-  virtual void textBox(char const*) {}
+  virtual void textBox(String) {}
   virtual void setAmbientLight(float) {}
   virtual void respawn() {}
 

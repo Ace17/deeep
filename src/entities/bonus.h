@@ -9,5 +9,6 @@
 #include <memory>
 
 struct Entity;
-std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg);
+struct String;
+std::unique_ptr<Entity> makeBonus(int action, int upgradeType, String msg);
 

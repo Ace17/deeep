@@ -73,7 +73,7 @@ struct IGame
   virtual ~IGame() = default;
 
   // visual
-  virtual void textBox(char const* msg) = 0;
+  virtual void textBox(String msg) = 0;
   virtual void playSound(SOUND id) = 0;
   virtual void setAmbientLight(float amount) = 0;
   virtual void stopMusic() = 0;

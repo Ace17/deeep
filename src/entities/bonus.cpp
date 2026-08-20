@@ -7,6 +7,7 @@
 // Bonus entity
 
 #include <cmath> // sin
+#include <cstring> // strlen
 
 #include "base/scene.h"
 #include "base/util.h"
@@ -22,7 +23,7 @@ namespace
 {
 struct Bonus : Entity
 {
-  Bonus(int modelAction_, int type_, char const* msg_)
+  Bonus(int modelAction_, int type_, String msg_)
   {
     modelAction = modelAction_;
     type = type_;
@@ -83,13 +84,13 @@ struct Bonus : Entity
   int time = 0;
   int modelAction;
   int type;
-  char const* msg;
+  String msg;
 };
 
 template<int action_, int upgradeType_, const char msg_[]>
 struct ConcreteBonus : Bonus
 {
-  ConcreteBonus(IEntityConfig*) : Bonus(action_, upgradeType_, msg_) {}
+  ConcreteBonus(IEntityConfig*) : Bonus(action_, upgradeType_, { msg_, strlen(msg_) }) {}
 };
 
 constexpr char UpgradeShootMsg[] = "press Z";
@@ -125,7 +126,7 @@ using UpgradeBonus_Life = ConcreteBonus<0, 0, UpgradeLifeMsg>;
 DECLARE_ENTITY("bonus_life", UpgradeBonus_Life);
 }
 
-std::unique_ptr<Entity> makeBonus(int action, int upgradeType, char const* msg)
+std::unique_ptr<Entity> makeBonus(int action, int upgradeType, String msg)
 {
   return std::make_unique<Bonus>(action, upgradeType, msg);
 }
