@@ -330,10 +330,19 @@ struct InGameScene : Scene, private IGame
       {
         entity->leave();
         m_physics->removeBody(entity.get());
+
+        if(entity->id)
+          m_entitiesById.erase(entity->id);
       }
     }
 
     unstableRemove(m_entities, &isDead);
+
+    for(auto& spawned : m_spawned)
+    {
+      if(spawned->id)
+        m_entitiesById[spawned->id] = spawned.get();
+    }
 
     while(m_spawned.size())
     {
@@ -497,6 +506,16 @@ struct InGameScene : Scene, private IGame
     Matrix2<int> exploredCells; // 0 unknown, 1 known, 2 explored
   };
 
+  Entity* getEntityById(int id) override
+  {
+    auto it = m_entitiesById.find(id);
+
+    if(it == m_entitiesById.end())
+      return nullptr;
+
+    return it->second;
+  }
+
   void onSaveEvent()
   {
     m_savedGame.level = m_level;
@@ -557,6 +576,7 @@ struct InGameScene : Scene, private IGame
 
   std::vector<std::unique_ptr<Entity>> m_entities;
   std::vector<std::unique_ptr<Entity>> m_spawned;
+  std::map<int, Entity*> m_entitiesById;
 
   Vec2f m_cameraPos {};
   Rect2f m_cameraArea {}; // the area where the center of the camera can go

@@ -153,6 +153,11 @@ Matrix2<int> parseAutoLayerTiles(const json::Value& json)
   return r;
 }
 
+std::string parseEntityRef(const json::Value& value)
+{
+  return (std::string)value["entityIid"];
+}
+
 std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int height, UidDatabase& db)
 {
   std::vector<Room::Spawner> r;
@@ -178,7 +183,14 @@ std::vector<Room::Spawner> parseThingLayer(json::Value const& objectLayer, int h
       for(auto& prop : obj["fieldInstances"].elements)
       {
         auto varName = (std::string)prop["__identifier"];
-        auto varValue = std::to_string((int)prop["__value"]);
+        auto varType = (std::string)prop["__type"];
+        std::string varValue;
+
+        if(varType == "Int")
+          varValue = std::to_string((int)prop["__value"]);
+        else if(varType == "EntityRef")
+          varValue = std::to_string(db.getIdFor(parseEntityRef(prop["__value"])));
+
         spawner.config[varName] = varValue;
       }
     }

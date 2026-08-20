@@ -85,5 +85,7 @@ struct IGame
   virtual void postEvent(std::unique_ptr<Event> event) = 0;
   virtual Vector getPlayerPosition() = 0;
   virtual void respawn() = 0;
+
+  virtual Entity* getEntityById(int id) = 0;
 };
 

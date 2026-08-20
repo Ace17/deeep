@@ -72,6 +72,7 @@ struct NullGame : IGame
   virtual void textBox(String) {}
   virtual void setAmbientLight(float) {}
   virtual void respawn() {}
+  virtual Entity* getEntityById(int) { return {}; }
 
   IPhysicsProbe* physicsProbe = nullptr;
   Entity* entity = nullptr;

@@ -90,6 +90,7 @@ SRCS_GAME:=\
 	src/entities/spikes.cpp\
 	src/entities/sweeper.cpp\
 	src/entities/switch.cpp\
+	src/entities/tracked_lift.cpp\
 	src/entities/water.cpp\
 	src/entities/wheel.cpp\
 	src/gameplay/draw_minimap.cpp\
