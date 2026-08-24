@@ -75,7 +75,7 @@ struct TrackedLift : Entity
     const auto dist = sqrt(dotProduct(delta, delta));
     const auto dir = delta / dist;
 
-    if(dist < 0.2)
+    if(speed > dist)
     {
       targetPoint++;
       targetPoint %= waypoints.size();
