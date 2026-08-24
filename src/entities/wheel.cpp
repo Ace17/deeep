@@ -55,7 +55,7 @@ struct Wheel : Entity, Damageable
     ++time;
 
     vel.x = dir * 0.03;
-    vel.y -= 0.0005; // gravity
+    vel.y -= 0.007; // gravity
 
     auto trace = slideMove(this, vel);
 
