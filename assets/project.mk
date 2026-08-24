@@ -46,14 +46,14 @@ res/%.model: assets/%.json
 res/%.jpg: assets/%.xcf
 	@mkdir -p $(dir $@)
 	@echo "Render $<"
-	@xcf2png "$<" -o "$@.png"
+	@scripts/xcf2png "$<" -o "$@.png"
 	@ffmpeg -loglevel 1 -i "$@.png" -pix_fmt yuvj420p -q:v 1 -y "$@" </dev/null
 	@rm -f "$@.png"
 
 res/%.png: assets/%.xcf
 	@mkdir -p $(dir $@)
 	@echo "Render $<"
-	@xcf2png "$<" -o "$@"
+	@scripts/xcf2png "$<" -o "$@"
 
 #-----------------------------------
 # Shaders
