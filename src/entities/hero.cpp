@@ -25,6 +25,7 @@ const float ORIGINAL_HZ = 60.0988f; // NSTC SNES
 namespace
 {
 inline auto ConvertSpeed(float val) { return val * (ORIGINAL_HZ / GAMEPLAY_HZ) / 16.0f; }
+inline auto Sqr(float v) { return v * v; }
 
 auto const WALK_SPEED = ConvertSpeed(1.5f);
 auto const DASH_SPEED = ConvertSpeed(3.5f);
@@ -33,7 +34,7 @@ auto const CLIMB_DELAY = 10;
 auto const HURT_DELAY = 50;
 auto const JUMP_VEL = ConvertSpeed(5.0f);
 auto const MAX_LIFE = 31;
-auto const GRAVITY = 0.25f / 16.0f * (ORIGINAL_HZ / GAMEPLAY_HZ) * (ORIGINAL_HZ / GAMEPLAY_HZ);
+auto const GRAVITY = 0.25f / 16.0f * Sqr(ORIGINAL_HZ / GAMEPLAY_HZ);
 
 enum ORIENTATION
 {
