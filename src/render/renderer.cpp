@@ -77,6 +77,7 @@ struct Renderer : IRenderer
     , m_internalResolution(internalResolution)
   {
     m_quadShader = backend->createGpuProgram("standard", false);
+    m_fullscreenTriangleShader = backend->createGpuProgram("fullscreen", false);
     m_lineShader = backend->createGpuProgram("line", false);
     m_batchVbo = backend->createVertexBuffer();
     m_fb = backend->createFrameBuffer(m_internalResolution, false);
@@ -129,14 +130,9 @@ struct Renderer : IRenderer
     backend->setRenderTarget(nullptr);
     backend->clear();
 
-    backend->useGpuProgram(m_quadShader.get());
-    backend->useVertexBuffer(m_quadVbo.get());
+    backend->useGpuProgram(m_fullscreenTriangleShader.get());
     m_fb->getColorTexture()->bind(0);
-    backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
-    backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
-    MyUniformBlock block {};
-    backend->setUniformBlock(&block, sizeof block);
-    backend->draw(6);
+    backend->draw(3);
 
     backend->swap();
   }
@@ -524,6 +520,7 @@ private:
   Camera m_camera;
 
   std::unique_ptr<IGpuProgram> m_quadShader;
+  std::unique_ptr<IGpuProgram> m_fullscreenTriangleShader;
   std::unique_ptr<IGpuProgram> m_lineShader;
 
   struct Quad
