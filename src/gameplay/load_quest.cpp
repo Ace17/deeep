@@ -205,7 +205,7 @@ void loadConcreteRoom(Room& room, json::Value const& jsRoom, UidDatabase& db)
 {
   auto layers = getMap(jsRoom, "layerInstances");
   room.tiles = parseTileLayer(layers["IntGrid"]);
-  room.tilesForDisplay = parseAutoLayerTiles(layers["IntGrid"]);
+  room.tilesForDisplay = parseAutoLayerTiles(layers["AutoGrid"]);
 
   if(exists(layers, "Entities"))
     room.spawners = parseThingLayer(layers["Entities"], room.size.y * CELL_SIZE.y, db);
