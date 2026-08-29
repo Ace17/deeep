@@ -11,7 +11,7 @@
 	"iid": "b7c208b0-d7b0-11ee-844c-11a3df79b1b4",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 355,
+	"nextUid": 421,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "GridVania",
@@ -153,7 +153,7 @@
 			"autoRuleGroups": [
 				{
 					"uid": 225,
-					"name": "MyGroup",
+					"name": "SingleBlocks2",
 					"color": null,
 					"icon": null,
 					"active": true,
@@ -205,7 +205,7 @@
 					"isOptional": false,
 					"rules": [
 						{
-							"uid": 323,
+							"uid": 388,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[1]],
@@ -232,12 +232,44 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 7828418,
+							"perlinSeed": 307710,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 324,
+							"uid": 389,
+							"active": true,
+							"size": 3,
+							"tileRectsIds": [[22]],
+							"alpha": 1,
+							"chance": 1,
+							"breakOnMatch": true,
+							"pattern": [-1,1,-1,1,1,1,-1,1,-1],
+							"flipX": false,
+							"flipY": false,
+							"xModulo": 1,
+							"yModulo": 1,
+							"xOffset": 0,
+							"yOffset": 0,
+							"tileXOffset": 0,
+							"tileYOffset": 0,
+							"tileRandomXMin": 0,
+							"tileRandomXMax": 0,
+							"tileRandomYMin": 0,
+							"tileRandomYMax": 0,
+							"checker": "None",
+							"tileMode": "Single",
+							"pivotX": 0,
+							"pivotY": 0,
+							"outOfBoundsValue": 1,
+							"invalidated": false,
+							"perlinActive": false,
+							"perlinSeed": 6193933,
+							"perlinScale": 0.2,
+							"perlinOctaves": 2
+						},
+						{
+							"uid": 390,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[18]],
@@ -264,12 +296,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 429899,
+							"perlinSeed": 6651498,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 325,
+							"uid": 391,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[19]],
@@ -296,12 +328,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 918633,
+							"perlinSeed": 1856189,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 326,
+							"uid": 392,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[27]],
@@ -328,12 +360,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 9090479,
+							"perlinSeed": 8285133,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 327,
+							"uid": 393,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[26]],
@@ -360,12 +392,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 4345556,
+							"perlinSeed": 1079213,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 328,
+							"uid": 394,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[46]],
@@ -392,12 +424,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 33367,
+							"perlinSeed": 2920503,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 329,
+							"uid": 395,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[37]],
@@ -424,12 +456,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 7060809,
+							"perlinSeed": 7822123,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 330,
+							"uid": 396,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[47]],
@@ -456,12 +488,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 3341263,
+							"perlinSeed": 9981014,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 331,
+							"uid": 397,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[36]],
@@ -488,12 +520,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 3065637,
+							"perlinSeed": 2305470,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 332,
+							"uid": 398,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[44]],
@@ -520,12 +552,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 3342363,
+							"perlinSeed": 6639548,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 333,
+							"uid": 399,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[39]],
@@ -552,12 +584,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 1429656,
+							"perlinSeed": 6927028,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 334,
+							"uid": 400,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[38]],
@@ -584,12 +616,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 297092,
+							"perlinSeed": 8839057,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 335,
+							"uid": 401,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[45]],
@@ -616,12 +648,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 7834215,
+							"perlinSeed": 2244377,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 336,
+							"uid": 402,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[34]],
@@ -648,12 +680,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 8770697,
+							"perlinSeed": 7175392,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 337,
+							"uid": 403,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[35]],
@@ -680,12 +712,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 271842,
+							"perlinSeed": 7203747,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 338,
+							"uid": 404,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[33]],
@@ -712,12 +744,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 4270190,
+							"perlinSeed": 2181348,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 339,
+							"uid": 405,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[42]],
@@ -744,12 +776,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 4305617,
+							"perlinSeed": 7085722,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 340,
+							"uid": 406,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[43]],
@@ -776,12 +808,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 5750843,
+							"perlinSeed": 6796470,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 341,
+							"uid": 407,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[32]],
@@ -808,12 +840,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 9653737,
+							"perlinSeed": 2559156,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 342,
+							"uid": 408,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[2]],
@@ -840,12 +872,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 5195426,
+							"perlinSeed": 1208739,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 343,
+							"uid": 409,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[3]],
@@ -872,12 +904,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 5863214,
+							"perlinSeed": 5457851,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 344,
+							"uid": 410,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[11]],
@@ -904,12 +936,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 7944761,
+							"perlinSeed": 6316336,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 345,
+							"uid": 411,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[10]],
@@ -936,12 +968,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 9558322,
+							"perlinSeed": 9131621,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 346,
+							"uid": 412,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [ [4], [20] ],
@@ -968,12 +1000,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 3464000,
+							"perlinSeed": 2751878,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 347,
+							"uid": 413,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [ [5], [21] ],
@@ -1000,12 +1032,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 1794084,
+							"perlinSeed": 5423435,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 348,
+							"uid": 414,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [ [12], [28] ],
@@ -1032,12 +1064,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 7780796,
+							"perlinSeed": 4901345,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 349,
+							"uid": 415,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [ [13], [29] ],
@@ -1064,12 +1096,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 5191847,
+							"perlinSeed": 3544108,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 350,
+							"uid": 416,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[15]],
@@ -1096,12 +1128,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 5178535,
+							"perlinSeed": 8167559,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 351,
+							"uid": 417,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[14]],
@@ -1128,12 +1160,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 7474743,
+							"perlinSeed": 9186213,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 352,
+							"uid": 418,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[6]],
@@ -1160,12 +1192,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 5725714,
+							"perlinSeed": 5288743,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 353,
+							"uid": 419,
 							"active": true,
 							"size": 3,
 							"tileRectsIds": [[7]],
@@ -1192,22 +1224,15 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 1799430,
+							"perlinSeed": 5665419,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						},
 						{
-							"uid": 354,
+							"uid": 420,
 							"active": true,
 							"size": 1,
-							"tileRectsIds": [
-								[8],
-								[9],
-								[16],
-								[17],
-								[24],
-								[25]
-							],
+							"tileRectsIds": [[8]],
 							"alpha": 1,
 							"chance": 1,
 							"breakOnMatch": true,
@@ -1231,24 +1256,12 @@
 							"outOfBoundsValue": 1,
 							"invalidated": false,
 							"perlinActive": false,
-							"perlinSeed": 9192473,
+							"perlinSeed": 3739812,
 							"perlinScale": 0.2,
 							"perlinOctaves": 2
 						}
 					],
 					"usesWizard": true,
-					"requiredBiomeValues": [],
-					"biomeRequirementMode": 0
-				},
-				{
-					"uid": 126,
-					"name": "New group",
-					"color": null,
-					"icon": null,
-					"active": true,
-					"isOptional": false,
-					"rules": [],
-					"usesWizard": false,
 					"requiredBiomeValues": [],
 					"biomeRequirementMode": 0
 				}
@@ -2775,7 +2788,7 @@
 			"savedSelections": [],
 			"cachedPixelData": {
 				"opaqueTiles": "11111111111111111111111111111111111111111111111111111111111111110011000000110000000000000000000000000000000000000000000000000000",
-				"averageColors": "f059f677f568f568f467f467f357f357f111f111f568f568f467f467f357f357f111f111f568f568f467f457f059f059f111f111f568f568f457f457f059f059f468f468f577f577f368f368f368f368f059f059f577f577f368f368f368f368f059f059f059f059f059f059f059f059f059f059f059f059f059f059f059f05900000000f378f378000000000000000000000000f378f3780000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+				"averageColors": "f059f677f568f568f467f467f357f357f111f111f568f568f467f467f357f357f111f111f568f568f467f457f259f059f111f111f568f568f457f457f059f059f468f468f577f577f368f368f368f368f059f059f577f577f368f368f368f368f059f059f059f059f059f059f059f059f059f059f059f059f059f059f059f05900000000f378f378000000000000000000000000f378f3780000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		},
 		{
