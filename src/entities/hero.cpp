@@ -193,7 +193,7 @@ struct Rockman : Entity, Damageable, Playerable
     else if(ladder)
     {
       r.action = ACTION_LADDER;
-      r.ratio = vel.y == 0 ? 0.3 : (time % 40) / 40.0f;
+      r.ratio = vel.y == 0 ? 0.3 : (time % 30) / 30.0f;
       r.pos += Vector(0.05, -0.5);
     }
     else if(!ground)
@@ -390,9 +390,9 @@ struct Rockman : Entity, Damageable, Playerable
       else
       {
         if(c.up)
-          vel.y = +WALK_SPEED * 0.5;
+          vel.y = +WALK_SPEED;
         else if(c.down)
-          vel.y = -WALK_SPEED * 0.5;
+          vel.y = -WALK_SPEED;
         else
           vel.y = 0;
       }
