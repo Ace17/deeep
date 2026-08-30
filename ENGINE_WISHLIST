@@ -34,4 +34,11 @@ Gameplay
 
 - Minimap: connex components (of the explored areas) are kept separated, until
    the player finally explores a path that connects them. At this point, there's
-   an animation in the minimap menu, showing the mergin of the two connex components
+   an animation in the minimap menu, showing the merging of the two connex components
+
+- Minimap: show connections between rooms
+
+- Minimap: hidden areas
+
+- Being able to stand on the top of ladders
+

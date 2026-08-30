@@ -17,7 +17,7 @@
 #include <string>
 
 extern const String GAME_NAME = "Deeep";
-extern const Vec2i INTERNAL_RESOLUTION = Vec2i(240, 160);
+extern const Vec2i INTERNAL_RESOLUTION = Vec2i(240, 160); // must match "AspectRatio"
 extern const int GAMEPLAY_HZ = 90; // a better match for 60Hz and 144Hz refresh rates
                                    // - 60Hz refresh rates: 2 display frames (~33ms) for 3 gameplay ticks
                                    // - 144Hz refresh rates: 18 display frames (~56ms) for 5 gameplay ticks
