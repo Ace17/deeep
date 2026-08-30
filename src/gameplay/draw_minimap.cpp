@@ -24,8 +24,6 @@ int getOverlayTile(MapViewModel::CenterType center)
     return 19;
   case MapViewModel::CenterType::Save:
     return 18;
-  case MapViewModel::CenterType::Player:
-    return 16;
   default:
     return 16;
   }
@@ -103,13 +101,24 @@ void drawMinimap(IPresenter* presenter, Vec2f pos, const MapViewModel& vm)
       {
         actor.action = getOverlayTile(cell.center);
         actor.zOrder = 12;
-
-        if(cell.center == MapViewModel::CenterType::Player)
-          actor.effect = Effect::Blinking;
-
         presenter->sendActor(actor);
       }
     }
+  }
+
+  // player
+  {
+    auto actor = SpriteActor { NullVector, MDL_MINIMAP_TILES };
+    actor.action = 16;
+    actor.pos.x = cellSize * (vm.playerPos.x + pos.x);
+    actor.pos.y = cellSize * (vm.playerPos.y + pos.y);
+    actor.scale.x = cellSize;
+    actor.scale.y = cellSize;
+    actor.screenRefFrame = true;
+    actor.zOrder = 12;
+    actor.effect = Effect::Blinking;
+
+    presenter->sendActor(actor);
   }
 }
 
@@ -173,11 +182,9 @@ MapViewModel computeMapViewModel(const MinimapData& map)
     }
   }
 
-  const Room& playerRoom = map.quest->rooms[map.level];
-  Vec2i playerPos = playerRoom.pos;
-  playerPos.x += int(map.playerPos.x) / CELL_SIZE.x;
-  playerPos.y += int(map.playerPos.y) / CELL_SIZE.y;
-  r.cells.get(playerPos.x, playerPos.y).center = MapViewModel::CenterType::Player;
+  r.playerPos = map.quest->rooms[map.level].pos;
+  r.playerPos.x += int(map.playerPos.x) / CELL_SIZE.x;
+  r.playerPos.y += int(map.playerPos.y) / CELL_SIZE.y;
 
   auto hideCellIfUnknown =
     [&] (int x, int y, MapViewModel::Cell& cell)

@@ -26,7 +26,6 @@ struct MapViewModel
     Hollow, // cell is part of a room
     Item,
     Save,
-    Player,
   };
 
   enum class EdgeType
@@ -45,6 +44,7 @@ struct MapViewModel
   };
 
   Matrix2<Cell> cells;
+  Vec2i playerPos;
 };
 
 MapViewModel computeMapViewModel(const MinimapData& map);
