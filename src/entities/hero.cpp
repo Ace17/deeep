@@ -319,7 +319,7 @@ struct Rockman : Entity, Damageable, Playerable
       }
     }
 
-    if(jumpbutton.toggle(c.jump))
+    if(jumpbutton.toggle(c.jump) && !ladder)
     {
       if(ground)
       {
@@ -327,7 +327,7 @@ struct Rockman : Entity, Damageable, Playerable
         vel.y = JUMP_VEL;
         doubleJumped = false;
       }
-      else if(facingWall() && (upgrades & UPGRADE_CLIMB))
+      else if(facingWall() && (upgrades & UPGRADE_CLIMB) && !ball)
       {
         game->playSound(SND_JUMP);
         // wall climbing
@@ -342,7 +342,7 @@ struct Rockman : Entity, Damageable, Playerable
         climbDelay = CLIMB_DELAY;
         doubleJumped = false;
       }
-      else if((upgrades & UPGRADE_DJUMP) && !doubleJumped)
+      else if((upgrades & UPGRADE_DJUMP) && !doubleJumped && !ball)
       {
         game->playSound(SND_JUMP);
         vel.y = JUMP_VEL;
