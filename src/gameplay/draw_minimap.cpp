@@ -21,49 +21,12 @@ int getOverlayTile(MapViewModel::CenterType center)
   switch(center)
   {
   case MapViewModel::CenterType::Item:
-    return 19;
+    return 15;
   case MapViewModel::CenterType::Save:
-    return 18;
+    return 14;
   default:
-    return 16;
+    return 13;
   }
-}
-
-int getCenterTile(bool right, bool up, bool down, bool left)
-{
-  int code = 0;
-
-  code <<= 1;
-  code |= (int)right;
-  code <<= 1;
-  code |= (int)up;
-  code <<= 1;
-  code |= (int)down;
-  code <<= 1;
-  code |= (int)left;
-
-  static const int tiles[16] =
-  {
-    /* RUDL */
-    /* 0000 */ 0,
-    /* 0001 */ 6,
-    /* 0010 */ 7,
-    /* 0011 */ 8,
-    /* 0100 */ 11,
-    /* 0101 */ 4,
-    /* 0110 */ 3,
-    /* 0111 */ 12,
-    /* 1000 */ 10,
-    /* 1001 */ 2,
-    /* 1010 */ 9,
-    /* 1011 */ 15,
-    /* 1100 */ 5,
-    /* 1101 */ 13,
-    /* 1110 */ 14,
-    /* 1111 */ 1,
-  };
-
-  return tiles[code];
 }
 }
 
@@ -81,26 +44,69 @@ void drawMinimap(IPresenter* presenter, Vec2f pos, const MapViewModel& vm)
       if(cell.center == MapViewModel::CenterType::Solid)
         continue;
 
-      const bool wallRight = x == vm.cells.size.x - 1 || cell.right != MapViewModel::EdgeType::Free;
-      const bool wallUp = y == vm.cells.size.y - 1 || cell.up != MapViewModel::EdgeType::Free;
-      const bool wallDown = y == 0 || vm.cells.get(x, y - 1).up != MapViewModel::EdgeType::Free;
-      const bool wallLeft = x == 0 || vm.cells.get(x - 1, y).right != MapViewModel::EdgeType::Free;
+      const MapViewModel::EdgeType wallRight = x == vm.cells.size.x - 1 ? MapViewModel::EdgeType::Wall : cell.right;
+      const MapViewModel::EdgeType wallUp = y == vm.cells.size.y - 1 ? MapViewModel::EdgeType::Wall : cell.up;
+      const MapViewModel::EdgeType wallDown = y == 0 ? MapViewModel::EdgeType::Wall : vm.cells.get(x, y - 1).up;
+      const MapViewModel::EdgeType wallLeft = x == 0 ? MapViewModel::EdgeType::Wall : vm.cells.get(x - 1, y).right;
 
       auto actor = SpriteActor { NullVector, MDL_MINIMAP_TILES };
-      actor.action = getCenterTile(wallRight, wallUp, wallDown, wallLeft) + (cell.visited ? 20 : 0);
       actor.pos.x = cellSize * x + pos.x * cellSize;
       actor.pos.y = cellSize * y + pos.y * cellSize;
       actor.scale.x = cellSize;
       actor.scale.y = cellSize;
       actor.screenRefFrame = true;
       actor.zOrder = 11;
+
+      actor.action = cell.visited ? 1 : 0;
       presenter->sendActor(actor);
+
+      actor.zOrder = 13;
+
+      if(wallLeft != MapViewModel::EdgeType::Free)
+      {
+        actor.action = 4;
+
+        if(wallLeft == MapViewModel::EdgeType::Door)
+          actor.action += 4;
+
+        presenter->sendActor(actor);
+      }
+
+      if(wallRight != MapViewModel::EdgeType::Free)
+      {
+        actor.action = 5;
+
+        if(wallRight == MapViewModel::EdgeType::Door)
+          actor.action += 4;
+
+        presenter->sendActor(actor);
+      }
+
+      if(wallUp != MapViewModel::EdgeType::Free)
+      {
+        actor.action = 6;
+
+        if(wallUp == MapViewModel::EdgeType::Door)
+          actor.action += 4;
+
+        presenter->sendActor(actor);
+      }
+
+      if(wallDown != MapViewModel::EdgeType::Free)
+      {
+        actor.action = 7;
+
+        if(wallDown == MapViewModel::EdgeType::Door)
+          actor.action += 4;
+
+        presenter->sendActor(actor);
+      }
 
       // overlay (item, save)
       if(cell.center != MapViewModel::CenterType::Hollow)
       {
         actor.action = getOverlayTile(cell.center);
-        actor.zOrder = 12;
+        actor.zOrder = 14;
         presenter->sendActor(actor);
       }
     }
@@ -109,7 +115,7 @@ void drawMinimap(IPresenter* presenter, Vec2f pos, const MapViewModel& vm)
   // player
   {
     auto actor = SpriteActor { NullVector, MDL_MINIMAP_TILES };
-    actor.action = 16;
+    actor.action = 13;
     actor.pos.x = cellSize * (vm.playerPos.x + pos.x);
     actor.pos.y = cellSize * (vm.playerPos.y + pos.y);
     actor.scale.x = cellSize;

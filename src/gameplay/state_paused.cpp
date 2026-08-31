@@ -76,7 +76,7 @@ struct PausedState : Scene
     auto overlay = SpriteActor { NullVector, MDL_MINIMAP_BG };
     overlay.scale = { 15, 10 };
     overlay.screenRefFrame = true;
-    overlay.zOrder = 13;
+    overlay.zOrder = 20;
     view->sendActor(overlay);
   }
 
