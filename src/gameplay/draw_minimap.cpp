@@ -130,6 +130,19 @@ void drawMinimap(IPresenter* presenter, Vec2f pos, const MapViewModel& vm)
 
 extern const Vec2i CELL_SIZE;
 
+bool ScanForHoles(const Room& room, Vec2i pos, Vec2i dir, int count)
+{
+  for(int i = 0; i < count; ++i)
+  {
+    if(room.tiles.get(pos.x, pos.y) == 0)
+      return true;
+
+    pos += dir;
+  }
+
+  return false;
+}
+
 MapViewModel computeMapViewModel(const MinimapData& map)
 {
   MapViewModel r;
@@ -168,9 +181,11 @@ MapViewModel computeMapViewModel(const MinimapData& map)
     for(int y = 0; y < room.size.y; ++y)
     {
       // left line
-      r.cells.get(room.pos.x - 1, room.pos.y + y).right = MapViewModel::EdgeType::Wall;
+      bool hasLeftHole = ScanForHoles(room, Vec2i(0, y * CELL_SIZE.y), Vec2i(0, 1), CELL_SIZE.y);
+      r.cells.get(room.pos.x - 1, room.pos.y + y).right = hasLeftHole ? MapViewModel::EdgeType::Door : MapViewModel::EdgeType::Wall;
       // right line
-      r.cells.get(room.pos.x + room.size.x - 1, room.pos.y + y).right = MapViewModel::EdgeType::Wall;
+      bool hasRightHole = ScanForHoles(room, Vec2i(room.size.x * CELL_SIZE.x - 1, y * CELL_SIZE.y), Vec2i(0, 1), CELL_SIZE.y);
+      r.cells.get(room.pos.x + room.size.x - 1, room.pos.y + y).right = hasRightHole ? MapViewModel::EdgeType::Door : MapViewModel::EdgeType::Wall;
     }
 
     for(auto& spawner : room.spawners)
