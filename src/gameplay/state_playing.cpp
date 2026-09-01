@@ -108,7 +108,7 @@ struct InGameScene : Scene, private IGame
   {
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
-    m_savedGame.exploredCells.resize(computeQuestMapSize(m_quest));
+    m_exploredCells.resize(computeQuestMapSize(m_quest));
   }
 
   ~InGameScene()
@@ -131,7 +131,7 @@ struct InGameScene : Scene, private IGame
       playerPos.x += int(m_player->position().x) / CELL_SIZE.x;
       playerPos.y += int(m_player->position().y) / CELL_SIZE.y;
 
-      m_savedGame.exploredCells.set(playerPos.x, playerPos.y, 2);
+      m_exploredCells.set(playerPos.x, playerPos.y, 2);
     }
 
     if(startButton.toggle(c.start))
@@ -140,7 +140,7 @@ struct InGameScene : Scene, private IGame
       data.quest = &m_quest;
       data.level = m_level;
       data.playerPos = m_player->position();
-      data.exploredCells = &m_savedGame.exploredCells;
+      data.exploredCells = &m_exploredCells;
       return createPausedState(m_view, this, data);
     }
 
@@ -239,7 +239,7 @@ struct InGameScene : Scene, private IGame
         if(exploredStatus == 0)
           exploredStatus = 1;
       };
-    m_savedGame.exploredCells.scan(onCell);
+    m_exploredCells.scan(onCell);
   }
 
   void updateDebugFlag(float debugFlag)
@@ -510,6 +510,7 @@ struct InGameScene : Scene, private IGame
 
   void onSaveEvent()
   {
+    // save the game to 'm_savedGame'
     m_savedGame.level = m_level;
     m_savedGame.position = m_player->position();
     m_savedGame.position.y = round(m_savedGame.position.y) + 0.02;
@@ -517,13 +518,17 @@ struct InGameScene : Scene, private IGame
 
     for(auto& var : m_vars)
       m_savedGame.varValues[var.first] = var.second->get();
+
+    m_savedGame.exploredCells = m_exploredCells.clone();
   }
 
   void respawn() override
   {
+    // reload the game from 'm_savedGame'
     logMsg("Respawning!");
     m_level = m_savedGame.level;
     m_transform = m_savedGame.position - m_player->position();
+    m_exploredCells = m_savedGame.exploredCells.clone();
     m_shouldLoadLevel = true;
     m_shouldLoadVars = true;
   }
@@ -539,6 +544,7 @@ struct InGameScene : Scene, private IGame
   }
 
   int m_level = 1;
+  Matrix2<int> m_exploredCells; // 0 unknown, 1 known, 2 explored
   int m_currRoomTheme = 0;
 
   bool m_shouldLoadLevel = false;

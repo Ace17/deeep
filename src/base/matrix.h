@@ -58,6 +58,16 @@ struct Matrix2
 
   Vec2i size {};
 
+  Matrix2 clone() const
+  {
+    Matrix2 r(size);
+
+    for(int i = 0; i < size.x * size.y; ++i)
+      r.data[i] = data[i];
+
+    return r;
+  }
+
   T& get(int x, int y)
   {
     assert(isInside(x, y));
