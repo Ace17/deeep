@@ -383,7 +383,11 @@ struct Rockman : Entity, Damageable, Playerable
 
     if(ladder)
     {
-      if(c.jump || c.left || c.right)
+      if(c.jump)
+      {
+        ladder = false;
+      }
+      else if((c.left || c.right) && !c.up)
       {
         ladder = false;
       }
