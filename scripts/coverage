@@ -18,10 +18,10 @@ lcov --capture -d "$tmpDir" -b . --no-external --initial > $tmpDir/reference.inf
 
 # run tests
 $BIN/tests.exe
-lcov --capture -d "$tmpDir" -b . --no-external -o $tmpDir/stats.info
+lcov --capture -d "$tmpDir" -b . --no-external -o $tmpDir/stats.info --ignore-errors inconsistent
 
 # combine baseline and test coverage data
-lcov -a $tmpDir/reference.info -a $tmpDir/stats.info -o $tmpDir/profile.txt
+lcov -a $tmpDir/reference.info -a $tmpDir/stats.info -o $tmpDir/profile.txt --ignore-errors inconsistent
 
 rm -rf cov
 genhtml $tmpDir/profile.txt -o cov
