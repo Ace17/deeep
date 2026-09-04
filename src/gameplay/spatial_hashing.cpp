@@ -14,7 +14,7 @@ constexpr int BucketCount = 256;
 
 int hash(Vec2i pos)
 {
-  return std::abs((pos.x * 92837111ull) ^ (pos.y * 689287499ull)) % BucketCount;
+  return std::abs(int((pos.x * 92837111ull) ^ (pos.y * 689287499ull))) % BucketCount;
 }
 } // namespace
 
