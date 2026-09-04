@@ -184,24 +184,25 @@ unittest("Entity: hero falls")
   player->setPosition({ 0, 10 });
   // player->tick();
 
-  assertEquals((int)ACTION_FALL, (int)getActor(game.entity).action);
+  assertEquals((int)ACTION_FALL, getActor(game.entity).action);
 }
 
-#if 0
 unittest("Entity: hero stands on ground, then walks")
 {
-  auto player = makeRockman();
-  auto game = NullGame();
-  auto physics = NullPhysicsProbe();
-  player->game = &game;
-  player->physics = &physics;
-
-  player->pos.y = 0;
+  NullPhysicsProbe physics{};
+  NullGame game{};
+  game.physicsProbe = &physics;
+  std::unique_ptr<Player> player(createHeroPlayer(&game));
+  player->enterLevel();
+  player->setPosition({ 100, 0 });
 
   for(int i = 0; i < 10; ++i)
-    player->tick();
+    game.entity->tick();
 
-  assertEquals((int)ACTION_STAND, (int)getActor(player).action);
+  assertEquals((int)ACTION_STAND, getActor(game.entity).action);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // walk right
 
   {
     Control cmd {};
@@ -209,10 +210,13 @@ unittest("Entity: hero stands on ground, then walks")
     player->think(cmd);
   }
 
-  player->tick();
+  game.entity->tick();
 
-  assertEquals((int)ACTION_WALK, (int)getActor(player).action);
-  assert(getActor(player).scale.x > 0);
+  assertEquals((int)ACTION_WALK, getActor(game.entity).action);
+  assert(getActor(game.entity).scale.x > 0);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // walk left
 
   {
     Control cmd {};
@@ -220,10 +224,10 @@ unittest("Entity: hero stands on ground, then walks")
     player->think(cmd);
   }
 
-  player->tick();
+  game.entity->tick();
+  game.entity->tick();
 
-  assertEquals((int)ACTION_WALK, (int)getActor(player).action);
-  assert(getActor(player).scale.x < 0);
+  assertEquals((int)ACTION_WALK, getActor(game.entity).action);
+  assert(getActor(game.entity).scale.x < 0);
 }
-#endif
 
