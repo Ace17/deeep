@@ -196,7 +196,7 @@ unittest("Entity: hero stands on ground, then walks")
   player->enterLevel();
   player->setPosition({ 100, 0 });
 
-  for(int i = 0; i < 10; ++i)
+  for(int k = 0; k < 10; ++k)
     game.entity->tick();
 
   assertEquals((int)ACTION_STAND, getActor(game.entity).action);
@@ -210,7 +210,8 @@ unittest("Entity: hero stands on ground, then walks")
     player->think(cmd);
   }
 
-  game.entity->tick();
+  for(int i = 0; i < 10; ++i)
+    game.entity->tick();
 
   assertEquals((int)ACTION_WALK, getActor(game.entity).action);
   assert(getActor(game.entity).scale.x > 0);
@@ -224,10 +225,25 @@ unittest("Entity: hero stands on ground, then walks")
     player->think(cmd);
   }
 
-  game.entity->tick();
-  game.entity->tick();
+  for(int k = 0; k < 10; ++k)
+    game.entity->tick();
 
   assertEquals((int)ACTION_WALK, getActor(game.entity).action);
   assert(getActor(game.entity).scale.x < 0);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // press both left and right
+
+  {
+    Control cmd {};
+    cmd.left = true;
+    cmd.right = true;
+    player->think(cmd);
+  }
+
+  for(int k = 0; k < 10; ++k)
+    game.entity->tick();
+
+  assertEquals((int)ACTION_STAND, getActor(game.entity).action);
 }
 
