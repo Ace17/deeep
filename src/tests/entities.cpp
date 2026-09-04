@@ -64,7 +64,7 @@ struct NullGame : IGame
 {
   virtual void playSound(SOUND) {}
   virtual void stopMusic() {}
-  virtual void spawn(Entity* e) { entity = e; e->physics = physicsProbe; }
+  virtual void spawn(Entity* e) { entity = e; e->game = this; e->physics = physicsProbe; }
   virtual void detach(Entity*) {}
   virtual IVariable* getVariable(int) { return &nullVariable; }
   virtual void postEvent(std::unique_ptr<Event>) {}
@@ -182,12 +182,14 @@ unittest("Entity: hero falls")
   std::unique_ptr<Player> player(createHeroPlayer(&game));
   player->enterLevel();
   player->setPosition({ 0, 10 });
-  // player->tick();
+
+  for(int k = 0; k < 10; ++k)
+    game.entity->tick();
 
   assertEquals((int)ACTION_FALL, getActor(game.entity).action);
 }
 
-unittest("Entity: hero stands on ground, then walks")
+unittest("Entity: hero: stands on ground, then walks")
 {
   NullPhysicsProbe physics{};
   NullGame game{};
@@ -242,6 +244,59 @@ unittest("Entity: hero stands on ground, then walks")
   }
 
   for(int k = 0; k < 10; ++k)
+    game.entity->tick();
+
+  assertEquals((int)ACTION_STAND, getActor(game.entity).action);
+}
+
+unittest("Entity: hero: ball")
+{
+  NullPhysicsProbe physics{};
+  NullGame game{};
+  game.physicsProbe = &physics;
+  std::unique_ptr<Player> player(createHeroPlayer(&game));
+  player->enterLevel();
+  player->setPosition({ 100, 0 });
+
+  for(int k = 0; k < 10; ++k)
+    game.entity->tick();
+
+  assertEquals((int)ACTION_STAND, getActor(game.entity).action);
+
+  // press down, without the 'ball' upgrade
+  {
+    Control cmd {};
+    cmd.down = true;
+    player->think(cmd);
+  }
+
+  for(int i = 0; i < 10; ++i)
+    game.entity->tick();
+
+  assertEquals((int)ACTION_STAND, getActor(game.entity).action);
+
+  player->addUpgrade(UPGRADE_BALL);
+
+  // press down again
+  {
+    Control cmd {};
+    cmd.down = true;
+    player->think(cmd);
+  }
+
+  for(int i = 0; i < 10; ++i)
+    game.entity->tick();
+
+  assertEquals((int)ACTION_BALL, getActor(game.entity).action);
+
+  // press up
+  {
+    Control cmd {};
+    cmd.up = true;
+    player->think(cmd);
+  }
+
+  for(int i = 0; i < 10; ++i)
     game.entity->tick();
 
   assertEquals((int)ACTION_STAND, getActor(game.entity).action);
