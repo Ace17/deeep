@@ -384,17 +384,25 @@ struct Renderer : IRenderer
     pos.x = pos.x - text.text.len * size.x * 0.5;
     pos.y = pos.y;
 
+    auto cam = text.useWorldRefFrame ? m_camera : Camera();
+    const auto transform = getCameraMatrix(cam);
+
     for(auto& c : text.text)
     {
-      RenderSprite s {};
-      s.pos = pos;
-      s.halfSize = size;
-      s.modelId = -1;
-      s.zOrder = 100;
-      s.actionIdx = c;
-      s.frame = 0;
+      m_quads.push_back({});
+      auto& q = m_quads.back();
 
-      drawSprite(s);
+      q.tile = m_Models[-1].actions[c].textures[0];
+      q.zOrder = 100;
+
+      q.pos[0] = pos;
+      q.pos[1] = pos + Vec2f(0, size.y);
+      q.pos[2] = pos + Vec2f(size.x, size.y);
+      q.pos[3] = pos + Vec2f(size.x, 0);
+
+      for(auto& p : q.pos)
+        p = multiplyMatrix(transform, p.x, p.y, 1);
+
       pos.x += size.x;
     }
   }
