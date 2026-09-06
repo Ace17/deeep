@@ -285,6 +285,7 @@ struct Renderer : IRenderer
           backend->useGpuProgram(m_texturedShader.get());
           backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
           backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
+          backend->enableVertexAttribute(2 /* color       */, 4, sizeof(Vertex), offsetof(Vertex, r));
 
           currShader = m_texturedShader.get();
         }
@@ -297,15 +298,6 @@ struct Renderer : IRenderer
           currTexture->bind(0); // Bind our diffuse texture in Texture Unit 0
         }
 
-        if(quad.light != currLight)
-        {
-          flushBatch();
-
-          MyUniformBlock block { quad.light[0], quad.light[1], quad.light[2], 0 };
-          backend->setUniformBlock(&block, sizeof block);
-          currLight = quad.light;
-        }
-
         if(vboData.size() * 6 >= MAX_QUADS)
           flushBatch();
 
@@ -315,13 +307,13 @@ struct Renderer : IRenderer
         const float u1 = tile.uv[1].x;
         const float v1 = 1 - tile.uv[0].y;
 
-        vboData.push_back({ quad.pos[0].x, quad.pos[0].y, u0, v0 });
-        vboData.push_back({ quad.pos[1].x, quad.pos[1].y, u0, v1 });
-        vboData.push_back({ quad.pos[2].x, quad.pos[2].y, u1, v1 });
+        vboData.push_back({ quad.pos[0].x, quad.pos[0].y, u0, v0, quad.light[0], quad.light[1], quad.light[2], 0 });
+        vboData.push_back({ quad.pos[1].x, quad.pos[1].y, u0, v1, quad.light[0], quad.light[1], quad.light[2], 0 });
+        vboData.push_back({ quad.pos[2].x, quad.pos[2].y, u1, v1, quad.light[0], quad.light[1], quad.light[2], 0 });
 
-        vboData.push_back({ quad.pos[0].x, quad.pos[0].y, u0, v0 });
-        vboData.push_back({ quad.pos[2].x, quad.pos[2].y, u1, v1 });
-        vboData.push_back({ quad.pos[3].x, quad.pos[3].y, u1, v0 });
+        vboData.push_back({ quad.pos[0].x, quad.pos[0].y, u0, v0, quad.light[0], quad.light[1], quad.light[2], 0 });
+        vboData.push_back({ quad.pos[2].x, quad.pos[2].y, u1, v1, quad.light[0], quad.light[1], quad.light[2], 0 });
+        vboData.push_back({ quad.pos[3].x, quad.pos[3].y, u1, v0, quad.light[0], quad.light[1], quad.light[2], 0 });
       };
 
     while(lines.len || circles.len || quads.len)

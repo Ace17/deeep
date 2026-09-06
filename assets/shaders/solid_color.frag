@@ -2,12 +2,6 @@
 
 precision mediump float;
 
-// Uniforms
-layout(std140) uniform MyUniformBlock
-{
-  vec4 fragOffset;
-};
-
 // Interpolated values from the vertex shader
 in vec2 UV;
 in vec4 vertexColor;
