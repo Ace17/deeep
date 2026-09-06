@@ -8,22 +8,17 @@ layout(std140) uniform MyUniformBlock
   vec4 fragOffset;
 };
 
+uniform sampler2D DiffuseTextureSampler;
+
 // Interpolated values from the vertex shader
-in vec2 vertexUV;
-in vec4 vertexColor;
+in vec2 UV;
 
 // Ouput data
 out vec4 color;
 
-float sqr(float v)
-{
-  return v * v;
-}
-
 void main()
 {
-  color = vertexColor;
-  color.a *= min(1.0, sqr(sqr(1.0-abs(vertexUV.x))));
+  color = texture(DiffuseTextureSampler, UV) + fragOffset;
 }
 
 // vim: syntax=glsl

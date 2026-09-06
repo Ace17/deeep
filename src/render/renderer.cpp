@@ -76,9 +76,9 @@ struct Renderer : IRenderer
     : backend(backend_)
     , m_internalResolution(internalResolution)
   {
-    m_quadShader = backend->createGpuProgram("standard", false);
+    m_texturedShader = backend->createGpuProgram("textured", false);
+    m_solidColorShader = backend->createGpuProgram("solid_color", false);
     m_fullscreenTriangleShader = backend->createGpuProgram("fullscreen", false);
-    m_lineShader = backend->createGpuProgram("line", false);
     m_batchVbo = backend->createVertexBuffer();
     m_fb = backend->createFrameBuffer(m_internalResolution, false);
 
@@ -186,16 +186,16 @@ struct Renderer : IRenderer
 
     auto addOneLine = [&] (const RenderLine& line)
       {
-        if(currShader != m_lineShader.get())
+        if(currShader != m_solidColorShader.get())
         {
           flushBatch();
 
-          backend->useGpuProgram(m_lineShader.get());
+          backend->useGpuProgram(m_solidColorShader.get());
           backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
           backend->enableVertexAttribute(1 /* uv          */, 2, sizeof(Vertex), offsetof(Vertex, u));
           backend->enableVertexAttribute(2 /* color       */, 4, sizeof(Vertex), offsetof(Vertex, r));
 
-          currShader = m_lineShader.get();
+          currShader = m_solidColorShader.get();
         }
 
         auto const transform = identity;
@@ -224,16 +224,16 @@ struct Renderer : IRenderer
 
     auto addOneCircle = [&] (const RenderCircle& circle)
       {
-        if(currShader != m_lineShader.get())
+        if(currShader != m_solidColorShader.get())
         {
           flushBatch();
 
-          backend->useGpuProgram(m_lineShader.get());
+          backend->useGpuProgram(m_solidColorShader.get());
           backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
           backend->enableVertexAttribute(1 /* uv          */, 2, sizeof(Vertex), offsetof(Vertex, u));
           backend->enableVertexAttribute(2 /* color       */, 4, sizeof(Vertex), offsetof(Vertex, r));
 
-          currShader = m_lineShader.get();
+          currShader = m_solidColorShader.get();
         }
 
         auto transform = circle.useWorldRefFrame ? cameraTransform : identity;
@@ -278,15 +278,15 @@ struct Renderer : IRenderer
 
     auto addOneQuad = [&] (const Quad& quad)
       {
-        if(currShader != m_quadShader.get())
+        if(currShader != m_texturedShader.get())
         {
           flushBatch();
 
-          backend->useGpuProgram(m_quadShader.get());
+          backend->useGpuProgram(m_texturedShader.get());
           backend->enableVertexAttribute(0 /* positionLoc */, 2, sizeof(Vertex), offsetof(Vertex, x));
           backend->enableVertexAttribute(1 /* uvLoc       */, 2, sizeof(Vertex), offsetof(Vertex, u));
 
-          currShader = m_quadShader.get();
+          currShader = m_texturedShader.get();
         }
 
         if(m_tiles[quad.tile].texture != currTexture)
@@ -523,9 +523,9 @@ private:
 
   Camera m_camera;
 
-  std::unique_ptr<IGpuProgram> m_quadShader;
+  std::unique_ptr<IGpuProgram> m_texturedShader;
+  std::unique_ptr<IGpuProgram> m_solidColorShader;
   std::unique_ptr<IGpuProgram> m_fullscreenTriangleShader;
-  std::unique_ptr<IGpuProgram> m_lineShader;
 
   struct Quad
   {
