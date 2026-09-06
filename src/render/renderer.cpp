@@ -121,18 +121,22 @@ struct Renderer : IRenderer
   void endDraw() override
   {
     // draw to internal framebuffer, with fixed resolution
-    backend->setRenderTarget(m_fb.get());
-    backend->clear();
+    {
+      backend->setRenderTarget(m_fb.get());
+      backend->clear();
 
-    processCommands();
+      processCommands();
+    }
 
-    // draw to screen
-    backend->setRenderTarget(nullptr);
-    backend->clear();
+    // copy the internal framebuffer to screen
+    {
+      backend->setRenderTarget(nullptr);
+      backend->clear();
 
-    backend->useGpuProgram(m_fullscreenTriangleShader.get());
-    m_fb->getColorTexture()->bind(0);
-    backend->draw(3);
+      backend->useGpuProgram(m_fullscreenTriangleShader.get());
+      m_fb->getColorTexture()->bind(0);
+      backend->draw(3);
+    }
 
     backend->swap();
   }
