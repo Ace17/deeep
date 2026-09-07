@@ -113,11 +113,6 @@ struct Renderer : IRenderer
     m_frameCount++;
   }
 
-  struct MyUniformBlock
-  {
-    float fragOffset[4];
-  };
-
   void endDraw() override
   {
     // draw to internal framebuffer, with fixed resolution
@@ -145,46 +140,36 @@ struct Renderer : IRenderer
   {
     batchCount = 0;
 
-    auto byPriority = [&] (Quad const& a, Quad const& b)
+    auto byPriority = [&] (RenderCommand const& a, RenderCommand const& b)
       {
         if(a.zOrder != b.zOrder)
           return a.zOrder < b.zOrder;
 
-        if(m_tiles[a.tile].texture != m_tiles[b.tile].texture)
-          return m_tiles[a.tile].texture < m_tiles[b.tile].texture;
+        if((a.type == RenderCommand::Type::LowQuad) != (b.type == RenderCommand::Type::LowQuad))
+          return a.type == RenderCommand::Type::LowQuad;
 
-        if(a.light != b.light)
-          return a.light < b.light;
+        if(a.type == RenderCommand::Type::LowQuad)
+        {
+          if(m_tiles[a.quad.tile].texture != m_tiles[b.quad.tile].texture)
+            return m_tiles[a.quad.tile].texture < m_tiles[b.quad.tile].texture;
+
+          if(a.quad.light != b.quad.light)
+            return a.quad.light < b.quad.light;
+        }
 
         return true;
       };
 
-    my::sort<Quad>(m_quads, byPriority);
-
-    auto linesByZ = [] (const RenderLine& a, const RenderLine& b)
-      {
-        return a.zOrder < b.zOrder;
-      };
-
-    my::sort<RenderLine>(m_lines, linesByZ);
+    my::sort<RenderCommand>(m_commandBuffer, byPriority);
 
     vboData.clear();
 
     ITexture* currTexture = nullptr;
-    std::array<float, 3> currLight {};
-    currLight[0] = 0.0f / 0.0f;
     IGpuProgram* currShader = nullptr;
 
     backend->useVertexBuffer(m_batchVbo.get());
 
-    Span<RenderLine> lines(m_lines);
-    Span<RenderCircle> circles(m_circles);
-    Span<Quad> quads(m_quads);
-
-    const auto cameraTransform = getCameraMatrix(m_camera);
-    const auto identity = translate({});
-
-    auto addOneLine = [&] (const RenderLine& line)
+    auto addOneLine = [&] (const LowLine& line)
       {
         if(currShader != m_solidColorShader.get())
         {
@@ -198,10 +183,8 @@ struct Renderer : IRenderer
           currShader = m_solidColorShader.get();
         }
 
-        auto const transform = identity;
-
-        auto const a = multiplyMatrix(transform, line.a.x, line.a.y, 1);
-        auto const b = multiplyMatrix(transform, line.b.x, line.b.y, 1);
+        auto const a = line.a;
+        auto const b = line.b;
 
         auto const n = normalize(b - a);
         auto const t = Vec2f(-n.y, n.x);
@@ -222,7 +205,7 @@ struct Renderer : IRenderer
         vboData.push_back(Vertex{ p3.x, p3.y, -u, 0, line.color.r, line.color.g, line.color.b, line.color.a });
       };
 
-    auto addOneCircle = [&] (const RenderCircle& circle)
+    auto addOneCircle = [&] (const LowCircle& circle)
       {
         if(currShader != m_solidColorShader.get())
         {
@@ -236,7 +219,6 @@ struct Renderer : IRenderer
           currShader = m_solidColorShader.get();
         }
 
-        auto transform = circle.useWorldRefFrame ? cameraTransform : identity;
         const int N = 48;
 
         for(int i = 0; i < N; ++i)
@@ -259,11 +241,6 @@ struct Renderer : IRenderer
           Vec2f p2 = circle.pos + Vec2f(cos1, sin1) * outerRadius;
           Vec2f p3 = circle.pos + Vec2f(cos1, sin1) * innerRadius;
 
-          p0 = multiplyMatrix(transform, p0.x, p0.y, 1);
-          p1 = multiplyMatrix(transform, p1.x, p1.y, 1);
-          p2 = multiplyMatrix(transform, p2.x, p2.y, 1);
-          p3 = multiplyMatrix(transform, p3.x, p3.y, 1);
-
           const auto u = 1;
 
           vboData.push_back(Vertex{ p0.x, p0.y, -u, 0, circle.color.r, circle.color.g, circle.color.b, circle.color.a });
@@ -276,7 +253,7 @@ struct Renderer : IRenderer
         }
       };
 
-    auto addOneQuad = [&] (const Quad& quad)
+    auto addOneQuad = [&] (const LowQuad& quad)
       {
         if(currShader != m_texturedShader.get())
         {
@@ -316,47 +293,31 @@ struct Renderer : IRenderer
         vboData.push_back({ quad.pos[3].x, quad.pos[3].y, u1, v0, quad.light[0], quad.light[1], quad.light[2], 0 });
       };
 
-    while(lines.len || circles.len || quads.len)
+    for(auto& cmd : m_commandBuffer)
     {
-      float minZ = 1.0 / 0.0;
-
-      if(lines.len && lines[0].zOrder < minZ)
-        minZ = lines[0].zOrder;
-
-      if(circles.len && circles[0].zOrder < minZ)
-        minZ = circles[0].zOrder;
-
-      if(quads.len && quads[0].zOrder < minZ)
-        minZ = quads[0].zOrder;
-
-      while(lines.len > 0 && lines[0].zOrder == minZ)
+      switch(cmd.type)
       {
-        addOneLine(lines[0]);
-        lines += 1;
-      }
+      case RenderCommand::Type::LowLine:
+        addOneLine(cmd.line);
+        break;
 
-      while(circles.len > 0 && circles[0].zOrder == minZ)
-      {
-        addOneCircle(circles[0]);
-        circles += 1;
-      }
+      case RenderCommand::Type::LowCircle:
+        addOneCircle(cmd.circle);
+        break;
 
-      while(quads.len > 0 && quads[0].zOrder == minZ)
-      {
-        addOneQuad(quads[0]);
-        quads += 1;
+      case RenderCommand::Type::LowQuad:
+        addOneQuad(cmd.quad);
+        break;
       }
     }
 
     flushBatch();
 
-    ggSpriteCount = m_quads.size();
+    ggSpriteCount = m_commandBuffer.size();
     ggBatchCount = batchCount;
     ggVboCap = vboData.capacity();
 
-    m_quads.clear();
-    m_circles.clear();
-    m_lines.clear();
+    m_commandBuffer.clear();
   }
 
   int batchCount = 0;
@@ -389,11 +350,14 @@ struct Renderer : IRenderer
 
     for(auto& c : text.text)
     {
-      m_quads.push_back({});
-      auto& q = m_quads.back();
+      m_commandBuffer.push_back({});
+      auto& cmd = m_commandBuffer.back();
+
+      cmd.type = RenderCommand::Type::LowQuad;
+      cmd.zOrder = 100;
+      LowQuad& q = cmd.quad;
 
       q.tile = m_Models[-1].actions[c].textures[0];
-      q.zOrder = 100;
 
       q.pos[0] = pos;
       q.pos[1] = pos + Vec2f(0, size.y);
@@ -412,12 +376,16 @@ struct Renderer : IRenderer
     auto cam = circle.useWorldRefFrame ? m_camera : Camera();
     const auto transform = getCameraMatrix(cam);
 
-    RenderCircle c = circle;
-    Vec2f p = circle.pos + Vec2f(circle.radius, 0);
-    c.pos = multiplyMatrix(transform, circle.pos.x, circle.pos.y, 1);
-    c.radius = (c.pos - multiplyMatrix(transform, p.x, p.y, 1)).x;
+    m_commandBuffer.push_back({});
+    auto& cmd = m_commandBuffer.back();
 
-    m_circles.push_back(c);
+    const Vec2f p = circle.pos + Vec2f(circle.radius, 0);
+
+    cmd.type = RenderCommand::Type::LowCircle;
+    cmd.zOrder = circle.zOrder;
+    cmd.circle.color = circle.color;
+    cmd.circle.pos = multiplyMatrix(transform, circle.pos.x, circle.pos.y, 1);
+    cmd.circle.radius = (cmd.circle.pos - multiplyMatrix(transform, p.x, p.y, 1)).x;
   }
 
   void drawLine(const RenderLine& line) override
@@ -425,11 +393,16 @@ struct Renderer : IRenderer
     auto cam = line.useWorldRefFrame ? m_camera : Camera();
     const auto transform = getCameraMatrix(cam);
 
-    RenderLine l = line;
-    l.a = multiplyMatrix(transform, line.a.x, line.a.y, 1);
-    l.b = multiplyMatrix(transform, line.b.x, line.b.y, 1);
+    m_commandBuffer.push_back({});
+    auto& cmd = m_commandBuffer.back();
 
-    m_lines.push_back(l);
+    cmd.type = RenderCommand::Type::LowLine;
+    cmd.zOrder = line.zOrder;
+    cmd.line.color = line.color;
+    cmd.line.thicknessMin = line.thicknessMin;
+    cmd.line.thicknessMax = line.thicknessMax;
+    cmd.line.a = multiplyMatrix(transform, line.a.x, line.a.y, 1);
+    cmd.line.b = multiplyMatrix(transform, line.b.x, line.b.y, 1);
   }
 
   void drawSprite(const RenderSprite& sprite) override
@@ -467,8 +440,13 @@ struct Renderer : IRenderer
     const auto worldTransform = computeTransform(pos, sprite.angle, sprite.halfSize);
     const auto transform = getCameraMatrix(cam) * worldTransform;
 
-    Quad q;
-    q.zOrder = sprite.zOrder;
+    m_commandBuffer.push_back({});
+    auto& cmd = m_commandBuffer.back();
+
+    cmd.type = RenderCommand::Type::LowQuad;
+    cmd.zOrder = sprite.zOrder;
+
+    LowQuad& q = cmd.quad;
     q.tile = action.textures[idx];
 
     auto const m0x = -0.5;
@@ -508,8 +486,6 @@ struct Renderer : IRenderer
       if(box.max.x < -1.0 || box.min.x > 1.0 || box.max.y < -1.0 || box.min.y > 1.0)
         return;
     }
-
-    m_quads.push_back(q);
   }
 
 private:
@@ -527,12 +503,45 @@ private:
   std::unique_ptr<IGpuProgram> m_solidColorShader;
   std::unique_ptr<IGpuProgram> m_fullscreenTriangleShader;
 
-  struct Quad
+  struct LowQuad
   {
-    int zOrder;
     std::array<float, 3> light {};
     int tile;
     Vec2f pos[4];
+  };
+
+  struct LowCircle
+  {
+    Vec2f pos;
+    float radius;
+    RenderColor color;
+  };
+
+  struct LowLine
+  {
+    Vec2f a, b;
+    RenderColor color;
+    float thicknessMin, thicknessMax;
+  };
+
+  struct RenderCommand
+  {
+    enum class Type
+    {
+      LowQuad,
+      LowCircle,
+      LowLine,
+    };
+
+    Type type {};
+    int zOrder;
+
+    union
+    {
+      LowQuad quad;
+      LowCircle circle;
+      LowLine line;
+    };
   };
 
   struct Tile
@@ -547,9 +556,8 @@ private:
     Vec2i dim;
   };
 
-  std::vector<RenderCircle> m_circles;
-  std::vector<RenderLine> m_lines;
-  std::vector<Quad> m_quads;
+  std::vector<RenderCommand> m_commandBuffer;
+
   std::unique_ptr<IVertexBuffer> m_batchVbo;
   std::unique_ptr<IVertexBuffer> m_quadVbo;
   std::unique_ptr<IFrameBuffer> m_fb;
