@@ -134,6 +134,11 @@ struct InGameScene : Scene, private IGame
       m_exploredCells.set(playerPos.x, playerPos.y, 2);
     }
 
+    if(menuButton.toggle(c.menu))
+    {
+      return createEscapeMenuState(m_view, this);
+    }
+
     if(startButton.toggle(c.start))
     {
       MinimapData data {};
@@ -579,6 +584,7 @@ struct InGameScene : Scene, private IGame
   bool m_debug;
   bool m_debugFirstTime = true;
   Toggle startButton;
+  Toggle menuButton;
 
   std::vector<std::unique_ptr<Entity>> m_entities;
   std::vector<std::unique_ptr<Entity>> m_spawned;

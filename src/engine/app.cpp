@@ -96,7 +96,7 @@ public:
       tickOneDisplayFrame(now);
     }
 
-    return m_running != AppState::Exit;
+    return !m_mustQuit;
   }
 
 private:
@@ -126,7 +126,7 @@ private:
 
     for(int k = 0; k < ticksPerFrame; ++k)
     {
-      if(!m_paused && m_running == AppState::Running)
+      if(!m_paused)
       {
         tickGameplay();
         m_tps.tick(now);
@@ -149,7 +149,10 @@ private:
 
     auto const t0 = GetSteadyClockMs();
 
-    m_scene->tick(m_control);
+    auto s = m_scene->tick(m_control);
+
+    if(s == &nullScene)
+      m_mustQuit = true;
 
     auto const t1 = GetSteadyClockMs();
     ggTickDuration = int(t1 - t0);
@@ -158,17 +161,14 @@ private:
   void registerUserInputActions()
   {
     // App keys
-    m_input->listenToQuit([&]() { m_running = AppState::Exit; });
+    m_input->listenToQuit([&]() { m_mustQuit = true; });
 
     m_input->listenToKey(Key::F12, [&](bool isDown) { if(isDown) toggleVideoCapture(); }, true);
     m_input->listenToKey(Key::F12, [&](bool isDown) { if(isDown) m_recorder.takeScreenshot(); }, false);
     m_input->listenToKey(Key::Return, [&](bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
 
-    m_input->listenToKey(Key::Y, [&](bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Exit; });
-    m_input->listenToKey(Key::N, [&](bool isDown) { if(isDown && m_running == AppState::ConfirmExit) m_running = AppState::Running; });
-
     // Player keys
-    m_input->listenToKey(Key::Esc, [&](bool isDown) { if(isDown) onQuit(); });
+    m_input->listenToKey(Key::Esc, [&](bool isDown) { m_control.menu = isDown; });
     m_input->listenToKey(Key::Return, [&](bool isDown) { m_control.start = isDown; });
 
     m_input->listenToKey(Key::Left, [&](bool isDown) { m_control.left = isDown; });
@@ -196,21 +196,7 @@ private:
 
     m_scene->draw();
 
-    if(m_running == AppState::ConfirmExit)
-    {
-      RenderSprite s{};
-      s.pos = { 0, 0 };
-      s.halfSize = { 24, 16 };
-      s.modelId = 0;
-      s.zOrder = 99;
-      m_renderer->drawSprite(s);
-
-      RenderText text{};
-      text.pos = Vec2f(0, 0.5);
-      text.text = "QUIT? [Y/N]";
-      m_renderer->drawText(text);
-    }
-    else if(m_paused)
+    if(m_paused)
     {
       RenderText text{};
       text.pos = Vec2f(0, 0);
@@ -241,14 +227,6 @@ private:
     m_renderer->endDraw();
 
     m_recorder.captureDisplayFrameIfNeeded(m_graphicsBackend.get(), m_screenSize);
-  }
-
-  void onQuit()
-  {
-    if(m_running == AppState::ConfirmExit)
-      m_running = AppState::Running;
-    else
-      m_running = AppState::ConfirmExit;
   }
 
   void toggleVideoCapture()
@@ -297,14 +275,7 @@ private:
     m_paused = !m_paused;
   }
 
-  enum class AppState
-  {
-    Exit = 0,
-    Running = 1,
-    ConfirmExit = 2,
-  };
-
-  AppState m_running = AppState::Running;
+  bool m_mustQuit = false;
   int m_fixedDisplayFramePeriod = 0;
 
   VideoCapture m_recorder;

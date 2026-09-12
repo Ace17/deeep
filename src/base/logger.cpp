@@ -27,3 +27,6 @@ void logMsg(String fmt, ...)
   }
 }
 
+#include "scene.h"
+NullScene nullScene;
+

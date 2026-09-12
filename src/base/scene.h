@@ -14,6 +14,7 @@ struct Control
   bool left, right, up, down;
 
   // player actions
+  bool menu;
   bool start;
   bool fire;
   bool jump;
@@ -34,4 +35,12 @@ struct Scene
   // ask the scene to send its actors for rendering
   virtual void draw() = 0;
 };
+
+struct NullScene : Scene
+{
+  Scene* tick(Control) override { return this; }
+  void draw() override {}
+};
+
+extern NullScene nullScene;
 

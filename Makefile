@@ -103,6 +103,7 @@ SRCS_GAME:=\
 	src/gameplay/spatial_hashing.cpp\
 	src/gameplay/state_bootup.cpp\
 	src/gameplay/state_ending.cpp\
+	src/gameplay/state_escmenu.cpp\
 	src/gameplay/state_playing.cpp\
 	src/gameplay/state_paused.cpp\
 	src/gameplay/state_splash.cpp\

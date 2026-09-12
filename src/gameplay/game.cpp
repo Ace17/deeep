@@ -47,6 +47,12 @@ struct RootScene : Scene
     }
   }
 
+  ~RootScene()
+  {
+    if(m_scene.get() == &nullScene)
+      m_scene.release();
+  }
+
   Scene* tick(Control c) override
   {
     auto next = m_scene->tick(c);
@@ -58,7 +64,7 @@ struct RootScene : Scene
       logMsg("Entering scene: %s", typeid(*next).name());
     }
 
-    return nullptr;
+    return next;
   }
 
   void draw() override

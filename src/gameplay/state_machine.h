@@ -6,6 +6,7 @@ struct MinimapData;
 
 Scene* createBootupState(IPresenter* view);
 Scene* createSplashState(IPresenter* view);
+Scene* createEscapeMenuState(IPresenter* view, Scene* sub);
 Scene* createPausedState(IPresenter* view, Scene* sub, const MinimapData& minimapData);
 Scene* createPlayingState(IPresenter* view);
 Scene* createEndingState(IPresenter* view);
