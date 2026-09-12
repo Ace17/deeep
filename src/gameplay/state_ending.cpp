@@ -19,7 +19,6 @@ struct EndingState : Scene
 {
   EndingState(IPresenter* view_) : view(view_)
   {
-    startButton.toggle(true);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -35,7 +34,7 @@ struct EndingState : Scene
     {
       delay = FADE_TIME;
 
-      if(startButton.toggle(c.fire || c.jump || c.dash || c.start))
+      if(c.fire == Control::JustPressed || c.jump == Control::JustPressed || c.dash == Control::JustPressed || c.start == Control::JustPressed)
       {
         view->stopMusic();
         activated = true;
@@ -65,8 +64,6 @@ struct EndingState : Scene
   }
 
 private:
-  Toggle startButton;
-
   IPresenter* const view;
   bool activated = false;
   int delay = 0;

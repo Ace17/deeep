@@ -30,16 +30,14 @@ struct EscapeMenuState : Scene
 
   Scene* tick(Control c) override
   {
-    decrement(debounceMenuKey);
-
-    if(menuButton.toggle(c.menu) && !debounceMenuKey)
+    if(c.menu == Control::JustPressed)
     {
       view->playSound(SND_PAUSE);
       std::unique_ptr<Scene> deleteMeOnReturn(this);
       return sub.release();
     }
 
-    if(startButton.toggle(c.start))
+    if(c.start == Control::JustPressed)
     {
       std::unique_ptr<Scene> deleteMeOnReturn(this);
 
@@ -51,13 +49,13 @@ struct EscapeMenuState : Scene
         return &nullScene; // exit program
     }
 
-    if(downButton.toggle(c.down))
+    if(c.down == Control::JustPressed)
     {
       selection++;
       selection %= 3;
     }
 
-    if(upButton.toggle(c.up))
+    if(c.up == Control::JustPressed)
     {
       selection = (selection - 1 + 3) % 3;
     }
@@ -77,25 +75,21 @@ struct EscapeMenuState : Scene
 
     for(int i = 0; i < 3; ++i)
     {
-      auto menuChoice = SpriteActor { { -1, -i * 1.0f }, MDL_RECT };
-      menuChoice.scale = { 8, 0.9 };
+      auto menuChoice = TileActor { { { -4, -i * 1.25f }, { 8, 0.9 } }, MDL_RECT };
       menuChoice.screenRefFrame = true;
       menuChoice.zOrder = 20;
 
       if(i == selection)
-        menuChoice.effect = Effect::Blinking;
+        menuChoice.action = 0;
+      else
+        menuChoice.action = 1;
 
       view->sendActor(menuChoice);
     }
   }
 
 private:
-  Toggle startButton;
-  Toggle menuButton;
-  Toggle upButton;
-  Toggle downButton;
   int selection = 0;
-  int debounceMenuKey = 10;
   IPresenter* const view;
   std::unique_ptr<Scene> sub;
 };

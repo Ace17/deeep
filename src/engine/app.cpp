@@ -47,6 +47,23 @@ extern const String GAME_NAME;
 extern const int GAMEPLAY_HZ;
 extern const Vec2i INTERNAL_RESOLUTION;
 
+void resetJustToggledFlag(Control& c)
+{
+  c.left &= ~2;
+  c.right &= ~2;
+  c.up &= ~2;
+  c.down &= ~2;
+
+  c.menu &= ~2;
+  c.start &= ~2;
+  c.fire &= ~2;
+  c.jump &= ~2;
+  c.dash &= ~2;
+  c.restart &= ~2;
+
+  c.debug &= ~2;
+}
+
 class App : public IApp, private IScreenSizeListener
 {
 public:
@@ -150,6 +167,7 @@ private:
     auto const t0 = GetSteadyClockMs();
 
     auto s = m_scene->tick(m_control);
+    resetJustToggledFlag(m_control);
 
     if(s == &nullScene)
       m_mustQuit = true;
@@ -168,19 +186,21 @@ private:
     m_input->listenToKey(Key::Return, [&](bool isDown) { if(isDown) toggleFullScreen(); }, false, true);
 
     // Player keys
-    m_input->listenToKey(Key::Esc, [&](bool isDown) { m_control.menu = isDown; });
-    m_input->listenToKey(Key::Return, [&](bool isDown) { m_control.start = isDown; });
+    static auto makeMask = [](bool isDown) { return isDown ? 0b11 : 0; };
 
-    m_input->listenToKey(Key::Left, [&](bool isDown) { m_control.left = isDown; });
-    m_input->listenToKey(Key::Right, [&](bool isDown) { m_control.right = isDown; });
-    m_input->listenToKey(Key::Up, [&](bool isDown) { m_control.up = isDown; });
-    m_input->listenToKey(Key::Down, [&](bool isDown) { m_control.down = isDown; });
+    m_input->listenToKey(Key::Esc, [&](bool isDown) { m_control.menu = makeMask(isDown); });
+    m_input->listenToKey(Key::Return, [&](bool isDown) { m_control.start = makeMask(isDown); });
 
-    m_input->listenToKey(Key::Z, [&](bool isDown) { m_control.fire = isDown; });
-    m_input->listenToKey(Key::X, [&](bool isDown) { m_control.jump = isDown; });
-    m_input->listenToKey(Key::C, [&](bool isDown) { m_control.dash = isDown; });
+    m_input->listenToKey(Key::Left, [&](bool isDown) { m_control.left = makeMask(isDown); });
+    m_input->listenToKey(Key::Right, [&](bool isDown) { m_control.right = makeMask(isDown); });
+    m_input->listenToKey(Key::Up, [&](bool isDown) { m_control.up = makeMask(isDown); });
+    m_input->listenToKey(Key::Down, [&](bool isDown) { m_control.down = makeMask(isDown); });
 
-    m_input->listenToKey(Key::R, [&](bool isDown) { m_control.restart = isDown; });
+    m_input->listenToKey(Key::Z, [&](bool isDown) { m_control.fire = makeMask(isDown); });
+    m_input->listenToKey(Key::X, [&](bool isDown) { m_control.jump = makeMask(isDown); });
+    m_input->listenToKey(Key::C, [&](bool isDown) { m_control.dash = makeMask(isDown); });
+
+    m_input->listenToKey(Key::R, [&](bool isDown) { m_control.restart = makeMask(isDown); });
 
     // Debug keys
     m_input->listenToKey(Key::F2, [&](bool isDown) { if(isDown) m_scene.reset(createGame(m_renderer.get(), m_audio.get(), m_args)); });

@@ -11,17 +11,19 @@
 struct Control
 {
   // player directions
-  bool left, right, up, down;
+  char left, right, up, down;
 
   // player actions
-  bool menu;
-  bool start;
-  bool fire;
-  bool jump;
-  bool dash;
-  bool restart; // kill the player (in case of getting stuck).
+  char menu;
+  char start;
+  char fire;
+  char jump;
+  char dash;
+  char restart; // kill the player (in case of getting stuck).
 
-  bool debug; // toggle debug-mode
+  char debug; // toggle debug-mode
+
+  static constexpr char JustPressed = 0x3;
 };
 
 struct Scene

@@ -42,25 +42,23 @@ struct PausedState : Scene
 
   Scene* tick(Control c) override
   {
-    decrement(pauseDelay);
-
-    if(startButton.toggle(c.start) && !pauseDelay)
+    if(c.start == Control::JustPressed)
     {
       view->playSound(SND_PAUSE);
       std::unique_ptr<Scene> deleteMeOnReturn(this);
       return sub.release();
     }
 
-    if(leftButton.toggle(c.left))
+    if(c.left == Control::JustPressed)
       m_scroll.x++;
 
-    if(rightButton.toggle(c.right))
+    if(c.right == Control::JustPressed)
       m_scroll.x--;
 
-    if(upButton.toggle(c.up))
+    if(c.up == Control::JustPressed)
       m_scroll.y--;
 
-    if(downButton.toggle(c.down))
+    if(c.down == Control::JustPressed)
       m_scroll.y++;
 
     const Vec2f target(m_scroll.x, m_scroll.y);
@@ -81,12 +79,6 @@ struct PausedState : Scene
   }
 
 private:
-  int pauseDelay = 10;
-  Toggle startButton;
-  Toggle leftButton;
-  Toggle rightButton;
-  Toggle upButton;
-  Toggle downButton;
   MapViewModel mapViewModel{};
   IPresenter* const view;
   std::unique_ptr<Scene> sub;

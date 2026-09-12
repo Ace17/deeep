@@ -8,18 +8,6 @@
 
 #pragma once
 
-struct Toggle
-{
-  bool toggle(bool newState)
-  {
-    auto const oldState = state;
-    state = newState;
-    return newState && !oldState;
-  }
-
-  bool state = false;
-};
-
 template<typename T, typename U>
 bool tryActivate(T& val, U delay)
 {

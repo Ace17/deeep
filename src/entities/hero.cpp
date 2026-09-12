@@ -319,7 +319,7 @@ struct Rockman : Entity, Damageable, Playerable
       }
     }
 
-    if(jumpbutton.toggle(c.jump) && !ladder)
+    if(c.jump == Control::JustPressed && !ladder)
     {
       if(ground)
       {
@@ -413,7 +413,7 @@ struct Rockman : Entity, Damageable, Playerable
 
     if(upgrades & UPGRADE_DASH)
     {
-      if(dashbutton.toggle(c.dash) && ground && dashDelay == 0)
+      if(c.dash == Control::JustPressed && ground && dashDelay == 0)
       {
         game->playSound(SND_JUMP);
         dashDelay = 40;
@@ -451,7 +451,7 @@ struct Rockman : Entity, Damageable, Playerable
       control = Control {};
     }
 
-    if(restartbutton.toggle(control.restart))
+    if(control.restart == Control::JustPressed)
       life = 0;
 
     if(life && crushed)
@@ -587,7 +587,7 @@ struct Rockman : Entity, Damageable, Playerable
     {
       if(upgrades & UPGRADE_BOMB)
       {
-        if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
+        if(control.fire == Control::JustPressed && tryActivate(debounceFire, 15))
         {
           auto b = std::make_unique<Bomb>();
           b->pos = getCenter() - b->size * 0.5;
@@ -600,7 +600,7 @@ struct Rockman : Entity, Damageable, Playerable
     {
       if(upgrades & UPGRADE_SHOOT)
       {
-        if(firebutton.toggle(control.fire) && tryActivate(debounceFire, 15))
+        if(control.fire == Control::JustPressed && tryActivate(debounceFire, 15))
         {
           auto b = std::make_unique<Bullet>();
           auto sign = (dir == LEFT ? -1 : 1);
@@ -649,7 +649,6 @@ struct Rockman : Entity, Damageable, Playerable
   int debounceFire = 0;
   ORIENTATION dir = RIGHT;
   bool ground = false;
-  Toggle jumpbutton, firebutton, dashbutton, restartbutton;
   int time = 0;
   int climbDelay = 0;
   int hurtDelay = 0;
