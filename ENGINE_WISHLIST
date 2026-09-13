@@ -1,18 +1,3 @@
-An item can be in this list, if and only if it has actually missed me in practice
-at least on one occasion. Every item must have a 'why', and must not be speculation.
-
-Performance monitoring
-----------------------
-
-- _What_: FPS (sensitive to monitor refresh rate)
-  _Why_: performance monitoring in the browser
-
-- _What_: Render time
-  _Why_: accurate performance tuning in the browser and comparison with native
-
-- _What_: Draw calls count
-  _Why_: performance comparison and tuning when batching draw calls
-
 Audio
 -----
 
@@ -35,8 +20,6 @@ Gameplay
 - Minimap: connex components (of the explored areas) are kept separated, until
    the player finally explores a path that connects them. At this point, there's
    an animation in the minimap menu, showing the merging of the two connex components
-
-- Minimap: show connections between rooms
 
 - Minimap: hidden areas
 
