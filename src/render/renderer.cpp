@@ -34,6 +34,7 @@ Gauge ggSpriteCount("sprites");
 Gauge ggBatchCount("batches");
 
 const int MAX_QUADS = 32678;
+const int MAX_VERTICES = MAX_QUADS * 6;
 const auto TILE_SIZE = 16.0f;
 const float SCALE = 0.1;
 const Vec2i AtlasSize = { 2048, 2048 };
@@ -275,7 +276,7 @@ struct Renderer : IRenderer
           currTexture->bind(0); // Bind our diffuse texture in Texture Unit 0
         }
 
-        if(vboData.size() * 6 >= MAX_QUADS)
+        if(vboData.size() >= MAX_VERTICES)
           flushBatch();
 
         const auto& tile = m_tiles[quad.tile];
