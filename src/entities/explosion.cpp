@@ -36,11 +36,10 @@ struct Explosion : Entity
 
   void addActors(IActorSink* sink) const override
   {
-    auto r = SpriteActor { pos + size / 2, MDL_EXPLOSION };
+    auto r = SpriteActor { getCenter(), MDL_EXPLOSION };
 
     r.ratio = time / (float)DURATION;
     r.scale = Size(3, 3);
-    r.pos += Vector(-r.scale.x * 0.5, -r.scale.y * 0.5);
 
     sink->sendActor(r);
   }
