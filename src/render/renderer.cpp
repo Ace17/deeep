@@ -485,7 +485,7 @@ struct Renderer : IRenderer
         box.add(p);
 
       if(box.max.x < -1.0 || box.min.x > 1.0 || box.max.y < -1.0 || box.min.y > 1.0)
-        return;
+        m_commandBuffer.pop_back();
     }
   }
 
