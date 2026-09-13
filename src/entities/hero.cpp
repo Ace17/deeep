@@ -532,6 +532,7 @@ struct Rockman : Entity, Damageable, Playerable
         return;
       }
 
+      ladder = false;
       hurtDelay = HURT_DELAY;
       blinking = 200;
       game->playSound(SND_HURT);
