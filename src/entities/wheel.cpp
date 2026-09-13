@@ -25,7 +25,7 @@ struct Wheel : Entity, Damageable
   {
     vel = NullVector;
     dir = -1.0f;
-    size = Size(1.5, 1.5);
+    size = Size(2.0, 2.0);
     collisionGroup = CG_ENEMIES;
     collidesWith = CG_SOLIDPLAYER | CG_WALLS;
     Body::onCollision = [this] (Body* other) { onCollide(other); };
@@ -36,7 +36,7 @@ struct Wheel : Entity, Damageable
     auto r = SpriteActor { pos + size / 2, MDL_WHEEL };
 
     r.scale = Size(3, 3);
-    r.pos += Vector(0, 0.7);
+    r.pos += Vector(0, 0.3);
 
     if(blinking)
       r.effect = Effect::Blinking;
